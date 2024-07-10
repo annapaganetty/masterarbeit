@@ -1,4 +1,39 @@
-include("plate.jl")
+function plateKe(p)
+    function keFunc(e)
+
+        x1 = coordinates(e, 1)
+        x2 = coordinates(e, 2)
+        x3 = coordinates(e, 3)
+        x4 = coordinates(e, 4)
+        a = x2[1] - x1[1]       # Länge in xi-Richtung
+        b = x3[2] - x1[2]       # Länge in eta-Richtung
+
+        KeElement = Kelement(p,a,b)
+
+        return KeElement
+    end
+    return keFunc
+end
+
+function plateRe(q)
+    function reFunc(e)
+        x1 = coordinates(e, 1)
+        x2 = coordinates(e, 2)
+        x3 = coordinates(e, 3)
+        x4 = coordinates(e, 4)
+        a = x2[1] - x1[1]       # Länge in xi-Richtung
+        b = x3[2] - x1[2]       # Länge in eta-Richtung
+
+        Fz = 1/4 * a * b * q
+        Mx = 1/24 * a^2 * b * q
+        My = 1/24 * a * b^2 * q
+        re = [Fz, Mx, My, Fz, -Mx, My, Fz, -Mx, -My, Fz, Mx, -My]
+
+        return re
+    end
+    return reFunc
+end
+
 function assembleKr(s,nf)
     N = nnodes(s) * nf
     K = zeros(N, N)
@@ -29,17 +64,18 @@ function assembleKr(s,nf)
     return   K ,r
 end
 
-function nodeDOFs(nodeNumber, dofs)
-    nDOFs = fill(1,dofs)
-    o = (nodeNumber - 1) * dofs 
-    for i = 1:dofs
-        nDOFs[i] = o + i
-    end
-    return nDOFs
+idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :))
+
+function fixedDOFs(fixedNodes, fixed)
+    nf = 3
+    d = idxDOFs(fixedNodes,nf)
+    return d
 end
 
-function applyDirichletBCs!(dofs, K, r)
+function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])
+    dofs = fixedDOFs(fixedNodes,fixed)
     r[dofs] .= 0
     K[dofs, :] .= 0
     K[diagind(K)[dofs]] .= 1
+    return nothing 
 end
