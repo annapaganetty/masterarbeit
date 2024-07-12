@@ -11,5 +11,6 @@ function plate(p, nx, ny = nx)
     K,r = assembleKr(m, nf)
     applyDirichletBCs!(m.groups[:boundarynodes], K, r, bcs)
     w = K \ r
+	m.data[:post] = postprocessor(p, w)
     return m, w
 end

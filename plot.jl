@@ -2,7 +2,7 @@ function mkfig(
     ; a3d=true, w=600, h=400, title="",
     limits=(nothing, nothing, nothing)
 )
-    fig = Figure(size=(w, h))
+    fig = Figure(size=(w, h),fontsize = 2, linewidth = 0.2)
     if a3d
         GLMakie.activate!()
         ax = Axis3(
@@ -56,7 +56,6 @@ function plotw(
     fig
 end
 
-
 function plotsol(params,n)
     m, wHat = plate(params, n);
     plotw(
@@ -66,4 +65,48 @@ function plotsol(params,n)
         edgesvisible=true, edgelinewidth=4,
         limits=(nothing,nothing,(0,1.15))
     )
+end
+
+function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
+	if false
+		fig = Figure(size = (1200, 800))
+		if a3d
+			ax = Axis3(fig[1, 1])
+			zscale = 1
+		else
+			ax = Axis(fig[1, 1], aspect = DataAspect())
+			zscale = 0
+		end
+
+		warpnodes = nothing
+
+		if nodal
+			r = nodalresult(m, result)
+			if a3d
+				warpnodes = r
+			end
+		else
+			r = result
+		end
+
+		p = mplot!(
+			m, r, edgesvisible = a3d,
+			nodewarp = warpnodes,
+			faceplotzscale = zscale, faceplotnpoints = npoints,
+			colorrange = cr,
+		)
+
+		if !a3d
+			mplot!(m, edgesvisible = false, facesvisible = false)
+		end
+
+		Colorbar(fig[1, 2], p)
+		hidespines!(ax)
+		hidedecorations!(ax)
+		ax.title = maketitle(p, title)
+
+		return fig
+	else
+		return L"Zeitweise außer Betrieb"
+	end
 end

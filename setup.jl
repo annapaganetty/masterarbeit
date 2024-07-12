@@ -2,11 +2,13 @@ import GLMakie
 import CairoMakie
 import CairoMakie: Figure, Axis3, scatter!, lines
 
+# import Pkg
+# Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
+
 using CairoMakie
 
 using MMJMesh
 using MMJMesh.Plots
-#import MMJMesh.Plots: _fsize, _makegmap
 using MMJMesh.Meshes
 import MMJMesh.Meshes: entities
 using MMJMesh.MMJBase
@@ -31,6 +33,14 @@ set_theme!(theme_minimal())
 update_theme!(faceplotmesh=5)
 update_theme!(edgelinewidth=2.5)
 update_theme!(colormap=:aquamarine)
+
+function _fsize(face)
+	x = coordinates(face)
+	p = x[:, 1]
+	l1 = x[1, 2] - x[1, 1]
+	l2 = x[2, 3] - x[2, 2]
+	return p, l1, l2
+end
 
 include("plate.jl")
 include("fem.jl")

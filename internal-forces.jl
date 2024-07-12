@@ -35,12 +35,12 @@ function postprocessor(params, wHat)
         h = params.d
         E = params.E
         ν = params.ν
-        D = E * h^3 / (12 * (1 - nu^2))
+        D = E * h^3 / (12 * (1 - ν^2))
 
         # Section forces (Altenbach et al. p176)
-        mx = -1e-3 * D * (wxx + nu * wyy)
-        my = -1e-3 * D * (nu * wxx + wyy)
-        mxy = -1e-3 * D * (1 - nu) * wxy
+        mx = -1e-3 * D * (wxx + ν * wyy)
+        my = -1e-3 * D * (ν * wxx + wyy)
+        mxy = -1e-3 * D * (1 - ν) * wxy
         qx = -1e-3 * D * ∂X(Δw)
         qy = -1e-3 * D * ∂Y(Δw)
 
