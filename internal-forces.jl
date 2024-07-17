@@ -10,8 +10,8 @@ function postprocessor(params, wHat)
         ∂XY(we) = (2 / a) * (2 / b) * ∂xy(we)
 
         # Element displacement function
-        idxs = idxDOFs(nodeindices(face), 4)
-        t = repeat([1, a / 2, b / 2, a * b / 4], 4)
+        idxs = idxDOFs(nodeindices(face), 3)
+        t = repeat([1,a / 2, b / 2], 4)
         we = sum(wHat[idxs] .* t .* H4) # TODO make dot work
 
         # Quick return
@@ -32,7 +32,7 @@ function postprocessor(params, wHat)
         name == :Δw && return Δw
 
         # Plate properties
-        h = params.d
+        h = params.h
         E = params.E
         ν = params.ν
         D = E * h^3 / (12 * (1 - ν^2))
@@ -67,4 +67,16 @@ function postprocessor(params, wHat)
         # Unknown label
         error("Unkown function: ", name)
     end
+end
+
+function nodalresult(m, result)
+	sr = zeros(nnodes(m))
+	VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+	for f ∈ faces(m)
+		sr[nodeindices(f)] .+= m.data[:post](f, result).(VV)
+	end
+	for (i, n) ∈ enumerate(nodes(m))
+		sr[i] /= nfaces(n)
+	end
+	return sr
 end

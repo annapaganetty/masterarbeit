@@ -15,6 +15,5 @@ N = vcat(
     ]...
 )
 M = [n(p) for p in P, n in N]
-
-Minv = simplify.(M \ I12)
+Minv = round.(simplify.(M \ I12);digits = 3)
 H4 = Minv*P

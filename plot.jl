@@ -1,8 +1,8 @@
 function mkfig(
-    ; a3d=true, w=600, h=400, title="",
+    ; a3d=true, w=250, h=200, title="",
     limits=(nothing, nothing, nothing)
 )
-    fig = Figure(size=(w, h),fontsize = 2, linewidth = 0.2)
+    fig = Figure(size=(w, h),fontsize = 1.0, linewidth = 0.2)
     if a3d
         GLMakie.activate!()
         ax = Axis3(
@@ -27,16 +27,16 @@ function makewe(wHat)
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
         _, a, b = _fsize(face)
-        t = repeat([ a / 2, b / 2, a * b / 4], 4)
+        t = repeat([1,a / 2, b / 2], 4)
         return sum(wHat[idxs] .* t .* H4) # TODO make dot work
     end
 end
 
 function plotw(
     m, wHat;
-    zs=2,
-    a3d=true, w=600, h=400, title="",
-    edgesvisible=false, nodesvisible=false, edgelinewidth=2.5,
+    zs=0.2,
+    a3d=true, w=250, h=200, title="",
+    edgesvisible=false, nodesvisible=false, edgelinewidth=0.02,
     mesh=5,
     colorrange=Makie.automatic,
     colormap=Makie.theme(:colormap),
@@ -49,6 +49,7 @@ function plotw(
         faceplotmesh=mesh,
         edgesvisible=edgesvisible, edgelinewidth=edgelinewidth,
         nodesvisible=nodesvisible,
+        featureedgelinewidth=2,
         color=3,
         colorrange=colorrange,
         colormap=colormap
@@ -60,33 +61,36 @@ function plotsol(params,n)
     m, wHat = plate(params, n);
     plotw(
         m, wHat, 
-        w=1200, h=650,
-        zs=2400*maximum(wHat), # plotw scales by 1 / maximum(wHat)
-        edgesvisible=true, edgelinewidth=4,
+        w=250, h=200,
+        zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
+        edgesvisible=true, edgelinewidth=0.1,
         limits=(nothing,nothing,(0,1.15))
     )
 end
 
 function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
-	if false
+	# if false
 		fig = Figure(size = (1200, 800))
-		if a3d
+		if a3d == true
 			ax = Axis3(fig[1, 1])
 			zscale = 1
+            
 		else
 			ax = Axis(fig[1, 1], aspect = DataAspect())
 			zscale = 0
+            println("klappt")
 		end
 
 		warpnodes = nothing
 
-		if nodal
+		if nodal == true
 			r = nodalresult(m, result)
 			if a3d
 				warpnodes = r
 			end
 		else
 			r = result
+            println("klappt")
 		end
 
 		p = mplot!(
@@ -106,7 +110,18 @@ function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
 		ax.title = maketitle(p, title)
 
 		return fig
-	else
-		return L"Zeitweise außer Betrieb"
-	end
+	# else
+	# 	return L"Zeitweise außer Betrieb"
+	# end
+end
+
+function maketitle(p, title)
+	min, max = string.(round.(valuerange(p), digits = 2))
+	return title * " | min: " * min * " | max: " * max
+end
+
+function valuerange(p)
+	values = p.plots[1].kw[:color]
+	min, max = extrema(values)
+	return min, max
 end
