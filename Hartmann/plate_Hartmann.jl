@@ -1,6 +1,6 @@
-include("fem.jl")
+include("fem_Hartmann.jl")
 
-function plate(p, nx, ny = nx)
+function plateHart(p, nx, ny = nx)
     m = makemeshonrectangle(p.lx, p.ly, nx, ny)
 
     nf = 3

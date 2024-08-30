@@ -61,7 +61,18 @@ function plotsol(params,n)
     m, wHat = plate(params, n);
     plotw(
         m, wHat, 
-        w=250, h=200,
+        w=500, h=500,
+        zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
+        edgesvisible=true, edgelinewidth=0.1,
+        limits=(nothing,nothing,(0,1.15))
+    )
+end
+
+function plotsolHart(params,n)
+    m, wHat = plateHart(params, n);
+    plotw(
+        m, wHat, 
+        w=500, h=500,
         zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
         edgesvisible=true, edgelinewidth=0.1,
         limits=(nothing,nothing,(0,1.15))
