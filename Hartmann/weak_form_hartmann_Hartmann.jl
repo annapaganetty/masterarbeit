@@ -30,10 +30,10 @@ D = (E*h^3) / (12*(1 - ν^2))
 κxy(u) = (∂x(∂y(u)))
 
 Be1(u) = [κxx(u), κyy(u), 2 * κxy(u)]
-Be2(u) = [D * (κxx(u) + ν * κyy(u)), D * (ν * κxx(u) + κyy(u)), D * (((1- ν)/2) * κxy(u))]
+Be2(u) = [κxx(u), κyy(u), κxy(u)]
 
 ae(u,v) = integrate(Be1(u) ⋅ Be2(v), (0 .. a) , (0 .. b))
-Ke =  simplifyx.([ae(n1, n2) for n1 ∈ H4, n2 ∈ H4])
+Ke =  simplifyx.(D * [ae(n1, n2) for n1 ∈ H4, n2 ∈ H4])
 # display(Ke)
 
 # output stiffness matrix
