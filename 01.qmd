@@ -15,13 +15,12 @@ format:
     columns: 1
 ---
 
-```{=typst}
-= Näherungslösungen mit Finiten Elementen
-== Implementierung des nichtkonformen Ansatzes bei JULIA
+# Näherungslösungen mit Finiten Elementen
+## Implementierung des nichtkonformen Ansatzes bei JULIA
 
 Wiederholung: #emph("nichtkonformer Ansatz")
-== Shape functions der unkonformen Lösung
-```
+## Shape functions der unkonformen Lösung
+
 ```{julia}
 include("setup.jl")
 GLMakie.activate!()

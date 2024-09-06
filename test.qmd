@@ -1,0 +1,24 @@
+---
+title: Finite Elemente für Plattentragwerke
+author: "Anna Paganetty"
+date: "10. Juli 2024"
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+    toc: false
+    toc-depth: 3
+    toc-title: "Inhaltsverzeichnis"
+    section-numbering: 1.1.a
+    columns: 1
+---
+
+# Näherungslösungen mit Finiten Elementen
+## Implementierung des nichtkonformen Ansatzes bei JULIA
+
+Wiederholung: #emph("nichtkonformer Ansatz")
+## Shape functions der unkonformen Lösung
+
+
