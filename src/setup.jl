@@ -44,10 +44,11 @@ end
 
 include("plate.jl")
 include("fem.jl")
-include("plot.jl")
-include("hermite4.jl")
+include("plots/plot.jl")
+include("mathematics/hermite4.jl")
 include("internal-forces.jl")
-include("element_stiffness_matrix.jl")
+include("stiffness_matrix/element_stiffness_matrix.jl")
+include("mesh/quadMesh.jl")
 
 p = @var Params()
 p.lx = 8

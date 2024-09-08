@@ -1,0 +1,21 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+# Rechteckige Platte mit quadratischen Elementen
+```{julia}
+m1 = quadMesh(p, 3)
+f1 = mkfig(a3d=false,w=300, h=300)
+mplot!(m1, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureedgelinewidth=0.5, nodesize=5)
+f1
+```
+
+# Rechteckige Platte mit rechteckigen Elementen
+```{julia}
+m2 = rectMesh(p, 3,6)
+f2 = mkfig(a3d=false,w=300, h=300)
+mplot!(m2, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureedgelinewidth=0.5, nodesize=5)
+f2
+```
+
+# Rechteckige Platte mit viereckigen Elementen
