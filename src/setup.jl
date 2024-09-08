@@ -22,7 +22,7 @@ using Makie
 using Revise
 using Latexify
 using GLMakie
-
+using WGLMakie
 using VarStructs
 using SparseArrays
 using LinearAlgebra
@@ -48,7 +48,6 @@ include("plot.jl")
 include("hermite4.jl")
 include("internal-forces.jl")
 include("element_stiffness_matrix.jl")
-
 
 p = @var Params()
 p.lx = 8

@@ -1,4 +1,4 @@
-function plateKe(p)
+function plateKe(p,model)
     function keFunc(e)
 
         x1 = coordinates(e, 1)
@@ -7,9 +7,11 @@ function plateKe(p)
         x4 = coordinates(e, 4)
         a = x2[1] - x1[1]       # Länge in xi-Richtung
         b = x3[2] - x1[2]       # Länge in eta-Richtung
-
-        KeElement = KelementHartmann(p,a,b)
-
+        if model == "standard"
+            KeElement = Kelement(p,a,b)
+        elseif model == "hartmann"
+            KeElement = KelementHartmann(p,a,b)
+        end
         return KeElement
     end
     return keFunc

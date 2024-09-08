@@ -1,11 +1,11 @@
-include("fem_Hartmann.jl")
+include("fem.jl")
 
-function plateHart(p, nx, ny = nx)
+function plate(p, model::String, nx, ny = nx)
     m = makemeshonrectangle(p.lx, p.ly, nx, ny)
 
     nf = 3
     bcs = [true, true, true]
-    m.data[:kefunc] = plateKe(p)
+    m.data[:kefunc] = plateKe(p,model)
     m.data[:refunc] = plateRe(p.q)
 
     K,r = assembleKr(m, nf)

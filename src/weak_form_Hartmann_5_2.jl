@@ -55,9 +55,7 @@ for i = 1:12
                     end
                 end
             end
-        println()
-        println("             = ", Ke[i,j])
-        println()
+        println(" = ", Ke[i,j])
         end
     end
 end
