@@ -1,27 +1,30 @@
 ```{julia}
 include("../src/setup.jl")
 ```
-
 # Basisfunktionen für Elemente
 ## Hermite Polynome
+Elemente
 ```{julia}
+WGLMakie.activate!()
 fig = Figure(size=(600, 600))
 Axis(fig)
-feplot(fig[1, 1], makeelement(:hermite, QHat, conforming=true)) |> feconf()
-feplot(fig[1, 2], makeelement(:hermite, QHat, conforming=false)) |> feconf()
+feplot(fig[2, 1], makeelement(:hermite, QHat, conforming=true)) |> feconf()
+feplot(fig[2, 2], makeelement(:hermite, QHat, conforming=false)) |> feconf()
 fig
 ```
-
+Hermite Polynome in 1D
+```{julia}
+H1d = hermiteelement("1D",conforming=false)
+fplot(H1d)
+```
+konformes Rechteckelement mit 16 Freiheitsgraden
+```{julia}
+H2dconform = hermiteelement("2D",conforming=true)
+fplot3d(H2dconform)
+```
 nichtkonformes Rechteckelement mit 12 Freiheitsgraden 
 = unvollständiges Polynom dritten Grades
 ```{julia}
-WGLMakie.activate!()
-display(H4)
-fplot3d(H4)
-```
-
-```{julia}
-include("../src/setup.jl")
-H = hermiteelement("1D",conforming=false)
-fplot(H)
+H2dnonconform = hermiteelement("2D",conforming=false)
+fplot3d(H2dnonconform)
 ```

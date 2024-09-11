@@ -5,6 +5,7 @@ function hermiteelement(K::String; conforming=true)
         M = [n(p) for p in P, n in N]
         H4 = inv(M) * P
     elseif K == "2D"
+        V = [-1 1 1 -1; -1 -1 1 1]
         if conforming
             a = 16
             P = mmonomials(2, 3, QHat  ,type = Int)
