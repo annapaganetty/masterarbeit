@@ -50,10 +50,18 @@ include("internal-forces.jl")
 include("stiffness_matrix/element_stiffness_matrix.jl")
 include("mesh/quadMesh.jl")
 
-p = @var Params()
-p.lx = 8
-p.ly = 8
-p.q = 5e3
-p.ν = 0.0
-p.h = 0.2
-p.E = 31000e6;
+p1 = @var Params()
+p1.lx = 8
+p1.ly = 8
+p1.q = 5e3
+p1.ν = 0.0
+p1.h = 0.2
+p1.E = 31000e6;#
+
+p2 = @var Params()
+p2.lx = 8
+p2.ly = 8
+p2.q = 5e3
+p2.ν = 0.2
+p2.h = 0.2
+p2.E = 31000e6;

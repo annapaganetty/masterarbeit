@@ -1,0 +1,96 @@
+
+```{julia}
+#| echo: false
+#| output: false
+include("../src/setup.jl");
+```
+
+## Elementsteifigkeitsmatrix nach dem Standardweg hergleitet
+
+### Herleitung
+
+$$ K_e = \int B^T D_b B d \Omega $$
+$K_e = \int \begin{bmatrix} \kappa_{xx} & \kappa_{yy} & 2\kappa_{xy} \end{bmatrix} \begin{bmatrix} K & K\nu & 0 \\ K\nu & K & 0 \\ 0 & 0 & \frac{K(1-\nu)}{2} \end{bmatrix} \begin{bmatrix} \kappa_{xx} \\ \kappa_{yy} \\ 2\kappa_{xy} \end{bmatrix}d \Omega$ \
+\
+$K_e = \int \begin{bmatrix} \kappa_{xx} & \kappa_{yy} & 2\kappa_{xy} \end{bmatrix} \begin{bmatrix} K\kappa_{xx} + K\nu\kappa_{yy} \\ K\nu\kappa_{xx}+ K\kappa_{yy} \\ K(1-\nu)\kappa_{xy} \end{bmatrix}d \Omega$ \
+\
+$K_e = \int \kappa_{xx}\cdot (K\kappa_{xx} + K\nu\kappa_{yy}) + \kappa_{yy}\cdot(K\nu\kappa_{xx}+ K\kappa_{yy}) + 2\kappa_{xy}\cdot K((1-\nu)\kappa_{xy}) d \Omega$ \
+\
+$K_e = \int K \cdot[\kappa_{xx}^2 + 2\cdot\kappa_{xx}\cdot\nu\cdot\kappa_{yy}+\kappa_{yy}^2+ 2\kappa_{xy}^2\cdot (1-\nu)] d \Omega$\
+\
+bei $\nu = 0.0$ ergibt sich \
+\
+$K_e = \int K \cdot[\kappa_{xx}^2 +\kappa_{yy}^2+ 2\kappa_{xy}^2] d \Omega$\
+\
+welches der bilinear Form entspricht. \ 
+mit\
+$B = \begin{bmatrix} \frac{\partial^2 w}{\partial x^2} \\ \frac{\partial^2 w}{\partial y^2}\\ 2 \frac{\partial^2 w}{\partial xy} \end{bmatrix}$ und \hspace{20mm}
+$D = \frac{Eh^3}{12(1+\nu^2)}\begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}$
+
+Programmcode zur Berechnung Elementsteifigkeitsmatrix nach dem oben genannten Ansatz
+```{julia}
+#| echo: false
+open("../src/stiffness_matrix/weak_form_standard.jl") do f
+  line = 0  
+  while line < 33       
+     s = readline(f)          
+     line += 1
+     printstyled("$line  $s",bold =  true)
+     println()
+  end
+end
+```
+### Ergebnis
+
+```{julia}
+Ke1 = Kelement(p1,1,1)
+Ke2 = Kelement(p2,1,1)
+display(Ke1)
+```
+
+## Elementsteifigkeitsmatrix nach der Formel von Hartmann (Gl. 5.2) hergeleitet
+### Herleitung
+$$ a(w, \delta w) = \int_{\Omega} K (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) d \Omega $$
+$$ a(w, \delta w) = \int_{\Omega} K ( \frac{\partial^2 w}{\partial x^2} \frac{\partial^2\delta w}{\partial x^2}+2\frac{\partial^2 w}{\partial xy} \frac{\partial^2\delta w}{\partial xy}+\frac{\partial^2 w}{\partial y^2} \frac{\partial^2\delta w}{\partial y^2})d \Omega $$
+
+Programmcode zur Berechnung Elementsteifigkeitsmatrix nach dem oben genannten Ansatz
+```{julia}
+#| echo: false
+open("../src/stiffness_matrix/weak_form_hartmann_5_2 copy.jl") do f
+  line = 0  
+  while line < 36       
+     s = readline(f)          
+     line += 1
+     printstyled("$line  $s",italic = true)
+     println()
+  end
+end
+```
+### Ergebnis
+```{julia}
+KeHart1 = KelementHartmann(p1,1,1)
+KeHart2 = KelementHartmann(p2,1,1)
+display(KeHart1)
+```
+
+
+### Vergleich Standard und 5.2
+
+Eingangswerte:\
+p1.ν = 0.0 \
+p1.h = 0.2 \
+p1.E = 31000e6 \
+
+```{julia}
+
+if Ke1 == KeHart1
+    println("die Elementsteifigkeitsmatrizen sind gleich bei ν = ", 0.0)
+else 
+    println("die Elementsteifigkeitsmatrizen sind NICHT gleich bei ν = ", 0.0)
+end
+if Ke2 == KeHart2
+    println("die Elementsteifigkeitsmatrizen sind gleich bei ν = ", 0.2)
+else 
+    println("die Elementsteifigkeitsmatrizen sind NICHT gleich bei ν = ", 0.2)
+end
+```
