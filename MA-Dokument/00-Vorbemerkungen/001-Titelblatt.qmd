@@ -1,0 +1,39 @@
+{{< include 00-definitionen.qmd >}}
+---
+format:
+  typst:
+    toc: false
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+---
+```{=typst}
+#place(top + center,
+  dx: 30%,
+  figure(
+    image("00-pics/BO-Logo_m_Wortmarke_L10cmPrint.jpg",width: 40%),
+    placement: top,
+    kind: "Abbildung",supplement: [Abbildung]
+))
+#align(center+horizon, text(25pt)[
+  Finite Elemente für Plattentragwerke:\
+  Theoretische Grundlagen und Programmierung in Julia
+])\
+#align(center, text(12pt)[
+  Masterthesis im Studiengang Bauingenieurwesen
+])\
+#align(center)[
+    Anna Paganetty \
+    \
+    Matr.-Nr.: 18367876 \
+  ]
+
+#place(
+  dx: 30%,
+  dy: 25%,
+  align(center+bottom)[
+  *1.Prüfer*: Prof. Dr.-Ing. Matthias Baitsch\
+  *2.Prüfer*:
+  ])
+```

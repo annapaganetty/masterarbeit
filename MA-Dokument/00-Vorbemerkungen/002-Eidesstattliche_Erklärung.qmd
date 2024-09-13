@@ -1,0 +1,22 @@
+{{< include 00-definitionen.qmd >}}
+---
+format:
+  typst:
+    toc: false
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+---
+```{=typst}
+#set page(numbering: "i")
+#counter(page).update(1)
+#heading(outlined: false,[Eidesstattliche Erklärung])
+\ \
+Hiermit versichere ich, die vorliegende Arbeit selbstständig verfasst und keine anderen als die von mir angegebenen Quellen und Hilfsmittel benutzt zu haben. Alle Stellen, die wörtlich oder sinngemäß aus veröffentlichen Quellen stammen, habe ich gekennzeichnet. Die Arbeit hat noch bei keiner anderen Prüfung in gleicher oder ähnlicher Form vorgelegen.\
+\ \ \
+Bochum, den xx. März 2025\
+\ \ \
+Anna Paganetty
+
+```
