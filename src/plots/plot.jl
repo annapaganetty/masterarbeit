@@ -57,8 +57,8 @@ function plotw(
     fig
 end
 
-function plotsol(params,n,model)
-    m, wHat = plate(params, n,model);
+function plotsol(params,model,n)
+    m, wHat = plate(params, model,n);
     plotw(
         m, wHat, 
         w=500, h=500,

@@ -1,0 +1,26 @@
+# Festlegungen für die Programmierung der Masterarbeit
+
+- rechteckige Platten mit...
+    ... quadratischen Elementen
+    ... rechteckigen Elementen
+    ... allgemein Viereckigen Elementen
+
+
+## quadratische Elemente
+
+    - BFS (Bogner-Fox-Schmit) - Elemente
+        = hermite, conforming = true
+        = 4 Knoten & 4 DOFs pro Knoten      = 16 Freiheitsgrade
+    - name?
+        = hermite, conforming = false
+        = 4 Knoten & 3 DOFs pro Knoten      = 12 Freiheitsgrade
+
+## rechteckige Elemente
+
+    -> wie quadratische Elemente
+
+## allgemeine Viereckige Elemente
+
+    - DKQ - Elemente (Batoz und Tahar)
+        = hermite(?)
+        = 8 Knoten & 3 DOFs pro Eckknoten und & ... DOFs pro Mittelknoten

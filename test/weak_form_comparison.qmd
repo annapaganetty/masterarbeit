@@ -17,6 +17,7 @@ $K_e = \int \begin{bmatrix} \kappa_{xx} & \kappa_{yy} & 2\kappa_{xy} \end{bmatri
 $K_e = \int \kappa_{xx}\cdot (K\kappa_{xx} + K\nu\kappa_{yy}) + \kappa_{yy}\cdot(K\nu\kappa_{xx}+ K\kappa_{yy}) + 2\kappa_{xy}\cdot K((1-\nu)\kappa_{xy}) d \Omega$ \
 \
 $K_e = \int K \cdot[\kappa_{xx}^2 + 2\cdot\kappa_{xx}\cdot\nu\cdot\kappa_{yy}+\kappa_{yy}^2+ 2\kappa_{xy}^2\cdot (1-\nu)] d \Omega$\
+-> entspricht der Formel (8) aus Bogner-Fox-Schmit
 \
 bei $\nu = 0.0$ ergibt sich \
 \
@@ -56,7 +57,7 @@ $$ a(w, \delta w) = \int_{\Omega} K ( \frac{\partial^2 w}{\partial x^2} \frac{\p
 Programmcode zur Berechnung Elementsteifigkeitsmatrix nach dem oben genannten Ansatz
 ```{julia}
 #| echo: false
-open("../src/stiffness_matrix/weak_form_hartmann_5_2 copy.jl") do f
+open("../src/stiffness_matrix/weak_form_hartmann_5_2.jl") do f
   line = 0  
   while line < 36       
      s = readline(f)          
@@ -93,4 +94,19 @@ if Ke2 == KeHart2
 else 
     println("die Elementsteifigkeitsmatrizen sind NICHT gleich bei ν = ", 0.2)
 end
+```
+
+## Platte Standard
+```{julia}
+H4 = hermiteelement("2D",conforming=false)
+plotsol(p1,"standard",5)
+```
+```{julia}
+plotsol(p2,"standard",5)
+```
+```{julia}
+plotsol(p1,"hartmann",5)
+```
+```{julia}
+plotsol(p2,"hartmann",5)
 ```

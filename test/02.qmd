@@ -1,5 +1,5 @@
 ```{julia}
-include("setup.jl")
+include("../src/setup.jl");
 ```
 
 ```{julia}
@@ -28,7 +28,7 @@ mplot!(mHart, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureed
 f3
 ```
 ```{julia}
-plotsol(p,3)
+plotsol(p1,3)
 ```
 
 ```{julia}

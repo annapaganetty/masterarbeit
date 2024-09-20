@@ -1,30 +1,43 @@
 ```{julia}
+#| echo: false
+#| output: false
 include("../src/setup.jl")
+@variables  a,b, h, ν,E ;
 ```
 # Basisfunktionen für Elemente
 ## Hermite Polynome
 Elemente
 ```{julia}
+#| echo: false
 WGLMakie.activate!()
-fig = Figure(size=(600, 600))
+fig = Figure(size=(500, 500))
 Axis(fig)
-feplot(fig[2, 1], makeelement(:hermite, QHat, conforming=true)) |> feconf()
-feplot(fig[2, 2], makeelement(:hermite, QHat, conforming=false)) |> feconf()
+feplot(fig[1, 1], makeelement(:hermite, QHat, conforming=true)) |> feconf()
+feplot(fig[2, 1], makeelement(:hermite, QHat, conforming=false)) |> feconf()
+feplot(fig[3, 1], makeelement(:serendipity, QHat, k=2)) |> feconf()
 fig
-```
-Hermite Polynome in 1D
-```{julia}
-H1d = hermiteelement("1D",conforming=false)
-fplot(H1d)
 ```
 konformes Rechteckelement mit 16 Freiheitsgraden
 ```{julia}
-H2dconform = hermiteelement("2D",conforming=true)
+#| echo: false
+K1 = [ -1 1 1 -1; -1 -1 1 1]
+H2dconform = hermiteelement(K1,conforming=true)
 fplot3d(H2dconform)
 ```
 nichtkonformes Rechteckelement mit 12 Freiheitsgraden 
 = unvollständiges Polynom dritten Grades
 ```{julia}
-H2dnonconform = hermiteelement("2D",conforming=false)
+#| echo: false
+K2 = [ -1 1 1 -1; -1 -1 1 1]
+H2dnonconform = hermiteelement(K2,conforming=false)
 fplot3d(H2dnonconform)
+```
+
+```{julia}
+#| echo: false
+K3 = [ 0 a a 0; 0 0 b b]
+H4 = hermiteelement(K3,conforming = false)
+D = (E*h^3) / (12*(1-ν^2))
+Ke = weakform(H4,"standard")
+printKe(Ke,D)
 ```
