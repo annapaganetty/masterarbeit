@@ -1,3 +1,50 @@
+function mkfig2d(
+    ;title=""
+)
+    fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
+    ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="arial",xlabelfont = "arial",ylabelfont ="arial")
+    hidedecorations!(ax)
+    hidespines!(ax)
+    return fig
+end
+
+function mkfig3d(
+    ;title =""
+)
+    fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
+    ax = Axis3(
+        fig[1, 1],
+        aspect=:data,
+        title=title,
+        viewmode=:stretch,
+        perspectiveness=0.2,
+        limits=(nothing, nothing, nothing),
+        protrusions=0,
+        titlefont = "arial",
+        xlabelfont = "arial",
+        ylabelfont = "arial",
+        zlabelfont = "arial")
+    return fig
+end
+
+function plotmesh(m;title)
+    fig = mkfig2d(title = title)
+    mplot!(
+    m,
+    faceplotzscale= 0.5,
+    faceplotmesh=5,
+    edgesvisible=true, 
+    edgelinewidth=0.2,
+    nodesvisible=true,
+    featureedgelinewidth=0.2,
+    color=5,
+    colorrange=Makie.automatic,
+    colormap=Makie.theme(:colormap)
+    )
+    fig
+end
+
+
 function mkfig(
     ; a3d=true, w=250, h=200, title="",
     limits=(nothing, nothing, nothing)
@@ -14,6 +61,7 @@ function mkfig(
             limits=limits,
             protrusions=0
         )
+        
     else
         CairoMakie.activate!()
         ax = Axis(fig[1, 1], aspect=DataAspect(), title=title)
@@ -34,9 +82,10 @@ end
 
 function plotw(
     m, wHat;
-    zs=0.2,
+    zs=1.5,
     a3d=true, w=250, h=200, title="",
-    edgesvisible=false, nodesvisible=false, edgelinewidth=0.02,
+    edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
+    featureedgelinewidth = 0.5,
     mesh=5,
     colorrange=Makie.automatic,
     colormap=Makie.theme(:colormap),
@@ -47,10 +96,11 @@ function plotw(
         m, makewe(wHat),
         faceplotzscale=zs / maximum(wHat),
         faceplotmesh=mesh,
-        edgesvisible=edgesvisible, edgelinewidth=edgelinewidth,
+        edgesvisible=edgesvisible, 
+        edgelinewidth=edgelinewidth,
         nodesvisible=nodesvisible,
-        featureedgelinewidth=2,
-        color=3,
+        featureedgelinewidth=featureedgelinewidth,
+        color=5,
         colorrange=colorrange,
         colormap=colormap
     )

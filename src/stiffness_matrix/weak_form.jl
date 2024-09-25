@@ -1,4 +1,3 @@
-include("../setup.jl")
 @variables  a,b, h, ν,E ;
 
 function weakform(H4,model::String)

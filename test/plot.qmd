@@ -1,0 +1,75 @@
+{{< include ../MA-Dokument/00-Vorbemerkungen/00-definitionen.qmd >}}
+---
+lang: de
+format:
+  typst:
+    toc: false
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+    fig-format: svg
+---
+
+```{julia}
+include("../src/setup.jl")
+
+m1 = makequadratcicMesh(p1, 10)
+plotmesh(m1,title="quadratisches Mesh")
+```
+<!-- ```{julia}
+include("../src/setup.jl")
+fig2 = mkfig3d(title="Test T2")
+fig2
+```
+```{julia}
+
+function makewe(wHat)
+    return face -> begin
+        idxs = idxDOFs(nodeindices(face), 3)
+        _, a, b = _fsize(face)
+        t = repeat([1,a / 2, b / 2], 4)
+        return sum(wHat[idxs] .* t .* H4) # TODO make dot work
+    end
+end
+
+
+function plotsol(params,model,n)
+    m, wHat = plate(params, model,n);
+    plotw(
+        m, wHat, 
+        w=500, h=500,
+        zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
+        edgesvisible=true, edgelinewidth=0.1,
+        limits=(nothing,nothing,(0,1.15))
+    )
+end
+
+
+function plotw(
+    m, wHat;
+    zs=1.5,
+    a3d=true, w=250, h=200, title="",
+    edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
+    featureedgelinewidth = 0.5,
+    mesh=5,
+    colorrange=Makie.automatic,
+    colormap=Makie.theme(:colormap),
+    limits=(nothing, nothing, nothing)
+)
+    fig = mkfig(a3d=a3d, w=w, h=h, title=title, limits=limits)
+    mplot!(
+        m, makewe(wHat),
+        faceplotzscale=zs / maximum(wHat),
+        faceplotmesh=mesh,
+        edgesvisible=edgesvisible, 
+        edgelinewidth=edgelinewidth,
+        nodesvisible=nodesvisible,
+        featureedgelinewidth=featureedgelinewidth,
+        color=5,
+        colorrange=colorrange,
+        colormap=colormap
+    )
+    fig
+end
+``` -->

@@ -1,0 +1,21 @@
+```{julia}
+#| echo: false
+#| output: false
+include("../src/setup.jl")
+@variables  a,b, h, ν,E ;
+```
+
+# Beispiele
+## allseitig gelenkig gelagerte Platte
+
+Als erstes Beispiel dient eine quadratische Platte, welche an allen vier Rändern gelenkig gelagert ist. 
+Belastet wird die Struktur mit einer Einzellast ist Plattenmitte. 
+
+Daten zum Beispiel "allseitig gelenkig gelagerte Platte"
+
+```{julia}
+m1 = makequadratcicMesh(p1, 10)
+f1 = mkfig(a3d=false,w=300, h=300)
+mplot!(m1, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureedgelinewidth=0.5, nodesize=5)
+f1
+```

@@ -28,10 +28,10 @@ using SparseArrays
 using LinearAlgebra
 using Symbolics
 
-GLMakie.activate!()
+# GLMakie.activate!()
 set_theme!(theme_minimal())
 update_theme!(faceplotmesh=5)
-update_theme!(edgelinewidth=2.5)
+update_theme!(edgelinewidth=1.0)
 update_theme!(colormap=:aquamarine)
 
 function _fsize(face)

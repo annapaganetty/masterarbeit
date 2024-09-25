@@ -1,5 +1,4 @@
 function hermiteelement(V;conforming=true)
-        # V = [ 0 a a 0; 0 0 b b]
         if conforming
             m = 16
             P = mmonomials(2, 3, QHat  ,type = Int)

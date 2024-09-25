@@ -12,5 +12,5 @@ function plate(m, p, model::String, nx, ny = nx)
     w = K \ r
 
 	m.data[:post] = postprocessor(p, w)
-    return m, w
+    return w
 end
