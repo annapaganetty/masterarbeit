@@ -1,6 +1,6 @@
 import GLMakie
 import CairoMakie
-import CairoMakie: Figure, Axis3, scatter!, lines
+import CairoMakie: Figure,Axis, Axis3, scatter!, lines
 
 # import Pkg
 # Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
@@ -10,7 +10,6 @@ using CairoMakie
 using MMJMesh
 using MMJMesh.Plots
 using MMJMesh.Meshes
-import MMJMesh.Meshes: entities
 using MMJMesh.MMJBase
 using MMJMesh.Utilities
 using MMJMesh.Topologies
@@ -30,8 +29,8 @@ using Symbolics
 
 # GLMakie.activate!()
 set_theme!(theme_minimal())
-update_theme!(faceplotmesh=5)
-update_theme!(edgelinewidth=1.0)
+update_theme!(faceplotmesh=0.5)
+update_theme!(edgelinewidth=0.5)
 update_theme!(colormap=:aquamarine)
 
 function _fsize(face)
@@ -58,7 +57,7 @@ p1.ly = 8
 p1.q = 5e3
 p1.ν = 0.0
 p1.h = 0.2
-p1.E = 31000e6;#
+p1.E = 31000e6;
 
 p2 = @var Params()
 p2.lx = 8

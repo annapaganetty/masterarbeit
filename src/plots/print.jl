@@ -58,3 +58,28 @@ function printKe(Ke,factor)
         end
     end
 end
+
+function pKe(Ke)
+    l = size(Ke,1)
+    KeNew = zeros(l,l)
+    for i = 1:l
+        for j = 1:l
+            if KeNew[i,j] == 1
+            else 
+                KeNew[i,j] = 1 
+                print("Ke[",i,",",j,"]")
+                for m = 1:l
+                    for n = 1:l
+                        if m==i && j==n 
+                        elseif isequal(expand(Ke[i,j]),expand(Ke[m,n])) == true 
+                        KeNew[m,n] = 1.0
+                        print(" = ", "Ke[",m,",",n,"]")
+                        else
+                        end
+                    end
+                end
+            println(" = ", Ke[i,j])
+            end
+        end
+    end
+end

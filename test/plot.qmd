@@ -1,6 +1,5 @@
 {{< include ../MA-Dokument/00-Vorbemerkungen/00-definitionen.qmd >}}
 ---
-lang: de
 format:
   typst:
     toc: false
@@ -8,14 +7,17 @@ format:
     margin:
       x: 2cm
       y: 2cm
-    fig-format: svg
 ---
 
 ```{julia}
 include("../src/setup.jl")
-
-m1 = makequadratcicMesh(p1, 10)
-plotmesh(m1,title="quadratisches Mesh")
+fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
+ax = Axis(fig[1, 1],aspect=DataAspect(),  title="Test", titlefont="arial",xlabelfont = "arial",ylabelfont ="arial")
+# mkfig2d(;title = "Test")
+m1 = makequadratcicMesh(p1, 5)
+mplot!(m1)
+fig
+# plotmesh(m1;title="quadratisches Mesh")
 ```
 <!-- ```{julia}
 include("../src/setup.jl")

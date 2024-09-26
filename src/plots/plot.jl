@@ -9,8 +9,7 @@ function mkfig2d(
 end
 
 function mkfig3d(
-    ;title =""
-)
+    ;title ="")
     fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
     ax = Axis3(
         fig[1, 1],
@@ -28,10 +27,10 @@ function mkfig3d(
 end
 
 function plotmesh(m;title)
-    fig = mkfig2d(title = title)
+    fig = mkfig2d(;title = title)
     mplot!(
     m,
-    faceplotzscale= 0.5,
+    faceplotzscale= 0.05,
     faceplotmesh=5,
     edgesvisible=true, 
     edgelinewidth=0.2,
@@ -41,42 +40,27 @@ function plotmesh(m;title)
     colorrange=Makie.automatic,
     colormap=Makie.theme(:colormap)
     )
-    fig
-end
-
-
-function mkfig(
-    ; a3d=true, w=250, h=200, title="",
-    limits=(nothing, nothing, nothing)
-)
-    fig = Figure(size=(w, h),fontsize = 1.0, linewidth = 0.2)
-    if a3d
-        GLMakie.activate!()
-        ax = Axis3(
-            fig[1, 1],
-            aspect=:data,
-            title=title,
-            viewmode=:stretch,
-            perspectiveness=0.2,
-            limits=limits,
-            protrusions=0
-        )
-        
-    else
-        CairoMakie.activate!()
-        ax = Axis(fig[1, 1], aspect=DataAspect(), title=title)
-    end
-    hidedecorations!(ax)
-    hidespines!(ax)
     return fig
 end
 
-function makewe(wHat)
-    return face -> begin
-        idxs = idxDOFs(nodeindices(face), 3)
-        _, a, b = _fsize(face)
-        t = repeat([1,a / 2, b / 2], 4)
-        return sum(wHat[idxs] .* t .* H4) # TODO make dot work
+function makewe(wHat;conforming=true)
+    V = [-1 1 1 -1; -1 -1 1 1]
+    if conforming ==true
+        H4 = hermiteelement(V;conforming=true)
+        return face -> begin                        # face = element
+            idxs = idxDOFs(nodeindices(face), 4)    # Freiheitsgrade der Knoten des Elements
+            _, a, b = _fsize(face)                  # legt a und b fest = Länge der Seiten eines Elements
+            t = repeat([1, a / 2, b / 2, a * b / 4], 4)
+            return sum(wHat[idxs] .* t .* H4) # TODO make dot work
+        end
+    else
+        H4 = hermiteelement(V;conforming=false)
+        return face -> begin                        # face = element
+            idxs = idxDOFs(nodeindices(face), 3)    # Freiheitsgrade der Knoten des Elements
+            _, a, b = _fsize(face)                  # legt a und b fest = Länge der Seiten eines Elements
+            t = repeat([1,a / 2, b / 2], 4)
+            return sum(wHat[idxs] .* t .* H4) # TODO make dot work
+        end
     end
 end
 
@@ -92,7 +76,7 @@ function plotw(
     limits=(nothing, nothing, nothing)
 )
     fig = mkfig(a3d=a3d, w=w, h=h, title=title, limits=limits)
-    mplot!(
+    MMJMesh.Plots.mplot!(
         m, makewe(wHat),
         faceplotzscale=zs / maximum(wHat),
         faceplotmesh=mesh,

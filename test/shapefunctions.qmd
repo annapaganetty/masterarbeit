@@ -39,5 +39,5 @@ K3 = [ 0 a a 0; 0 0 b b]
 H4 = hermiteelement(K3,conforming = false)
 D = (E*h^3) / (12*(1-ν^2))
 Ke = weakform(H4,"standard")
-printKe(Ke,D)
+# printKe(Ke,D)
 ```
