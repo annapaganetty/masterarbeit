@@ -1,4 +1,4 @@
-function phnKe(p,a,b)
+function phnKe(p)
     function keFunc(e)
         a,b = ab(e)
         E = p.E
@@ -29,8 +29,28 @@ function phnKe(p,a,b)
         Ke[3,9] = Ke[6,12] = Ke[9,3] = Ke[12,6] = (5(a^2) + b^2) / (15a*b)
         Ke[3,10] = Ke[6,7] = Ke[7,6] = Ke[7,9] = Ke[9,7] = Ke[10,3] = Ke[10,12] = Ke[12,10] = (-10(a^2) - (b^2)) / (5a*(b^2))
         Ke[3,12] = Ke[6,9] = Ke[9,6] = Ke[12,3] = (10(a^2) - (b^2)) / (15a*b)
-
         return D * Ke
     end
     return keFunc
+end
+
+function phnRe(q)
+    function reFunc(e)
+        a,b = ab(e)
+        re = zeros(12)
+        re[1]=(1//4)*a*b
+        re[2]=(1//24)*(a^2)*b
+        re[3]=(1//24)*a*(b^2)
+        re[4]=(1//4)*a*b
+        re[5]=(-1//24)*(a^2)*b
+        re[6]=(1//24)*a*(b^2)
+        re[7]=(1//4)*a*b
+        re[8]=(-1//24)*(a^2)*b
+        re[9]=(-1//24)*a*(b^2)
+        re[10]=(1//4)*a*b
+        re[11]=(1//24)*(a^2)*b
+        re[12]=(-1//24)*a*(b^2)
+        return re*q
+    end
+    return reFunc
 end

@@ -1,4 +1,4 @@
-function phcKe(p,a,b)
+function phcKe(p)
     function keFunc(e)
         a,b = ab(e)
         E = p.E
@@ -67,8 +67,35 @@ function phcKe(p,a,b)
         Ke[10,12] = Ke[12,10] = Ke[14,16] = Ke[16,14] = (-30(a^4) - 14(a^2)*(b^2) - 110(b^4)) / (525a*(b^2))
         Ke[10,16] = Ke[12,14] = Ke[14,12] = Ke[16,10] = (45(a^4) + 7(a^2)*(b^2) - 110(b^4)) / (1050a*(b^2))
         Ke[12,16] = Ke[16,12] = (-15(a^4) - 4(a^2)*(b^2) + 10(b^4)) / (525a*b)
-        
         return D*Ke
     end
     return keFunc
+end
+
+function phcRe(q)
+    function reFunc(e)
+        a,b = ab(e)
+        
+        re = zeros(16)
+
+        re[1]=(1//4)*a*b
+        re[2]=(1//24)*(a^2)*b
+        re[3]=(1//24)*a*(b^2)
+        re[4]=(1//144)*(a^2)*(b^2)
+        re[5]=(1//4)*a*b
+        re[6]=(-1//24)*(a^2)*b
+        re[7]=(1//24)*a*(b^2)
+        re[8]=(-1//144)*(a^2)*(b^2)
+        re[9]=(1//4)*a*b
+        re[10]=(-1//24)*(a^2)*b
+        re[11]=(-1//24)*a*(b^2)
+        re[12]=(1//144)*(a^2)*(b^2)
+        re[13]=(1//4)*a*b
+        re[14]=(1//24)*(a^2)*b
+        re[15]=(-1//24)*a*(b^2)
+        re[16]=(-1//144)*(a^2)*(b^2)
+
+        return re*q
+    end
+    return reFunc
 end

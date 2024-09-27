@@ -15,23 +15,23 @@ function plate(m, p, model::String)
     if model == "kirchhoff_conforming"
         nf = 4
         bcs = [true, true, true, false]
-        m.data[:kefunc] = plateKe(p,model)
-        m.data[:refunc] = plateRe(p.q)
+        m.data[:kefunc] = pkcKe(p)
+        m.data[:refunc] = pkcRe(p.q)
     elseif model == "kirchhoff_nonconforming"
         nf = 3
         bcs = [true, true, true]
-        m.data[:kefunc] = plateKe(p,model)
-        m.data[:refunc] = plateRe(p.q)
-    elseif model == "hartmann_conforming"
+        m.data[:kefunc] = pknKe(p)
+        m.data[:refunc] = pknRe(p.q)
+    elseif model == "hartmann5.2_conforming"
         nf = 4
         bcs = [true, true, true, false]
-        m.data[:kefunc] = plateKe(p,model)
-        m.data[:refunc] = plateRe(p.q)
-    elseif model == "hartmann_nonconforming"
+        m.data[:kefunc] = phcKe(p)
+        m.data[:refunc] = phcRe(p.q)
+    elseif model == "hartmann5.2_nonconforming"
         nf = 3
         bcs = [true, true, true]
-        m.data[:kefunc] = plateKe(p,model)
-        m.data[:refunc] = plateRe(p.q)
+        m.data[:kefunc] = phnKe(p)
+        m.data[:refunc] = phnRe(p.q)
     end
 
     K,r = assembleKr(m, nf)

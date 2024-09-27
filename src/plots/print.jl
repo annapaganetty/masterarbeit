@@ -83,3 +83,10 @@ function pKe(Ke)
         end
     end
 end
+
+function pre(re)
+    l = size(re,1)
+    for i = 1:l
+        println("re[",i,"]=",re[i] )
+    end
+end

@@ -43,3 +43,24 @@ function pknKe(p)
     end
     return keFunc
 end
+
+function pknRe(q)
+    function reFunc(e)
+        a,b = ab(e)
+        re = zeros(12)
+        re[1]=(1//4)*a*b
+        re[2]=(1//24)*(a^2)*b
+        re[3]=(1//24)*a*(b^2)
+        re[4]=(1//4)*a*b
+        re[5]=(-1//24)*(a^2)*b
+        re[6]=(1//24)*a*(b^2)
+        re[7]=(1//4)*a*b
+        re[8]=(-1//24)*(a^2)*b
+        re[9]=(-1//24)*a*(b^2)
+        re[10]=(1//4)*a*b
+        re[11]=(1//24)*(a^2)*b
+        re[12]=(-1//24)*a*(b^2)
+        return re*q
+    end
+    return reFunc
+end

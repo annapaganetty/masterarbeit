@@ -40,12 +40,17 @@ display(H4n)        # 12 Funktionen
 ```{julia}
 #| echo: false
 include("../src/setup.jl")
-include("../src/stiffness_matrix/weak_form copy.jl")
-D = (E*h^3) / (12*(1-ν^2))
-pkcKe = weakform(H4c,"standard")
-pknKe = weakform(H4n,"standard")
-phcKe = weakform(H4c,"hartmann")
-phnKe = weakform(H4n,"hartmann")
-# printKe(Ke,D)
-pKe(phnKe)
+Ke1 = weakform(H4c,"standard")
+Ke2 = weakform(H4n,"standard")
+Ke3 = weakform(H4c,"hartmann")
+Ke4 = weakform(H4n,"hartmann")
+```
+
+```{julia}
+#| echo: false
+include("../src/setup.jl")
+include("../src/stiffness_matrix/weak_form.jl")
+rec = weakformRe(H4c)
+ren = weakformRe(H4n)
+pre(ren)
 ```

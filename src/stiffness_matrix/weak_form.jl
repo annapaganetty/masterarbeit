@@ -24,26 +24,8 @@ function weakform(H4,model::String)
     end
 end
 
-# output stiffness matrix
-
-# KeNew = zeros(12,12)
-# for i = 1:12
-#     for j = 1:12
-#         if KeNew[i,j] == 1
-#         else 
-#             KeNew[i,j] = 1 
-#             print("Ke[",i,",",j,"]")
-#             for m = 1:12
-#                 for n = 1:12
-#                     if m==i && j==n 
-#                     elseif isequal(expand(Ke[i,j]),expand(Ke[m,n])) == true 
-#                         KeNew[m,n] = 1.0
-#                         print(" = ", "Ke[",m,",",n,"]")
-#                     else
-#                     end
-#                 end
-#             end
-#         println(" = ", Ke[i,j])
-#         end
-#     end
-# end
+function weakformRe(H4)
+    behart(w) = simplifyx(integrate(w, 0 .. a, 0 .. b))
+    re = (simplifyx.([behart(n1) for n1 ∈ H4 ]))
+    return re
+end

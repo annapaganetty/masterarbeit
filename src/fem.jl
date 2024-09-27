@@ -1,13 +1,3 @@
-function plateKe(p,model)
-    function keFunc(e)
-        a,b = ab(e)
-
-        
-        return KeElement
-    end
-    return keFunc
-end
-
 function plateRe(q)
     function reFunc(e)
         x1 = coordinates(e, 1)
