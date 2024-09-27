@@ -40,6 +40,6 @@ function pknKe(p)
         Ke[7,9] = Ke[9,7] = Ke[10,12] = Ke[12,10] = (-10(a^2) - (b^2) - 4(b^2)*ν) / (5a*(b^2))
         Ke[7,12] = Ke[9,10] = Ke[10,9] = Ke[12,7] = (-5(a^2) + b^2 + 4(b^2)*ν) / (5a*(b^2))
         return D * Ke
-        end
+    end
     return keFunc
 end

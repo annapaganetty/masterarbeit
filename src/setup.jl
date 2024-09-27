@@ -50,6 +50,10 @@ include("internal-forces.jl")
 include("stiffness_matrix/weak_form.jl")
 include("stiffness_matrix/element_stiffness_matrix.jl")
 include("mesh/makemesh.jl")
+include("generated/plate-hartmann-conforming.jl")
+include("generated/plate-hartmann-nonconforming.jl")
+include("generated/plate-kirchhoff-conforming.jl")
+include("generated/plate-kirchhoff-nonconforming.jl")
 
 p1 = @var Params()
 p1.lx = 8
