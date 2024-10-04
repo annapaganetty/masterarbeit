@@ -41,3 +41,4 @@ D = (E*h^3) / (12*(1-ν^2))
 Ke = weakform(H4,"standard")
 # printKe(Ke,D)
 ```
+

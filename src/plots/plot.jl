@@ -10,7 +10,7 @@ end
 
 function mkfig3d(
     ;title ="")
-    fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
+    fig = Figure(;size = (500,400),linewidth = 0.5,fontsize = 12,font="arial")
     ax = Axis3(
         fig[1, 1],
         aspect=:data,
@@ -64,10 +64,11 @@ function makewe(wHat;conforming=true)
     end
 end
 
+# Plot der Verformung
 function plotw(
-    m, wHat;
+    m, wHat;conforming = true,
     zs=1.5,
-    a3d=true, w=250, h=200, title="",
+    w=250, h=200, title="",
     edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
     featureedgelinewidth = 0.5,
     mesh=5,
@@ -75,9 +76,9 @@ function plotw(
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
 )
-    fig = mkfig(a3d=a3d, w=w, h=h, title=title, limits=limits)
+    fig = mkfig3d(title=title)
     MMJMesh.Plots.mplot!(
-        m, makewe(wHat),
+        m, makewe(wHat,conforming = conforming),
         faceplotzscale=zs / maximum(wHat),
         faceplotmesh=mesh,
         edgesvisible=edgesvisible, 
@@ -91,16 +92,19 @@ function plotw(
     fig
 end
 
-function plotsol(params,model,n)
-    m, wHat = plate(params, model,n);
-    plotw(
-        m, wHat, 
-        w=500, h=500,
-        zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
-        edgesvisible=true, edgelinewidth=0.1,
-        limits=(nothing,nothing,(0,1.15))
-    )
-end
+#____________________________________________________________
+# function plotsol(params,model,n)
+#     wHat = plate(m, p, model::String)
+#     m, wHat = plate(params, model,n);
+#     plotw(
+#         m, wHat, 
+#         w=500, h=500,
+#         zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
+#         edgesvisible=true, edgelinewidth=0.1,
+#         limits=(nothing,nothing,(0,1.15))
+#     )
+# end
+#____________________________________________________________
 
 function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
 	# if false

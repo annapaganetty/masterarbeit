@@ -50,10 +50,9 @@ include("plate.jl")
 include("fem.jl")
 include("plots/plot.jl")
 include("plots/print.jl")
-include("mathematics/hermite4.jl")
+include("mathematics/hermitefunctions.jl")
 include("internal-forces.jl")
 include("stiffness_matrix/weak_form.jl")
-include("stiffness_matrix/element_stiffness_matrix.jl")
 include("mesh/makemesh.jl")
 
 

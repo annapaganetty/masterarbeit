@@ -1,19 +1,17 @@
-function prettyprint(name, factor, value)
+function printShape(name,factor, vector)
     s1 = name.s[2:end-1]
     s2 = latexify(simplify(factor), env=:raw)
-    s3 = latexify(simplify.(1 / factor * value, expand=true), env=:raw)
-    return L"%$s1 = %$s2 %$s3"
-end;
-
-
-function prettyprintKe(name,factor,value)
-    s1 = name.s[2:end-1]
-    s2 = latexify(simplify(factor), env=:raw)
-    s3 = latexify(simplify.(1 / factor * value, expand=false), env=:raw)
+    s3 = latexify(simplify.(1 / factor * vector, expand=true), env=:raw)
     return L"%$s1 = %$s2 %$s3"
 end
 
-function printKe(Ke,factor)
+function prettyprintKe(name, value)
+    s1 = name.s[2:end-1]
+    s2 = latexify(simplify.(value, expand=true), env=:raw)
+    return L"%$s1 = %$s2"
+end
+
+function printKeVar(Ke,factor)
     l = size(Ke,1)
     KeNew = zeros(l,l)
 
@@ -28,8 +26,13 @@ function printKe(Ke,factor)
     s1 = name.s[2:end-1]
     s2 = latexify(A, env=:raw)
     s4 = latexify(simplify(factor), env=:raw)
-    print( L"%$s1 = %$s4 %$s2")
-    
+    return L"%$s1 = %$s4 %$s2"
+end
+
+function printKe(Ke)
+    l = size(Ke,1)
+    KeNew = zeros(l,l)
+
     for i = 1:l
         for j = 1:l
             if KeNew[i,j] == 1
@@ -57,6 +60,7 @@ function printKe(Ke,factor)
             end
         end
     end
+    return L"%$s1 = %$s4 %$s2"
 end
 
 function pKe(Ke)

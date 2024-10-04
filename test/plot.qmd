@@ -1,77 +1,70 @@
-{{< include ../MA-Dokument/00-Vorbemerkungen/00-definitionen.qmd >}}
 ---
 format:
   typst:
     toc: false
     papersize: a4
-    margin:
-      x: 2cm
-      y: 2cm
 ---
 
+## Test plotmesh
 ```{julia}
+#| echo: false
+#| output: true
 include("../src/setup.jl")
-fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
-ax = Axis(fig[1, 1],aspect=DataAspect(),  title="Test", titlefont="arial",xlabelfont = "arial",ylabelfont ="arial")
-# mkfig2d(;title = "Test")
 m1 = makequadratcicMesh(p1, 5)
-mplot!(m1)
-fig
-# plotmesh(m1;title="quadratisches Mesh")
+plotmesh(m1;title="Mesh")
 ```
-<!-- ```{julia}
-include("../src/setup.jl")
-fig2 = mkfig3d(title="Test T2")
-fig2
+
+## Test plotw 
+
+```{julia}
+#| echo: false
+#| output: true
+m2 = makequadratcicMesh(p1, 5)      # Mesh erzeugen
+w = plate(m2,p1,"kirchhoff_nonconforming")      # Platte erzeugen und w berechnen
+plotmesh(m2;title = "Mesh 2")
+# makewe(w,conforming = false)
+plotw(m2,w;conforming = false)
+```
+
+```{julia}
+#| echo: false
+#| output: false
+K3 = [ 0 a a 0; 0 0 b b]
+H4c = hermiteelement(K3,conforming = true)
+H4n = hermiteelement(K3,conforming = false)
 ```
 ```{julia}
+#| echo: false
+#| output: false
+Ke1 = weakform(H4c,"standard")
+Ke2 = weakform(H4n,"standard")
+Ke3 = weakform(H4c,"hartmann")
+Ke4 = weakform(H4n,"hartmann")
+```
+Lastvektor r - konformes Element
+```{julia}
+#| echo: false
+rec = weakformRe(H4c)
+```
+Lastvektor r - nicht konformes Element
+```{julia}
+#| echo: false
+ren = weakformRe(H4n)
+```
 
-function makewe(wHat)
-    return face -> begin
-        idxs = idxDOFs(nodeindices(face), 3)
-        _, a, b = _fsize(face)
-        t = repeat([1,a / 2, b / 2], 4)
-        return sum(wHat[idxs] .* t .* H4) # TODO make dot work
-    end
-end
+```{julia}
+#| echo: false
+wkn00 = plate(m2,p1,"kirchhoff_nonconforming")      # nu = 0
+whn00 = plate(m2,p1,"hartmann5.2_nonconforming")    # nu = 0
+println(maximum(wkn00*100))
+println(maximum(whn00*100))
+```
 
-
-function plotsol(params,model,n)
-    m, wHat = plate(params, model,n);
-    plotw(
-        m, wHat, 
-        w=500, h=500,
-        zs=1000*maximum(wHat), # plotw scales by 1 / maximum(wHat)
-        edgesvisible=true, edgelinewidth=0.1,
-        limits=(nothing,nothing,(0,1.15))
-    )
-end
-
-
-function plotw(
-    m, wHat;
-    zs=1.5,
-    a3d=true, w=250, h=200, title="",
-    edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
-    featureedgelinewidth = 0.5,
-    mesh=5,
-    colorrange=Makie.automatic,
-    colormap=Makie.theme(:colormap),
-    limits=(nothing, nothing, nothing)
-)
-    fig = mkfig(a3d=a3d, w=w, h=h, title=title, limits=limits)
-    mplot!(
-        m, makewe(wHat),
-        faceplotzscale=zs / maximum(wHat),
-        faceplotmesh=mesh,
-        edgesvisible=edgesvisible, 
-        edgelinewidth=edgelinewidth,
-        nodesvisible=nodesvisible,
-        featureedgelinewidth=featureedgelinewidth,
-        color=5,
-        colorrange=colorrange,
-        colormap=colormap
-    )
-    fig
-end
-``` -->
+```{julia}
+#| echo: false
+wkn02 = plate(m2,p2,"kirchhoff_nonconforming")      # nu = 0.2
+whn02 = plate(m2,p2,"hartmann5.2_nonconforming")    # nu = 0.2
+println("Maximale Verformung (nicht konforme Kirchhoff Platte) = ",maximum(wkn02*100))
+println("Maximale Verformung (nicht konforme Kirchhoff Platte, Formel Hartmann 5.2) = ",maximum(whn02*100))
+println("Abweichung der maximalen Verformung: ",round((maximum(wkn02)/maximum(whn02)-1)*100,digits=3)," %")
+```

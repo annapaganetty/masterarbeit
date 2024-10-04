@@ -1,0 +1,55 @@
+---
+format:
+  typst:
+    toc: false
+    papersize: a4
+---
+
+## Test print
+```{julia}
+#| echo: false
+#| output: true
+include("../src/setup.jl")
+@variables a, b, x, y, ν;
+m1 = makequadratcicMesh(p1, 5)
+w = plate(m1,p1,"kirchhoff_nonconforming");      # Platte erzeugen und w berechnen
+```
+
+Basis Funktionen für ein konformes Element
+```{julia}
+#| echo: false
+#| output: true
+K3 = [ 0 a a 0; 0 0 b b]
+H4c = hermiteelement(K3,conforming = true)
+printShape(L"\mathbf{N}_i(x, y)", 1 / (a^3*b^3),[N(x, y) for N ∈ H4c])
+```
+
+Basis Funktionen für ein nicht konformes Element
+```{julia}
+#| echo: false
+#| output: true
+K3 = [ 0 a a 0; 0 0 b b]
+H4n = hermiteelement(K3,conforming = false)
+printShape(L"\mathbf{N}_i(x, y)", 1 / (a^3*b^3),[N(x, y) for N ∈ H4n])
+```
+```{julia}
+#| echo: false
+#| output: true
+Ke1 = weakform(H4c,"standard")
+D = (E*h^3) / (12*(1-ν^2))
+# printKeVar(Ke1,D)
+```
+
+```{julia}
+#| echo: false
+#| output: true
+include("../src/setup.jl")
+
+prettyprintKe(L"\mathbf{k}_e",Ke1[1,1])
+
+
+# Ke2 = weakform(H4n,"standard")
+# Ke3 = weakform(H4c,"hartmann")
+# Ke4 = weakform(H4n,"hartmann")
+```
+
