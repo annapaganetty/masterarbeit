@@ -63,6 +63,16 @@ function printKe(Ke)
     return L"%$s1 = %$s4 %$s2"
 end
 
+
+
+
+
+#   ___________________________________________________________________________
+
+#           generieren der Steifigkeitsmatrix und des Lastvektors
+
+#   ___________________________________________________________________________
+
 function pKe(Ke)
     l = size(Ke,1)
     KeNew = zeros(l,l)

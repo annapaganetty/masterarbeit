@@ -45,7 +45,8 @@ D = (E*h^3) / (12*(1-ν^2))
 #| output: true
 include("../src/setup.jl")
 
-prettyprintKe(L"\mathbf{k}_e",Ke1[1,1])
+
+printKe(Ke1)
 
 
 # Ke2 = weakform(H4n,"standard")
