@@ -22,5 +22,5 @@
 ## allgemeine Viereckige Elemente
 
     - DKQ - Elemente (Batoz und Tahar)
-        = hermite(?)
+        = serendipity(?)
         = 8 Knoten & 3 DOFs pro Eckknoten und & ... DOFs pro Mittelknoten

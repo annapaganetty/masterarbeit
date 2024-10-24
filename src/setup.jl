@@ -46,15 +46,23 @@ include("generated/plate-hartmann-nonconforming.jl")
 include("generated/plate-kirchhoff-conforming.jl")
 include("generated/plate-kirchhoff-nonconforming.jl")
 
-include("plate.jl")
-include("fem.jl")
-include("plots/plot.jl")
-include("plots/print.jl")
+include("mathematics/hermitefunctions-1D.jl")
 include("mathematics/hermitefunctions.jl")
-include("internal-forces.jl")
-include("stiffness_matrix/weak_form.jl")
-include("mesh/makemesh.jl")
+include("mathematics/jacobi-matrix.jl")
 
+include("mesh/make-mesh.jl")
+
+include("plots/plot.jl")
+include("plots/plot-functions.jl")
+include("plots/print-stiffness-matrix.jl")
+
+include("results/internal-forces.jl")
+include("results/assembleKr.jl")
+
+include("static-system/boundary-conditions.jl")
+include("static-system/generate-plate.jl")
+
+include("stiffness_matrix/weak_form.jl")
 
 p1 = @var Params()
 p1.lx = 8

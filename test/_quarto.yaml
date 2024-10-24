@@ -1,0 +1,56 @@
+project:
+  output-dir: _output
+
+lang: de
+number-depth: 3
+number-sections: true
+
+format: 
+  html: 
+    default-image-extension: svg
+  pdf:
+    include-in-header:
+      - text: |
+          \usepackage{makeidx}
+          \usepackage{multicol}
+          \makeindex
+    include-after-body:
+      text: |
+        \printindex
+    default-image-extension: pdf
+
+
+    # - part: vorberkungen.qmd
+    #   chapters:
+    #     - 00-definitionen.qmd
+    #     - 001-Titelblatt.qmd
+    #     - 002-Eidesstattliche_Erklaerung.qmd
+    #     - 003-Danksagung.qmd
+
+    # - part: Einleitung.qmd
+    #   chapters:
+    #     - Motivation.qmd
+    #     - Problemstellung.qmd
+    #     - Zielsetzung_Gliederung.qmd
+
+    # - part: Grundlagen_FEM.qmd
+    #   chapters:
+
+    # - part: Grundlange_mech_math.qmd
+    #   chapters:
+    #     - Annahmen_Grundgleichungen_Verschiebungsfeld.qmd
+    #     - Verzerrungsfeld.qmd
+    #     - Schnittgrößen.qmd
+    #     - Gleichgewichtsbeziehungen.qmd
+
+    # - part: FEM_Plattentragwerke.qmd
+    #   chapters:
+    #     - Herleitung_starkeForm.qmd
+    #     - Herleitung_schwacheForm.qmd # beide wege
+
+    # - part: Programmierung-und-Beispiele.qmd
+    #   chapters:
+    #     - Programmiersprache-Julia.qmd
+    #     - Programm.qmd
+    #     - Anwendungsbeispiele.qmd
+    #     - Verifikation_Vergleich.qmd

@@ -1,0 +1,240 @@
+---
+title: Derivation of plate formulation of Batoz and Tahar
+engine: julia
+---
+
+```{julia}
+using Symbolics
+```
+
+geometrische Größen des allgemeines Vierecks nach Batoz und Tahar 
+
+```{julia}
+x1 = -1
+x2 = 1
+x3 = 1
+x4 = -1
+x5 = 0
+x6 = 1
+x7 = 0
+x8 = -1
+
+y1 = -1
+y2 = -1
+y3 = 1
+y4 = 1
+y5 = -1
+y6 = 0
+y7 = 1
+y8 = 0
+```
+```{julia}
+xij = []
+yij = []
+lij = []
+Ck = []
+Sk = []
+ak = []
+bk = []
+ck = []
+dk = []
+ek = []
+
+push!(xij, x1 - x2)
+push!(xij, x2 - x3)
+push!(xij, x3 - x4)
+push!(xij, x4 - x1)
+
+push!(yij, y1 - y2)
+push!(yij, y2 - y3)
+push!(yij, y3 - y4)
+push!(yij, y4 - y1)
+
+for i = 1:4
+    push!(lij, (xij[i]^2 + yij[i]^2)^(1/2))
+end
+
+for i = 1:4
+    push!(Ck, -yij[i]/lij[i])
+    push!(Sk, xij[i]/lij[i])
+end
+
+for i = 1:4
+    push!(ak, -Sk[i]/lij[i])
+    push!(bk, -3/4 * Ck[i] * Sk[i])
+    push!(ck, -1/2 * Ck[i]^2 - 1/4 * Sk[i]^2)
+    push!(dk, -Ck[i]/lij[i])
+    push!(ek, -1/2 * Sk[i]^2 + 1/4 * Ck[i]^2)
+end
+ek
+```
+
+Element vector (12 knowns)
+    Equation (8)
+```{julia}
+we = Symbolics.variables(:we,1:4)
+θex = Symbolics.variables(:θex,1:4)
+θey = Symbolics.variables(:θey,1:4)
+Ue = vcat([[we[i], θex[i], θey[i]] for i = 1:4]...)
+```
+
+
+```{julia}
+βn = []
+push!(βn, -1/2 * (Sk[1] * (θex[1] + θex[2]) + Ck[1] * (-θey[1] - θey[2])))      # βn5
+push!(βn, -1/2 * (Sk[2] * (θex[2] + θex[3]) + Ck[2] * (-θey[2] - θey[3])))      # βn6
+push!(βn, -1/2 * (Sk[3] * (θex[3] + θex[4]) + Ck[3] * (-θey[3] - θey[4])))      # βn7
+push!(βn, -1/2 * (Sk[4] * (θex[4] + θex[1]) + Ck[4] * (-θey[4] - θey[1])))      # βn8
+
+ws = []
+push!(ws, -3/(2*lij[1]) * (we[1] - we[2]) - 1/4 * (Ck[1] * (θex[1] + θex[2]) + Sk[1] * (θey[1] + θey[2])))
+push!(ws, -3/(2*lij[2]) * (we[2] - we[3]) - 1/4 * (Ck[2] * (θex[2] + θex[3]) + Sk[2] * (θey[2] + θey[3])))
+push!(ws, -3/(2*lij[3]) * (we[3] - we[4]) - 1/4 * (Ck[3] * (θex[3] + θex[4]) + Sk[3] * (θey[3] + θey[4])))
+push!(ws, -3/(2*lij[4]) * (we[4] - we[1]) - 1/4 * (Ck[4] * (θex[4] + θex[1]) + Sk[4] * (θey[4] + θey[1])))
+
+βs = []
+for i = 1:4
+    push!(βs, -ws[i])
+end
+βs
+```
+
+βxi & βyi
+```{julia}
+βxi = []
+βyi = []
+for i = 1:4
+    push!(βxi, θey[i])
+    push!(βyi, -θex[i])
+end
+for i = 1:4
+    push!(βxi, Ck[i] * βn[i] - Sk[i] * βs[i])
+    push!(βyi, Sk[i] * βn[i] + Ck[i] * βs[i])
+end
+for i = 5:8
+    println(expand(βxi[i]))
+end
+```
+
+Serendipity Shape Functions mit parametrischen Koordinaten (-1...1 x -1...1)
+
+```{julia}
+include("../src/setup.jl")
+Ni = nodalbasis(makeelement(:serendipity, QHat, k=2))
+xe = Symbolics.variables(:xe,1:8)
+ye = Symbolics.variables(:ye,1:8)
+∂xNi = ∂x.(Ni)
+∂yNi = ∂y.(Ni)
+
+display((Ni))
+display((∂xNi))
+display((∂yNi))
+coords = [xe ye]
+derivates = [∂xNi'; ∂yNi']
+jac11 = []
+jac12 = []
+jac21 = []
+jac22 = []
+for i = 1:8 
+    push!(jac11,∂xNi[i]* xe[i])
+    push!(jac12,∂xNi[i]* ye[i])
+    push!(jac21,∂yNi[i]* xe[i])
+    push!(jac22,∂yNi[i]* ye[i])
+end 
+j11 = sum(jac11)
+j12 = sum(jac12)
+j21 = sum(jac21)
+j22 = sum(jac22)
+expand(j11)
+# fplot3d(Ni)
+```
+
+
+```{julia}
+N = Symbolics.variables(:N,1:8)
+```
+
+```{julia}
+betaX = []
+betaY = []
+for i = 1:8 
+    push!(betaX, expand(N[i] * βxi[i]))
+    push!(betaY, expand(N[i] * βyi[i]))
+end
+βx = expand(sum(betaX))
+βy = expand(sum(betaX))
+```
+
+```{julia}
+Hx = []
+push!(Hx, 3/2 * (Ni[5] * ak[1] - Ni[8] * ak[4]))
+push!(Hx, Ni[5] * bk[1] + Ni[8] * bk[4])
+push!(Hx, Ni[1] - Ni[5] * ck[1] - Ni[8] * ck[4])
+
+push!(Hx, 3/2 * (Ni[6] * ak[2] - Ni[5] * ak[1]))
+push!(Hx, Ni[6] * bk[2] + Ni[5] * bk[1])
+push!(Hx, Ni[2] - Ni[6] * ck[2] - Ni[5] * ck[1])
+
+push!(Hx, 3/2 * (Ni[7] * ak[3] - Ni[6] * ak[2]))
+push!(Hx, Ni[7] * bk[3] + Ni[6] * bk[2])
+push!(Hx, Ni[3] - Ni[7] * ck[3] - Ni[6] * ck[2])
+
+push!(Hx, 3/2 * (Ni[8] * ak[4] - Ni[7] * ak[3]))
+push!(Hx, Ni[8] * bk[4] + Ni[7] * bk[3])
+push!(Hx, Ni[4] - Ni[8] * ck[4] - Ni[7] * ck[3])
+
+simplify.(Hx)
+Hx
+```
+
+```{julia}
+include("../src/setup.jl")
+plotH(Hx,"")
+```
+```{julia}
+Hy = []
+push!(Hy, 3/2 * (Ni[5] * dk[1] - Ni[8] * dk[4]))
+push!(Hy, - Ni[1] + Ni[5] * ek[1] + Ni[8] * ek[4])
+push!(Hy, - Ni[5] * bk[1] - Ni[8] * bk[4])
+
+push!(Hy, 3/2 * (Ni[6] * dk[2] - Ni[5] * dk[1]))
+push!(Hy, - Ni[2] + Ni[6] * ek[2] + Ni[5] * ek[1])
+push!(Hy, - Ni[6] * bk[2] - Ni[5] * bk[1])
+
+push!(Hy, 3/2 * (Ni[7] * dk[3] - Ni[6] * dk[2]))
+push!(Hy, - Ni[3] + Ni[7] * ek[3] + Ni[6] * ek[2])
+push!(Hy, - Ni[7] * bk[3] - Ni[6] * bk[2])
+
+push!(Hy, 3/2 * (Ni[8] * dk[4] - Ni[7] * dk[3]))
+push!(Hy, - Ni[4] + Ni[8] * ek[4] + Ni[7] * ek[3])
+push!(Hy, - Ni[8] * bk[4] - Ni[7] * bk[3])
+simplify.(Hy)
+```
+
+```{julia}
+plotH(Hy,"")
+```
+
+
+```{julia}
+@variables x21,x34,x12,x34,y21,y34,y12,y34, x32,x41,y32,y41, η,ξ;
+
+J = Matrix{Any}(undef,2,2)
+J[1,1] = x21 + x34 + η * (x12 + x34)
+J[2,1] = x32 + x41 + ξ * (x12 + x34)
+J[1,2] = y21 + y34 + η * (y12 + y34)
+J[2,2] = y32 + y41 + ξ * (y12 + y34)
+detJ = (expand(J[1,1] * J[2,2] - J[2,1] * J[1,2]))
+```
+```{julia}
+@variables  h, ν,E ;
+D = E*h^3 / 12*(1-ν^2)
+∂1(u) =  ∂x(u)
+∂2(u) =  ∂y(u)
+∂3(u) =  ∂x(u) + ∂y(u)
+Be(u) = [∂1(u), ∂2(u), ∂3(u)]
+        
+Be2(u) = [∂1(u) + ν * ∂2(u), ν * ∂1(u) + ∂2(u),(1- ν)/2 * ∂3(u)]
+# aestd(u,v) = integrate(Be1std(u) ⋅ Be2std(v), QHat)
+# Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]))
+```

@@ -23,6 +23,8 @@ function mkfig3d(
         xlabelfont = "arial",
         ylabelfont = "arial",
         zlabelfont = "arial")
+    hidedecorations!(ax)
+    hidespines!(ax)
     return fig
 end
 
@@ -63,6 +65,8 @@ function makewe(wHat;conforming=true)
         end
     end
 end
+
+
 
 # Plot der Verformung
 function plotw(

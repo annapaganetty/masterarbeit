@@ -1,0 +1,655 @@
+# Gleichungen für rechteckige Elemente nach der Formulierung von Batoz und Tahar
+
+$\beta_{x}$ und $\beta_{y}$ werden als unvollständige kubische Polynome definiert. Nachfolgend wird eine ausführliche Herleitung der Formeln dargestellt.
+
+$$ \beta_{x} =  \sum_{i=1}^8 N_{i} \beta_{x_{i}} $$
+$$ \beta_{y} =  \sum_{i=1}^8 N_{i} \beta_{y_{i}} $$
+
+
+Basisfunktionen $N_i$
+
+$N_{i}$ mit $i = 1...8$ sind die Basisfunktionen des 8-Knoten Serendipity Elements. Bezogen auf das Gebiet (-1...1) x (-1...1) (parametrische Koordinaten) ergeben sich die folgenden Funktionen 
+
+Einen Knoten an jeder Ecker und einem Knoten jeweils in der Mitte einer jeden Seite.
+
+$N_i (\xi, \eta)$ mit $i = 1...8$
+
+
+TODO
+Serendipity Gleichungen Einfügen
+
+TODO
+Abbildung rechteckiges Element mit geometrischen Größen 
+
+
+$$
+\begin{align}
+  \gamma_{12} &= \gamma_{5} = 270° \\
+  \gamma_{23} &= \gamma_{6} = 0° \\
+  \gamma_{34} &= \gamma_{7} = 90° \\
+  \gamma_{41} &= \gamma_{8} = 180° \\
+\end{align}
+$$
+$$
+\begin{align}
+  C_{5} &= cos(\gamma_{5}) = cos(270°) = 0  &&S_{5} = sin(\gamma_{5}) = sin(270°) = -1\\
+  C_{6} &= cos(\gamma_{6}) = cos(0°) = 1    &&S_{6} = sin(\gamma_{6}) = sin(0°) = 0\\
+  C_{7} &= cos(\gamma_{7}) = cos(90°) = 0   &&S_{7} = sin(\gamma_{7}) = sin(90°) = 1\\
+  C_{8} &= cos(\gamma_{8}) = cos(180°) = -1 &&S_{8} = sin(\gamma_{8}) = sin(180°) = 0\\
+\end{align}
+$$
+
+## $\beta_{x}$
+
+Nachfolgend wird $\beta_{x_{i}}$ anhand der oben gemachten Annahmen ausformuliert.
+
+$$
+\begin{align}
+  \beta_{x} &=  \sum_{i=1}^8 N_{i} \beta_{x_{i}} \\
+  \beta_{x_{1}} &= - w_{,x_{1}} = \theta_{y_{1}} \\
+  \beta_{x_{2}} &= - w_{,x_{2}} = \theta_{y_{2}} \\
+  \beta_{x_{3}} &= - w_{,x_{3}} = \theta_{y_{3}} \\
+  \beta_{x_{4}} &= - w_{,x_{4}} = \theta_{y_{4}} \\
+
+  \beta_{x_{5}} &= C_{5} \beta_{n_{5}} - S_{5} \beta_{s_{5}} = C_{5} \beta_{n_{5}} + S_{5} w_{,s_{5}} = 0 \cdot \beta_{n_{5}} - 1 \cdot w_{,s_{5}} = -w_{,s_{5}} \\
+  \beta_{x_{6}} &= C_{6} \beta_{n_{6}} - S_{6} \beta_{s_{6}} = C_{6} \beta_{n_{6}} + S_{6} w_{,s_{6}} = 1 \cdot \beta_{n_{6}} + 0 \cdot w_{,s_{6}} = \beta_{n_{6}} \\
+  \beta_{x_{7}} &= C_{7} \beta_{n_{7}} - S_{7} \beta_{s_{7}} = C_{7} \beta_{n_{7}} + S_{7} w_{,s_{7}} = 0 \cdot \beta_{n_{7}} + 1 \cdot w_{,s_{7}} = w_{,s_{7}} \\
+  \beta_{x_{8}} &= C_{8} \beta_{n_{8}} - S_{8} \beta_{s_{8}} = C_{8} \beta_{n_{8}} + S_{8} w_{,s_{8}} = -1 \cdot \beta_{n_{8}} + 0 \cdot w_{,s_{8}} = -\beta_{n_{8}}\\
+
+\end{align}
+$$
+
+mit: 
+
+$$
+\begin{align}
+  -w_{,s_{5}} 
+  % &= (\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} (w_{,s_{1}} + w_{,s_{2}})) \\
+  % &= (\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} (\beta_{s_{1}} + \beta_{s_{2}})) \\
+  % &= (\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} ((C_{5} \theta_{x_{1}} + S_{5} \theta_{y_{1}} + C_{5} \theta_{x_{2}} + S_{5} \theta_{y_{2}}))) \\
+  &= (\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} ((\theta_{y_{1}} + \theta_{y_{2}}))) \\
+
+  \beta_{n_{6}}   
+  % &= \frac{1}{2} (\beta_{n_{2}} + \beta_{n_{3}}) 
+  % = -\frac{1}{2} (w_{,n_{2}} + w_{,n_{3}}) 
+  % = -\frac{1}{2} (S_{6} \theta_{x_{2}} - C_{6} \theta_{y_{2}} + S_{6} \theta_{x_{3}} - C_{6} \theta_{y_{3}}) 
+  &= -\frac{1}{2} (- \theta_{y_{2}} - \theta_{y_{3}}) \\
+
+  w_{,s_{7}}  
+  % &= -(\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} (w_{,s_{3}} + w_{,s_{4}})) \\
+  % &= -(\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} (\beta_{s_{3}} + \beta_{s_{4}})) \\
+  % &= -(\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} ((C_{5} \theta_{x_{3}} + S_{5} \theta_{y_{3}} + C_{5} \theta_{x_{4}} + S_{5} \theta_{y_{3}}))) \\
+  &= -(\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} ((\theta_{y_{3}} + \theta_{y_{4}}))) \\
+
+  -\beta_{n_{8}}  
+  % &= -\frac{1}{2} (\beta_{n_{4}} + \beta_{n_{1}}) 
+  % = \frac{1}{2} (w_{,n_{4}} + w_{,n_{1}}) 
+  % = -\frac{1}{2} (S_{8} \theta_{x_{4}} - C_{8} \theta_{y_{4}} + S_{8} \theta_{x_{1}} - C_{8} \theta_{y_{1}}) 
+  &= -\frac{1}{2} (\theta_{y_{4}} + \theta_{y_{1}}) \\
+\end{align}
+$$
+
+### Zusammenfassung 
+$$
+\begin{align}
+  \beta_{x_{1}} &= \theta_{y_{1}} \\
+  \beta_{x_{2}} &= \theta_{y_{2}} \\
+  \beta_{x_{3}} &= \theta_{y_{3}} \\
+  \beta_{x_{4}} &= \theta_{y_{4}} \\
+
+  \beta_{x_{5}} &= \frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} (\theta_{y_{1}} + \theta_{y_{2}}) \\
+  \beta_{x_{6}} &= -\frac{1}{2} (- \theta_{y_{2}} - \theta_{y_{3}}) \\
+  \beta_{x_{7}} &= -\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} (\theta_{y_{3}} + \theta_{y_{4}}) \\
+  \beta_{x_{8}} &= -\frac{1}{2} (\theta_{y_{4}} + \theta_{y_{1}}) \\
+
+\end{align}
+$$
+
+
+## $\beta_{y}$
+
+Nachfolgend wird $\beta_{y_{i}}$ anhand der oben gemachten Annahmen ausformuliert.
+
+$$
+\begin{align}
+  \beta_{y} &=  \sum_{i=1}^8 N_{i} \beta_{y_{i}} \\
+  \beta_{y_{1}} &= - w_{,y_{1}} = -\theta_{x_{1}} \\
+  \beta_{y_{2}} &= - w_{,y_{2}} = -\theta_{x_{2}} \\
+  \beta_{y_{3}} &= - w_{,y_{3}} = -\theta_{x_{3}} \\
+  \beta_{y_{4}} &= - w_{,y_{4}} = -\theta_{x_{4}} \\
+
+  \beta_{y_{5}} &= S_{5} \beta_{n_{5}} + C_{5} \beta_{s_{5}} = S_{5} \beta_{n_{5}} - C_{5} w_{,s_{5}} = 1 \cdot \beta_{n_{5}} - 0 \cdot w_{,s_{5}} = \beta_{n_{5}} \\
+  \beta_{y_{6}} &= S_{6} \beta_{n_{6}} + C_{6} \beta_{s_{6}} = S_{6} \beta_{n_{6}} - C_{6} w_{,s_{6}} = 0 \cdot \beta_{n_{6}} - 1 \cdot w_{,s_{6}} = -w_{,s_{6}} \\
+  \beta_{y_{7}} &= S_{7} \beta_{n_{7}} + C_{7} \beta_{s_{7}} = S_{7} \beta_{n_{7}} - C_{7} w_{,s_{7}} = -1 \cdot \beta_{n_{7}} - 0 \cdot w_{,s_{7}} = -\beta_{n_{7}} \\
+  \beta_{y_{8}} &= S_{8} \beta_{n_{8}} + C_{8} \beta_{s_{8}} = S_{8} \beta_{n_{8}} - C_{8} w_{,s_{8}} = 0 \cdot \beta_{n_{8}} + 1 \cdot w_{,s_{8}} = w_{,s_{8}}\\
+
+\end{align}
+$$
+
+$$
+\begin{align}
+
+  \beta_{n_{5}}   &= \frac{1}{2} (\beta_{n_{1}} + \beta_{n_{2}}) 
+                  = -\frac{1}{2} (w_{,n_{1}} + w_{,n_{2}}) 
+                  = -\frac{1}{2} (S_{5} \theta_{x_{1}} - C_{5} \theta_{y_{1}} + S_{5} \theta_{x_{2}} - C_{5} \theta_{y_{2}}) 
+                  = -\frac{1}{2} (\theta_{x_{1}} + \theta_{x_{2}}) \\
+
+  -w_{,s_{6}} &= (\frac{3}{2 l_{12}} (w_{2} - w_{3}) + \frac{1}{4} (w_{,s_{2}} + w_{,s_{3}})) \\
+              &= (\frac{3}{2 l_{12}} (w_{2} - w_{3}) + \frac{1}{4} (\beta_{s_{3}} + \beta_{s_{3}})) \\
+              &= (\frac{3}{2 l_{12}} (w_{2} - w_{3}) + \frac{1}{4} ((C_{6} \theta_{x_{2}} + S_{6} \theta_{y_{2}} + C_{6} \theta_{x_{3}} + S_{6} \theta_{y_{3}}))) \\
+              &= (\frac{3}{2 l_{12}} (w_{2} - w_{3}) + \frac{1}{4} ((\theta_{x_{2}} + \theta_{x_{3}}))) \\
+
+  -\beta_{n_{7}}  &= -\frac{1}{2} (\beta_{n_{3}} + \beta_{n_{4}}) 
+                  = \frac{1}{2} (w_{,n_{3}} + w_{,n_{4}}) 
+                  = -\frac{1}{2} (S_{7} \theta_{x_{3}} - C_{7} \theta_{y_{3}} + S_{7} \theta_{x_{4}} - C_{7} \theta_{y_{4}}) 
+                  = -\frac{1}{2} (-\theta_{x_{3}} + \theta_{x_{4}}) \\
+
+  w_{,s_{8}}  &= -(\frac{3}{2 l_{34}} (w_{4} - w_{1}) + \frac{1}{4} (w_{,s_{4}} + w_{,s_{1}})) \\
+              &= -(\frac{3}{2 l_{34}} (w_{4} - w_{1}) + \frac{1}{4} (\beta_{s_{4}} + \beta_{s_{1}})) \\
+              &= -(\frac{3}{2 l_{34}} (w_{4} - w_{1}) + \frac{1}{4} ((C_{8} \theta_{x_{4}} + S_{8} \theta_{y_{4}} + C_{8} \theta_{x_{1}} + S_{8} \theta_{y_{1}}))) \\
+              &= -(\frac{3}{2 l_{34}} (w_{4} - w_{1}) + \frac{1}{4} ((-\theta_{x_{4}} - \theta_{x_{1}}))) \\
+\end{align}
+$$
+
+### Zusammenfassung 
+$$
+\begin{align}
+  \beta_{y_{1}} &= -\theta_{x_{1}} \\
+  \beta_{y_{2}} &= -\theta_{x_{2}} \\
+  \beta_{y_{3}} &= -\theta_{x_{3}} \\
+  \beta_{y_{4}} &= -\theta_{x_{4}} \\
+
+  \beta_{y_{5}} &=  -\frac{1}{2} (\theta_{x_{1}} + \theta_{x_{2}}) \\
+  \beta_{y_{6}} &=  (\frac{3}{2 l_{12}} (w_{2} - w_{3}) + \frac{1}{4} ((\theta_{x_{2}} + \theta_{x_{3}}))) \\
+  \beta_{y_{7}} &=  -\frac{1}{2} (-\theta_{x_{3}} + \theta_{x_{4}}) \\
+  \beta_{y_{8}} &=  -(\frac{3}{2 l_{34}} (w_{4} - w_{1}) + \frac{1}{4} ((-\theta_{x_{4}} - \theta_{x_{1}}))) \\
+
+\end{align}
+$$
+________________________________________________________________________________________
+
+
+$\beta_x=\sum_{i=1}^8 N_i B_{x_i}$
+
+$\beta_y=\sum_{i=1}^8 N_i B_{y_i}$
+
+$\beta_x$ und $\beta_y$ können auch in der folgenden Matrixschreibweise ausgedrückt werden: 
+
+$\beta_x =  H^x U_n$
+
+$\beta_y =  H^y U_n$
+
+mit:
+
+$H^x = \left[ \begin{array}{rrr} H_1^x & H_2^x & H_3^x & H_4^x & H_5^x & H_6^x & H_7^x & H_8^x & H_9^x & H_{10}^x & H_{11}^x & H_{12}^x \\ \end{array}\right]$
+
+$H^y = \left[ \begin{array}{rrr} H_1^y & H_2^y & H_3^y & H_4^y & H_5^y & H_6^y & H_7^y & H_8^y & H_9^y & H_{10}^y & H_{11}^y & H_{12}^y \\ \end{array}\right]$
+
+und
+
+$U_n = \left[ \begin{array}{rrr} 
+w_1 \\ 
+\theta_{x_1} \\ 
+\theta_{y_1} \\ 
+w_2 \\ 
+\theta_{x_2} \\ 
+\theta_{y_2} \\ 
+w_3 \\ 
+\theta_{x_3} \\ 
+\theta_{y_3} \\ 
+w_4 \\ 
+\theta_{x_4}  \\ 
+\theta_{y_4} 
+\end{array}\right]$
+
+$$
+\begin{align}
+H_1^x &=      \frac{3}{2}(N_5 a_5 - N_8 a_8)
+&H_2^x &=      N_5 b_5 + N_8 b_8 
+&H_3^x &=      N_1 - N_5 c_5 - N_8 c_8         \\
+H_4^x &=      \frac{3}{2}(N_6 a_6 - N_5 a_5) 
+&H_5^x &=      N_6 b_6 + N_5 b_5              
+&H_6^x &=      N_2 - N_6 c_6 - N_5 c_5         \\
+H_7^x &=      \frac{3}{2}(N_7 a_7 - N_6 a_6)   
+&H_8^x &=      N_7 b_7 + N_6 b_6               
+&H_9^x &=      N_3 - N_7 c_7 - N_6 c_6         \\
+H_{10}^x &=   \frac{3}{2}(N_8 a_8 - N_7 a_7)  
+&H_{11}^x &=   N_8 b_8 + N_7 b_7               
+&H_{12}^x &=   N_4 - N_8 c_8 - N_7 c_7         \\
+\end{align}
+
+\begin{align}
+H_1^y &=     \frac{3}{2}(N_5 d_5 - N_8 d_8)   
+&H_2^y &=     -N_1 + N_5 e_5 + N_8 e_8         
+&H_3^y &=     -N_5 b_5 - N_8 b_8               \\
+H_4^y &=     \frac{3}{2}(N_6 d_6 - N_5 d_5)   
+&H_5^y &=     -N_2 + N_6 e_6 + N_5 e_5         
+&H_6^y &=     -N_6 b_6 - N_5 b_5               \\
+H_7^y &=     \frac{3}{2}(N_7 d_7 - N_6 d_6)   
+&H_8^y &=     -N_3 + N_7 e_7 + N_6 e_6         
+&H_9^y &=     -N_7 b_7 - N_6 b_6               \\
+H_{10}^y &=  \frac{3}{2}(N_8 d_8 - N_7 d_7)   
+&H_{11}^y &=  -N_4 + N_8 e_8 + N_7 e_7         
+&H_{12}^y &=  -N_8 b_8 - N_7 b_7               \\
+\end{align}
+$$
+mit:
+
+$$
+\begin{align}
+    a_k &= \frac{-x_{ij}}{l_{ij}^2} = \frac{-S_k}{l_{ij}} \\
+    b_k &= \frac{3}{4} \frac{x_{ij} y_{ij}}{l_{ij}^2} = -\frac{3}{4} C_k S_k \\
+    c_k &= \frac{\frac{1}{4} x_{ij}^2 - \frac{1}{2} y_{ij}^2}{l_{ij}^2} = \frac{1}{4} S_k^2  -\frac{1}{2} C_k^2 \\
+    d_k &= \frac{-y_{ij}}{l_{ij}^2} = \frac{C_k}{l_{ij}} \\
+    e_k &= \frac{-\frac{1}{2} x_{ij}^2 + \frac{1}{4} y_{ij}^2}{l_{ij}^2}  = -\frac{1}{2} S_k^2 + \frac{1}{4} C_k^2 \\
+\end{align}
+$$
+
+Für ein quadratisches 2x2 Element ergeben sich somit die folgenden Werte $a_k, b_k, c_k, d_k, e_k$ mit $k = 5...8$
+
+
++-----------+-----------+-----------+-----------+-----------+-----------+
+| k         | $a_k$     | $b_k$     | $c_k$     | $d_k$     | $e_k$     |
++===========+===========+===========+===========+===========+===========+
+| 5         | $0.5$     | $0.0$     | $-0.25$   | $0.0$     | $-0.5$    |
++-----------+-----------+-----------+-----------+-----------+-----------+
+| 6         | $0.0$     | $0.0$     | $-0.5$    | $-0.5$    | $0.25$    |
++-----------+-----------+-----------+-----------+-----------+-----------+
+| 7         | $-0.5$    | $0.0$     | $-0.25$   | $0.0$     | $-0.5$    |
++-----------+-----------+-----------+-----------+-----------+-----------+
+| 8         | $0.0$     | $0.0$     | $-0.5$    | $0.5$     | $0.25$    |
++-----------+-----------+-----------+-----------+-----------+-----------+
+
+\ 
+\
+
+$$
+\begin{align}
+H_1^x &=       0,75 \cdot N_5 
+&H_2^x &=      0 
+&H_3^x &=      N_1 + 0,25 \cdot N_5 + 0,5 \cdot N_8 \\  
+H_4^x &=       -0,75 \cdot N_5 
+&H_5^x &=      0 
+&H_6^x &=      N_2 + 0,5 \cdot N_6 + 0,25 \cdot N_5 \\
+H_7^x &=       -0,75 \cdot N_7 
+&H_8^x &=      0 
+&H_9^x &=      N_3 + 0,25 \cdot N_7 + 0,5 \cdot N_6\\
+H_{10}^x &=    0,75 \cdot N_7 
+&H_{11}^x &=   0 
+&H_{12}^x &=   N_4 + 0,5 \cdot N_8 +0,25 \cdot N_7 \\
+\end{align}
+
+\begin{align}
+H_1^y &=       -0,75 \cdot N_8 
+&H_2^y &=      - N_1 - 0,5 \cdot N_5 + 0,25 \cdot N_8 
+&H_3^y &=      0 \\
+H_4^y &=       -0,75 \cdot N_6 
+&H_5^y &=      - N_2 + 0,25 \cdot N_6 - 0,5 \cdot N_5 
+&H_6^y &=      0 \\
+H_7^y &=       0,75 \cdot N_6 
+&H_8^y &=      - N_3 - 0,5 \cdot N_7 + 0,25 \cdot N_6
+&H_9^y &=      0 \\
+H_{10}^y &=    0,75 \cdot N_8 
+&H_{11}^y &=   - N_4 + 0,25 \cdot N_8 - 0,5 \cdot N_7 
+&H_{12}^y &=   0  \\
+\end{align}
+$$
+
+\
+\
+
+## Berechnung der Elementsteifigkeitsmatrix
+
+
+$x = \left( \begin{array}{center} 
+\frac{\partial\beta_x}{\partial x} \\ 
+\frac{\partial\beta_y}{\partial y} \\
+\frac{\partial\beta_x}{\partial y} + \frac{\partial\beta_y}{\partial x} 
+\end{array}\right)
+= \left( \begin{array}{center} 
+\frac{H^x(\xi,\eta)}{\partial x} \\ 
+\frac{H^y(\xi,\eta)}{\partial y} \\
+\frac{H^x(\xi,\eta)}{\partial y} + \frac{H^y(\xi,\eta)}{\partial x} 
+\end{array}\right) \cdot U_n$
+
+$H_x$ und $H_y$ sind Funktionen welche abhängig von den Variablen $\nu$ und $\eta$ sind. Somit ist eine Ableitung nach $x$ und nach $y$ nicht möglich. Eine Ableitung nach $\nu$ und $\eta$ ist allerdings möglich. Um dasselbe Ergebnis zu erlangen ist die Jacobi-Transformation notwendig. 
+
+__Referenzelement (engl.: Parent Element)__
+
+Koordinaten   : $\eta$ und $\xi$
+
+Gebiet        : $(-1...1) \cdot (-1...1)$
+
+
+: Koordinaten des Referenzelement. 
+
++----------------+----------+-----------+
+|Knoten $i$      | $\xi_i$  | $\eta_i$  |
++================+==========+===========+
+|$1$             | $-1$     | $-1$      |
++----------------+----------+-----------+
+|$2$             | $1$      | $-1$      |
++----------------+----------+-----------+
+|$3$             | $1$      | $1$       |
++----------------+----------+-----------+
+|$4$             | $-1$     | $1$       |
++----------------+----------+-----------+
+|$5$             | $0$      | $-1$      |
++----------------+----------+-----------+
+|$6$             | $1$      | $0$       |
++----------------+----------+-----------+
+|$7$             | $0$      | $1$       |
++----------------+----------+-----------+
+|$8$             | $-1$     | $0$       |
++----------------+----------+-----------+
+
+\
+\
+Um die Ableitung der Funktionen $H^x$ und $H^y$, abhängig von den Variablen $\eta$ und $\xi$, nach $x$ und $y$ zu berechnen, wird die Kettenregel genutzt.
+
+$$ \frac{\partial H^x(\xi,\eta)}{\partial \xi} = \frac{\partial H^x(\xi,\eta)}{\partial x} \cdot \frac{\partial x}{\partial \xi} + \frac{\partial H^x(\xi,\eta)}{\partial y} \cdot \frac{\partial y}{\partial \xi}$$
+$$ \frac{\partial H^x(\xi,\eta)}{\partial \eta} = \frac{\partial H^x(\xi,\eta)}{\partial x} \cdot \frac{\partial x}{\partial \eta} + \frac{\partial H^x(\xi,\eta)}{\partial \eta} \cdot \frac{\partial y}{\partial \eta}  $$
+
+oder:
+
+$$ 
+\left[ \begin{array}{center} 
+\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
+\frac{\partial H^x(\xi,\eta)}{\partial \eta}
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
+\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
+\end{array}\right]
+\cdot
+\left[ \begin{array}{center} 
+\frac{\partial H^x(\xi,\eta)}{\partial x} \\
+\frac{\partial H^x(\xi,\eta)}{\partial y}
+\end{array}\right]
+$$
+
+Somit kann mit Hilfe der inversen Jacobi-Matrix $\mathbf{J^{-1}}$ die Ableitung der Funktionen $H^x$ und $H^y$ wie folgt ausgedrückt werden:
+
+$$ 
+\left[ \begin{array}{center} 
+\frac{\partial H^x(\xi,\eta)}{\partial x} \\
+\frac{\partial H^x(\xi,\eta)}{\partial y}
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
+\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
+\end{array}\right]^{-1}
+\cdot
+\left[ \begin{array}{center} 
+\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
+\frac{\partial H^x(\xi,\eta)}{\partial \eta}
+\end{array}\right]
+= 
+\mathbf{J^{-1}}
+\cdot
+\left[ \begin{array}{center} 
+\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
+\frac{\partial H^x(\xi,\eta)}{\partial \eta}
+\end{array}\right]
+$$
+
+Berechnung der Jacobi-Matrix
+$$
+\mathbf{J} =
+\left[ \begin{array}{center} 
+\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
+\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
+\end{array}\right]
+$$
+
+1. Transformation der Koordinaten
+
+$$
+\begin{align}
+F_x(\xi,\eta) &= x(\xi,\eta) = \sum_{i=1}^8 N_i(\xi,\eta) \cdot x_i^e \\
+F_y(\xi,\eta) &= y(\xi,\eta) = \sum_{i=1}^8 N_i(\xi,\eta) \cdot y_i^e
+\end{align}
+$$
+mit 
+$$
+\begin{align}
+x^e =
+\left[ \begin{array}{r}  
+x_1^e & x_2^e & x_3^e & x_4^e & x_5^e & x_6^e & x_7^e & x_8^e
+\end{array}\right]^T \\
+y^e =
+\left[ \begin{array}{r} 
+y_1^e & y_2^e & y_3^e & y_4^e & y_5^e & y_6^e & y_7^e & y_8^e
+\end{array}\right]^T
+\end{align}
+$$
+
+Eingesetzt in die Jacobi-Matrix ergibt sich 
+$$
+\begin{align}
+\mathbf{J} &=
+\left[ \begin{array}{center} 
+\sum_{i=1}^8 \frac{ N_i(\xi,\eta)}{\partial \xi} \cdot x_i^e & \sum_{i=1}^8 \frac{N_i(\xi,\eta)}{\partial \xi} \cdot y_i^e \\
+\sum_{i=1}^8\frac{ N_i(\xi,\eta)}{\partial \eta} \cdot x_i^e & \sum_{i=1}^8 \frac{N_i(\xi,\eta)}{\partial \eta} \cdot y_i^e
+\end{array}\right] \\
+&=
+\left[ \begin{array}{center} 
+\frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi}&
+\frac{N_5}{\partial \xi}   & \frac{N_6}{\partial \xi}   & \frac{N_7}{\partial \xi}   & \frac{N_8}{\partial \xi} \\
+\frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}&
+\frac{N_5}{\partial \eta}  & \frac{N_6}{\partial \eta}  & \frac{N_7}{\partial \eta}  & \frac{N_8}{\partial \eta}
+\end{array}\right]
+\cdot
+\left[ \begin{array}{center} 
+x_1^e & y_1^e \\
+x_2^e & y_2^e \\
+x_3^e & y_3^e \\
+x_4^e & y_4^e \\
+x_5^e & y_5^e \\
+x_6^e & y_6^e \\
+x_7^e & y_7^e \\
+x_8^e & y_8^e 
+\end{array}\right]
+\end{align}
+$$
+
+
+TODO: Herleitung hierhin...
+$$ \frac{H^x(\xi,\eta)}{\partial x} = j_{11} \cdot \frac{H^x}{\partial \xi} + j_{12} \cdot \frac{H^x}{\partial \eta} $$
+$$ \frac{H^y(\xi,\eta)}{\partial y} = j_{21} \cdot \frac{H^y}{\partial \xi} + j_{22} \cdot \frac{H^y}{\partial \eta} $$
+
+mit:
+
+$$ 
+\begin{align}
+j_{11} &= \\
+j_{12} &= \\
+j_{21} &= \\
+j_{22} &= \\
+\end{align}
+$$
+
+_Frage zur Erstellung der Jacobi-Matrix_
+
+Wenn ich es richtig verstanden habe wird $F$, also die Transformation von den physikalischen zu den Referenzkoordinaten nach der folgenden Formel berechnet
+
+bei 1D Problemen (z.B. Balken)
+
+$$
+\begin{align}
+F_e(\xi) = x(\xi) &= \sum_{i=1}^n N_i^e(\xi) \cdot x_i^e \\
+&= \frac{1-\xi}{2} \cdot x_1^e + \frac{1+\xi}{2} \cdot x_2^e \\
+&= \frac{1}{2} \cdot x_1^e - \frac{\xi}{2} \cdot x_1^e +\frac{1}{2} \cdot x_2^e + \frac{\xi}{2} \cdot x_2^e 
+\end{align}
+$$
+
+$$
+\begin{align}
+\mathbf{J} &=
+\left[ \begin{array}{center} 
+\frac{x(\xi)}{\partial \xi}
+\end{array}\right] = 
+\left[ \begin{array}{center} 
+\frac{1}{2} \cdot (x_2^e - x_1^e)
+\end{array}\right]\\
+\end{align}
+$$
+
+bei 2D Problemen (z.B. Platten)
+
+$$
+\begin{align}
+F_e(\xi,\eta) = x(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot x_i^e \\
+F_e(\xi,\eta) = y(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot y_i^e
+\end{align}
+$$
+
+Bei dem Paper von Batoz und Tahar wird als Berechnungsbasis das 8-Knoten Serendipity Element genutzt. Somit gibt es acht Basisfunktionen, acht x-Koordinaten und acht y-Koordinaten. Es ergibt sich daraus die folgende Jacobi-Matrix:
+
+
+
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+NEBENRECHNUNGEN
+_______________________________________________________________________________________________________
+
+$$
+\begin{align}
+    H_1^x &= \left( \begin{array}{rrr}  N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2}a_5 \\ -a_8 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr}  N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2} \cdot 0,5 \\ 0 \\ \end{array}\right)\\
+
+    H_2^x &= \left( \begin{array}{rrr} N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} b_5 \\ b_8 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr} N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 0 \\ 0 \\ \end{array}\right) \\
+
+    H_3^x &= \left( \begin{array}{rrr} N_1 & N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ -c_5 \\ -c_8 \\ \end{array}\right)
+    &= \left( \begin{array}{rrr} N_1 & N_5 & N_8 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ 0,25 \\ 0,5 \\ \end{array}\right) \\
+
+    H_4^x &= \left( \begin{array}{rrr} N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr}  \frac{3}{2}a_6 \\ -a_5 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr} N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr}  \frac{3}{2} \cdot 0 \\ -0,5 \\ \end{array}\right) \\
+
+    H_5^x &= \left( \begin{array}{rrr} N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} b_6 \\ b_5 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr} N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 0 \\ 0 \\ \end{array}\right) \\
+
+    H_6^x &= \left( \begin{array}{rrr} N_2 & N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ -c_6 \\ -c_5 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr} N_2 & N_6 & N_5 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ 0,5 \\ 0,25 \\ \end{array}\right) \\
+
+    H_7^x &= \left( \begin{array}{rrr}  N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2}a_7 \\ -a_6 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr}  N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2} \cdot 0,5 \\ -a_6 \\ \end{array}\right) \\
+
+    H_8^x &= \left( \begin{array}{rrr} N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} b_7 \\ b_6 \\ \end{array}\right) 
+    &= \left( \begin{array}{rrr} N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 0 \\ 0 \\ \end{array}\right) \\
+
+    H_9^x &= \left( \begin{array}{rrr} N_3 & N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ -c_7 \\ -c_6 \\ \end{array}\right)
+    &= \left( \begin{array}{rrr} N_3 & N_7 & N_6 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ 0.25 \\ 0,5 \\ \end{array}\right) \\
+
+    H_{10}^x &= \left( \begin{array}{rrr} N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2}a_8 \\ -a_7 \\ \end{array}\right)
+    &= \left( \begin{array}{rrr} N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} \frac{3}{2} \cdot 0 \\ 0,5 \\ \end{array}\right) \\
+
+    H_{11}^x &= \left( \begin{array}{rrr} N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} b_8 \\ b_7 \\ \end{array}\right)
+    &= \left( \begin{array}{rrr} N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 0 \\ 0 \\ \end{array}\right) \\
+
+    H_{12}^x &= \left( \begin{array}{rrr} N_4 & N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ -c_8 \\ -c_7 \\ \end{array}\right)
+    &= \left( \begin{array}{rrr} N_4 & N_8 & N_7 \\ \end{array}\right) \cdot \left( \begin{array}{rrr} 1 \\ 0,5 \\ 0,25 \\ \end{array}\right) \\
+
+\end{align}
+$$
+
+$\beta_x=\sum_{i=1}^8 N_i \beta_{x_i}$
+
+$\beta_x = \left(\begin{array}{rrr} N_1 & N_2 & N_3 & N_4 & N_5 & N_6 & N_7 & N_8 \\ \end{array}\right) \cdot 
+\left( \begin{array}{rrr} 
+\beta_{x_1} \\ 
+\beta_{x_2} \\
+\beta_{x_3} \\
+\beta_{x_4} \\
+\beta_{x_5} \\
+\beta_{x_6} \\
+\beta_{x_7} \\
+\beta_{x_8} \\
+\end{array}\right)$
+
+$\beta_x = \left(\begin{array}{rrr} N_1 & N_2 & N_3 & N_4 & N_5 & N_6 & N_7 & N_8 \\ \end{array}\right) \cdot 
+\left( \begin{array}{rrr} 
+\theta_{y_{1}} \\ 
+\theta_{y_{2}} \\
+\theta_{y_{3}} \\
+\theta_{y_{4}} \\
+\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} (\theta_{y_{1}} + \theta_{y_{2}}) \\
+-\frac{1}{2} (- \theta_{y_{2}} - \theta_{y_{3}})  \\
+-\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} (\theta_{y_{3}} + \theta_{y_{4}}) \\
+-\frac{1}{2} (\theta_{y_{4}} + \theta_{y_{1}}) \\
+\end{array}\right)$
+
+$$
+\begin{align}
+\beta_x &=
+N_1 \cdot \theta_{y_{1}} \\
+&+ N_2 \cdot \theta_{y_{2}} \\
+&+ N_3 \cdot \theta_{y_{3}} \\
+&+ N_4 \cdot \theta_{y_{4}} \\
+
+&+ N_5 \cdot (\frac{3}{2 l_{12}} (w_{1} - w_{2}) + \frac{1}{4} (\theta_{y_{1}} + \theta_{y_{2}})) \\
+&+ N_6 \cdot (-\frac{1}{2} (- \theta_{y_{2}} - \theta_{y_{3}})) \\
+&+ N_7 \cdot (-\frac{3}{2 l_{34}} (w_{3} - w_{4}) + \frac{1}{4} (\theta_{y_{3}} + \theta_{y_{4}})) \\
+&+ N_8 \cdot (-\frac{1}{2} (\theta_{y_{4}} + \theta_{y_{1}})) \\
+
+\end{align}
+$$
+
+$$
+\begin{align}
+\beta_x &=
+N_1 \cdot \theta_{y_{1}} \\
+&+ N_2 \cdot \theta_{y_{2}} \\
+&+ N_3 \cdot \theta_{y_{3}} \\
+&+ N_4 \cdot \theta_{y_{4}} \\
+
+&+ N_5 \cdot \frac{3}{2 l_{12}} w_{1} - N_5 \cdot \frac{3}{2 l_{12}} w_{2} + N_5 \cdot \frac{1}{4} \theta_{y_{1}} + N_5 \cdot \frac{1}{4} \theta_{y_{2}} \\
+&+ N_6 \cdot \frac{1}{2} \theta_{y_{2}} + N_6 \cdot \frac{1}{2} \theta_{y_{3}} \\
+&+ N_7 \cdot -\frac{3}{2 l_{34}} w_{3} + N_7 \cdot \frac{3}{2 l_{34}} w_{4} + N_7 \cdot \frac{1}{4} \theta_{y_{3}} + N_7 \cdot \frac{1}{4} \theta_{y_{4}} \\
+&+ N_8 \cdot -\frac{1}{2} \theta_{y_{4}} - N_8 \cdot \frac{1}{2} \theta_{y_{1}} \\
+
+\end{align}
+$$
+
+$$
+\begin{align}
+\beta_x &=
++ N_5 \cdot \frac{3}{2 l_{12}}               w_{1} \\
+&+ 0 \cdot                                    \theta_{x_{1}} \\
+&+ (N_1 + \frac{1}{4} N_5 - \frac{1}{2} N_8)  \theta_{y_{1}} \\
+&- N_5 \cdot \frac{3}{2 l_{12}}               w_{2} \\
+&+ 0 \cdot                                    \theta_{x_{2}} \\
+&+ (\frac{1}{4} N_5 + \frac{1}{2} N_6 + N_2)  \theta_{y_{2}} \\
+&- N_7 \cdot \frac{3}{2 l_{34}}               w_{3} \\
+&+ 0 \cdot                                    \theta_{x_{3}} \\
+&+ (\frac{1}{2} N_6 + \frac{1}{4} N_7 + N_3)  \theta_{y_{3}} \\
+
+&+ N_7 \cdot \frac{3}{2 l_{34}}               w_{4} \\
+&+ 0 \cdot                                    \theta_{x_{4}} \\
+&+ (N_4 + \frac{1}{4} N_7 - \frac{1}{2} N_8)  \theta_{y_{4}} 
+\end{align}
+$$
+
+0.75we₁ - 0.75we₂ - 0.25θey₁ - 0.25θey₂
+0.5θey₂ + 0.5θey₃
+-0.75we₃ + 0.75we₄ - 0.25θey₃ - 0.25θey₄
+0.5θey₁ + 0.5θey₄

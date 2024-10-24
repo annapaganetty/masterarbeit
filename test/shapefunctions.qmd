@@ -30,7 +30,7 @@ nichtkonformes Rechteckelement mit 12 Freiheitsgraden
 #| echo: false
 K2 = [ -1 1 1 -1; -1 -1 1 1]
 H2dnonconform = hermiteelement(K2,conforming=false)
-fplot3d(H2dnonconform)
+# fplot3d(H2dnonconform)
 ```
 
 ```{julia}
