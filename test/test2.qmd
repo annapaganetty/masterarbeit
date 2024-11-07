@@ -1,0 +1,17 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+```{julia}
+m1 = makequadratcicMesh(p1, 2)
+e = element(m1,1)
+m1.data[:hxfunc] = btpHx()
+
+hxe1 = e.data[:hxfunc]
+Ke = hxe1(e)
+
+Ke
+# fig = Figure()
+# Makie.Axis3(fig, protrusions=0)
+# fplot3d!(Ke[1])
+```

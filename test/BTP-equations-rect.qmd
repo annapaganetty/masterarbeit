@@ -169,9 +169,9 @@ $$
 ________________________________________________________________________________________
 
 
-$\beta_x=\sum_{i=1}^8 N_i B_{x_i}$
+$\beta_x=\sum_{i=1}^8 N_i \beta_{x_i}$
 
-$\beta_y=\sum_{i=1}^8 N_i B_{y_i}$
+$\beta_y=\sum_{i=1}^8 N_i \beta_{y_i}$
 
 $\beta_x$ und $\beta_y$ können auch in der folgenden Matrixschreibweise ausgedrückt werden: 
 
@@ -343,171 +343,6 @@ Gebiet        : $(-1...1) \cdot (-1...1)$
 |$8$             | $-1$     | $0$       |
 +----------------+----------+-----------+
 
-\
-\
-Um die Ableitung der Funktionen $H^x$ und $H^y$, abhängig von den Variablen $\eta$ und $\xi$, nach $x$ und $y$ zu berechnen, wird die Kettenregel genutzt.
-
-$$ \frac{\partial H^x(\xi,\eta)}{\partial \xi} = \frac{\partial H^x(\xi,\eta)}{\partial x} \cdot \frac{\partial x}{\partial \xi} + \frac{\partial H^x(\xi,\eta)}{\partial y} \cdot \frac{\partial y}{\partial \xi}$$
-$$ \frac{\partial H^x(\xi,\eta)}{\partial \eta} = \frac{\partial H^x(\xi,\eta)}{\partial x} \cdot \frac{\partial x}{\partial \eta} + \frac{\partial H^x(\xi,\eta)}{\partial \eta} \cdot \frac{\partial y}{\partial \eta}  $$
-
-oder:
-
-$$ 
-\left[ \begin{array}{center} 
-\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
-\frac{\partial H^x(\xi,\eta)}{\partial \eta}
-\end{array}\right]
-= 
-\left[ \begin{array}{center} 
-\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
-\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
-\end{array}\right]
-\cdot
-\left[ \begin{array}{center} 
-\frac{\partial H^x(\xi,\eta)}{\partial x} \\
-\frac{\partial H^x(\xi,\eta)}{\partial y}
-\end{array}\right]
-$$
-
-Somit kann mit Hilfe der inversen Jacobi-Matrix $\mathbf{J^{-1}}$ die Ableitung der Funktionen $H^x$ und $H^y$ wie folgt ausgedrückt werden:
-
-$$ 
-\left[ \begin{array}{center} 
-\frac{\partial H^x(\xi,\eta)}{\partial x} \\
-\frac{\partial H^x(\xi,\eta)}{\partial y}
-\end{array}\right]
-= 
-\left[ \begin{array}{center} 
-\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
-\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
-\end{array}\right]^{-1}
-\cdot
-\left[ \begin{array}{center} 
-\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
-\frac{\partial H^x(\xi,\eta)}{\partial \eta}
-\end{array}\right]
-= 
-\mathbf{J^{-1}}
-\cdot
-\left[ \begin{array}{center} 
-\frac{\partial H^x(\xi,\eta)}{\partial \xi} \\
-\frac{\partial H^x(\xi,\eta)}{\partial \eta}
-\end{array}\right]
-$$
-
-Berechnung der Jacobi-Matrix
-$$
-\mathbf{J} =
-\left[ \begin{array}{center} 
-\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
-\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
-\end{array}\right]
-$$
-
-1. Transformation der Koordinaten
-
-$$
-\begin{align}
-F_x(\xi,\eta) &= x(\xi,\eta) = \sum_{i=1}^8 N_i(\xi,\eta) \cdot x_i^e \\
-F_y(\xi,\eta) &= y(\xi,\eta) = \sum_{i=1}^8 N_i(\xi,\eta) \cdot y_i^e
-\end{align}
-$$
-mit 
-$$
-\begin{align}
-x^e =
-\left[ \begin{array}{r}  
-x_1^e & x_2^e & x_3^e & x_4^e & x_5^e & x_6^e & x_7^e & x_8^e
-\end{array}\right]^T \\
-y^e =
-\left[ \begin{array}{r} 
-y_1^e & y_2^e & y_3^e & y_4^e & y_5^e & y_6^e & y_7^e & y_8^e
-\end{array}\right]^T
-\end{align}
-$$
-
-Eingesetzt in die Jacobi-Matrix ergibt sich 
-$$
-\begin{align}
-\mathbf{J} &=
-\left[ \begin{array}{center} 
-\sum_{i=1}^8 \frac{ N_i(\xi,\eta)}{\partial \xi} \cdot x_i^e & \sum_{i=1}^8 \frac{N_i(\xi,\eta)}{\partial \xi} \cdot y_i^e \\
-\sum_{i=1}^8\frac{ N_i(\xi,\eta)}{\partial \eta} \cdot x_i^e & \sum_{i=1}^8 \frac{N_i(\xi,\eta)}{\partial \eta} \cdot y_i^e
-\end{array}\right] \\
-&=
-\left[ \begin{array}{center} 
-\frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi}&
-\frac{N_5}{\partial \xi}   & \frac{N_6}{\partial \xi}   & \frac{N_7}{\partial \xi}   & \frac{N_8}{\partial \xi} \\
-\frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}&
-\frac{N_5}{\partial \eta}  & \frac{N_6}{\partial \eta}  & \frac{N_7}{\partial \eta}  & \frac{N_8}{\partial \eta}
-\end{array}\right]
-\cdot
-\left[ \begin{array}{center} 
-x_1^e & y_1^e \\
-x_2^e & y_2^e \\
-x_3^e & y_3^e \\
-x_4^e & y_4^e \\
-x_5^e & y_5^e \\
-x_6^e & y_6^e \\
-x_7^e & y_7^e \\
-x_8^e & y_8^e 
-\end{array}\right]
-\end{align}
-$$
-
-
-TODO: Herleitung hierhin...
-$$ \frac{H^x(\xi,\eta)}{\partial x} = j_{11} \cdot \frac{H^x}{\partial \xi} + j_{12} \cdot \frac{H^x}{\partial \eta} $$
-$$ \frac{H^y(\xi,\eta)}{\partial y} = j_{21} \cdot \frac{H^y}{\partial \xi} + j_{22} \cdot \frac{H^y}{\partial \eta} $$
-
-mit:
-
-$$ 
-\begin{align}
-j_{11} &= \\
-j_{12} &= \\
-j_{21} &= \\
-j_{22} &= \\
-\end{align}
-$$
-
-_Frage zur Erstellung der Jacobi-Matrix_
-
-Wenn ich es richtig verstanden habe wird $F$, also die Transformation von den physikalischen zu den Referenzkoordinaten nach der folgenden Formel berechnet
-
-bei 1D Problemen (z.B. Balken)
-
-$$
-\begin{align}
-F_e(\xi) = x(\xi) &= \sum_{i=1}^n N_i^e(\xi) \cdot x_i^e \\
-&= \frac{1-\xi}{2} \cdot x_1^e + \frac{1+\xi}{2} \cdot x_2^e \\
-&= \frac{1}{2} \cdot x_1^e - \frac{\xi}{2} \cdot x_1^e +\frac{1}{2} \cdot x_2^e + \frac{\xi}{2} \cdot x_2^e 
-\end{align}
-$$
-
-$$
-\begin{align}
-\mathbf{J} &=
-\left[ \begin{array}{center} 
-\frac{x(\xi)}{\partial \xi}
-\end{array}\right] = 
-\left[ \begin{array}{center} 
-\frac{1}{2} \cdot (x_2^e - x_1^e)
-\end{array}\right]\\
-\end{align}
-$$
-
-bei 2D Problemen (z.B. Platten)
-
-$$
-\begin{align}
-F_e(\xi,\eta) = x(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot x_i^e \\
-F_e(\xi,\eta) = y(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot y_i^e
-\end{align}
-$$
-
-Bei dem Paper von Batoz und Tahar wird als Berechnungsbasis das 8-Knoten Serendipity Element genutzt. Somit gibt es acht Basisfunktionen, acht x-Koordinaten und acht y-Koordinaten. Es ergibt sich daraus die folgende Jacobi-Matrix:
-
 
 
 \
@@ -633,23 +468,33 @@ $$
 $$
 \begin{align}
 \beta_x &=
-+ N_5 \cdot \frac{3}{2 l_{12}}               w_{1} \\
-&+ 0 \cdot                                    \theta_{x_{1}} \\
-&+ (N_1 + \frac{1}{4} N_5 - \frac{1}{2} N_8)  \theta_{y_{1}} \\
-&- N_5 \cdot \frac{3}{2 l_{12}}               w_{2} \\
-&+ 0 \cdot                                    \theta_{x_{2}} \\
-&+ (\frac{1}{4} N_5 + \frac{1}{2} N_6 + N_2)  \theta_{y_{2}} \\
-&- N_7 \cdot \frac{3}{2 l_{34}}               w_{3} \\
-&+ 0 \cdot                                    \theta_{x_{3}} \\
-&+ (\frac{1}{2} N_6 + \frac{1}{4} N_7 + N_3)  \theta_{y_{3}} \\
-
-&+ N_7 \cdot \frac{3}{2 l_{34}}               w_{4} \\
-&+ 0 \cdot                                    \theta_{x_{4}} \\
-&+ (N_4 + \frac{1}{4} N_7 - \frac{1}{2} N_8)  \theta_{y_{4}} 
++ N_5 \cdot \frac{3}{2 l_{12}}                &w_{1} \\
+&+ 0 \cdot                                    &\theta_{x_{1}} \\
+&+ (N_1 + \frac{1}{4} N_5 - \frac{1}{2} N_8)  &\theta_{y_{1}} \\
+&- N_5 \cdot \frac{3}{2 l_{12}}               &w_{2} \\
+&+ 0 \cdot                                    &\theta_{x_{2}} \\
+&+ (\frac{1}{4} N_5 + \frac{1}{2} N_6 + N_2)  &\theta_{y_{2}} \\
+&- N_7 \cdot \frac{3}{2 l_{34}}               &w_{3} \\
+&+ 0 \cdot                                    &\theta_{x_{3}} \\
+&+ (\frac{1}{2} N_6 + \frac{1}{4} N_7 + N_3)  &\theta_{y_{3}} \\
+&+ N_7 \cdot \frac{3}{2 l_{34}}               &w_{4} \\
+&+ 0 \cdot                                    &\theta_{x_{4}} \\
+&+ (N_4 + \frac{1}{4} N_7 - \frac{1}{2} N_8)  &\theta_{y_{4}} 
 \end{align}
-$$
 
-0.75we₁ - 0.75we₂ - 0.25θey₁ - 0.25θey₂
-0.5θey₂ + 0.5θey₃
--0.75we₃ + 0.75we₄ - 0.25θey₃ - 0.25θey₄
-0.5θey₁ + 0.5θey₄
+\begin{align}
+H_1^x &= N_5 \cdot \frac{3}{2 l_{12}}                 \\
+H_2^x &= 0 \cdot                                     \\
+H_3^x &= (N_1 + \frac{1}{4} N_5 - \frac{1}{2} N_8)   \\
+H_4^x &=- N_5 \cdot \frac{3}{2 l_{12}}                \\
+H_5^x &= 0 \cdot                                     \\
+H_6^x &= (\frac{1}{4} N_5 + \frac{1}{2} N_6 + N_2)   \\
+H_7^x &=- N_7 \cdot \frac{3}{2 l_{34}}                \\
+H_8^x &= 0 \cdot                                     \\
+H_9^x &= (\frac{1}{2} N_6 + \frac{1}{4} N_7 + N_3)   \\
+H_{10}^x &= N_7 \cdot \frac{3}{2 l_{34}}                \\
+H_{11}^x &= 0 \cdot                                     \\
+H_{12}^x &= (N_4 + \frac{1}{4} N_7 - \frac{1}{2} N_8)  
+\end{align}
+
+$$

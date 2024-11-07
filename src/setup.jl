@@ -45,16 +45,21 @@ include("generated/plate-hartmann-conforming.jl")
 include("generated/plate-hartmann-nonconforming.jl")
 include("generated/plate-kirchhoff-conforming.jl")
 include("generated/plate-kirchhoff-nonconforming.jl")
+include("generated/BTP-Hx-functions.jl")
+# include("generated/BTP-Hy-functions.jl")
 
+include("mathematics/BTP-H-functions.jl")
 include("mathematics/hermitefunctions-1D.jl")
 include("mathematics/hermitefunctions.jl")
 include("mathematics/jacobi-matrix.jl")
+include("mathematics/serendipityfunctions.jl")
 
 include("mesh/make-mesh.jl")
 
 include("plots/plot.jl")
 include("plots/plot-functions.jl")
 include("plots/print-stiffness-matrix.jl")
+include("plots/print-BTP-H-functions.jl")
 
 include("results/internal-forces.jl")
 include("results/assembleKr.jl")

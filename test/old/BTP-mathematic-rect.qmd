@@ -10,63 +10,64 @@ using Symbolics
 geometrische Größen des allgemeines Vierecks nach Batoz und Tahar 
 
 ```{julia}
-x1 = -1
-x2 = 1
-x3 = 1
-x4 = -1
-x5 = 0
-x6 = 1
-x7 = 0
-x8 = -1
+# x1 = -1
+# x2 = 1
+# x3 = 1
+# x4 = -1
+# x5 = 0
+# x6 = 1
+# x7 = 0
+# x8 = -1
 
-y1 = -1
-y2 = -1
-y3 = 1
-y4 = 1
-y5 = -1
-y6 = 0
-y7 = 1
-y8 = 0
+# y1 = -1
+# y2 = -1
+# y3 = 1
+# y4 = 1
+# y5 = -1
+# y6 = 0
+# y7 = 1
+# y8 = 0
+
 ```
 ```{julia}
-xij = []
-yij = []
-lij = []
-Ck = []
-Sk = []
-ak = []
-bk = []
-ck = []
-dk = []
-ek = []
+# @variables x1,x2,x3,x4,x5,x6,x7,x8,y1,y2,y3,y4,y5,y6,y7,y8;
+# xij = []
+# yij = []
+# lij = []
+# Ck = []
+# Sk = []
+# ak = []
+# bk = []
+# ck = []
+# dk = []
+# ek = []
 
-push!(xij, x1 - x2)
-push!(xij, x2 - x3)
-push!(xij, x3 - x4)
-push!(xij, x4 - x1)
+# push!(xij, x1 - x2)
+# push!(xij, x2 - x3)
+# push!(xij, x3 - x4)
+# push!(xij, x4 - x1)
 
-push!(yij, y1 - y2)
-push!(yij, y2 - y3)
-push!(yij, y3 - y4)
-push!(yij, y4 - y1)
+# push!(yij, y1 - y2)
+# push!(yij, y2 - y3)
+# push!(yij, y3 - y4)
+# push!(yij, y4 - y1)
 
-for i = 1:4
-    push!(lij, (xij[i]^2 + yij[i]^2)^(1/2))
-end
+# for i = 1:4
+#     push!(lij, expand(sqrt(xij[i]^2 + yij[i]^2)))
+# end
 
-for i = 1:4
-    push!(Ck, -yij[i]/lij[i])
-    push!(Sk, xij[i]/lij[i])
-end
+# for i = 1:4
+#     push!(Ck, expand(-yij[i]/lij[i]))
+#     push!(Sk, expand(xij[i]/lij[i]))
+# end
 
-for i = 1:4
-    push!(ak, -Sk[i]/lij[i])
-    push!(bk, -3/4 * Ck[i] * Sk[i])
-    push!(ck, -1/2 * Ck[i]^2 - 1/4 * Sk[i]^2)
-    push!(dk, -Ck[i]/lij[i])
-    push!(ek, -1/2 * Sk[i]^2 + 1/4 * Ck[i]^2)
-end
-ek
+# for i = 1:4
+#     push!(ak, simplify(expand(-Sk[i]/lij[i])))
+#     push!(bk, simplify(expand(-3/4 * Ck[i] * Sk[i])))
+#     push!(ck, simplify(expand(-1/2 * Ck[i]^2 - 1/4 * Sk[i]^2)))
+#     push!(dk, simplify(expand(-Ck[i]/lij[i])))
+#     push!(ek, simplify(expand(-1/2 * Sk[i]^2 + 1/4 * Ck[i]^2)))
+# end
 ```
 
 Element vector (12 knowns)
@@ -76,15 +77,21 @@ we = Symbolics.variables(:we,1:4)
 θex = Symbolics.variables(:θex,1:4)
 θey = Symbolics.variables(:θey,1:4)
 Ue = vcat([[we[i], θex[i], θey[i]] for i = 1:4]...)
+UeNew = [we[1] θex[1] θey[1] we[2] θex[2] θey[2] we[3] θex[3] θey[3] we[4] θex[4] θey[4]]
 ```
 
+```{julia}
+Sk = Symbolics.variables(:S,5:8)
+Ck = Symbolics.variables(:C,5:8)
+lij = Symbolics.variables(:l,(12,23,34,41))
+```
 
 ```{julia}
 βn = []
-push!(βn, -1/2 * (Sk[1] * (θex[1] + θex[2]) + Ck[1] * (-θey[1] - θey[2])))      # βn5
-push!(βn, -1/2 * (Sk[2] * (θex[2] + θex[3]) + Ck[2] * (-θey[2] - θey[3])))      # βn6
-push!(βn, -1/2 * (Sk[3] * (θex[3] + θex[4]) + Ck[3] * (-θey[3] - θey[4])))      # βn7
-push!(βn, -1/2 * (Sk[4] * (θex[4] + θex[1]) + Ck[4] * (-θey[4] - θey[1])))      # βn8
+push!(βn, expand(-1/2 * (Sk[1] * (θex[1] + θex[2]) + Ck[1] * (-θey[1] - θey[2]))))      # βn5
+push!(βn, expand(-1/2 * (Sk[2] * (θex[2] + θex[3]) + Ck[2] * (-θey[2] - θey[3]))))      # βn6
+push!(βn, expand(-1/2 * (Sk[3] * (θex[3] + θex[4]) + Ck[3] * (-θey[3] - θey[4]))))      # βn7
+push!(βn, expand(-1/2 * (Sk[4] * (θex[4] + θex[1]) + Ck[4] * (-θey[4] - θey[1]))))      # βn8
 
 ws = []
 push!(ws, -3/(2*lij[1]) * (we[1] - we[2]) - 1/4 * (Ck[1] * (θex[1] + θex[2]) + Sk[1] * (θey[1] + θey[2])))
@@ -108,12 +115,10 @@ for i = 1:4
     push!(βyi, -θex[i])
 end
 for i = 1:4
-    push!(βxi, Ck[i] * βn[i] - Sk[i] * βs[i])
-    push!(βyi, Sk[i] * βn[i] + Ck[i] * βs[i])
+    push!(βxi, expand(Ck[i] * βn[i] - Sk[i] * βs[i]))
+    push!(βyi, expand(Sk[i] * βn[i] + Ck[i] * βs[i]))
 end
-for i = 5:8
-    println(expand(βxi[i]))
-end
+βyi
 ```
 
 Serendipity Shape Functions mit parametrischen Koordinaten (-1...1 x -1...1)
@@ -121,31 +126,6 @@ Serendipity Shape Functions mit parametrischen Koordinaten (-1...1 x -1...1)
 ```{julia}
 include("../src/setup.jl")
 Ni = nodalbasis(makeelement(:serendipity, QHat, k=2))
-xe = Symbolics.variables(:xe,1:8)
-ye = Symbolics.variables(:ye,1:8)
-∂xNi = ∂x.(Ni)
-∂yNi = ∂y.(Ni)
-
-display((Ni))
-display((∂xNi))
-display((∂yNi))
-coords = [xe ye]
-derivates = [∂xNi'; ∂yNi']
-jac11 = []
-jac12 = []
-jac21 = []
-jac22 = []
-for i = 1:8 
-    push!(jac11,∂xNi[i]* xe[i])
-    push!(jac12,∂xNi[i]* ye[i])
-    push!(jac21,∂yNi[i]* xe[i])
-    push!(jac22,∂yNi[i]* ye[i])
-end 
-j11 = sum(jac11)
-j12 = sum(jac12)
-j21 = sum(jac21)
-j22 = sum(jac22)
-expand(j11)
 # fplot3d(Ni)
 ```
 
@@ -161,9 +141,16 @@ for i = 1:8
     push!(betaX, expand(N[i] * βxi[i]))
     push!(betaY, expand(N[i] * βyi[i]))
 end
-βx = expand(sum(betaX))
-βy = expand(sum(betaX))
+βx = ((sum(betaX)))
+βy = ((sum(betaX)))
 ```
+
+```{julia}
+A = βx * Ue'
+A[4]
+```
+
+Hx und Hy abgeschrieben aus dem Paper von Batoz und Tahar
 
 ```{julia}
 Hx = []
@@ -226,6 +213,9 @@ J[1,2] = y21 + y34 + η * (y12 + y34)
 J[2,2] = y32 + y41 + ξ * (y12 + y34)
 detJ = (expand(J[1,1] * J[2,2] - J[2,1] * J[1,2]))
 ```
+
+# Elementsteifigkeitsmatrix
+
 ```{julia}
 @variables  h, ν,E ;
 D = E*h^3 / 12*(1-ν^2)

@@ -5,9 +5,26 @@ lang: de
 number-depth: 3
 number-sections: true
 
+filters: 
+  - latex-environment
+environments: [center]
+
+
+  chapters:
+    - eidesstattliche-erklaerung.qmd
+    - danksagung.qmd
+
+    - part: einleitung.qmd
+      chapters:
+        - motivation.qmd
+        - problemstellung.qmd
+        - zielsetzung-gliederung.qmd
+
+
+
 format: 
   html: 
-    default-image-extension: svg
+    default-image-extension: svg 
   pdf:
     include-in-header:
       - text: |
@@ -19,19 +36,6 @@ format:
         \printindex
     default-image-extension: pdf
 
-
-    # - part: vorberkungen.qmd
-    #   chapters:
-    #     - 00-definitionen.qmd
-    #     - 001-Titelblatt.qmd
-    #     - 002-Eidesstattliche_Erklaerung.qmd
-    #     - 003-Danksagung.qmd
-
-    # - part: Einleitung.qmd
-    #   chapters:
-    #     - Motivation.qmd
-    #     - Problemstellung.qmd
-    #     - Zielsetzung_Gliederung.qmd
 
     # - part: Grundlagen_FEM.qmd
     #   chapters:

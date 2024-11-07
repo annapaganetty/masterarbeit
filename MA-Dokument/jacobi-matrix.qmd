@@ -4,12 +4,13 @@
 
 Ziel der Transformation $\tau$ ist, die physikalischen Koordinaten $x$ und $y$ in die Koordinaten des Referenzelements $\xi$ und $\eta$ umzuwandeln.Sei $(\xi,\eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch $x(\xi,\eta)$ und $y(\xi,\eta)$ die dementsprechenden physikalischen Koordinaten beschrieben.
 
+
 $$
 \begin{align}
 \tau :  &(\xi,\eta) \to x(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot x_i^e\\
         &(\xi,\eta) \to y(\xi,\eta) = \sum_{i=1}^n N_i^e(\xi,\eta) \cdot y_i^e
 \end{align}
-$$
+$$ {#eq-black-scholes}
 
 Alle Formulierungen, welche eine Ableitung nach $x$ und $y$ beinhalten werden transformiert in Ableitungen nach $\xi$ und $\eta$, mit Hilfe der Transformationsmatrix, der sogenannten Jacobi-Matrix $\mathbf{J}$.
 
@@ -78,7 +79,6 @@ $$
 \frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
 \frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
 \end{array}\right]}_{\mathbf{J}}
-\cdot
 \left[ \begin{array}{center} 
 \frac{\partial N_i}{\partial x} \\
 \frac{\partial N_i}{\partial y}
@@ -97,7 +97,6 @@ $$
 \frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\
 \frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta}
 \end{array}\right]^{-1}}_{\mathbf{J^{-1}}}
-\cdot
 \left[ \begin{array}{center} 
 \frac{\partial N_i}{\partial \xi} \\
 \frac{\partial N_i}{\partial \eta}
@@ -128,10 +127,10 @@ Die Formfunktionen zur Berechnung der Transformationsmatrix im zweidimensionalen
 
 $$
 \begin{align}
-N_1 &= \frac{1}{4} \cdot (1-\xi) \cdot (1-\eta) \\
-N_2 &= \frac{1}{4} \cdot (1+\xi) \cdot (1-\eta) \\
-N_3 &= \frac{1}{4} \cdot (1+\xi) \cdot (1+\eta) \\
-N_4 &= \frac{1}{4} \cdot (1-\xi) \cdot (1+\eta) \\
+N_1(\xi,\eta) &= \frac{1}{4} \cdot (1-\xi) \cdot (1-\eta) \\
+N_2(\xi,\eta) &= \frac{1}{4} \cdot (1+\xi) \cdot (1-\eta) \\
+N_3(\xi,\eta) &= \frac{1}{4} \cdot (1+\xi) \cdot (1+\eta) \\
+N_4(\xi,\eta) &= \frac{1}{4} \cdot (1-\xi) \cdot (1+\eta) \\
 \end{align}
 $$
 
@@ -155,7 +154,6 @@ $$
 \frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi} \\
 \frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}
 \end{array}\right]
-\cdot
 \left[ \begin{array}{center} 
 x_1^e & y_1^e \\
 x_2^e & y_2^e \\
@@ -169,7 +167,6 @@ x_4^e & y_4^e
 -(1-\eta) & (1-\eta) & (1+\eta) & -(1+\eta)  \\
 -(1-\xi)  & -(1+\xi) & (1+\xi)  & (1-\xi) 
 \end{array}\right]
-\cdot
 \left[ \begin{array}{center} 
 x_1^e & y_1^e \\
 x_2^e & y_2^e \\

@@ -202,7 +202,8 @@ vars1 = vcat([[wx[i], wy[i]] for i = 1:4]...)       # 8 unbekannte
 vars2 = vcat([[βx[i], βy[i]] for i = 1:8]...)       # 16 unbekannte
 vars = vcat(vars1..., vars2...)
 
-Symbolics.solve_for(eqns, vars)[length(vars1)+1:end]        # Lösung der Variablen aus vars für Gleichungen eqns[] von i = 9:16 (2.Hälfte)
+l = Symbolics.symbolic_linear_solve(eqns, vars)[length(vars1)+1:end]        # Lösung der Variablen aus vars für Gleichungen eqns[] von i = 9:16 (2.Hälfte)
+l
 ```
 
 TODO: Extract matrix

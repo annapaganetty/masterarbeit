@@ -5,6 +5,10 @@ lang: de
 number-depth: 3
 number-sections: true
 
+filters: 
+  - latex-environment
+environments: [center]
+
 format: 
   html: 
     default-image-extension: svg

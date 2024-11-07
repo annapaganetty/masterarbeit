@@ -15,7 +15,10 @@ Daten zum Beispiel "allseitig gelenkig gelagerte Platte"
 
 ```{julia}
 m1 = makequadratcicMesh(p1, 10)
-f1 = mkfig(a3d=false,w=300, h=300)
-mplot!(m1, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureedgelinewidth=0.5, nodesize=5)
-f1
+# f1 = mkfig(a3d=false,w=300, h=300)
+# mplot!(m1, edgesvisible=true, nodesvisible=true,edgelinewidth = 0.2,featureedgelinewidth=0.5, nodesize=5)
+# f1
+
+e = element(m1,1)
+coordinates(e,4)[1]
 ```

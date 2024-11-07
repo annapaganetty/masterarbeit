@@ -1,0 +1,29 @@
+# Programmiersprache JULIA
+
+JUlIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für technische Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Libarys von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen die sowohl eine benutzerfreundliche Umgebung hat als auch leistungsfähig wie C und Fortran ist. 
+
+JULIA beschreibt sich selber als (Internetseite)
+- Fast - Schnell
+- Dynamic - Dynamisch
+- Reproducible - Nachvollziehbar
+- Composable - Ausbaubar (?)
+- General - Allgemein
+- Open Source 
+
+Um die Programmiersprache etwas detaillierter vorzustellen, wird in den folgenden Abschnitten auf die genannten Punkte näher eingegangen.
+
+## Fast
+
+## Dynamic
+
+## Reproducible
+
+## Composable
+
+## General
+
+## Open Source
+
+
+keine Typendeklaration notwendig
+

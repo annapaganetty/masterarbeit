@@ -8,6 +8,7 @@ function hermiteelement(V;conforming=true)
                     for p in eachcol(V)
                 ]...
             )
+            println(N)
         else 
             m = 12
             P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = Int)
