@@ -6,12 +6,40 @@ include("../src/setup.jl")
 m1 = makequadratcicMesh(p1, 2)
 e = element(m1,1)
 m1.data[:hxfunc] = btpHx()
-
 hxe1 = e.data[:hxfunc]
-Ke = hxe1(e)
-
-Ke
-# fig = Figure()
-# Makie.Axis3(fig, protrusions=0)
-# fplot3d!(Ke[1])
+HxElement1 = hxe1(e)
 ```
+
+```{julia}
+V = [ -1 1 1 -1; -1 -1 1 1]
+N = serendipityelement(V)
+
+Hxx = Vector{Any}(undef,12)
+
+Hxx[1] = 0.375N[5]
+Hxx[2] = -0.0                           # !!!
+Hxx[3] = N[1] - 0.25N[5] + 0.5N[8]
+Hxx[4] = -0.375N[5]
+Hxx[5] = -0.0                           # !!!
+Hxx[6] = N[2] - 0.25N[5] + 0.5N[6]
+Hxx[7] = -0.375N[7]
+Hxx[8] = 0.0                            # !!!
+Hxx[9] = N[3] + 0.5N[6] - 0.25N[7]
+Hxx[10] = 0.375N[7]
+Hxx[11] = 0.0                           # !!!
+Hxx[12] = N[4] - 0.25N[7] + 0.5N[8]
+Hxx
+```
+
+
+```{julia}
+include("../src/setup.jl")
+WGLMakie.activate!()
+fig = Figure()
+for i = 1:12
+        Makie.hidedecorations!(Makie.Axis3(fig[i, 1], protrusions=0))
+        fplot3d!(Hxx[i])  # warum können nicht mehrere Funktionen geplottet werden ??
+end
+fig
+```
+

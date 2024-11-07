@@ -40,40 +40,29 @@ function btpHx()
     function hxFunc(e)
         l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈ = geoHx(e)
 
-        V = [ -1 1 1 -1; -1 -1 1 1]
-        Ni = serendipityelement(V)
-
-        @variables N₁, N₂, N₃, N₄, N₅, N₆, N₇, N₈;
-
+        @variables N[1:8]
+        N = Symbolics.scalarize(N)
+    
         Hx = Array{Any}(undef,12)
         
-        Hx1 = expand((-24.0N₅*S₅*l₄₁ + 24.0N₈*S₈*l₁₂) / (16l₁₂*l₄₁))
-        Hx2 = expand((1//16)*(-12.0C₅*N₅*S₅ - 12.0C₈*N₈*S₈))
-        Hx3 = expand((1//16)*(16.0N₁ + 8.0(C₅^2)*N₅ + 8.0(C₈^2)*N₈ - 4.0N₅*(S₅^2) - 4.0N₈*(S₈^2)))
-        Hx4 = (24.0N₅*S₅*l₂₃ - 24.0N₆*S₆*l₁₂) / (16l₁₂*l₂₃)
-        Hx5 = (1//16)*(-12.0C₅*N₅*S₅ - 12.0C₆*N₆*S₆)
-        Hx6 = (1//16)*(16.0N₂ + 8.0(C₅^2)*N₅ + 8.0(C₆^2)*N₆ - 4.0N₅*(S₅^2) - 4.0N₆*(S₆^2))
-        Hx7 = (24.0N₆*S₆*l₃₄ - 24.0N₇*S₇*l₂₃) / (16l₂₃*l₃₄)
-        Hx8 = (1//16)*(-12.0C₆*N₆*S₆ - 12.0C₇*N₇*S₇)
-        Hx9 = (1//16)*(16.0N₃ + 8.0(C₆^2)*N₆ + 8.0(C₇^2)*N₇ - 4.0N₆*(S₆^2) - 4.0N₇*(S₇^2))
-        Hx10 = (24.0N₇*S₇*l₄₁ - 24.0N₈*S₈*l₃₄) / (16l₃₄*l₄₁)
-        Hx11 = (1//16)*(-12.0C₇*N₇*S₇ - 12.0C₈*N₈*S₈)
-        Hx12 = (1//16)*(16.0N₄ + 8.0(C₇^2)*N₇ + 8.0(C₈^2)*N₈ - 4.0N₇*(S₇^2) - 4.0N₈*(S₈^2))
-
-        # Hx[1] = ([Symbolics.coeff(Hx1, y) for y = [N₅ N₈]]) * [Ni[5],Ni[8]]
-        # Hx[2] = ([Symbolics.coeff(Hx2, y) for y = [N₅ N₈]]) * [Ni[5],Ni[8]]
-        # Hx[3] = ([Symbolics.coeff(Hx3, y) for y = [N₁ N₅ N₈]]) * [Ni[1],Ni[5],Ni[8]]
-        # Hx[4] = ([Symbolics.coeff(Hx4, y) for y = [N₅ N₆]]) * [Ni[5],Ni[6]]
-        # Hx[5] = ([Symbolics.coeff(Hx5, y) for y = [N₅ N₆]]) * [Ni[5],Ni[6]]
-        # Hx[6] = ([Symbolics.coeff(Hx6, y) for y = [N₂ N₅ N₆]]) * [Ni[2],Ni[5],Ni[6]]
-        # Hx[7] = ([Symbolics.coeff(Hx7, y) for y = [N₆ N₇]]) * [Ni[6],Ni[7]]
-        # Hx[8] = ([Symbolics.coeff(Hx8, y) for y = [N₆ N₇]]) * [Ni[6],Ni[7]]
-        # Hx[9] = ([Symbolics.coeff(Hx9, y) for y = [N₃ N₆ N₇]]) * [Ni[3],Ni[6],Ni[7]]
-        # Hx[10] = ([Symbolics.coeff(Hx10, y) for y = [N₇ N₈]]) * [Ni[7],Ni[8]]
-        # Hx[11] = ([Symbolics.coeff(Hx11, y) for y = [N₇ N₈]]) * [Ni[7],Ni[8]]
-        # Hx[12] = ([Symbolics.coeff(Hx12, y) for y = [N₄ N₇ N₈]]) * [Ni[4],Ni[7],Ni[8]]
-
-        return Hx3
+# Warum klappt das nicht mit der Multiplikation der ShapeFunktionen ??
+       
+        # V = [ -1 1 1 -1; -1 -1 1 1]
+        # N = serendipityelement(V)
+    
+        Hx[1] = (-24.0*N[5]*S₅*l₂₃*l₃₄*l₄₁ + 24.0*N[8]*S₈*l₁₂*l₂₃*l₃₄) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[2] = (-12.0C₅*N[5]*S₅*l₁₂*l₂₃*l₃₄*l₄₁ - 12.0C₈*N[8]*S₈*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[3] = (16.0N[1]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₅^2)*N[5]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₈^2)*N[8]*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[5]*(S₅^2)*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[8]*(S₈^2)*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[4] = (24.0N[5]*S₅*l₂₃*l₃₄*l₄₁ - 24.0N[6]*S₆*l₁₂*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[5] = (-12.0C₅*N[5]*S₅*l₁₂*l₂₃*l₃₄*l₄₁ - 12.0C₆*N[6]*S₆*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[6] = (16.0N[2]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₅^2)*N[5]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₆^2)*N[6]*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[5]*(S₅^2)*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[6]*(S₆^2)*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[7] = (24.0N[6]*S₆*l₁₂*l₃₄*l₄₁ - 24.0N[7]*S₇*l₁₂*l₂₃*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[8] = (-12.0C₆*N[6]*S₆*l₁₂*l₂₃*l₃₄*l₄₁ - 12.0C₇*N[7]*S₇*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[9] = (16.0N[3]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₆^2)*N[6]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₇^2)*N[7]*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[6]*(S₆^2)*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[7]*(S₇^2)*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[10] = (24.0N[7]*S₇*l₁₂*l₂₃*l₄₁ - 24.0N[8]*S₈*l₁₂*l₂₃*l₃₄) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[11] = (-12.0C₇*N[7]*S₇*l₁₂*l₂₃*l₃₄*l₄₁ - 12.0C₈*N[8]*S₈*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        Hx[12] = (16.0N[4]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₇^2)*N[7]*l₁₂*l₂₃*l₃₄*l₄₁ + 8.0(C₈^2)*N[8]*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[7]*(S₇^2)*l₁₂*l₂₃*l₃₄*l₄₁ - 4.0N[8]*(S₈^2)*l₁₂*l₂₃*l₃₄*l₄₁) / (16l₁₂*l₂₃*l₃₄*l₄₁)
+        return expand.(Hx)
     end
     return hxFunc
 end 

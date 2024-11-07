@@ -10,64 +10,64 @@ using Symbolics
 geometrische Größen des allgemeines Vierecks nach Batoz und Tahar 
 
 ```{julia}
-# x1 = -1
-# x2 = 1
-# x3 = 1
-# x4 = -1
-# x5 = 0
-# x6 = 1
-# x7 = 0
-# x8 = -1
+x1 = -1
+x2 = 1
+x3 = 1
+x4 = -1
+x5 = 0
+x6 = 1
+x7 = 0
+x8 = -1
 
-# y1 = -1
-# y2 = -1
-# y3 = 1
-# y4 = 1
-# y5 = -1
-# y6 = 0
-# y7 = 1
-# y8 = 0
+y1 = -1
+y2 = -1
+y3 = 1
+y4 = 1
+y5 = -1
+y6 = 0
+y7 = 1
+y8 = 0
 
 ```
 ```{julia}
 # @variables x1,x2,x3,x4,x5,x6,x7,x8,y1,y2,y3,y4,y5,y6,y7,y8;
-# xij = []
-# yij = []
-# lij = []
-# Ck = []
-# Sk = []
-# ak = []
-# bk = []
-# ck = []
-# dk = []
-# ek = []
+xij = []
+yij = []
+lij = []
+Ck = []
+Sk = []
+ak = []
+bk = []
+ck = []
+dk = []
+ek = []
 
-# push!(xij, x1 - x2)
-# push!(xij, x2 - x3)
-# push!(xij, x3 - x4)
-# push!(xij, x4 - x1)
+push!(xij, x1 - x2)
+push!(xij, x2 - x3)
+push!(xij, x3 - x4)
+push!(xij, x4 - x1)
 
-# push!(yij, y1 - y2)
-# push!(yij, y2 - y3)
-# push!(yij, y3 - y4)
-# push!(yij, y4 - y1)
+push!(yij, y1 - y2)
+push!(yij, y2 - y3)
+push!(yij, y3 - y4)
+push!(yij, y4 - y1)
 
-# for i = 1:4
-#     push!(lij, expand(sqrt(xij[i]^2 + yij[i]^2)))
-# end
+for i = 1:4
+    push!(lij, expand(sqrt(xij[i]^2 + yij[i]^2)))
+end
 
-# for i = 1:4
-#     push!(Ck, expand(-yij[i]/lij[i]))
-#     push!(Sk, expand(xij[i]/lij[i]))
-# end
+for i = 1:4
+    push!(Ck, expand(-yij[i]/lij[i]))
+    push!(Sk, expand(xij[i]/lij[i]))
+end
 
-# for i = 1:4
-#     push!(ak, simplify(expand(-Sk[i]/lij[i])))
-#     push!(bk, simplify(expand(-3/4 * Ck[i] * Sk[i])))
-#     push!(ck, simplify(expand(-1/2 * Ck[i]^2 - 1/4 * Sk[i]^2)))
-#     push!(dk, simplify(expand(-Ck[i]/lij[i])))
-#     push!(ek, simplify(expand(-1/2 * Sk[i]^2 + 1/4 * Ck[i]^2)))
-# end
+for i = 1:4
+    push!(ak, simplify(expand(-Sk[i]/lij[i])))
+    push!(bk, simplify(expand(-3/4 * Ck[i] * Sk[i])))
+    push!(ck, simplify(expand(-1/2 * Ck[i]^2 - 1/4 * Sk[i]^2)))
+    push!(dk, simplify(expand(-Ck[i]/lij[i])))
+    push!(ek, simplify(expand(-1/2 * Sk[i]^2 + 1/4 * Ck[i]^2)))
+end
 ```
 
 Element vector (12 knowns)
@@ -124,7 +124,7 @@ end
 Serendipity Shape Functions mit parametrischen Koordinaten (-1...1 x -1...1)
 
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 Ni = nodalbasis(makeelement(:serendipity, QHat, k=2))
 # fplot3d(Ni)
 ```
@@ -175,7 +175,7 @@ Hx
 ```
 
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 plotH(Hx,"")
 ```
 ```{julia}

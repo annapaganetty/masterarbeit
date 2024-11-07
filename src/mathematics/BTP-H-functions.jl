@@ -46,7 +46,8 @@ for i = 1:4
 end
 
 # Variablen, stellvertreten für die Basisfunktioen 
-N = Symbolics.variables(:N,1:8)
+@variables N[1:8]
+N = Symbolics.scalarize(N)
 
 # Berechnung von βx und βy
 betaX = []
@@ -59,5 +60,5 @@ end
 βy = simplify((sum(betaX)))
 
 # Vektor-Matrix Produkt aus βx und βx erstellen durch "ausklammern" des Vektors der Freiheitsgrade Ue
-Hx = simplify.([Symbolics.coeff(βx, y) for y = Ue])
-Hy = simplify.([Symbolics.coeff(βy, y) for y = Ue])
+Hx = expand.([Symbolics.coeff(βx, y) for y = Ue])
+Hy = expand.([Symbolics.coeff(βy, y) for y = Ue])
