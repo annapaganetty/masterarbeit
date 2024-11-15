@@ -3,43 +3,32 @@ include("../src/setup.jl")
 ```
 
 ```{julia}
-m1 = makequadratcicMesh(p1, 2)
-e = element(m1,1)
-m1.data[:hxfunc] = btpHx()
-hxe1 = e.data[:hxfunc]
-HxElement1 = hxe1(e)
+# using Symbolics
+# @variables x, xe, xe1, ξ;
+# l = Symbolics.symbolic_linear_solve(x ~ xe * (1 - ξ)/2 + xe1 * (1 + ξ)/2, ξ)
 ```
+
+l  = (2x - xe - xe1) / (-xe + xe1)
+l1 = (2x - xe - xe1) / (-xe + xe1)
 
 ```{julia}
-V = [ -1 1 1 -1; -1 -1 1 1]
-N = serendipityelement(V)
+@variables ξ, η, x1, x2, x3, x4, y1, y2, y3, y4, x, y;
+n1 = (1/4 * (1 - ξ) * (1 - η))
+n2 = (1/4 * (1 + ξ) * (1 - η))
+n3 = (1/4 * (1 + ξ) * (1 + η))
+n4 = (1/4 * (1 - ξ) * (1 + η))
 
-Hxx = Vector{Any}(undef,12)
+N = [n1 n2 n3 n4]
+xe = [x1; x2; x3; x4]
+ye = [y1; y2; y3; y4]
 
-Hxx[1] = 0.375N[5]
-Hxx[2] = -0.0                           # !!!
-Hxx[3] = N[1] - 0.25N[5] + 0.5N[8]
-Hxx[4] = -0.375N[5]
-Hxx[5] = -0.0                           # !!!
-Hxx[6] = N[2] - 0.25N[5] + 0.5N[6]
-Hxx[7] = -0.375N[7]
-Hxx[8] = 0.0                            # !!!
-Hxx[9] = N[3] + 0.5N[6] - 0.25N[7]
-Hxx[10] = 0.375N[7]
-Hxx[11] = 0.0                           # !!!
-Hxx[12] = N[4] - 0.25N[7] + 0.5N[8]
-Hxx
+xi = N * xe
+yi = N * ye
+ξxi = Symbolics.symbolic_linear_solve(x ~ xi[1], ξ)
+ξyi = Symbolics.symbolic_linear_solve(x ~ yi[1], ξ)
+ 
+ηyi = Symbolics.symbolic_linear_solve(y ~ xi[1], η)
+ηyi = Symbolics.symbolic_linear_solve(y ~ yi[1], η)
+
+
 ```
-
-
-```{julia}
-include("../src/setup.jl")
-WGLMakie.activate!()
-fig = Figure()
-for i = 1:12
-        Makie.hidedecorations!(Makie.Axis3(fig[i, 1], protrusions=0))
-        fplot3d!(Hxx[i])  # warum können nicht mehrere Funktionen geplottet werden ??
-end
-fig
-```
-

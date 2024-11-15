@@ -10,15 +10,15 @@ filters:
 environments: [center]
 
 
-  chapters:
-    - eidesstattliche-erklaerung.qmd
-    - danksagung.qmd
+  # chapters:
+  #   - eidesstattliche-erklaerung.qmd
+  #   - danksagung.qmd
 
-    - part: einleitung.qmd
-      chapters:
-        - motivation.qmd
-        - problemstellung.qmd
-        - zielsetzung-gliederung.qmd
+  #   - part: einleitung.qmd
+  #     chapters:
+  #       - motivation.qmd
+  #       - problemstellung.qmd
+  #       - zielsetzung-gliederung.qmd
 
 
 
@@ -26,14 +26,6 @@ format:
   html: 
     default-image-extension: svg 
   pdf:
-    include-in-header:
-      - text: |
-          \usepackage{makeidx}
-          \usepackage{multicol}
-          \makeindex
-    include-after-body:
-      text: |
-        \printindex
     default-image-extension: pdf
 
 

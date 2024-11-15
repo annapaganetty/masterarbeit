@@ -52,6 +52,7 @@ include("mathematics/BTP-H-functions.jl")
 include("mathematics/hermitefunctions-1D.jl")
 include("mathematics/hermitefunctions.jl")
 include("mathematics/jacobi-matrix.jl")
+include("mathematics/lagrangefunctions.jl")
 include("mathematics/serendipityfunctions.jl")
 
 include("mesh/make-mesh.jl")

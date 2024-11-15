@@ -1,0 +1,128 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+## rechteckiges Element
+
+```{julia}
+m1 = makequadratcicMesh(p1, 2)
+e = element(m1,1)
+m1.data[:hxfunc] = btpHx()
+hxe1 = e.data[:hxfunc]
+HxElement1 = hxe1(e)
+```
+
+```{julia}
+V = [ -1 1 1 -1; -1 -1 1 1]
+N = serendipityelement(V)
+
+Hxx = Vector{Any}(undef,12)
+
+Hxx[1] = 0.375N[5]
+Hxx[2] = -0.0                           # !!!
+Hxx[3] = N[1] - 0.25N[5] + 0.5N[8]
+Hxx[4] = -0.375N[5]
+Hxx[5] = -0.0                           # !!!
+Hxx[6] = N[2] - 0.25N[5] + 0.5N[6]
+Hxx[7] = -0.375N[7]
+Hxx[8] = 0.0                            # !!!
+Hxx[9] = N[3] + 0.5N[6] - 0.25N[7]
+Hxx[10] = 0.375N[7]
+Hxx[11] = 0.0                           # !!!
+Hxx[12] = N[4] - 0.25N[7] + 0.5N[8]
+Hxx
+```
+
+
+```{julia}
+# include("../src/setup.jl")
+# WGLMakie.activate!()
+# fig = Figure()
+# for i = 1:12
+#         Makie.hidedecorations!(Makie.Axis3(fig[i, 1], protrusions=0))
+#         fplot3d!(Hxx[i])  # warum können nicht mehrere Funktionen geplottet werden ??
+# end
+# fig
+```
+
+## viereckiges Element
+```{julia}
+include("../src/setup.jl")
+m2 = makequadrilateralMesh(p1, 2, 2)
+mplot(m2)
+e3 = element(m2,3)  
+coordinates(e3)     
+m2.data[:hxfunc] = btpHx()
+hxe3 = e3.data[:hxfunc]
+HxElement3 = hxe3(e3)
+```
+
+```{julia}
+V = [ -1 1 1 -1; -1 -1 1 1]
+N = serendipityelement(V)
+
+HxE2 = Vector{Any}(undef,12)
+
+HxE2[1] = -0.4326923076923077N[5] - 0.1875N[8]
+HxE2[2] = 0.346153846153846N[5]
+HxE2[3] = N[1] - 0.019230769230769336N[5] - 0.25N[8]
+HxE2[4] = 0.4326923076923077N[5] - 0.44117647058823534N[6]
+HxE2[5] = 0.346153846153846N[5] + 0.1764705882352943N[6]
+HxE2[6] = N[2] - 0.019230769230769336N[5] - 0.2058823529411764N[6]
+HxE2[7] = 0.44117647058823534N[6] - 0.31249999999999994N[7]
+HxE2[8] = 0.1764705882352943N[6] - 0.375N[7]
+HxE2[9] = N[3] - 0.2058823529411764N[6] + 0.12500000000000008N[7]
+HxE2[10] = 0.31249999999999994N[7] + 0.1875N[8]
+HxE2[11] = -0.375N[7]
+HxE2[12] = N[4] + 0.12500000000000008N[7] - 0.25N[8]
+HxE2
+```
+
+```{julia}
+WGLMakie.activate!()
+fig2 = Figure()
+Makie.hidedecorations!(Makie.Axis3(fig2[1, 1], protrusions=0))
+fplot3d!(HxE2[1])
+fig2
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Jacobimatrix
+
+```{julia}
+@variables x21,x34,x12,x34,y21,y34,y12,y34, x32,x41,y32,y41, η,ξ;
+
+J = Matrix{Any}(undef,2,2)
+J[1,1] = x21 + x34 + η * (x12 + x34)
+J[2,1] = x32 + x41 + ξ * (x12 + x34)
+J[1,2] = y21 + y34 + η * (y12 + y34)
+J[2,2] = y32 + y41 + ξ * (y12 + y34)
+detJ = (expand(J[1,1] * J[2,2] - J[2,1] * J[1,2]))
+```
+
+# Elementsteifigkeitsmatrix
+
+```{julia}
+@variables  h, ν,E ;
+D = E*h^3 / 12*(1-ν^2)
+∂1(u) =  ∂x(u)
+∂2(u) =  ∂y(u)
+∂3(u) =  ∂x(u) + ∂y(u)
+Be(u) = [∂1(u), ∂2(u), ∂3(u)]
+        
+Be2(u) = [∂1(u) + ν * ∂2(u), ν * ∂1(u) + ∂2(u),(1- ν)/2 * ∂3(u)]
+# aestd(u,v) = integrate(Be1std(u) ⋅ Be2std(v), QHat)
+# Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]))
+```

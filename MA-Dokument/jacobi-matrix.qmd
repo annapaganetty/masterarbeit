@@ -12,6 +12,20 @@ $$
 \end{align}
 $$ {#eq-black-scholes}
 
+$$
+\begin{align}
+F_{ex}(\xi,\eta) = x(\xi,\eta) &=  0.25 \cdot x_1^e \cdot (1 - \eta - \xi + \eta \xi) \\
+                &+ 0.25 \cdot x_2^e \cdot (1 - \eta + \xi - \eta \xi) \\
+                &+ 0.25 \cdot x_3^e \cdot (1 + \eta + \xi + \eta \xi) \\
+                &+ 0.25 \cdot x_4^e \cdot (1 + \eta - \xi - \eta \xi) \\
+\\
+F_{ey}(\xi,\eta) = y(\xi,\eta) &=  0.25 \cdot y_1^e \cdot (1 - \eta - \xi + \eta \xi) \\
+                &+ 0.25 \cdot y_2^e \cdot (1 - \eta + \xi - \eta \xi) \\
+                &+ 0.25 \cdot y_3^e \cdot (1 + \eta + \xi + \eta \xi) \\
+                &+ 0.25 \cdot y_4^e \cdot (1 + \eta - \xi - \eta \xi) \\
+\end{align}
+$$    
+
 Alle Formulierungen, welche eine Ableitung nach $x$ und $y$ beinhalten werden transformiert in Ableitungen nach $\xi$ und $\eta$, mit Hilfe der Transformationsmatrix, der sogenannten Jacobi-Matrix $\mathbf{J}$.
 
 <!-- ## 1D
@@ -60,12 +74,19 @@ $$
 \hat{Q} := {(\xi,\eta) \in \mathbb{R}^2; \xi = [-1,1], \eta = [-1,1]}
 $$
 
-Um die Stefigkeitsmatrix des DKQ Elementes herzuleiten ist es notwendig die Formfunktionen $N_i$, bezogen auf das Referenzelement $\hat{Q}$, nach $x$ und $y$ abzuleiten. Hierzu müssen die Funktionen $N_i$ von den Referenzkoordinaten $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$ transformiert werden. 
+Um die Stefigkeitsmatrix des DKQ Elementes herzuleiten ist es notwendig die Formfunktionen $N_i$, bezogen auf das Referenzelement $\hat{Q}$, nach $x$ und $y$ abzuleiten. 
+Hierzu müssen die Funktionen $N_i$ von den Referenzkoordinaten $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$ transformiert werden. 
 
 Um die Ableitung der Funktionen $N_i$ nach $\xi$ und $\eta$ zu berechnen wird die Kettenregel genutzt.
 
-$$ \frac{\partial N_i}{\partial \xi} = \frac{\partial N_i}{\partial x} \cdot \frac{\partial x}{\partial \xi} + \frac{\partial N_i}{\partial y} \cdot \frac{\partial y}{\partial \xi}$$
-$$ \frac{\partial N_i}{\partial \eta} = \frac{\partial N_i}{\partial x} \cdot \frac{\partial x}{\partial \eta} + \frac{\partial N_i}{\partial \eta} \cdot \frac{\partial y}{\partial \eta}  $$
+
+$$ 
+\frac{\partial N_i}{\partial \xi} = \frac{\partial N_i}{\partial x} \cdot \frac{\partial x}{\partial \xi} + \frac{\partial N_i}{\partial y} \cdot \frac{\partial y}{\partial \xi} 
+$$ {#eq-black-scholes}
+
+$$ 
+\frac{\partial N_i}{\partial \eta} = \frac{\partial N_i}{\partial x} \cdot \frac{\partial x}{\partial \eta} + \frac{\partial N_i}{\partial \eta} \cdot \frac{\partial y}{\partial \eta}  
+$$ {#eq-black-scholes}
 
 oder:
 
@@ -83,9 +104,15 @@ $$
 \frac{\partial N_i}{\partial x} \\
 \frac{\partial N_i}{\partial y}
 \end{array}\right]
-$$
+$$ {#eq-black-scholes}
 
-$\mathbf{J}$ beschreibt die Jacobi-Matrix, welche für die geometrische Transformation notwendig ist. Folglich kann die Ableitung der Funktionen $N_i$ nach $x$ und $y$ mit Hilfe der inversen Jacobi-Matrix $\mathbf{J^{-1}}$ berechnet werden.
+__Definition _Jacobi-Matrix_ (benannt nach Carl Gustav Jacob Jacobi 1804-1851) oder _Funktionalmatrix___
+
+Seien die Funktionen $N_i$ im Punkt $(\xi,\eta)$ differenzierbar, so sind sie auch an der selben Stelle nach den Veränderlichen $x$ und $y$, mit Hilfe der Jacobi-Matrix $\mathbf{J}$, partiell differenzierbar. Folglich kann die Ableitung der Funktionen $N_i$ nach $x$ und $y$ mit Hilfe der inversen Jacobi-Matrix $\mathbf{J^{-1}}$ berechnet werden. 
+
+<!-- Toutes les expressions qui implique des dérivées de u en x,y sont transformées en dérivées en xi, eta grâce à la matrice de transformation dite matrice jacobienne.
++
+Die Funktion f sei im Punkt xi differenzierbar, dann ist sie auch an der Stelle xi nach allen Veränderlichen (x und y)  partiell differenzierbar -->
 
 $$ 
 \left[ \begin{array}{center} 
