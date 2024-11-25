@@ -57,7 +57,7 @@ for i = 1:8
     push!(betaY, expand(N[i] * βyi[i]))
 end
 βx = simplify((sum(betaX)))
-βy = simplify((sum(betaX)))
+βy = simplify((sum(betaY)))
 
 # Vektor-Matrix Produkt aus βx und βx erstellen durch "ausklammern" des Vektors der Freiheitsgrade Ue
 Hx = expand.([Symbolics.coeff(βx, y) for y = Ue])

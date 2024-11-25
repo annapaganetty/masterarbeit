@@ -1,5 +1,5 @@
 function plotH(
-    f::Vector{Any};fig=Makie.Figure()
+    f::AbstractArray{<:AbstractMapping};fig=Makie.Figure()
 )
     n = length(f)
     cnt = 1
@@ -9,9 +9,13 @@ function plotH(
     
     for i = 1:ncol, j = 1:nrow
         if cnt <= n
-            Makie.hidedecorations!(Makie.Axis3(fig[i, j], protrusions=0))
-            fplot3d!(f[cnt])
-            cnt += 1
+            if typeof(f[cnt]) != Float64
+                Makie.hidedecorations!(Makie.Axis3(fig[i, j], protrusions=0))
+                fplot3d!(f[cnt])
+                cnt += 1
+            else
+                cnt += 1 
+            end
         end
     end
     return fig

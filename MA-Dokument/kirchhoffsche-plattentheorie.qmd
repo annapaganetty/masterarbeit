@@ -1,0 +1,145 @@
+# Kirchhoffsche Plattentheorie
+
+## Annahmen, Grundgleichungen und Verschiebungsfeld
+Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
+Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
+\
+<!-- #(text(blue)[
+- Jede gerade Linie der Platte, welche ursprüngliche senkrecht auf den Grundflächen war, bleibt bei der Form-Änderung gerade und senkrecht auf den Flächen, welche ursprüngliche den Grundflächen parallele Ebenen waren
+- Alle Elemente der Mittelfläche (d. h. derjenigen Fläche, welche im natürlichen Zustande der Platte die Ebene ist, die den Grundflächen parallel in der Mitte zwischen diesen liegt) erleiden bei der Form-Änderung keine Dilatation.
+]) -->
+
+- eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Achse. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch $$ w = w(x,y) $$ beschrieben.
+- der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken. 
+
+BILD
+
+Die partielle Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$, gibt die Neigung der neutralen Ebene an. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an der Stelle $(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an der Stelle $(x,y)$ um die x-Achse oder y-Achse.
+
+$$ 
+\theta_x (x,y) = arctan(-\frac{\partial w}{\partial x}) 
+$$ {#eq-black-scholes}
+$$ 
+\theta_y (x,y) = arctan(-\frac{\partial w}{\partial y}) 
+$$ {#eq-black-scholes}
+
+
+Die horizontalen Verschiebungen des Punktes P können in Abhängigkeit der Verdrehwinkel $theta_x$ und $theta_y$ folgendermaßen berechnet werden:
+$$ 
+u(x,y,z)=sin(\theta_x (x,y)) \cdot z , 
+$$ {#eq-black-scholes}
+$$ 
+v(x,y,z)=sin(\theta_y (x,y)) \cdot z . 
+$$ {#eq-black-scholes}
+
+Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergibt sich der Zusammenhang
+$$ 
+u(x,y,z) = -z \cdot \frac{\partial w(x,y)}{\partial x} 
+$$ {#eq-black-scholes}
+$$ 
+v(x,y,z) = -z \cdot \frac{\partial w(x,y)}{\partial y} 
+y$$ {#eq-black-scholes}
+
+Die Gesetztmäßigkeiten nach Gl.2.1, Gl.2.5 und Gl.2.6 werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet. [2]
+
+## Verzerrungsfeld
+Entsprechend der Kirchhoffschen Plattentheorie verschwindet die Dehnung $\epsilon_{zz}$ auf Grund der Annahme der gleichbleibenen Plattendicke $h$ sowie die beiden Schubverzerrungen $\gamma_{xz}$ und $\gamma_{yz}$ als Folge des Ebenbleibens der Querschnitte. Übrig bleiben die Dehnungen $\epsilon_{xx}$, $\epsilon_{yy}$ und die Verzerrung $\gamma_{xy}$.
+$$ 
+\begin{align} 
+\epsilon_{xx} &= \frac{\partial u}{\partial x}= -z \cdot \frac{\partial^2 w}{\partial x^2} \\
+\epsilon_{yy} &=\frac{\partial v}{\partial y}= -z \cdot \frac{\partial^2 w}{\partial y^2} \\
+\gamma_{xy}   &= \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} =-2z \cdot \frac{\partial^2 w}{\partial x \partial y} \\ 
+\end{align}
+$$ {#eq-black-scholes}
+
+Krümmungen
+$$ 
+\begin{align}  
+\kappa_{xx} &= \frac{\partial^2 w}{\partial x^2} \\
+\kappa_{yy} &= \frac{\partial^2 w}{\partial y^2} \\
+\kappa_{xy} &= (-2) (?) \frac{\partial^2 w}{\partial x \partial y} \\ 
+\end{align}
+$$ {#eq-black-scholes}
+
+Vektorschreibweise
+$$
+\kappa = 
+\left[ \begin{array}{center}
+\kappa_{xx} \\ 
+\kappa_{yy} \\ 
+\kappa_{xy} 
+\end{array}\right]
+= 
+\left[ \begin{array}{center}
+\frac{\partial^2 w}{\partial x^2} \\
+\frac{\partial^2 w}{\partial y^2} \\
+\frac{\partial^2 w}{\partial x \partial y} 
+\end{array}\right]
+$$ {#eq-black-scholes}
+
+Spannungen
+
+$$
+\begin{align}
+\sigma_{xx} &= \frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy}) \\
+\sigma_{yy} &= \frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx} + \epsilon_{yy}) \\
+\tau_{xy}   &= \frac{E}{2 \cdot (1+\nu)}  \cdot \gamma_{xy}\ 
+\end{align}
+$$ {#eq-black-scholes}
+
+## Schnittgrößen
+Die Biegemomente in der Platte ergeben sich zu 
+$$
+\begin{align}
+m_{xx} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy})}_{\sigma_{x x}} \cdot dz \\
+m_{yy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx}+ \epsilon_{yy})}_{\sigma_{y y}} \cdot dz \\
+m_{xy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{2 \cdot (1+\nu)} \cdot \gamma_{xy}}_{\tau_{xy}} \cdot dz. \\
+\end{align}
+$$ {#eq-black-scholes}
+
+Mit der Konstanten $D = \frac{E \cdot h^3}{12 \cdot (1-\nu^2)}$ 
+werden die Biegemomente mit den Krümmungen $\kappa$ wie folgt vereinfacht dargestellt.
+$$
+\begin{align}
+m_{xx} &= D \cdot (\kappa_{xx} + \nu \cdot \kappa_{yy}) &&= D \cdot (\frac{\partial^2 w}{\partial x^2} + \nu \cdot \frac{\partial^2 w}{\partial y^2}) \\
+m_{yy} &= D \cdot (\nu \cdot \kappa_{xx} + \kappa_{yy}) &&= D \cdot (\nu \cdot \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}) \\
+m_{xy} &= D \cdot \frac{1-\nu}{2} \cdot \kappa_{xy} &&= D \cdot \frac{1-\nu}{2} \cdot (-2 \frac{\partial^2 w}{\partial x \partial y})
+\end{align}
+$$ {#eq-black-scholes}
+Die Querkräfte ergeben sich aus den dritten Ableitungen der Verschiebung $w$
+$$
+\begin{align}
+q_{xx} &= D \cdot (\frac{\partial^3 w}{\partial x^3} + \nu \cdot \frac{\partial^3 w}{\partial y^3}) \\
+q_{yy} &= D \cdot (\nu \cdot \frac{\partial^3 w}{\partial x^3} + \frac{\partial^3 w}{\partial y^3}) \\
+\end{align} 
+$$ {#eq-black-scholes}
+    
+## Gleichgewichtsbeziehungen & Plattengleichung
+
+$$     
+\begin{align}
+\frac{\partial Q_{xx}}{\partial x} + \frac{\partial Q_{yy}}{\partial y} + q &= 0 \\
+\frac{\partial M_{xx}}{\partial x} + \frac{\partial M_{xy}}{\partial y} - Q_{xx} &= 0 \\
+\frac{\partial M_{yy}}{\partial y} + \frac{\partial M_{xy}}{\partial y} - Q_{yy} &= 0 \\
+\end{align}
+$$ {#eq-black-scholes}
+
+Setzt man die Gleichungen der Schnittgrößen in die Gleichgewichtsbeziehungen ein erhält man die Differentialgleichung @Randwertproblem und somit die schwache Form beziehungsweise die Plattengleichung nach Kirchhoff mit den unten aufgeführten Randbedingungen.
+
+<!-- Gl. 3.16, Gl. 3.17 in Gl. 3.15 einsetzen,
+Die Krümmungen aus den Gleichungen in (3.9) in die vereinfachten Biegemomenten (Gl. 3.14) einsetzen. Die sich daraus ergebenen Gleichungen in (Gl. 3.15) einsetzen.
+Daraus ergibt sich: -->
+
+  #block(width: 450pt,fill:luma(230), inset:8pt, radius:4pt,
+  [
+  *Randwertproblem (D)* \
+
+  Gesucht ist die Funktion $w:[] arrow RR^2$ welche die Differentialgleichung
+  $ D dot [(partial^4 w)/(partial x^4) + 2 dot (partial^2 w)/(partial x^2 partial y^2) + (partial^4 w)/(partial y^4)] = q $ <Randwertproblem>
+  und die Randbedingungen
+
+  erfüllt.
+  ])
+
+Das Randwertproblem wird als Divergenz des Gradienten von $w$ wie folgt ausgedrückt:
+$$ D \cdot \Delta \Delta w(x,y) = q $$ {#eq-black-scholes}

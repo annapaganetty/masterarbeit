@@ -1,0 +1,13 @@
+# Einführung in die Finite Elemente Methode (FEM)
+
+Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung. Nichtsdestotrotz sollten Ingenieure immer im Hinterkopf behalten, dass alle gemachten Angaben, wie Geometrie und Materialeigenschaften das Modell beeinflussen. Je genauer die Eingaben, desto genau sind die Ergebnisse.
+
+Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
+
+## Historischer Hintergrund
+
+## Definition Finites Element
+
+## Einführungsbeispiel: 1D Balkentragwerk in FEM
+
+## 

@@ -2,18 +2,39 @@
 
 TODO:   Darstellung Referenzelement & physikalische Element
 
-Bei den folgenden Formeln wird _ein_ Element betrachtet, daher wird in keiner Formel ein Index für das Element genutzt.
+Bei den folgenden Formeln wird _ein_ Element betrachtet, daher wird übersichtshalber in keiner Formel ein Index für das Element genutzt.
+
+Referenzelement:
+$$
+\hat{Q} := {(\xi,\eta) \in \mathbb{R}^2 | -1 <= \xi,\eta <= 1}
+$$
+$$
+\Omega := {(x,y) \in \mathbb{R}^2; x_i = [x_1,x_2,x_3,x_4], y_i = [y_1,y_2,y_3,y_4]}
+$$
+
 Sei $(\xi,\eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
 
 $$
-x(\xi,\eta) = F_{x}(\xi,\eta) = \sum_{i=1}^n N_i(\xi,\eta) \cdot x_i  \quad\mbox{für}\quad i = 1,..,4
-$$ {#eq-black-scholes}
-und 
-$$
-y(\xi,\eta) = F_{y}(\xi,\eta) = \sum_{i=1}^n N_i(\xi,\eta) \cdot y_i^e \quad\mbox{für}\quad i = 1,..,4
+\begin{align}
+\underline{F}(\xi,\eta) =  
+\left[ \begin{array}{center} 
+x(\xi,\eta) \\
+y(\xi,\eta) \\
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+F_{x}(\xi,\eta) \\
+F_{y}(\xi,\eta) \\
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+\sum_{i=1}^n N_i(\xi,\eta) \cdot x_i  \\
+\sum_{i=1}^n N_i(\xi,\eta) \cdot y_i \\
+\end{array}\right]
+\end{align}
 $$ {#eq-black-scholes}
 
-die physikalischen Koordinaten auf dem Element $\Omega_e$ beschrieben. Die vier linearen Formfunktionen $N_i$ des quadratischen Referenzelements, dargestellt in Abbildung ..., 
+die physikalischen Koordinaten auf dem Element $\Omega$ beschrieben. Die vier linearen Formfunktionen 
 $$
 \begin{align}
 N_1(\xi,\eta) &= \frac{1}{4} \cdot (1-\xi) \cdot (1-\eta), 
@@ -22,171 +43,101 @@ N_3(\xi,\eta) &= \frac{1}{4} \cdot (1+\xi) \cdot (1+\eta),
 &N_4(\xi,\eta) = \frac{1}{4} \cdot (1-\xi) \cdot (1+\eta) \\
 \end{align}
 $$ {#eq-black-scholes}
-definiert.
-
-
-und den Koordinaten des physikalischen Elements $x_i^e$ und $y_i^e$
-
+des quadratischen Referenzelements, sind in Abb. ... dargestellt.
+Im weiteren Verlauf werden die Ableitungen 
 $$
 \begin{align}
-x_i^e = \left[ \begin{array}{center} 
-x_1^e \\
-x_2^e \\
-x_3^e \\
-x_4^e 
-\end{array}\right] 
-&&y_i^e = \left[ \begin{array}{center} 
-y_1^e \\
-y_2^e \\
-y_3^e \\
-y_4^e 
-\end{array}\right]. \\
+F_{x,1}(\xi,\eta) = \frac{\partial F_{x}(\xi,\eta)}{\partial \xi}
+&&F_{x,2}(\xi,\eta) = \frac{\partial F_{x}(\xi,\eta)}{\partial \eta}\\
+F_{y,1}(\xi,\eta) = \frac{\partial F_{y}(\xi,\eta)}{\partial \xi}
+&&F_{y,2}(\xi,\eta) = \frac{\partial F_{y}(\xi,\eta)}{\partial \eta}.
 \end{align}
 $$ {#eq-black-scholes}
-
-Die Ableitungen der Umrechnungsausdrücke sind 
-
+benötigt. Hierbei beschreibt der tiefgestellte Index $,_1$ die Ableitung zur ersten Variable des Ausdruck und $,_2$ die Ableitung zur zweiten Variable.
+Um die physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ umzurechnen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
 $$
 \begin{align}
-F_{x}^{e'}(\xi,\eta) = \frac{\partial F_{x}^e(\xi,\eta)}{\partial \xi}
-&&F_{x}^{e'}(\xi,\eta) = \frac{\partial F_{x}^e(\xi,\eta)}{\partial \eta}\\
-F_{y}^{e'}(\xi,\eta) = \frac{\partial F_{y}^e(\xi,\eta)}{\partial \xi}
-&&F_{y}^{e'}(\xi,\eta) = \frac{\partial F_{y}^e(\xi,\eta)}{\partial \eta}.
+\xi(x,y) = F_{x}^{-1}(x,y) \\
+\eta(x,y) = F_{y}^{-1}(x,y) 
 \end{align}
 $$ {#eq-black-scholes}
-
-Zur Umrechnung der physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ werden die Umkehrfunktionen von $F_{xe}(\xi,\eta)$ und $F_{ye}(\xi,\eta)$ gebildet.
-
+notwendig.
+Die Ableitungen der Umkehrfunktionen
 $$
 \begin{align}
-        &(x,y) \to \xi(x,y) = F_{x}^{e-1}(x,y) \\
-        &(x,y) \to \eta(x,y) = F_{y}^{e-1}(x,y) 
+F_{x,_1}^{-1}(x,y) = \frac{\partial F_{x}^{-1}(x,y)}{\partial x}
+\quad \quad F_{x,_2}^{-1}(x,y) = \frac{\partial F_{x}^{-1}(x,y)}{\partial y}\\
+F_{y,_1}^{-1}(x,y) = \frac{\partial F_{y}^{-1}(x,y)}{\partial x}
+\quad \quad F_{y,_2}^{-1}(x,y) = \frac{\partial F_{y}^{-1}(x,y)}{\partial y}.
 \end{align}
 $$ {#eq-black-scholes}
-
-Die dementsprechenden Ableitungen sind:
-
-$$
-\begin{align}
-F_{x}^{e-1'}(x,y) = \frac{\partial F_{x}^{e-1}(x,y)}{\partial \xi}
-&&F_{x}^{e-1'}(x,y) = \frac{\partial F_{x}^{e-1}(x,y)}{\partial \eta}\\
-F_{y}^{e-1'}(x,y) = \frac{\partial F_{y}^{e-1}(x,y)}{\partial \xi}
-&&F_{y}^{e-1'}(x,y) = \frac{\partial F_{y}^{e-1}(x,y)}{\partial \eta}.
-\end{align}
-$$ {#eq-black-scholes}
-
-Betrachten wir das erste Element eines Finite Elemente Netzes $\Omega_1$. Die oben bereits beschriebenen linearen Formfunktionen sind in Abb. ... dargestellt.
 
 TODO: Beschriftung der Funktionen!
 ```{julia}
-# #| echo: false
-# #| output: true
-# #| warning: false
-# include("../src/setup.jl")
-# V = [ -1 1 1 -1; -1 -1 1 1]
-# L = lagrangeelement(V)
-# fplot3d(L)
+#| echo: false
+#| output: true
+#| warning: false
+include("../src/setup.jl")
+V = [ -1 1 1 -1; -1 -1 1 1]
+L = lagrangeelement(V)
+fplot3d(L)
 ```
-
-Die Formfunktionen auf dem Element $\Omega_1$ $(e = 1)$ werden nachfolgend $\varphi_i(x,y)$ mit $i = 1,...,4$.
+Die Formfunktionen (Gl.(3)) auf dem Element $\Omega$ mit den Koordinaten $x_i$ und $y_i$ sind
 
 $$
 \begin{align}
-\varphi_1(x,y)  = N_1(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y)) \\
-\varphi_2(x,y)  = N_2(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y)) \\
-\varphi_3(x,y)  = N_3(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y)) \\
-\varphi_4(x,y)  = N_4(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y))
+&\varphi_i(x,y)  = N_i(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+&\mbox{für}\quad i = 1,..,4
 \end{align}
 $$ {#eq-black-scholes}
-
-Zur späteren Berechnung der Elementsteifigkeitsmatrix, werden die Ableitungen dieser Funktionen gebraucht. Dazu wird die Kettenregel genutzt. Nachfolgend wird an der Funktion $\varphi_1(x,y)$ die Vorgehensweise gezeigt.
-
+Zur Berechnung der Elementsteifigkeitsmatrix, werden die Ableitungen
 $$
 \begin{align}
-\frac{\partial \varphi_1(x,y)}{\partial x} = 
+\varphi_{i,_1}(x,y) = 
 \left[ \begin{array}{center}    
-\frac{\partial N_1(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y))}{\partial F_{x1}^{-1}(x,y)} &
-\frac{\partial N_1(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y))}{\partial F_{y1}^{-1}(x,y)}
+N_{i,_1}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) &
+N_{i,_2}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right]
 \left[ \begin{array}{center} 
-\frac{\partial F_{x1}^{-1}(x,y)}{\partial x} \\
-\frac{\partial F_{y1}^{-1}(x,y)}{\partial x}
+F_{x,_1}^{-1}(x,y)\\
+F_{y,_1}^{-1}(x,y)
 \end{array}\right] 
 \end{align}
 $$ {#eq-black-scholes}
-
 $$
 \begin{align}
-\frac{\partial \varphi_1(x,y)}{\partial y} = 
+\varphi_{i,_2}(x,y) = 
 \left[ \begin{array}{center}    
-\frac{\partial N_1(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y))}{\partial F_{x1}^{-1}(x,y)} &
-\frac{\partial N_1(F_{x1}^{-1}(x,y),F_{y1}^{-1}(x,y))}{\partial F_{y1}^{-1}(x,y)}
+N_{i,_1}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) &
+N_{i,_2}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right]
 \left[ \begin{array}{center} 
-\frac{\partial F_{x1}^{-1}(x,y)}{\partial y} \\
-\frac{\partial F_{y1}^{-1}(x,y)}{\partial y}
+F_{x,_2}^{-1}(x,y)\\
+F_{y,_2}^{-1}(x,y)
 \end{array}\right] 
 \end{align}
 $$ {#eq-black-scholes}
-
-einfacher geschrieben mit 
-
-$$
-\begin{align}
-F_{x1}^{-1}(x,y) = \xi(x,y) \\
-F_{y1}^{-1}(x,y) = \eta(x,y) \\
-\end{align}
-$$ {#eq-black-scholes}
-(siehe Gleichung (5))
-
-$$
-\begin{align}
-\frac{\partial \varphi_1(x,y)}{\partial x} &=  
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \xi(x,y)}
-\cdot \frac{\partial \xi(x,y)}{\partial x}
-+
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \eta(x,y)}
-\cdot \frac{\partial \eta(x,y)}{\partial x}
-\end{align}
-$$ {#eq-black-scholes}
-
-$$
-\begin{align}
-\frac{\partial \varphi_1(x,y)}{\partial y} &=   
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \xi(x,y)}
-\cdot \frac{\partial \xi(x,y)}{\partial y}
-+
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \eta(x,y)}
-\cdot \frac{\partial \eta(x,y)}{\partial y}
-\end{align}
-$$ {#eq-black-scholes}
-
-Zusammengefasst ergibt sich:
-
+benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus Gl.(5) vereinfacht zum Matrix-Vektor-Produkt
 $$ 
 \left[ \begin{array}{center} 
-\frac{\partial \varphi_1(x,y)}{\partial x} \\
-\frac{\partial \varphi_1(x,y)}{\partial y}
+\varphi_{i,_1}(x,y) \\
+\varphi_{i,_2}(x,y)
 \end{array}\right]
 = 
 \underbrace{\left[ \begin{array}{center} 
-\frac{\partial \xi(x,y)}{\partial x} & \frac{\partial \eta(x,y)}{\partial x} \\
-\frac{\partial \xi(x,y)}{\partial y} & \frac{\partial \eta(x,y)}{\partial y} 
+\xi_{,_1}(x,y) & \eta_{,_1}(x,y) \\
+\xi_{,_2}(x,y) & \eta_{,_2}(x,y) 
 \end{array}\right]}_{\mathbf{J}}
 \left[ \begin{array}{center} 
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \xi(x,y)} \\
-\frac{\partial N_1(\xi(x,y),\eta(x,y))}{\partial \eta(x,y)}
-\end{array}\right]
+N_{i,_1}(\xi(x,y),\eta(x,y)) \\
+N_{i,_2}(\xi(x,y),\eta(x,y))
+\end{array}\right].
 $$ {#eq-black-scholes}
 
 
-__Ab hier muss noch überarbeitet werden __
 
-## 2D
+<!-- __Ab hier muss noch überarbeitet werden __
 
-$$
-\hat{Q} := {(\xi,\eta) \in \mathbb{R}^2; \xi = [-1,1], \eta = [-1,1]}
-$$
 
 Um die Stefigkeitsmatrix des DKQ Elementes herzuleiten ist es notwendig die Formfunktionen $N_i$, bezogen auf das Referenzelement $\hat{Q}$, nach $x$ und $y$ abzuleiten. 
 Hierzu müssen die Funktionen $N_i$ von den Referenzkoordinaten $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$ transformiert werden. 
@@ -227,7 +178,7 @@ Seien die Funktionen $N_i$ im Punkt $(\xi,\eta)$ differenzierbar, so sind sie au
 <!-- Toutes les expressions qui implique des dérivées de u en x,y sont transformées en dérivées en xi, eta grâce à la matrice de transformation dite matrice jacobienne.
 +
 Die Funktion f sei im Punkt xi differenzierbar, dann ist sie auch an der Stelle xi nach allen Veränderlichen (x und y)  partiell differenzierbar -->
-
+<!-- 
 $$ 
 \left[ \begin{array}{center} 
 \frac{\partial N_i}{\partial x} \\
@@ -278,7 +229,7 @@ $$
 $$ 
 -->
 
-
+<!-- 
 $$
 \begin{align}
 \mathbf{J} &=
@@ -306,9 +257,9 @@ x_3^e & y_3^e \\
 x_4^e & y_4^e 
 \end{array}\right]
 \end{align}
-$$
+$$ -->
 
-Es ergeben sich die Komponenten der Jacobi-Matrix
+<!-- Es ergeben sich die Komponenten der Jacobi-Matrix
 
 $$
 \begin{align}
@@ -319,15 +270,18 @@ J_{22}  &= \frac{1}{4} \cdot (-y_1^e - y_2^e + y_3^e + y_4^e + \xi (y_1^e - y_2^
 \end{align}
 $$
 
-und die Komponenten der inversen Transformationsmatrix
-$$ 
+und die Komponenten der inversen Transformationsmatrix -->
+<!-- $$ 
 \begin{align}
 j_{11} &= \frac{1}{det(\mathbf{J})} \cdot J_{22}    &j_{12} = \frac{1}{det(\mathbf{J})} \cdot J_{12} \\
 j_{21} &= \frac{1}{det(\mathbf{J})} \cdot J_{21}    &j_{22} = \frac{1}{det(\mathbf{J})} \cdot J_{11} \\
 \end{align}
-$$
-$$
+$$ -->
+<!-- $$
 det(\mathbf{J}) =   \frac{1}{8} \cdot (y_{42}^e x_{31}^e - y_{31}^e x_{42}^e) +
                     \frac{\xi}{8} \cdot (y_{34}^e x_{21}^e - y_{21}^e x_{34}^e) +
                     \frac{\eta}{8} \cdot (y_{41}^e x_{32}^e - y_{32}^e x_{41}^e)
 $$
+ -->
+
+ --> -->

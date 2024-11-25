@@ -9,30 +9,35 @@ filters:
   - latex-environment
 environments: [center]
 
+format: 
+  html: 
+    default-image-extension: svg 
+    mainfont: Times New Roman
+  pdf:
+    default-image-extension: pdf
+    mainfont: Times New Roman
+  typst: 
+    default-image-extension: pdf
+
+
 
   # chapters:
   #   - eidesstattliche-erklaerung.qmd
   #   - danksagung.qmd
 
-  #   - part: einleitung.qmd
-  #     chapters:
-  #       - motivation.qmd
-  #       - problemstellung.qmd
-  #       - zielsetzung-gliederung.qmd
-
-
-
-format: 
-  html: 
-    default-image-extension: svg 
-  pdf:
-    default-image-extension: pdf
-
-
-    # - part: Grundlagen_FEM.qmd
+    # - part: einleitung.qmd
     #   chapters:
+    #     - motivation.qmd
+    #     - problemstellung.qmd
+    #     - zielsetzung-gliederung.qmd
 
-    # - part: Grundlange_mech_math.qmd
+    # - part: grundlagen_FEM.qmd
+    #   chapters:
+    #     - einfuehrung_FEM.qmd
+    #     - FE_plattentragwerke.qmd
+    #     - kirchhoffplatte_in_FE-Programmen.qmd    
+
+    # - part: grundlagen_mech_math.qmd
     #   chapters:
     #     - Annahmen_Grundgleichungen_Verschiebungsfeld.qmd
     #     - Verzerrungsfeld.qmd
@@ -44,9 +49,15 @@ format:
     #     - Herleitung_starkeForm.qmd
     #     - Herleitung_schwacheForm.qmd # beide wege
 
-    # - part: Programmierung-und-Beispiele.qmd
+    # - part: Umsetzung-in-JULIA-und-Beispiele.qmd
     #   chapters:
     #     - Programmiersprache-Julia.qmd
     #     - Programm.qmd
     #     - Anwendungsbeispiele.qmd
     #     - Verifikation_Vergleich.qmd
+
+    # - part: Zusammenfassung-und-Ausblick.qmd
+
+    # - part: Literatur.qmd
+
+
