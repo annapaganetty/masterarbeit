@@ -3,3 +3,4 @@
 *_files
 *.ipynb
 *.tex
+/.luarc.json

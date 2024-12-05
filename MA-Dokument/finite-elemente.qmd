@@ -1,0 +1,169 @@
+# Finite Elemente
+
+Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In unserem zweidimensionalen, ebenen, Fall werden quadratische Elemente betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind [Braess, S. 57, Fußnote].
+Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente Raums am wichtigsten sind.
+
+1. Geometrie der Teilgebiete: Dreiecks- bzw. Viereckselemente^[In dieser Arbeit werden ausschließlich Viereckelemente behandelt]
+
+2. Im zweidimensionalen Raum werden Funktionen mit zwei Variablen definiert, welche als _Polynome vom Grad_ $\le t$ bezeichnet werden, wenn der höchste Exponent der Variaben $\le t$ ist. Vollständige Polynome sind Finite Elemente, in denen alle Polynome vom Grad $\le t$ enthalten sind. 
+
+3. Stetigkeits- und Differenzierbarkeitseigenschaften: Es wird von $C^k$-Elementen gesprochen, wenn ... TODO
+
+
+
+## Definition Finites Element
+
+<!-- 
+Für alle quadratischen Elemente wird das in Abbildung ... dargestellte Referenzelement genutzt.
+  
+Bei der Finite Elemente Methode handelt es sich um eine Näherungslösung. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. 
+
+
+Die Eckknoten des Elementes werden gegen den Uhrzeigersinn nummeriert. Bei Knoten auf den Seiten des Elements werden, diese danach nummeriert.
+
+Die Menge der Polynome 
+$$
+Q_k := {u(x,y) = \sum_{0\le t,k \le 1} c_{ik}x^i y^k}
+$$
+
+![Referenzelement](00-pics/Referenzelement.png){width=40%} -->
+
+## Lagrange Elemente (Bilineares Viereckelement)
+
+Das bilineare Element ist das simpelste unter den Viereckelementen. Betrachten wir zunächst ein Rechteckelement, dessen Kanten parallel zu den Koordinatenachsen laufen. Mit der Ansatzfunktion
+$$
+u(x,y) = a+bx+cy+dxy
+$$ {#eq-black-scholes}
+
+erhalten wir ein Polynom 2. Grades, welches den bilinearen Term $xy$ aus der dritten Reihe des Pascalschen Dreiecks enthält. Das Monom $xy$ ist jedoch an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant ist. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken ermittelt werden. Das Ergebnis sind die Funktionen 
+$$
+\begin{align}
+N_1^e(x,y) &= \frac{1}{A^e} (x-x_2^e)(y-y_4^e),  \\
+N_2^e(x,y) &= -\frac{1}{A^e} (x-x_1^e)(y-y_4^e), \\
+N_3^e(x,y) &= \frac{1}{A^e} (x-x_1^e)(y-y_1^e), \\
+N_4^e(x,y) &= -\frac{1}{A^e} (x-x_2^e)(y-y_1^e) \\
+\end{align}
+$$ {#eq-black-scholes}
+
+für ein rechteckiges Element, wobei $A^e$ die Fläche des Elements bezeichnet. Wie Abbildung... zeigt, sind die Funktionen an jeder Seite linear. 
+
+![Bilineares Element](00-pics/BilinearesElement.png){width=40%}
+
+Für das Referenzelement $T_{ref} = [-1,1]^2$ mit den Referenzkoordinaten $\xi$ und $\eta$, wie in Abbildung ... definiert, ergeben sich die Formfunktionen 
+$$
+\begin{align}
+N_1(\xi,\eta) &= \frac{1}{4} (\xi\eta - \xi - \eta + 1) \\
+N_2(\xi,\eta) &= \frac{1}{4} (-\xi\eta+ \xi - \eta + 1) \\
+N_3(\xi,\eta) &= \frac{1}{4} (\xi\eta + \xi + \eta + 1) \\
+N_4(\xi,\eta) &= \frac{1}{4} (-\xi\eta- \xi + \eta + 1). \\
+\end{align}
+$$ {#eq-black-scholes}
+
+Für allgemeine Vierecke ist der oben beschriebene bilineare Ansatz für Rechtecke untauglich, dieser wird näher im Kapitel ... besprochen.
+
+<!-- 
+## Viereckelement der Serendipitiy Klasse 
+
+![Serendipityelement](00-pics/Serendipity.png){width=40%}
+
+$$
+\begin{align}
+N_1(\xi,\eta) &= \frac{1}{4} (-\xi^2\eta - \xi\eta^2 + \xi^2  + \xi\eta+\eta^2 - 1) \\
+N_2(\xi,\eta) &= \frac{1}{4} (-\xi^2\eta + \xi\eta^2 + \xi^2  - \xi\eta+\eta^2 - 1) \\
+N_3(\xi,\eta) &= \frac{1}{4} (\xi^2\eta  + \xi\eta^2 + \xi^2  + \xi\eta+\eta^2 - 1) \\
+N_4(\xi,\eta) &= \frac{1}{4} (\xi^2\eta  - \xi\eta^2 + \xi^2  - \xi\eta+\eta^2 - 1) \\
+N_5(\xi,\eta) &= \frac{1}{2}  (\xi^2\eta  - \xi^2     - \eta    + 1) \\
+N_6(\xi,\eta) &= \frac{1}{2}  (-\xi\eta^2 - \eta^2    + \xi     + 1) \\
+N_7(\xi,\eta) &= \frac{1}{2}  (\xi^2\eta  - \xi^2     + \eta    + 1) \\
+N_8(\xi,\eta) &= \frac{1}{2}  (\xi\eta^2  - \eta^2    - \xi     + 1) \\
+\end{align}
+$$ 
+-->
+
+## konformes Hermite Viereckelement (Bogner-Fox-Schmitt)
+
+Das Bogner-Fox-Schmit (BFS) Element bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden 
+$$
+w_i, \theta_{\xi i}, \theta_{\eta i} \quad und \quad \theta_{\xi \eta i}
+$$
+
+in den Eckknoten. Die Nummerierung der Knoten mit $i = 1,2,3,4$ ist in Abbildung ... dargestellt. Die Freiheitsgrade $\theta_{\xi i}$ und $\theta_{\eta i}$ entsprechen der Ableitung von $w_i$ nach $\xi$ bzw. $\eta$ an dem Knoten $i$. Durch den zusätzlichen Freiheitsgrad $\theta_{\xi \eta i}$, also die Ableitung zweiten Grades von $w_i$ nach $\xi$ und $\eta$, wird die geforderte _smoothness_ des Elementes erreicht.
+
+Wie in Figur ... dargestellt, können die Formfunktionen des BFS Elements für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden. Seien die kubischen Polynome 
+$$
+\begin{align}
+H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
+H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
+H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
+H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
+\end{align}
+$$ {#eq-black-scholes}
+
+auf dem eindimensionalen Referenzelement, mit dem Interval $Î := [-1,1]$ definiert, so werden die Bedingungen
+$$
+\begin{align}
+H_1(-1) &= 1, \quad &H_1(1) = 0, \quad &H_1'(-1) = 0, \quad &H_1'(1) = 0 \\
+H_2(-1) &= 0, \quad &H_2(1) = 1, \quad &H_2'(-1) = 0, \quad &H_2'(1) = 0 \\
+H_3(-1) &= 0, \quad &H_3(1) = 0, \quad &H_3'(-1) = 1, \quad &H_3'(1) = 0 \\
+H_4(-1) &= 0, \quad &H_4(1) = 0, \quad &H_4'(-1) = 0, \quad &H_4'(1) = 1, \\
+\end{align}
+$$ {#eq-black-scholes}
+
+erfüllt. Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei.
+
+![Hermite Funktionen](00-pics/Hermite-Polynome.png){width=60%}
+
+Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome berechnet. Es ergeben sich 16 Funktionen, welche die Polynome 
+$$
+1,x,y,x^2,xy,y^2,x^3,x^2y,xy^2,y^3,x^3y,x^2y^2,xy^3,x^3y^2,x^2y^3,x^3y^3
+$$ {#eq-black-scholes}
+
+enthalten. 
+
+$$
+N_{i,j}(\xi,\eta) = H_i(\xi) H_j(\eta), \quad i,j = 1,2,3,4
+$$
+
+![Bogner-Fox-Schmit Element](00-pics/BFS-Element.png){width=40%}
+
+$$
+\begin{align}
+N_1(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - 3\xi^3\eta-3\xi\eta^3+2\xi^3+2\eta^3+9\xi\eta-6\xi-6\eta+4) \\
+N_2(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - \xi^2\eta^3-3\xi^3\eta-\xi\eta^3+2\xi^3+3\xi^2\eta+\eta^3-2\xi^2+3\xi\eta-2\xi-3\eta+2) \\
+N_3(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - \xi^3\eta^2-\xi^3\eta-3\xi\eta^3+\xi^3+3\xi\eta^2+2\eta^3+3\xi\eta-2\eta^2-3\xi-2\eta+2) \\
+N_4(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - \xi^3\eta^2-\xi^2\eta^3-\xi^3\eta+\xi^2\eta^2-\xi\eta^3+\xi^3+\xi^2\eta+\xi\eta^2+\eta^3-\xi^2+\xi\eta-\eta^2-\xi-\eta+1) \\
+N_5(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 + 3\xi^3\eta+3\xi\eta^3-2\xi^3+2\eta^3-9\xi\eta+6\xi-6\eta+4) \\
+N_6(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 + \xi^2\eta^3-3\xi^3\eta-\xi\eta^3+2\xi^3-3\xi^2\eta-\eta^3+2\xi^2+3\xi\eta-2\xi+3\eta-2) \\
+N_7(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 + \xi^3\eta^2+\xi^3\eta+3\xi\eta^3-\xi^3-3\xi\eta^2+2\eta^3-3\xi\eta-2\eta^2+3\xi-2\eta+2) \\
+N_8(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - \xi^3\eta^2+\xi^2\eta^3-\xi^3\eta-\xi^2\eta^2-\xi\eta^3+\xi^3-\xi^2\eta+\xi\eta^2-\eta^3+\xi^2+\xi\eta+\eta^2-\xi+\eta-1) \\
+N_9(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 - 3\xi^3\eta-3\xi\eta^3-2\xi^3-2\eta^3+9\xi\eta+6\xi+6\eta+4) \\
+N_10(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 - \xi^2\eta^3+3\xi^3\eta+\xi\eta^3+2\xi^3+3\xi^2\eta+\eta^3+2\xi^2-3\xi\eta-2\xi-3\eta-2) \\
+N_11(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 - \xi^3\eta^2+\xi^3\eta+3\xi\eta^3+\xi^3+3\xi\eta^2+2\eta^3-3\xi\eta+2\eta^2-3\xi-2\eta-2) \\
+N_12(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 + \xi^3\eta^2+\xi^2\eta^3-\xi^3\eta+\xi^2\eta^2-\xi\eta^3-\xi^3-\xi^2\eta-\xi\eta^2-\eta^3-\xi^2+\xi\eta-\eta^2+\xi+\eta+1) \\
+N_13(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 + 3\xi^3\eta+3\xi\eta^3+2\xi^3-2\eta^3-9\xi\eta-6\xi+6\eta+4) \\
+N_14(\xi,\eta) &= \frac{1}{16}(-\xi^3\eta^3 + \xi^2\eta^3+3\xi^3\eta+\xi\eta^3+2\xi^3-3\xi^2\eta-\eta^3-2\xi^2-3\xi\eta-2\xi+3\eta+2) \\
+N_15(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 + \xi^3\eta^2-\xi^3\eta-3\xi\eta^3-\xi^3-3\xi\eta^2+2\eta^3+3\xi\eta+2\eta^2+3\xi-2\eta-2) \\
+N_16(\xi,\eta) &= \frac{1}{16}(\xi^3\eta^3 + \xi^3\eta^2-\xi^2\eta^3-\xi^3\eta-\xi^2\eta^2-\xi\eta^3-\xi^3+\xi^2\eta-\xi\eta^2+\eta^3+\xi^2+\xi\eta+\eta^2+\xi-\eta-1) \\
+\end{align}
+$$
+
+## nicht konformes Hermite Viereckelement
+
+![Serendipityelement](00-pics/Serendipity.png){width=40%}
+
+$$
+\begin{align}
+N_1(\xi,\eta) &= \frac{1}{8}(-\xi^3\eta -\xi\eta^3+\xi^3+\eta^3+4\xi\eta-3\xi-3\eta+2) \\
+N_2(\xi,\eta) &= \frac{1}{8}(-\xi^3\eta +\xi^3+\xi^2\eta-\xi^2+\xi\eta-\xi-\eta+1) \\
+N_3(\xi,\eta) &= \frac{1}{8}(-\xi\eta^3 +\xi\eta^2+\eta^3+\xi\eta-\eta^2-\xi-\eta+1) \\
+N_4(\xi,\eta) &= \frac{1}{8}(\xi^3\eta +\xi\eta^3-\xi^3+\eta^3-4\xi\eta+3\xi-3\eta+2) \\
+N_5(\xi,\eta) &= \frac{1}{8}(-\xi^3\eta +\xi^3-\xi^2\eta+\xi^2+\xi\eta-\xi+\eta-1) \\
+N_6(\xi,\eta) &= \frac{1}{8}(\xi\eta^3 -\xi\eta^2+\eta^3-\xi\eta-\eta^2+\xi-\eta+1) \\
+N_7(\xi,\eta) &= \frac{1}{8}(-\xi^3\eta -\xi\eta^3-\xi^3-\eta^3+4\xi\eta+3\xi+3\eta+2) \\
+N_8(\xi,\eta) &= \frac{1}{8}(\xi^3\eta +\xi^3+\xi^2\eta+\xi^2-\xi\eta-\xi-\eta-1) \\
+N_9(\xi,\eta) &= \frac{1}{8}(\xi\eta^3 +\xi\eta^2+\eta^3-\xi\eta+\eta^2-\xi-\eta-1) \\
+N_10(\xi,\eta) &= \frac{1}{8}(\xi^3\eta +\xi\eta^3+\xi^3-\eta^3-4\xi\eta-3\xi+3\eta+2) \\
+N_11(\xi,\eta) &= \frac{1}{8}(\xi^3\eta +\xi^3-\xi^2\eta-\xi^2-\xi\eta-\xi+\eta+1) \\
+N_12(\xi,\eta) &= \frac{1}{8}(-\xi\eta^3 -\xi\eta^2+\eta^3+\xi\eta+\eta^2+\xi-\eta-1) \\
+\end{align}
+$$

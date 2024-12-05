@@ -1,0 +1,4 @@
+# Historischer Hintergrund
+
+1941 nutzte A. HRENNIKOF zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. COURAND ein Paper publiziert (1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. TURNER et al. hat 1959 in dem JOURNAL OF THE AERONAUTICAL SCIENCES eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. CLOUGH publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung _Finite Elemente_ nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz  u.v.a.
+

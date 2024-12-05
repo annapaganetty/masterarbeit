@@ -4,10 +4,33 @@ Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei d
 
 Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
 
-## Historischer Hintergrund
+In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Problemen ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt Tabelle... Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
 
-## Definition Finites Element
 
-## Einführungsbeispiel: 1D Balkentragwerk in FEM
 
-## 
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+|Elementansatz|Polynome                                                                                                                            |Elementknoten|Stetigkeit |
++=============+====================================================================================================================================+=============+===========+
+| linear      |$\left[\begin{array}{center}1&\xi&\eta\end{array}\right]$                                                                           |$4$          |$C^0$      |
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+| quadratisch |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2\end{array}\right]$                                                      |$4$          |$C^0$      |
++=============+====================================================================================================================================+=============+===========+
+|LAGRANGE     |                                                                                                                                    |             |           |
++=============+====================================================================================================================================+=============+===========+
+| bilinear    |$\left[\begin{array}{center}1 & \xi & \eta & \xi\eta \end{array}\right]$                                                            |$4$          |$C^0$      |
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+| quadratisch |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^2\eta&\xi\eta^2&\xi^2\eta^2\end{array}\right]$                      |$9$          |$C^0$      |
+| vollständig |                                                                                                                                    |             |           |
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+| quadratisch |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^2\eta&\xi\eta^2\end{array}\right]$                                  |$8$          |$C^0$      |
+|unvollständig|                                                                                                                                    |             |           |
+|(Serendipity)|                                                                                                                                    |             |           |
++=============+====================================================================================================================================+=============+===========+
+| HERMITE     |                                                                                                                                    |             |           |
++=============+====================================================================================================================================+=============+===========+
+| kubisch     |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |$C^1$      |
+| vollständig |                                                                                                                                    |             |           |
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+| kubisch     |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |semi-$C^1$ |
+|unvollständig|                                                                                                                                    |             |           |
++-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+

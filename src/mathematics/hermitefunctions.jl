@@ -8,7 +8,6 @@ function hermiteelement(V;conforming=true)
                     for p in eachcol(V)
                 ]...
             )
-            println(N)
         else 
             m = 12
             P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = Int)
@@ -21,7 +20,7 @@ function hermiteelement(V;conforming=true)
         end
         Imatrix = Matrix{Int}(I, m, m)
         M = [n(p) for p in P, n in N]
-        Minv = simplifyx.(M \ Imatrix)
-        H4 = Minv*P
+        Minv = round.(M \ Imatrix, digits=10)
+        H4 = (Minv*P)
     return H4
 end
