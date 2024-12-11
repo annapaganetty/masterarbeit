@@ -1,0 +1,88 @@
+# Vorbereitung 
+
+## Herleitung der schwachen Form
+
+Ausgehend von der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
+<!-- 
+$$
+D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
+$$ {#eq-black-scholes-01} 
+-->
+
+$$
+D \cdot \Delta \Delta w = q 
+$$ {#eq-black-scholes-01}
+
+ergibt sich nach Multiplikation mit der Testfunktion $\delta w : [0,l]^2 \to \mathbb{R}^2$
+
+$$
+D \cdot  \frac{\partial^4 w}{\partial x^4} \cdot \delta w 
++ D \cdot  2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w 
++D \cdot \frac{\partial^4 w}{\partial y^4}\cdot \delta w  
+=  q \cdot \delta w .
+$$ {#eq-black-scholes-02}
+
+Nach integration beider Seiten über die Fläche $\Omega$ folgt
+$$
+\underbrace{D \int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \cdot d \Omega}_{Part 1} + \underbrace{D \int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \cdot d \Omega}_{Part 2} + \underbrace{D \int_{\Omega} \frac{\partial^4 w}{\partial y^4}\cdot \delta w \cdot d \Omega}_{Part 3} = \int_{\Omega} q \cdot \delta w \cdot d \Omega .
+$$ {#eq-black-scholes-03}
+
+Nach zweifacher partieller Integration der linken Seite der Gleichung ergeben sich die Teilergebnisse für 
+*Part 1*
+$$
+= D \cdot \int_y [\underbrace{[\frac{\partial^3 w}{\partial x^3} \cdot \delta w]_x - [\frac{\partial^2 w}{\partial x^2}\cdot \frac{\partial \delta w}{\partial x}]_x}_{=0} + \int_x \frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} dx]dy 
+= D \cdot \int_{\Omega} \frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} \cdot d \Omega ,
+$$
+
+*Part 2*
+$$
+D \cdot \int_{\Omega} 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \cdot d \Omega ,
+$$
+
+und *Part 3*
+$$
+= D \cdot \int_x [\underbrace{[\frac{\partial^3 w}{\partial y^3} \cdot \delta w]_y - [\frac{\partial^2 w}{\partial y^2} dot \frac{\partial \delta w}{\partial y}]_y}_{= 0} + \int_y \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} d y ]d x 
+=D \cdot \int_{\Omega} \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \cdot d \Omega.
+$$
+
+
+Durch das Zusammenführen der Teilergebnisse ergibt sich das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Variations Problem (V)* \
+
+Gesucht ist die Funktion $w:[0,l]^2 \to \mathbb{R}^2$ welche die Differentialgleichung
+\
+\
+$$
+\begin{align}
+\int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \cdot d \Omega) \\ 
+= \int_{\Omega} q \cdot \delta w \cdot d \Omega
+\end{align}
+$$ {#eq-black-scholes-03}
+
+\
+
+für jede (fast) beliebige Testfunktion $\delta w$.
+
+:::
+
+Es lässt sich für die Funktionen $w(x)$ und $\delta w(x)$ die Bilinearform für die Kirchhoffplatte in kompakter Schreibweise
+$$ 
+a(w, \delta w) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) d \Omega 
+$$ {#eq-black-scholes-04}
+
+mit
+$$
+D = \frac{Eh^3}{12(1+\nu^2)}\begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+$$
+
+und die Linearform 
+$$ 
+b(\delta w) = \int_{\Omega} q \cdot \delta w \cdot d \Omega
+$$ {#eq-black-scholes-05}
+
+entwickeln.
+
+## Parametrisierung (Jacobi-Matrix)

@@ -1,9 +1,12 @@
-# Kirchhoffsche Plattentheorie
+# DGL einer Platte nach der Kirchhoffsche Plattentheorie
+
+
 
 ## Annahmen, Grundgleichungen und Verschiebungsfeld
 Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
 Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
 \
+
 <!-- #(text(blue)[
 - Jede gerade Linie der Platte, welche ursprüngliche senkrecht auf den Grundflächen war, bleibt bei der Form-Änderung gerade und senkrecht auf den Flächen, welche ursprüngliche den Grundflächen parallele Ebenen waren
 - Alle Elemente der Mittelfläche (d. h. derjenigen Fläche, welche im natürlichen Zustande der Platte die Ebene ist, die den Grundflächen parallel in der Mitte zwischen diesen liegt) erleiden bei der Form-Änderung keine Dilatation.
@@ -14,31 +17,35 @@ Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum erste
 
 BILD
 
-Die partielle Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$, gibt die Neigung der neutralen Ebene an. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an der Stelle $(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an der Stelle $(x,y)$ um die x-Achse oder y-Achse.
+Die partielle Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$, gibt die Neigung der neutralen Ebene an. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an der Stelle $(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an der Stelle $(x,y)$ um die x-Achse oder y-Achse. In Abhängigkeit der Verdrehwinkel
 
 $$ 
 \theta_x (x,y) = arctan(-\frac{\partial w}{\partial x}) 
 $$ {#eq-black-scholes}
+
+und
 $$ 
 \theta_y (x,y) = arctan(-\frac{\partial w}{\partial y}) 
 $$ {#eq-black-scholes}
 
-
-Die horizontalen Verschiebungen des Punktes P können in Abhängigkeit der Verdrehwinkel $theta_x$ und $theta_y$ folgendermaßen berechnet werden:
+werden die horizontalen Verschiebungen des Punktes P
 $$ 
-u(x,y,z)=sin(\theta_x (x,y)) \cdot z , 
-$$ {#eq-black-scholes}
-$$ 
-v(x,y,z)=sin(\theta_y (x,y)) \cdot z . 
+u(x,y,z)=sin(\theta_x (x,y)) \cdot z
 $$ {#eq-black-scholes}
 
+und
+$$ 
+v(x,y,z)=sin(\theta_y (x,y)) \cdot z
+$$ {#eq-black-scholes}
+
+berechnet. 
 Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergibt sich der Zusammenhang
 $$ 
 u(x,y,z) = -z \cdot \frac{\partial w(x,y)}{\partial x} 
 $$ {#eq-black-scholes}
 $$ 
-v(x,y,z) = -z \cdot \frac{\partial w(x,y)}{\partial y} 
-y$$ {#eq-black-scholes}
+v(x,y,z) = -z \cdot \frac{\partial w(x,y)}{\partial y}. 
+$$ {#eq-black-scholes}
 
 Die Gesetztmäßigkeiten nach Gl.2.1, Gl.2.5 und Gl.2.6 werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet. [2]
 
@@ -106,6 +113,7 @@ m_{yy} &= D \cdot (\nu \cdot \kappa_{xx} + \kappa_{yy}) &&= D \cdot (\nu \cdot \
 m_{xy} &= D \cdot \frac{1-\nu}{2} \cdot \kappa_{xy} &&= D \cdot \frac{1-\nu}{2} \cdot (-2 \frac{\partial^2 w}{\partial x \partial y})
 \end{align}
 $$ {#eq-black-scholes}
+
 Die Querkräfte ergeben sich aus den dritten Ableitungen der Verschiebung $w$
 $$
 \begin{align}
@@ -130,16 +138,18 @@ Setzt man die Gleichungen der Schnittgrößen in die Gleichgewichtsbeziehungen e
 Die Krümmungen aus den Gleichungen in (3.9) in die vereinfachten Biegemomenten (Gl. 3.14) einsetzen. Die sich daraus ergebenen Gleichungen in (Gl. 3.15) einsetzen.
 Daraus ergibt sich: -->
 
-  #block(width: 450pt,fill:luma(230), inset:8pt, radius:4pt,
+  <!-- #block(width: 450pt,fill:luma(230), inset:8pt, radius:4pt,
   [
   *Randwertproblem (D)* \
 
   Gesucht ist die Funktion $w:[] arrow RR^2$ welche die Differentialgleichung
-  $ D dot [(partial^4 w)/(partial x^4) + 2 dot (partial^2 w)/(partial x^2 partial y^2) + (partial^4 w)/(partial y^4)] = q $ <Randwertproblem>
+  $ D dot [(partial^4 w)/(partial x^4) + 2 dot (partial^2 w)/(partial x^2 partial y^2) + (partial^4 w)/(partial y^4)] = q $
   und die Randbedingungen
 
   erfüllt.
-  ])
+  ]) -->
 
 Das Randwertproblem wird als Divergenz des Gradienten von $w$ wie folgt ausgedrückt:
-$$ D \cdot \Delta \Delta w(x,y) = q $$ {#eq-black-scholes}
+$$
+D \cdot \Delta \Delta w(x,y) = q 
+$$ {#eq-black-scholes}
