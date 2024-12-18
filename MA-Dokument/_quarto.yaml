@@ -9,26 +9,19 @@ filters:
   - latex-environment.lua
 environments: [center]
 
+  # ams-typst: default
+
 format: 
   html:
     theme: cosmo 
     default-image-extension: svg 
     mainfont: Times New Roman
-  pdf:
-    default-image-extension: pdf
-    mainfont: Times New Roman
-    documentclass: scrreprt
   typst: 
     default-image-extension: svg
 
-  # ams-typst: default
-
-
-
-
-  # chapters:
-  #   - eidesstattliche-erklaerung.qmd
-  #   - danksagung.qmd
+chapters:
+    # - eidesstattliche-erklaerung.qmd
+    # - danksagung.qmd
 
     # - part: einleitung.qmd
     #   chapters:
@@ -45,19 +38,21 @@ format:
     #           - Lagrange Element (bilineares Element)
     #           - Bogner-Fox-Schmit
     #           - 
-   
 
-    # - part: grundlagen_mech_math.qmd
-    #   chapters:
-    #     - Annahmen_Grundgleichungen_Verschiebungsfeld.qmd
-    #     - Verzerrungsfeld.qmd
-    #     - Schnittgrößen.qmd
-    #     - Gleichgewichtsbeziehungen.qmd
+    - part: grundlagen_mech_math.qmd
+      chapters:
+        - einführung_platten.qmd
+        - kirchhoffsche-plattentheorie.qmd
+    #           - Annahmen_Grundgleichungen_Verschiebungsfeld
+    #           - Verzerrungsfeld
+    #           - Schnittgrößen
+    #           - Gleichgewichtsbeziehungen
 
     # - part: FEM_Plattentragwerke.qmd
     #   chapters:
-    #     - Herleitung_schwacheForm.qmd
-    #     - 
+    #     - Vorbereitungen
+    #           - Herleitung_schwacheForm.qmd
+    #           - Parametrisierung
     #     - 
 
     # - part: Umsetzung-in-JULIA-und-Beispiele.qmd
@@ -70,5 +65,3 @@ format:
     # - part: Zusammenfassung-und-Ausblick.qmd
 
     # - part: Literatur.qmd
-
-

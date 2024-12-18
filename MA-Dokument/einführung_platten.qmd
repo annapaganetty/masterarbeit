@@ -1,4 +1,4 @@
-# Einführung Plattentragwerke
+# Einführung Plattentragwerke {#sec-einfuehrung-plattentragwerke}
 
 Tragwerke wie Wohnhäuser, Brücken, Lagerhallen und weitere, werden in Tragwerksstrukturen wie Balken, Platten und Scheiben unterteilt. Selten besteht ein Tragwerk aus nur einem Element. Überlicherweise besteht es aus einer Zusammenstellung mehrerer Elemente, welche sich gegenseitig beeinflussen. Ziel der Modellierung des Tragwerkes ist es, ein möglichst realitätsnahes Abbild zu schaffen, um somit die Tragfähigkeit beurteilen zu können. Plattentragwerke sind ein wesentlicher Teil bei der Modellierung von Tragwerksstrukturen.
 

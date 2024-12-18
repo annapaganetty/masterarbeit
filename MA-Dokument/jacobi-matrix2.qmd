@@ -154,7 +154,7 @@ ergibt sich durch eine weitere Vereinfachung mit Hilfe des Nabla-Operators.
 <!-- Ist das so richtig ???  -->
 Sei 
 $$ 
-\mathbf{J}_{F^{-1}} = 
+\mathbf{J}_{F^{-1}}(x,y) = 
 \left[ \begin{array}{center} 
 \xi_{,_1}(x,y) & \eta_{,_1}(x,y) \\
 \xi_{,_2}(x,y) & \eta_{,_2}(x,y) 
@@ -169,8 +169,8 @@ $$ {#eq-black-scholes-11}
 die Jacobi-Matrix der inversen Funktionen $F_x^{-1}$ und $F_y^{-1}$, so entspricht dies nach dem "Inverse function theorem" der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$
 
 $$
-\mathbf{J}_{F^{-1}} =
-(\mathbf{J}_{F})^{-1} = 
+\mathbf{J}_{F^{-1}}(x,y) =
+(\mathbf{J}_{F})^{-1}(\xi,\eta) = 
 \left[ \begin{array}{center} 
 x_{,_1}(\xi,\eta) & y_{,_1}(\xi,\eta) \\
 x_{,_2}(\xi,\eta) & y_{,_2}(\xi,\eta) 

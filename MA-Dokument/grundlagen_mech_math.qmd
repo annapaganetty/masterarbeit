@@ -1,0 +1,11 @@
+# Mechanische und mathematische Grundlagen
+
+
+blablabla einführung kapitel
+
+Verlinkungen funktionieren noch nicht 
+
+@sec-einfuehrung-plattentragwerke
+
+@sec-dgl-einer-platte-nach-der-kirchhoffschen-plattentheorie
+
