@@ -1,0 +1,132 @@
+# Einführungsbeispiel {#sec-einfuehrungsbeispiel}
+
+Als Einführungsbeispiel dient ein 2D Balken, angelehnt an ein Beispiel aus dem Buch von FISH & BELYTSCHKO (Kapitel 10).
+
+![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){width=100%}
+
+_Kinematische Gleichungen:_
+
+Die nachfolgend beschriebenen Zusammenhänge beruhen auf den beiden Bernoulli-Hypothesen. Die erste Hypothese besagt, dass der Querschnitt des Balkens im unverformten und im verformten Zustand eben ist und sich nicht verwölbt (_Ebenbleiben des Querschnitts_). Zudem wird davon ausgegangen, dass die Querschnittsfläche im verformten Zustand senkrecht zur neutralen Achse bleibt (_Senkrechtbleiben des Querschnitts_).
+
+Die Durchbiegung des verformten Balken wird durch $w(x)$ beschrieben. Die Ableitung $w'(x)$ gibt die Neigung der neutralen Achse an und entspricht somit dem Verdrehwinkel der Achse an der Stelle $x$. Es ergibt sich, entsprechend der Annahmen nach Bernoulli, der Zusammenhang 
+$$
+\theta = -w'(x) \quad.
+$${#eq-verdrehwinkel}
+
+Die horizontale Verschiebung des Punktes P, in Abhängigkeit der Balkenhöhenkoordinate $y$ und der Ableitung der Verformung, wird durch
+$$
+u(x, y) = −y · w′(x) 
+$${#eq-horizontale-verschiebung-balken}
+
+![verformter Balken](00-pics/Verformter-Balken.png){width=70%}
+
+beschrieben. Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
+$$
+I_z =\int_A y^2 dA 
+$${#eq-flaechentraegheitsmoment-balken}
+
+das Schnittmoment 
+$$
+M_z = -E I \cdot w''(x) \quad.
+$${#eq-schnittmoment-balken}
+
+_Gleichgewichtsbeziehungen_
+
+Bei der Betrachtung des Gleichgewichts an einem finiten Element der Größe $\Delta x$, ergeben sich die Gleichgewichtsbedingungen
+$$
+\begin{align}
+&\sum V: \quad V(x+\Delta x)-V(x)+q_z \cdot \Delta x &=0 \\
+&\sum M: \quad M(x+\Delta x)-M(x)-q_z \cdot \frac{\Delta x^2}{2} - V(x+\Delta x) \cdot \Delta x &=0.
+\end{align}
+$${#eq-gleichgewichtsbeziehungen-balken}
+
+![Schnittgrößen am Bernoulli Balken](00-pics/Schnittgroessen-balken.png){width=100%}
+
+Nach Division der Beziehungen mit $\Delta x$ und Berechnung des Grenzwertes mittels $\lim_{\Delta x \to 0}$, folgen durch Anwendung des Differentialquotienten die Zusammenhänge
+$$
+\begin{align}
+V'(x) &= -q_z(x) \\
+M'(x) &= V(x) \\
+M''(x) &= -q_z(x) 
+\end{align}
+$$ {#eq-zusammenhaenge-aus-GG}
+
+## Starke Form zur schwachen Form
+Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form des Problems_ wie folgt formulieren:
+\
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Randwertproblem D (Balken)* 
+\
+\
+Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$ welche die Differentialgleichung 
+\
+\
+$$
+E I \cdot w^{iv}(x)= -q_z(x) 
+$${#eq-randwertproblem-balken}
+
+und die Randbedingungen
+\
+\
+$$
+\begin{align}
+&w(0) = w_0 \quad \quad &oder \quad \quad &V_0= -E I \cdot w'''(0) = A_z \\
+&w(L)= w_1 \quad \quad &oder \quad \quad &V_1= -E I \cdot w'''(L) = B_z \\
+&w'(0) = \varphi_0 \quad \quad &oder \quad \quad &M_0= -E I \cdot w''(0) = 0 \\
+&w'(L)= \varphi_1 \quad \quad &oder \quad \quad &M_1= -E I \cdot w''(L) = 0
+\end{align}
+$$
+
+erfüllt.
+
+:::
+
+Die Basis für eine Finite Elemente Lösung bildet die _schwache Form des Problems_
+\
+Durch Mulitplikation der DGL mit der Testfunktion $\delta w :[0,L] \to \mathbb{R}$  und Integration beider Seiten folgt
+$$
+EI \cdot \int^L_0 w^{iv}(x) \cdot \delta w(x) dx = \int^L_0 -q_z(x) \cdot \delta w(x) dx. 
+$$ {#eq-basis-fe-loesung}
+
+Nach zweifacher partieller Integration der linken Seite von @eq-basis-fe-loesung ergibt sich das Variationsproblem für den Biegebalken.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Variationsproblem V (Balken)* 
+\
+\
+Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$, sodass 
+$$
+\begin{align}
+EI \cdot \int^L_0 w''(x) \cdot \delta w''(x) dx  =\\
+-q_{z} \cdot \int^L_0 \delta w(x) dx +V_1 \cdot \delta w(L)-V_0 \cdot \delta w(0)-M_1 \cdot \delta w'(L)+M_0 \cdot \delta w'(0) 
+\end{align}
+$$ {#eq-variationsproblem-balken}
+
+für (fast) jede beliebige Testfunktionen $\delta w$.
+
+:::
+
+Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen, welche auch für viele andere Probleme die Basis darstellt. Die linke Seite der @eq-variationsproblem-balken wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes Variationsproblem AV (Balken)* 
+\
+\
+Gesucht ist die Funktion $w \in V$, sodass 
+$$
+a(w, \delta w)= b(\delta w)
+$${#eq-abstraktes-variationsproblem-balken}
+
+für (fast) jede beliebige Testfunktionen $\delta w \in V$.
+
+:::
+
+------------------------------------------------------------------------------------------
+
+$V$ = unendlich großer Vektorraum = Menge von Funktionen auf $[0,L]$
+
+$V_h$ = endlich großer Vektorraum = Unterraum von $V$ = Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$

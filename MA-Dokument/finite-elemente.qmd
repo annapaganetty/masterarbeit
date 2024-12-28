@@ -1,4 +1,4 @@
-# Finite Elemente
+# Finite Elemente {#finite-elemente}
 
 Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In unserem zweidimensionalen, ebenen, Fall werden quadratische Elemente betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind [Braess, S. 57, Fußnote].
 Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente Raums am wichtigsten sind.

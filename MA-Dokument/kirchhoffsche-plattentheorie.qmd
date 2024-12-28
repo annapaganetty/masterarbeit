@@ -21,6 +21,7 @@ Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Mode
 
 ## kinematische Gleichungen (Verschiebungsfeld)
 \
+
 Zur Formulierung der kinematischen Gleichungen werden die partiellen Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$ berechnet, welche die Neigung der neutralen Ebene angeben. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an dem Punkt $P(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an dem Punkt $P(x,y)$ um die x-Achse oder y-Achse. In Abhängigkeit der Verdrehwinkel
 
 $$ 

@@ -5,19 +5,11 @@ lang: de
 number-depth: 3
 number-sections: true
 
-filters: 
-  - latex-environment.lua
-environments: [center]
-
-  # ams-typst: default
-
 format: 
   html:
     theme: cosmo 
     default-image-extension: svg 
-    mainfont: Times New Roman
-  typst: 
-    default-image-extension: svg
+  ams-typst: default
 
 chapters:
     # - eidesstattliche-erklaerung.qmd
@@ -31,7 +23,7 @@ chapters:
 
     # - part: grundlagen_FEM.qmd
     #   chapters:
-    #     - einfhuerung_FEM.qmd
+    #     - einfuehrung_FEM.qmd
     #     - historischer-hintergrund.qmd ???
     #     - finite-elemente.qmd
     #           - Definition Finites Element
@@ -41,12 +33,14 @@ chapters:
 
     - part: grundlagen_mech_math.qmd
       chapters:
-        - einführung_platten.qmd
+        - einfuehrung_platten.qmd
         - kirchhoffsche-plattentheorie.qmd
-    #           - Annahmen_Grundgleichungen_Verschiebungsfeld
+    #           - kinematische Gleichungen (Verschiebungsfeld)
+    #           - Materialgesetz
     #           - Verzerrungsfeld
     #           - Schnittgrößen
-    #           - Gleichgewichtsbeziehungen
+    #           - Gleichgewichtsbeziehungen & Plattengleichung
+        - funktionale.qmd    
 
     # - part: FEM_Plattentragwerke.qmd
     #   chapters:

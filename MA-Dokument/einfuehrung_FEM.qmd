@@ -1,11 +1,10 @@
-# Einführung in die Finite Elemente Methode (FEM)
+# Einführung in die Finite Elemente Methode(FEM) {#sec-einfuehrung-FEM}
 
 Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung. Nichtsdestotrotz sollten Ingenieure immer im Hinterkopf behalten, dass alle gemachten Angaben, wie Geometrie und Materialeigenschaften das Modell beeinflussen. Je genauer die Eingaben, desto genau sind die Ergebnisse.
 
 Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
 
 In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Problemen ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt Tabelle... Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
-
 
 
 +-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
@@ -34,3 +33,5 @@ In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen anwen
 | kubisch     |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |semi-$C^1$ |
 |unvollständig|                                                                                                                                    |             |           |
 +-------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------+
+
+: Tabellenbeschreibung

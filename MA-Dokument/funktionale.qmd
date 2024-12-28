@@ -1,0 +1,63 @@
+# verwendete Funktionale {#sec-funktionale}
+
+Für die Definition des Variationsproblems in Kapitel xxx werden die Linear- und die Bilinearform genutzt. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $\mathbb{K}$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+_Definition_ (Funktional): Sei $V$ ein $\mathbb{K}$-Vektorraum mit $\mathbb{K} \in \{ \mathbb{R},\mathbb{C} \}$. Ein Funktional $T$ ist eine Abbildung $T:V \to \mathbb{K}$.
+:::
+
+Sowohl die Linearform, als auch die Bilinearform, sind, wie der Name erkennen lässt, lineare Funktionale. Als Vektorraum $V$ wird die Menge von Funktionen die $V$ abbilden genannt. Die folgenden Rechenoperationen können auf die Funktionen
+
+$\quad \quad \quad f,g: \mathbb{R}^n \to \mathbb{R}$
+
+angewandt werden:
+$$
+\begin{align}
+&\text{Addition zweier Funktionen:} &&\quad h = f+g &&\quad \quad \text{definiert} \quad \quad h(x)=f(x)+g(x) \\
+&\text{Multiplikation mit einer Zahl:} &&\quad h = \alpha \cdot f &&\quad \quad \text{definiert} \quad \quad h(x)=\alpha \cdot f(x) \quad , \quad \alpha \in \mathbb{R} \\
+\end{align}
+$$
+
+Die Linearform $b(\delta w)$ des abstrakten Variationsproblems (Kap. xxx) beschreibt eine Abbildung von dem Vektorraum $V \to \mathbb{R}$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
+
+$$
+\begin{align*}
+b(u+v) = b(u) + b(v) &&\quad \quad \quad \text{(Additivität)}
+\end{align*}
+$${#eq-eig-linearform-01}
+
+$$
+\begin{flalign}
+& b(\alpha \cdot u) = \alpha \cdot b(u) &&\quad \quad \quad \text{(Homogenität)}
+\end{flalign}
+$${#eq-eig-linearform-02}
+
+Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
+$$
+a(u+v,w) = a(u,w) + a(v,w) \quad ,
+$${#eq-eig-bilinearform-01}
+
+$$
+a(\alpha \cdot u,v) = \alpha \cdot a(u,v) \quad ,
+$${#eq-eig-bilinearform-02}
+
+$$
+a(u,v+w) = a(u,v) + a(u,w) \quad ,
+$${#eq-eig-bilinearform-03}
+
+und
+$$
+a(u,\alpha \cdot v) = \alpha \cdot a(u,v) \quad .
+$${#eq-eig-bilinearform-04}
+
+Weiterführend ist die Bilinearform _positiv definit_ für
+$$
+a(u,u) \ge 0 \quad \forall \quad u \in V
+$$
+
+und _symmetrisch_ für 
+$$
+a(u,v) = a(v,u) \quad .
+$$
+
+Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von einem Skalarprodukt gesprochen. Dies ist im Fall der Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems gegeben.
