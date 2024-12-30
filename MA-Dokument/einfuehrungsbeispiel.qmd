@@ -18,9 +18,11 @@ $$
 u(x, y) = −y · w′(x) 
 $${#eq-horizontale-verschiebung-balken}
 
+beschrieben. 
+
 ![verformter Balken](00-pics/Verformter-Balken.png){width=70%}
 
-beschrieben. Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
+Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
 $$
 I_z =\int_A y^2 dA 
 $${#eq-flaechentraegheitsmoment-balken}
@@ -113,20 +115,163 @@ Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle F
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
-*Abstraktes Variationsproblem AV (Balken)* 
+*Abstraktes Variationsproblem (Balken)* 
 \
 \
 Gesucht ist die Funktion $w \in V$, sodass 
 $$
-a(w, \delta w)= b(\delta w)
+a(w, \delta w)= b(\delta w)  \quad \forall \quad \delta w \in V
 $${#eq-abstraktes-variationsproblem-balken}
-
-für (fast) jede beliebige Testfunktionen $\delta w \in V$.
 
 :::
 
-------------------------------------------------------------------------------------------
+Weiter kann das Abstrakte Variationsproblem des Balken auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Die Näherungslösung von $w_h$ wird durch 
+$$
+w_h(x) = \varphi_1(x) \cdot \hat{w}_1 +  \varphi_2(x) \cdot \hat{w}_2 + ... + \varphi_N(x) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x) \cdot \hat{w}_i
+$${#eq-linearkombination}
 
-$V$ = unendlich großer Vektorraum = Menge von Funktionen auf $[0,L]$
+mit 
+$$
+\begin{align}
+&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
+&V_h \subset V
+\end{align}
+$${#eq-subspace}
 
-$V_h$ = endlich großer Vektorraum = Unterraum von $V$ = Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$
+ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes, diskretes Variationsproblem (Balken)* 
+\
+\
+Gesucht ist eine Funktion $w_h \in V_h$, sodass 
+$$
+a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
+$${#eq-abstraktes-diskretes-variationsproblem-balken}
+
+:::
+
+Zur numerischen Lösung des abstrakten, diskreten Variationsproblems werden 
+
+$$
+\delta w_h = \sum_{i=1}^N \varphi_i \cdot \delta \hat{w}_i 
+\quad \quad \text{und} \quad \quad
+w_h = \sum_{j=1}^N \varphi_j \cdot \hat{w}_j 
+$$
+
+in @eq-abstraktes-diskretes-variationsproblem-balken eingesetzt. Es ergibt sich das Gleichungssystem 
+$$
+\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad j = 1,...,N,
+$${#eq-weißnochnicht02}
+
+wobei $N$ die Anzahl der Gleichungen angibt. Das lineare Gleichungssystem wird weitgehend in der Literatur durch 
+$$
+\mathbf{K} \boldsymbol{\hat{w}} = \boldsymbol{r}.
+$${#eq-gleichungssystem-balken}
+
+mit
+$$
+\begin{align}
+&\mathbf{K} &&= K_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\boldsymbol{r} &&= r_i    &&= b(\varphi_i)
+\end{align}
+$$
+
+beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet und $\boldsymbol{r}$ als Lastvektor. Der Verschiebungsvektor __$\hat{w}$__ ist unbekannt und wird durch die Lösung des Gleichungssystems approximiert.
+Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
+
+![Balkenelement](00-pics/Balkenelemente.png){width=100%}
+
+Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $\Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade eines Euler-Bernoulli-Balkenelements ergeben sich somit zu 
+$$
+\hat{w}_e =
+\left[ \begin{array}{center} 
+w_1 \\
+\theta_1 \\
+w_2 \\
+\theta_2 \\
+\end{array}\right],
+$${#eq-verschiebungsvektor}
+
+mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, werden in Kapitel .... Abbildung ... dargestellt und Gl. ... beschrieben. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
+$$ 
+\begin{align}
+&H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\
+&H_2(x) = x - 2 \cdot \frac{x^2}{l_e} + \frac{x^3}{l_e^2} \\
+&H_3(x) = 3 \cdot \frac{x^2}{l_e^2} - 2\cdot \frac{x^3}{l_e^3} \\
+&H_4(x) = - \frac{x^2}{l_e} + \frac{x^3}{l_e^2}. 
+\end{align}
+$${#eq-hermite-Elementlaenge}
+
+Bezogen auf ein Element mit den Knoten $x_j$ und $x_{j+1}$ gelten die Eigenschaften des _Kronecker-Deltas_ für die Formfunktionen $H_i$ beschrieben durch
+$$
+\varphi_i(x_j) = \delta_{ij} =
+\begin{cases} 
+1\quad & \text{für $\quad i = j$}  \\
+0\quad & \text{für $\quad i \neq j$}
+\end{cases}
+$${#eq-konecker-delta-01}
+
+und
+$$
+\varphi_i'(x_j) = \delta_{ij} =
+\begin{cases} 
+1\quad & \text{für $\quad i = j$}  \\
+0\quad & \text{für $\quad i \neq j$}.
+\end{cases}
+$${#eq-konecker-delta-02}
+
+Die Länge des physikalischen Elements $\Omega_e$ ergibt sich aus der Differenz zweier Knotenkoordinaten
+$$
+l_e = x_{j+1} - x_j.
+$$
+
+Für die Berechnung der Steifigkeitsmatrix $\mathbf{K}$ wird der Umrechnungsfaktor 
+$$
+F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
+$${#eq-umrechnungsfaktor}
+
+der $x$-Koordinate des physikalischen Elements zur $\xi$-Koordinate des Referenzelements benötigt. Beispielhaften wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet.
+Mithilfe des Umrechnungsfaktors wird
+$$
+\varphi_3(x) = H_1(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2 
+$$
+
+definiert. Analog dazu kann $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf demselben Element ($\Omega_2$) wird 
+$$
+\varphi_4(x) = \alpha \cdot H_2(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
+$$
+
+und die Ableitung 
+$$
+\varphi_4'(x) = \alpha \cdot H_2(F_2^{-1}) \cdot F_2^{-1}'(x) \qquad \forall \qquad x \in \Omega_2
+$$
+
+definiert. Durch das Einsetzen von @eq-umrechnungsfaktor in die Ableitung und die in @eq-konecker-delta-02 beschriebenen Eigenschaften der Formfunktionen ergibt sich in allgemeiner Form 
+$$
+\alpha = \frac{l_e}{2}
+$$
+
+
+Die Elementsteifigkeitsmatrix ergibt sich, mittels Anwendung der Kettenregel bei der Ableitung der Formfunktionen $H_i$, zu
+
+$$
+\begin{align}
+K_{ij}^e   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx \\
+            &= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  \int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx
+\end{align}
+$$
+
+mit
+$$
+a_i^e = 
+\begin{cases}
+1 & \text{für $\quad i = $2,4,6,...} \\
+\frac{l_e}{2} & \text{für $\quad i = $1,3,5,...}
+\end{cases}
+$$
+
+
+
+![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){width=100%}

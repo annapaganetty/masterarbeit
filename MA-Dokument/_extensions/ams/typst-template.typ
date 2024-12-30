@@ -20,7 +20,7 @@
   abstract: none,
 
   // The article's paper size. Also affects the margins.
-  paper-size: "a4",
+  paper-size: "us-letter",
 
   // The path to a bibliography file if you want to cite some external
   // works.
@@ -119,9 +119,17 @@
   // Configure equations.
   show math.equation: set block(below: 15pt, above: 15pt)
   show math.equation: set text(weight: 400)
+  set math.equation(supplement: [Gl.])
 
   // Configure citation and bibliography styles.
   set bibliography(style: "apa", title: "References")
+
+  // show figure.where(kind: table): set figure(supplement: [Tab.])
+
+  // show figure: set text(weight:400)
+  // show figure.where(kind: image): set figure(supplement:[Abb.])
+  // set figure.caption(separator: [ --- ])
+
 
   show figure: it => {
     show: pad.with(x: 23pt)
@@ -136,7 +144,7 @@
     if it.has("caption") {
       // Gap defaults to 17pt.
       v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
-      smallcaps[Tabelle]
+      smallcaps[Figur]
       if it.numbering != none {
         [ #counter(figure).display(it.numbering)]
       }
@@ -145,20 +153,6 @@
     }
     v(15pt, weak: true)
   }
-
-  // Theorems.
-  show figure.where(kind: "theorem"): it => block(above: 11.5pt, below: 11.5pt, {
-    strong({
-      it.supplement
-      if it.numbering != none {
-        [ ]
-        counter(heading).display()
-        it.counter.display(it.numbering)
-      }
-      [.]
-    })
-    emph(it.body)
-  })
 
   // Display the title and authors.
   v(35pt, weak: true)
@@ -169,8 +163,8 @@
   }))
 
   // Configure paragraph properties.
-  // set par(first-line-indent: 1.2em, justify: true, leading: 0.58em)
-  // show par: set block(spacing: 0.58em)
+  set par(justify: true, leading: 0.58em)
+  show par: set block(spacing: 0.58em)
 
   // Display the abstract
   if abstract != none {
@@ -219,19 +213,3 @@
     v(12pt, weak: true)
   }
 }
-
-// The ASM template also provides a theorem function.
-#let theorem(body, numbered: true) = figure(
-  body,
-  kind: "theorem",
-  supplement: [Theorem],
-  numbering: if numbered { "1" },
-)
-
-// And a function for a proof.
-#let proof(body) = block(spacing: 11.5pt, {
-  emph[Proof.]
-  [ ] + body
-  h(1fr)
-  box(scale(160%, origin: bottom + right, sym.square.stroked))
-})

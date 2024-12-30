@@ -33,7 +33,7 @@ chapters:
 
     - part: grundlagen_mech_math.qmd
       chapters:
-        - einfuehrung_platten.qmd
+        - einfuehrung_platten.qmd                       
         - kirchhoffsche-plattentheorie.qmd
     #           - kinematische Gleichungen (Verschiebungsfeld)
     #           - Materialgesetz

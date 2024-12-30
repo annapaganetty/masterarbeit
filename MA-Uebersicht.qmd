@@ -24,3 +24,50 @@
     - DKQ - Elemente (Batoz und Tahar)
         = serendipity(?)
         = 8 Knoten & 3 DOFs pro Eckknoten und & ... DOFs pro Mittelknoten
+
+
+
+chapters:
+1,0 - eidesstattliche-erklaerung.qmd
+1,0 - danksagung.qmd
+
+    - part: einleitung.qmd
+    chapters:
+        - motivation.qmd
+        - problemstellung.qmd
+        - zielsetzung-gliederung.qmd
+
+    - part: grundlagen_FEM.qmd
+    chapters:
+1,0     - einfuehrung_FEM.qmd
+0,5     - historischer-hintergrund.qmd ???
+4,0     - finite-elemente.qmd
+             - Definition Finites Element
+             - Lagrange Element (bilineares Element)
+             - Bogner-Fox-Schmit
+7,0     - Einführungsbeispiel: Biegebalken
+
+    - part: grundlagen_mech_math.qmd
+    chapters:
+1,5     - einfuehrung_platten.qmd                       
+8,0     - kirchhoffsche-plattentheorie.qmd
+1,0     - funktionale.qmd    
+
+    - part: FEM_Plattentragwerke.qmd
+    chapters:
+        - Vorbereitungen
+        - Herleitung_schwacheForm.qmd
+3,0         - Parametrisierung
+ 
+    - part: Umsetzung-in-JULIA-und-Beispiele.qmd
+    chapters:
+        - Programmiersprache-Julia.qmd
+        - Programm.qmd
+        - Anwendungsbeispiele.qmd
+        - Verifikation_Vergleich.qmd
+
+    - part: Zusammenfassung-und-Ausblick.qmd
+
+    - part: Literatur.qmd
+
+Seitenanzahl gesamt: 26 
