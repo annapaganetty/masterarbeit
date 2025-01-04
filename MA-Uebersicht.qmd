@@ -45,7 +45,7 @@ chapters:
              - Definition Finites Element
              - Lagrange Element (bilineares Element)
              - Bogner-Fox-Schmit
-7,0     - Einführungsbeispiel: Biegebalken
+8,0     - Einführungsbeispiel: Biegebalken
 
     - part: grundlagen_mech_math.qmd
     chapters:
@@ -70,4 +70,4 @@ chapters:
 
     - part: Literatur.qmd
 
-Seitenanzahl gesamt: 26 
+Seitenanzahl gesamt: 27 

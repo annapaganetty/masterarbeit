@@ -1,8 +1,8 @@
 # Einführungsbeispiel {#sec-einfuehrungsbeispiel}
 
-Als Einführungsbeispiel dient ein 2D Balken, angelehnt an ein Beispiel aus dem Buch von FISH & BELYTSCHKO (Kapitel 10).
+Als Einführungsbeispiel dient ein 1D Biegebalken, an beiden Seiten gelenkig gelagert (siehe @fig-Einfuehrungsbeispiel).
 
-![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){width=100%}
+![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=80%}
 
 _Kinematische Gleichungen:_
 
@@ -32,7 +32,7 @@ $$
 M_z = -E I \cdot w''(x) \quad.
 $${#eq-schnittmoment-balken}
 
-_Gleichgewichtsbeziehungen_
+_Gleichgewichtsbeziehungen:_
 
 Bei der Betrachtung des Gleichgewichts an einem finiten Element der Größe $\Delta x$, ergeben sich die Gleichgewichtsbedingungen
 $$
@@ -232,15 +232,19 @@ $$
 F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
 $${#eq-umrechnungsfaktor}
 
-der $x$-Koordinate des physikalischen Elements zur $\xi$-Koordinate des Referenzelements benötigt. Beispielhaften wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet.
+benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet.
 Mithilfe des Umrechnungsfaktors wird
 $$
-\varphi_3(x) = H_1(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2 
+\begin{flalign*}
+\varphi_3(x) = H_1(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
+\end{flalign*}
 $$
 
 definiert. Analog dazu kann $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf demselben Element ($\Omega_2$) wird 
 $$
+\begin{flalign*}
 \varphi_4(x) = \alpha \cdot H_2(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
+\end{flalign*}
 $$
 
 und die Ableitung 
@@ -254,24 +258,98 @@ $$
 $$
 
 
-Die Elementsteifigkeitsmatrix ergibt sich, mittels Anwendung der Kettenregel bei der Ableitung der Formfunktionen $H_i$, zu
-
+Die Elementsteifigkeitsmatrix und der Elementlastvektor ergeben sich, mittels Anwendung der Kettenregel zur Berechnung der Ableitung der Formfunktionen $H_i$, zu
 $$
 \begin{align}
-K_{ij}^e   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx \\
-            &= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  \int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx
+\mathbf{K_{ij}^e}   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx
+                    &&= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  &&\int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx \\
+\mathbf{r^e}    &= q_z \cdot \int_{\Omega_e} \varphi_i(x) dx 
+                &&= a_i \cdot q_z \cdot &&\int_{x_e}^{x_{e+1}} H_i(F_e^{-1}(x)) dx 
 \end{align}
-$$
+$${#eq-K-und-r-balken}
 
 mit
 $$
 a_i^e = 
 \begin{cases}
 1 & \text{für $\quad i = $2,4,6,...} \\
-\frac{l_e}{2} & \text{für $\quad i = $1,3,5,...}
+\frac{l_e}{2} & \text{für $\quad i = $1,3,5,... ,} 
 \end{cases}
 $$
 
+siehe @fig-Basisfunktionen.
+Sowohl die finale Elementsteifigkeitsmatrix, als auch der finale Elementlastvektor, bezogen auf das Referenzelement, ergeben sich durch die Vereinbarung aus @eq-umrechnungsfaktor mit $\xi = F_e^{-1}(x)$ und Substitution des Differenzialoperators
+$$
+\frac{d\xi}{d x} = F_e^{-1}'(x) = \frac{2}{l_e} \qquad\to\qquad dx = \frac{l_e}{2} d\xi 
+$$
 
+zu 
+$$
+\begin{align}
+\mathbf{K_{ij}^e} &= a_i^e \cdot a_j^e \cdot \frac{8 E I}{l_e^3} \cdot \int_{-1}^1 H_i ''(\xi) \cdot H_j '' (\xi) d \xi \\
+\text{und} 
+\mathbf{r^e} &= q_z \cdot \frac{l e}{2} \cdot a_i \int_{-1}^1 N_i(\xi) d\xi .
+\end{align}
+$${#eq-lastvektor-final-balken}
 
-![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){width=100%}
+![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=100%}
+
+Für eine Element der Länge $l_e$ und Konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
+$$
+\mathbf{K_{i j}^e} = 
+\frac{E I}{l_e^3}\cdot
+\left[ \begin{array}{center} 
+12    & 6l_e   & -12   & 6l_e   \\
+6l_e  & 4l_e^2 & -6l_e & 2l_e^2 \\
+-12   & -6l_e  & 12    & -6l_e  \\
+6l_e  & 2l_e^2 & -6l_e & 4l_e^2 \\
+\end{array}\right].
+$${#eq-Kij-balken}
+
+Bei einem Balkenelement, konstant belastet durch die Streckenlast $q_z$, wird der Lastvektor eines Elements durch 
+$$
+\mathbf{r^e}
+ = 
+\frac{q_z l_e}{2}\cdot
+\left[ \begin{array}{center} 
+1 \\
+\frac{l_e}{6} \\
+1 \\
+-\frac{l_e}{6} \\
+\end{array}\right].
+$${#eq-re-balken}
+
+beschrieben.
+
+Die Lösung des Gleichungssystems @eq-gleichungssystem-balken gibt die Durchbiegung und die Verdrehung des Balkens an jedem Knoten an. Für einen Einfeldträger mit gelenkigen Auflagern an beiden Seiten und den folgenden Parametern
+
+::: {.block stroke="0.5pt + black" inset="8pt"}
+
+$$
+\begin{align}
+&\qquad\qquad\qquad\qquad L= 20 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad E = 35.000 \cdot 10^6 &\quad \text{N/m}^2\qquad\qquad\qquad\qquad \\
+&\qquad\qquad\qquad\qquad b = 0.3 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad I_y = 5.4 \cdot 10^{-3} &\quad \text{m}^4\qquad\qquad\qquad\qquad \\
+&\qquad\qquad\qquad\qquad h = 0.6 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad q_z = -10 \cdot 10^3 &\quad \text{N/m}\qquad\qquad\qquad\qquad \\
+\end{align}
+$$
+
+:::
+
+ist in @fig-Durchbiegung-Balken die Durchbiegung mittels FEA für $N_e = 2,4,8,16,32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers 
+$$
+\begin{align}
+&w(x) = \frac{1+\xi \overline{\xi}}{24EI} \xi \overline{\xi} q_z L^4 \\
+\end{align}
+$${#eq-Durchbiegung-exakt-balken}
+
+mit den Konstanten
+$$
+\begin{align}
+&\xi = \frac{x}{L} \\
+&\overline{\xi} = \frac{L-x}{L}
+\end{align}
+$$
+
+und konstanter Streckenlast in demselben Diagramm zu sehen.
+
+![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=100%}

@@ -131,28 +131,28 @@
   // set figure.caption(separator: [ --- ])
 
 
-  show figure: it => {
-    show: pad.with(x: 23pt)
-    set align(center)
+  // show figure: it => {
+  //   show: pad.with(x: 23pt)
+  //   set align(center)
 
-    v(12.5pt, weak: true)
+  //   v(12.5pt, weak: true)
 
-    // Display the figure's body.
-    it.body
+  //   // Display the figure's body.
+  //   it.body
 
-    // Display the figure's caption.
-    if it.has("caption") {
-      // Gap defaults to 17pt.
-      v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
-      smallcaps[Figur]
-      if it.numbering != none {
-        [ #counter(figure).display(it.numbering)]
-      }
-      [: ]
-      it.caption
-    }
-    v(15pt, weak: true)
-  }
+  //   // Display the figure's caption.
+  //   if it.has("caption") {
+  //     // Gap defaults to 17pt.
+  //     v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
+  //     smallcaps[Figur]
+  //     if it.numbering != none {
+  //       [ #counter(figure).display(it.numbering)]
+  //     }
+  //     [: ]
+  //     it.caption
+  //   }
+  //   v(15pt, weak: true)
+  // }
 
   // Display the title and authors.
   v(35pt, weak: true)

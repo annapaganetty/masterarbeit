@@ -11,3 +11,11 @@ contributes:
         - typst-show.typ
       filters:
         - ams.lua
+
+crossref:
+  fig-title: Abbildung     # (default is "Figure")
+  tbl-title: Tbl     # (default is "Table")
+  title-delim: "—"   # (default is ":")
+  fig-prefix: Abbildung   # (default is "Figure")
+  tbl-prefix: table    # (default is "Table")
+  ref-hyperlink: false # (default is true)
