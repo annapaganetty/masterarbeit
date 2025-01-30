@@ -1,4 +1,4 @@
-# verwendete Funktionale {#sec-funktionale}
+## verwendete Funktionale {#sec-funktionale}
 
 Für die Definition des Variationsproblems in Kapitel xxx werden die Linear- und die Bilinearform genutzt. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $\mathbb{K}$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
 

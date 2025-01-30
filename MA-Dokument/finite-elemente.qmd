@@ -48,7 +48,7 @@ Für allgemeine Vierecke ist der oben beschriebene bilineare Ansatz untauglich. 
 
 ![bilineare Formfunktionen auf dem Referenzelement](00-pics/Lagrange-Formfunktionen.png){#fig-Lagrange-Formfunktionen width=75%}
 
-### konformes Hermite Rechteckelement (Bogner-Fox-Schmitt)
+### konformes Hermite Rechteckelement (Bogner-Fox-Schmitt) {#sec-FE-BFS}
 
 ![Bogner-Fox-Schmit Element](00-pics/BFS-Element.png){#fig-BFS-element width=40%}
 
@@ -99,7 +99,7 @@ dargestellt.
 ![Bogner-Fox-Schmitt Formfunktionen auf dem Referenzelement](00-pics/Bogner-Fox-Schmitt-Element.png){#fig-Bogner-Fox-Schmitt-Formfunktionen width=75%}
 
 
-### nichtkonformes Hermite Rechteckelement
+### nichtkonformes Hermite Rechteckelement {#sec-FE-Hermite-nichtkonform}
 
 Das nichtkonforme Hermite Element hat je Knoten einen Verschiebungs- und zwei Verdrehungsfreiheitsgrade
 $$
@@ -116,7 +116,7 @@ Die Forderung nach $C^1$-Stetigkeit der Ansatzfunktionen an den Rändern benachb
 
 ![Formfunktionen des nicht konformen Hermite Elements auf dem Referenzelement](00-pics/Hermite-unkonform-Formfunktionen.png){#fig-Hermite-nichtkonform-Formfunktionen width=75%}
 
-### Rechteckelement der Serendipity Klasse 
+### Rechteckelement der Serendipity Klasse {#sec-FE-Hermite-konform}
 
 Die Ansatzfunktion für $w(x,y)$ für das Rechteckelement der Serendipity Klasse basiert auf einer unvollständigen quadratischen Polynomfunktion mit den Polynomen  
 $$

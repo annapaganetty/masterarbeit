@@ -17,27 +17,15 @@ book:
 
       - part: grundlagen_FEM.qmd
         chapters:
-          - einfuehrung_FEM.qmd #(inkl. historischer Hintergrund kurz)
-      #   - finite-elemente.qmd und deren Basisfunktionen
-      #           - Lagrange Element (bilineares Element)
-      #           - Bogner-Fox-Schmitt
-      #           - Serendipity
-      #           - allgemeines Viereck
-      #           - C^1-Stetigkeit von Basisfunktionen
-      #   - numerische Integration
-      #           - Gauß-Integration
-      #           - Integration Referenzkoordinaten    
+          - einfuehrung_FEM.qmd
+          - finite-elemente.qmd
+          - numerische Integration    
           - einfuehrungsbeispiel.qmd
 
       - part: grundlagen_mech_math.qmd
         chapters:
           - einfuehrung_platten.qmd                       
           - kirchhoffsche-plattentheorie.qmd
-      #           - kinematische Gleichungen (Verschiebungsfeld)
-      #           - Materialgesetz
-      #           - Verzerrungsfeld
-      #           - Schnittgrößen
-      #           - Gleichgewichtsbeziehungen & Plattengleichung
           - funktionale.qmd   
       #   - Definition Finites Element TODO
 

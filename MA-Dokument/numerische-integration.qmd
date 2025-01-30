@@ -1,4 +1,4 @@
-## Numerische Integration
+## Numerische Integration {#sec-numerische-integration}
 
 Bei der Berechnung von Finite Elemente Modellen, spielen die numerische Integrationsverfahren eine elementare Rolle. Die Diffenrentialgleichung der schwachen Form des Problems kann, bedingt durch die Menge der auszuwertenden Integrale, nur schwer geschlossen integriert werden. Die _Gauß-Integration_ wird als besonders effizient bezeichnet. Sie gehört, sowie auch die Newton-Cotes-Formeln (Trapezregel, Simpsonregel etc.), zu der ersten Klasse von Integrationsverfahren.
  <!-- welche auf dem Ansatz beruhen, die zu integrierende Funktion durch ein Polynom zu approximieren und darauffolgend das Polynom exakt zu integrieren.   -->
@@ -51,7 +51,7 @@ ausgedrückt. @eq-position-stützstelle ergibt sich aus der Abbildung des physik
 
 : Gauß-Integrationspunkte und Integrationsgewichte für n Stützstellen. {#tbl-gauss-integrationspunkte}
 
-### Integration in Referenzkoordinaten
+### Integration in Referenzkoordinaten {#sec-integration-Referenz}
 
 Ähnlich wie die bei der Gauß-Quadratur genutzten Abbildung $\underline{F}^{-1}$ des physikalischen Integrationsintervalls auf die sogenannte Elterndomäne in @sec-gauss-integration ist auch bezüglich der Koordinaten die Abbildung der physikalischen Koordinaten auf Referenzkoordinaten notwendig (siehe @fig-parametrisierung). Diese Parametrisierung wird in Kapitel... hergeleitet und ist besonders wichtig für die Lösung allgemeiner Vierecke.
 

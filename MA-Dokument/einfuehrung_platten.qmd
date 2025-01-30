@@ -1,10 +1,10 @@
-# Einführung Plattentragwerke {#sec-einfuehrung-plattentragwerke}
+## Einführung Plattentragwerke {#sec-einfuehrung-plattentragwerke}
 
 Tragwerke wie Wohnhäuser, Brücken, Lagerhallen und weitere, werden in Tragwerksstrukturen wie Balken, Platten und Scheiben unterteilt. Selten besteht ein Tragwerk aus nur einem Element. Überlicherweise besteht es aus einer Zusammenstellung mehrerer Elemente, welche sich gegenseitig beeinflussen. Ziel der Modellierung des Tragwerkes ist es, ein möglichst realitätsnahes Abbild zu schaffen, um somit die Tragfähigkeit beurteilen zu können. Plattentragwerke sind ein wesentlicher Teil bei der Modellierung von Tragwerksstrukturen.
 
 Die Zustandsgrößen, d.h. die Verschiebungsgrößen sowie die äußeren Kraftgrößen, bechreiben das mechanische Verhalten eines Tragwerks und werden zur Formulierung der Grundgleichungen, d.h. den kinematischen Gleichungen, Gleichgewichtsbeziehungen und der Einführung eines Materialgesetzes, benötigt.
 
-![](00-pics/Grundgleichungen.png){width=90%}
+![Zustandsgrößen und Grrundgleichungen der Platte](00-pics/Grundgleichungen.png){#fig-zg-und-gg width=90%}
 
 Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein. 
 

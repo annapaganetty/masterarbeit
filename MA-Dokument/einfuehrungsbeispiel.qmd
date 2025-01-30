@@ -53,7 +53,7 @@ M''(x) &= -q_z(x)
 \end{align}
 $$ {#eq-zusammenhaenge-aus-GG}
 
-## Starke Form zur schwachen Form
+### Starke Form zur schwachen Form {#sec-Balken-stark-schwache-Form}
 Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form des Problems_ wie folgt formulieren:
 \
 
