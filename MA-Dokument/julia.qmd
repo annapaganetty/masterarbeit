@@ -1,28 +1,34 @@
 # Programmiersprache JULIA
 
-JUlIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für technische Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Libarys von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen die sowohl eine benutzerfreundliche Umgebung hat als auch leistungsfähig wie C und Fortran ist. 
+JUlIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für technische Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Libarys von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen, die sowohl eine benutzerfreundliche Umgebung hat, als auch leistungsfähig wie C und Fortran ist. 
 
 JULIA beschreibt sich selber als (Internetseite)
 - Fast - Schnell
 - Dynamic - Dynamisch
 - Reproducible - Nachvollziehbar
-- Composable - Ausbaubar (?)
+- Composable - Ausbaubar / Erweiterbar (?)
 - General - Allgemein
 - Open Source 
 
 Um die Programmiersprache etwas detaillierter vorzustellen, wird in den folgenden Abschnitten auf die genannten Punkte näher eingegangen.
 
 ## Fast
+Julia was designed for high performance. Julia programs automatically compile to efficient native code via LLVM, and support multiple platforms.
 
 ## Dynamic
+Julia is dynamically typed, feels like a scripting language, and has good support for interactive use, but can also optionally be separately compiled.
 
 ## Reproducible
+Reproducible environments make it possible to recreate the same Julia environment every time, across platforms, with pre-built binaries.
 
 ## Composable
+Julia uses multiple dispatch as a paradigm, making it easy to express many object-oriented and functional programming patterns. The talk on the Unreasonable Effectiveness of Multiple Dispatch explains why it works so well.
 
 ## General
+Julia provides asynchronous I/O, metaprogramming, debugging, logging, profiling, a package manager, and more. One can build entire Applications and Microservices in Julia.
 
 ## Open Source
+Julia is an open source project with over 1,000 contributors. It is made available under the MIT license. The source code is available on GitHub.
 
 
 keine Typendeklaration notwendig

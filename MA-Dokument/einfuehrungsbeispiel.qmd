@@ -1,4 +1,4 @@
-# Einführungsbeispiel {#sec-einfuehrungsbeispiel}
+## Einführungsbeispiel Biegebalken {#sec-einfuehrungsbeispiel}
 
 Als Einführungsbeispiel dient ein 1D Biegebalken, an beiden Seiten gelenkig gelagert (siehe @fig-Einfuehrungsbeispiel).
 
@@ -194,7 +194,7 @@ w_2 \\
 \end{array}\right],
 $${#eq-verschiebungsvektor}
 
-mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, werden in Kapitel .... Abbildung ... dargestellt und Gl. ... beschrieben. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
+mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, werden in @sec-FE-Lagrange @fig-Hermite-Funktionen dargestellt und @eq-Hermite-Funktionen beschrieben. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
 $$ 
 \begin{align}
 &H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\

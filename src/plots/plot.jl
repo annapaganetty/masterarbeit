@@ -8,6 +8,7 @@ function mkfig2d(
     return fig
 end
 
+
 function mkfig3d(
     ;title ="")
     fig = Figure(;size = (500,400),linewidth = 0.5,fontsize = 12,font="arial")
@@ -16,7 +17,7 @@ function mkfig3d(
         aspect=:data,
         title=title,
         viewmode=:stretch,
-        perspectiveness=0.2,
+        perspectiveness=0.5,
         limits=(nothing, nothing, nothing),
         protrusions=0,
         titlefont = "arial",
@@ -34,8 +35,8 @@ function plotmesh(m;title)
     m,
     faceplotzscale= 0.05,
     faceplotmesh=5,
-    edgesvisible=true, 
-    edgelinewidth=0.2,
+    edgesvisible=false, 
+    edgelinewidth=2.5,
     nodesvisible=true,
     featureedgelinewidth=0.2,
     color=5,
@@ -45,7 +46,7 @@ function plotmesh(m;title)
     return fig
 end
 
-function makewe(wHat;conforming=true)
+function makewe(wHat;conforming=false)
     V = [-1 1 1 -1; -1 -1 1 1]
     if conforming ==true
         H4 = hermiteelement(V;conforming=true)
@@ -57,11 +58,13 @@ function makewe(wHat;conforming=true)
         end
     else
         H4 = hermiteelement(V;conforming=false)
+        # H4 = serendipityelement(V)
         return face -> begin                        # face = element
             idxs = idxDOFs(nodeindices(face), 3)    # Freiheitsgrade der Knoten des Elements
             _, a, b = _fsize(face)                  # legt a und b fest = Länge der Seiten eines Elements
             t = repeat([1,a / 2, b / 2], 4)
-            return sum(wHat[idxs] .* t .* H4) # TODO make dot work
+            s = sum(wHat[idxs] .* t .* H4)
+            return s
         end
     end
 end
@@ -71,7 +74,7 @@ end
 # Plot der Verformung
 function plotw(
     m, wHat;conforming = true,
-    zs=1.5,
+    zs=150,
     w=250, h=200, title="",
     edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
     featureedgelinewidth = 0.5,
@@ -81,9 +84,9 @@ function plotw(
     limits=(nothing, nothing, nothing)
 )
     fig = mkfig3d(title=title)
-    MMJMesh.Plots.mplot!(
+    mplot!(
         m, makewe(wHat,conforming = conforming),
-        faceplotzscale=zs / maximum(wHat),
+        faceplotzscale=zs,
         faceplotmesh=mesh,
         edgesvisible=edgesvisible, 
         edgelinewidth=edgelinewidth,
@@ -91,7 +94,8 @@ function plotw(
         featureedgelinewidth=featureedgelinewidth,
         color=5,
         colorrange=colorrange,
-        colormap=colormap
+        colormap=colormap,
+        limits = limits
     )
     fig
 end

@@ -1,0 +1,110 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+```{julia}
+
+        H4x = btpHxNew(e1)
+        Hx = [H4x[1],H4x[2],H4x[3],H4x[4],H4x[5],H4x[6],H4x[7],H4x[8],H4x[9],H4x[10],H4x[11],H4x[12]]
+        H4y = btpHyNew(e1)
+        Hy = [H4y[1],H4y[2],H4y[3],H4y[4],H4y[5],H4y[6],H4y[7],H4y[8],H4y[9],H4y[10],H4y[11],H4y[12]]
+plotH(Hy)
+```
+
+```{julia}
+WGLMakie.activate!()
+nf = 3                      # Freiheitsgrade pro Knoten
+bcs = [true, true, true]
+
+xElem = 10
+m1 = makequadratcicMesh(p1, xElem)
+e1 = element(m1,1)
+m1.data[:kefunc] = heatKe(p1)
+m1.data[:refunc] = heatRe(p1.q)
+# ke1 = e1.data[:kefunc]
+# re1 = e1.data[:refunc]
+# Ke = ke1(e1)
+# r1 = re1(e1)
+K,r = assembleKr(m1,nf)
+
+applyDirichletBCs!(m1.groups[:boundarynodes], K, r, bcs)
+w = K \ r
+wNew = w[1:3:end]
+w_fe = maximum(wNew)
+
+function makewe(wHat)
+    V = [-1 1 1 -1; -1 -1 1 1]
+    H4 = serendipityelement(V)
+    return face -> begin
+        idxs = idxDOFs(nodeindices(face), 3)     # Freiheitsgrade der Knoten des Elements
+        wmiddle =  
+        _, a, b = _fsize(face)    
+        t = repeat([1, 1, 1], 4)
+        H4x = btpHxNew(face)
+        Hx = [H4x[1],H4x[2],H4x[3],H4x[4],H4x[5],H4x[6],H4x[7],H4x[8],H4x[9],H4x[10],H4x[11],H4x[12]]
+        H4y = btpHyNew(face)
+        Hy = [H4y[1],H4y[2],H4y[3],H4y[4],H4y[5],H4y[6],H4y[7],H4y[8],H4y[9],H4y[10],H4y[11],H4y[12]]
+        s1 = sum(wHat[idxs] .* t .* Hx)+ sum(wHat[idxs] .* t .* Hy)
+        return s1
+    end
+end
+
+plotw(m1, w,conforming=false,title="Verformung")
+fig = mkfig3d(title="Verformung")
+mplot!(m1, makewe(w),faceplotzscale=1000,
+        faceplotmesh=5,
+        edgesvisible=false, 
+        edgelinewidth=0.2,
+        nodesvisible=false,
+        featureedgelinewidth=0.5,
+        color=5,
+        colorrange=Makie.automatic,
+        colormap=Makie.theme(:colormap),
+        limits=(nothing, nothing, nothing)
+    )
+fig
+```
+
+```{julia}
+postprocessor(p1, w)
+```
+
+```{julia}
+idxs = idxDOFs(nodeindices(face(m1,1)), 3)[1:3:end]
+wmiddle = [(w[idxs[1]]+ w[idxs[2]])*0.5,
+(w[idxs[2]]+ w[idxs[3]])*0.5,
+(w[idxs[3]]+ w[idxs[4]])*0.5,
+(w[idxs[4]]+ w[idxs[1]])*0.5]
+```
+
+```{julia}
+V = [-1 1 1 -1; -1 -1 1 1]
+H = serendipityelement(V)
+H[5:8]
+# H4 = hermiteelement(V;conforming=false)
+```
+
+
+```{julia}
+w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
+100 * abs(w_fe - w_czerny) / w_czerny
+```
+
+
+function makewe(wHat)
+    V = [-1 1 1 -1; -1 -1 1 1]
+    # H4 = lagrangeelement(V)
+    H4 = serendipityelement(V)
+    return face -> begin                        # face = element
+        idxs = idxDOFs(nodeindices(face), 3)[1:3:end]    # Freiheitsgrade der Knoten des Elements
+        wmiddle =   [(wHat[idxs[1]]+ wHat[idxs[2]])*0.5,
+                    (wHat[idxs[2]]+ wHat[idxs[3]])*0.5,
+                    (wHat[idxs[3]]+ wHat[idxs[4]])*0.5,
+                    (wHat[idxs[4]]+ wHat[idxs[1]])*0.5]
+        _, a, b = _fsize(face)                  # legt a und b fest = Länge der Seiten eines Elements
+        t = repeat([a*b*0.25], 4)
+        s1 = sum(wHat[idxs] .* t .* H4[1:4])
+        s2 = sum(wmiddle .* t .* H4[5:8])
+        return s1+s2
+    end
+end

@@ -1,17 +1,12 @@
-# Vorbereitung 
+## Vorbereitung 
 
-## Herleitung der schwachen Form
+### Herleitung der schwachen Form
 
-Ausgehend von der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
-<!-- 
-$$
-D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
-$$ {#eq-black-scholes-01} 
--->
+Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der staken Form, der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
 
 $$
 D \cdot \Delta \Delta w = q 
-$$ {#eq-black-scholes-01}
+$$ {#eq-diffgl-laplace}
 
 ergibt sich nach Multiplikation mit der Testfunktion $\delta w : [0,l]^2 \to \mathbb{R}^2$
 
@@ -20,29 +15,35 @@ D \cdot  \frac{\partial^4 w}{\partial x^4} \cdot \delta w
 + D \cdot  2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w 
 +D \cdot \frac{\partial^4 w}{\partial y^4}\cdot \delta w  
 =  q \cdot \delta w .
-$$ {#eq-black-scholes-02}
+$$ {#eq-diffgl-testfunk}
 
-Nach integration beider Seiten über die Fläche $\Omega$ folgt
+Nach der Integration beider Seiten über die Fläche $\Omega$ und durch Anwendung der Summenregel für Integrale folgt
 $$
-\underbrace{D \int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \cdot d \Omega}_{Part 1} + \underbrace{D \int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \cdot d \Omega}_{Part 2} + \underbrace{D \int_{\Omega} \frac{\partial^4 w}{\partial y^4}\cdot \delta w \cdot d \Omega}_{Part 3} = \int_{\Omega} q \cdot \delta w \cdot d \Omega .
-$$ {#eq-black-scholes-03}
+D \cdot [ \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial y^4}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
+$$ {#eq-diffgl-testfunk-integral}
 
-Nach zweifacher partieller Integration der linken Seite der Gleichung ergeben sich die Teilergebnisse für 
-*Part 1*
+Nach zweifacher partieller Integration der drei Summanden auf der linken Seite der Gleichung ergeben sich die Teilergebnisse für
 $$
-= D \cdot \int_y [\underbrace{[\frac{\partial^3 w}{\partial x^3} \cdot \delta w]_x - [\frac{\partial^2 w}{\partial x^2}\cdot \frac{\partial \delta w}{\partial x}]_x}_{=0} + \int_x \frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} dx]dy 
-= D \cdot \int_{\Omega} \frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} \cdot d \Omega ,
-$$
-
-*Part 2*
-$$
-D \cdot \int_{\Omega} 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \cdot d \Omega ,
-$$
-
-und *Part 3*
-$$
-= D \cdot \int_x [\underbrace{[\frac{\partial^3 w}{\partial y^3} \cdot \delta w]_y - [\frac{\partial^2 w}{\partial y^2} dot \frac{\partial \delta w}{\partial y}]_y}_{= 0} + \int_y \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} d y ]d x 
-=D \cdot \int_{\Omega} \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \cdot d \Omega.
+\begin{flalign}
+&\text{den 1. Summanden} \\
+\\
+&\int_y\int_x \frac{\partial^4 w}{\partial x^4} \cdot \delta w \cdot d x d y
+&&= \underbrace{\int_y \delta w \frac{\partial^3 w}{\partial x^3} dy - \int_y \frac{\partial \delta w}{\partial x} \frac{\partial^2 w}{\partial x^2} dy}_{\int_y \frac{\delta w \partial^3 w}{\partial x^3} - \int_y \frac{\delta w \partial^3 w}{\partial x^3} = 0}
+- \int_y \int_x \frac{\partial^2 \delta w}{\partial x^2} \frac{\partial^2 w}{\partial x^2} \quad dxdy \\
+\\
+\\
+&\text{den 2. Summanden} \\
+\\
+&\int_y\int_x 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad dxdy 
+&&= \int_y\int_x 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \quad dxdy \\
+\\
+\\
+&\text{und den 3. Summanden} \\
+\\
+&\int_x\int_y \frac{\partial^4 w}{\partial y^4} \cdot \delta w \quad dydx 
+&&= \underbrace{\int_x \delta w \frac{\partial^3 w}{\partial y^3} dx - \int_x \frac{\partial \delta w}{\partial y} \frac{\partial^2 w}{\partial y^2} dx}_{\int_x \frac{\delta w \partial^3 w}{\partial y^3} - \int_x \frac{\delta w \partial^3 w}{\partial y^3} = 0}
+- \int_x \int_y \frac{\partial^2 \delta w}{\partial y^2} \frac{\partial^2 w}{\partial y^2} \quad dydx
+\end{flalign}
 $$
 
 
@@ -57,10 +58,10 @@ Gesucht ist die Funktion $w:[0,l]^2 \to \mathbb{R}^2$ welche die Differentialgle
 \
 $$
 \begin{align}
-\int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \cdot d \Omega) \\ 
-= \int_{\Omega} q \cdot \delta w \cdot d \Omega
+\int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega) \\ 
+= \int_{\Omega} q \cdot \delta w \quad d \Omega
 \end{align}
-$$ {#eq-black-scholes-03}
+$$ {#eq-variationsproblem}
 
 \
 
@@ -68,21 +69,277 @@ für jede (fast) beliebige Testfunktion $\delta w$.
 
 :::
 
-Es lässt sich für die Funktionen $w(x)$ und $\delta w(x)$ die Bilinearform für die Kirchhoffplatte in kompakter Schreibweise
+Es lässt sich für die Funktionen $\mathbf{w}$ und $\mathbf{\delta w}$ die Bilinearform für die Kirchhoffplatte in kompakter Schreibweise
 $$ 
-a(w, \delta w) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) d \Omega 
-$$ {#eq-black-scholes-04}
+a(\mathbf{w}, \mathbf{\delta w}) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
+$$ {#eq-bilinearform}
 
 mit
 $$
-D = \frac{Eh^3}{12(1+\nu^2)}\begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+D = \frac{Eh^3}{12(1+\nu^2)}
 $$
 
 und die Linearform 
 $$ 
-b(\delta w) = \int_{\Omega} q \cdot \delta w \cdot d \Omega
-$$ {#eq-black-scholes-05}
+b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega
+$$ {#eq-linearform}
 
-entwickeln.
+entwickeln. Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
 
-## Parametrisierung (Jacobi-Matrix)
+$$
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+=
+\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+2\kappa_{xy}
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+D \kappa_{xx} + D\nu \kappa_{yy} \\
+D\nu \kappa_{xx} + D \kappa_{yy} \\
+D(1-\nu) \kappa_{xy}
+\end{array}\right].
+$$
+
+$$
+\int_y 
+\delta w(a,y) \frac{\partial^3 w(a,y)}{\partial x^3} -
+\delta w(0,y) \frac{\partial^3 w(0,y)}{\partial x^3} 
+dy 
+- \int_y 
+\frac{\partial \delta w(a,y)}{\partial x} \frac{\partial^2 w(a,y)}{\partial x^2} 
+\frac{\partial \delta w(0,y)}{\partial x} \frac{\partial^2 w(0,y)}{\partial x^2}
+dy
+$$
+
+### Parametrisierung (Jacobi-Matrix)
+
+Analog zu Kapitel ... erfolgt die Abbildung der physikalischen Koordinaten $(x,y) \in [(x_1,y_1),(x_2,y_2),(x_3,y_3),(x_4,y_4)]$, auf die Referenzkoordinaten $(\xi,\eta) \text{ mit} -1 \le \xi,\eta \le 1$, durch Bestimmung der Bilinearform $\hat{a}$ und  der Linearform $\hat{b}$. Für die Platte ergibt sich somit aus dem Variationsproblem (@eq-variationsproblem) die Gleichung 
+$$
+\hat{a}(\hat{w}, \hat{\delta w}) = \hat{b}(\hat{\delta w})
+$${#eq-diffgl-referenzkoordinaten}
+
+Es ergeben sich die Bilinearform 
+$$ 
+\begin{align}
+&\hat{a}(\hat{w}, \hat{\delta w})  
+= D \int_{\Omega}
+&&\hat{w}_{,xx}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xx}(\underline{F}^{-1}(x,y)) \\
+&\qquad &&+ 2 \hat{w}_{,xy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xy}(\underline{F}^{-1}(x,y)) \\
+\\
+&\qquad &&+ \hat{w}_{,yy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,yy}(\underline{F}^{-1}(x,y)) 
+\quad d \Omega \\
+\end{align} 
+$$ {#eq-ahat}
+
+und die Linearform 
+$$ 
+\begin{align}
+&\hat{b}(\hat{\delta w})  
+= \int_{\Omega} q \cdot \delta w(\underline{F}^{-1}(x,y)) \quad d \Omega
+\end{align} 
+$$ {#eq-bhat}
+
+Für die Parametrisierung werden die Variablen $\beta^x$ und $\beta^y$ als Rotation der Normalen, bezogen auf die unverformte Plattenebene, innerhalb der $x-z$-Ebene bzw. der $y-z$-Ebene mit 
+$$
+\beta^x(x,y) = \theta_y (x,y) = - \frac{\partial w(x,y)}{\partial x}
+\qquad  \text{und} \qquad 
+\beta^y(x,y) = \theta_x (x,y) = - \frac{\partial w(x,y)}{\partial y}
+$$
+
+eingeführt. Mittels der Substitution von 
+$$
+\underline{F}^{-1}(x,y) = 
+\begin{cases} 
+F_x^{-1}(x,y)\quad & \to \quad \xi(x,y) \\
+F_y^{-1}(x,y)\quad & \to \quad \eta(x,y)
+\end{cases}
+$$
+
+und der Darstellung der Bilinearform als Matrix-Vektor Produkt resultiert
+$$
+\hat{a}(\hat{w}, \hat{\delta w})  
+= D \int_{-1}^1 \int_{-1}^1 [\beta]^T [\delta \beta] \quad d\xi d\eta
+$$
+
+mit den Vektoren 
+$$
+\underline{\beta} = 
+\left[ \begin{array}{center} 
+\beta^x_{,x} \\
+\beta^y_{,y}\\
+\beta^x_{,y}+\beta^y_{,x}
+\end{array}\right] 
+\qquad \qquad \text{und} \qquad \qquad
+\underline{\delta\beta} = 
+\left[ \begin{array}{center} 
+\delta\beta^x_{,x} \\
+\delta\beta^y_{,y}\\
+\delta\beta^x_{,y}+\delta\beta^y_{,x}
+\end{array}\right] .
+$$
+
+
+Entsprechend der Herleitung der Transformationsmatrix in Kapitel ... ergeben sich die Vektoren zu 
+
+$$ 
+\begin{align}
+\underline{\beta} &= 
+\left[ \begin{array}{center} 
+j_{11} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{12} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{21} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{11} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
+j_{12} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
+j_{21} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y}
+\end{array}\right] \\
+\underline{\delta\beta} &= 
+\left[ \begin{array}{center} 
+j_{11} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{12} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{21} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{11} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
+j_{12} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
+j_{21} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y}
+\end{array}\right] 
+\end{align}
+$$ {#eq-Beta}
+
+mit den Komponenten der inversen Transformationsmatrix definiert
+$$
+\begin{align}
+j_{11} &= \frac{\partial F_x^{-1}(x,y)}{\partial x} \qquad
+j_{12} &= \frac{\partial F_y^{-1}(x,y)}{\partial x} \\
+j_{21} &= \frac{\partial F_x^{-1}(x,y)}{\partial y} \qquad
+j_{22} &= \frac{\partial F_y^{-1}(x,y)}{\partial y} \\
+\end{align}
+$$
+
+-----------------------------------------
+
+$$
+K u = r
+$$
+
+$$
+u^e = 
+\left[ \begin{array}{center} 
+w_1 \\
+\theta_{x1} \\
+\theta_{y1} \\
+w_2 \\
+\theta_{x2} \\
+\theta_{y2} \\
+w_3 \\
+\theta_{x3} \\
+\theta_{y3} \\
+w_4 \\
+\theta_{x4} \\
+\theta_{y4}
+\end{array}\right] 
+=
+\left[ \begin{array}{center} 
+w_1 \\
+\frac{\partial w_1}{\partial y} \\
+-\frac{\partial w_1}{\partial x} \\
+w_2 \\
+\frac{\partial w_2}{\partial y} \\
+-\frac{\partial w_2}{\partial x} \\
+w_3 \\
+\frac{\partial w_3}{\partial y} \\
+-\frac{\partial w_3}{\partial x} \\
+w_4 \\
+\frac{\partial w_4}{\partial y} \\
+-\frac{\partial w_4}{\partial x}
+\end{array}\right] 
+$$
+
+
+$$
+\begin{align}
+w_{,xx} &= \beta_{,x} &&= H^x_{,x} U_n \\
+w_{,yy} &= \beta_{,y} &&= H^y_{,y} U_n \\
+w_{,xy} &= \beta_{,x} + \beta_{,y} &&= (H^x_{,y} + H^y_{,x}) U_n \\
+\end{align}
+$$
+
+$$ 
+\begin{align}
+K^e &= \int_{\Omega} [B]^T [D_b][B] d \Omega \\
+&= 
+\left[ \begin{array}{center} 
+\frac{\partial H^x}{\partial x} \\
+\frac{\partial H^y}{\partial y} \\
+\frac{\partial H^x}{\partial y}+\frac{\partial H^y}{\partial x}
+\end{array}\right]
+\end{align}
+$$ {#eq-bilinearform-ahat}
+
+$$ 
+a(w, \delta w) = \int_{\Omega} D 
+\left[ \begin{array}{center} 
+w_{,xx} &
+w_{,yy} &
+2w_{,xy}
+\end{array}\right]
+\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
+\left[ \begin{array}{center} 
+\delta w_{,xx} \\
+\delta w_{,yy} \\
+2\delta w_{,xy}
+\end{array}\right]
+d \Omega 
+$$
+
+
+$$ 
+\begin{align}
+\hat{a}(\hat{w}, \hat{\delta w})  
+&= \int_{\Omega}  D
+\left[ \begin{array}{center} 
+w_{,xx}(\underline{F}^{-1}(x,y)) &
+w_{,yy}(\underline{F}^{-1}(x,y)) &
+w_{,xy}(\underline{F}^{-1}(x,y))
+\end{array}\right]
+\left[ \begin{array}{center} 
+\delta w_{,xx}(\underline{F}^{-1}(x,y)) \\
+\delta w_{,yy}(\underline{F}^{-1}(x,y)) \\
+2 \delta w_{,xy}(\underline{F}^{-1}(x,y))
+\end{array}\right]
+d \Omega \\
+\end{align} 
+$$ {#eq-black-scholes-04}
+
+
+--------------------------------------------
+Bilinearform $a:V \times V \to \mathbb{R}$
+zur "Referenz"-Bilinearform $\hat{a}: \hat{V} \times \hat{V}  \to \mathbb{R}$
+
+$$
+\hat{a}(\hat{w}, \hat{\delta w}) = \hat{a}(\hat{w} \circ \underline{F}^{-1}(x,y), \hat{\delta w}\circ \underline{F}^{-1}(x,y))
+$$
+
+Linearform $b:V \to \mathbb{R}$
+zur "Referenz"-Linearform $\hat{b}: \hat{V} \to \mathbb{R}$
+
+$$
+\hat{b}(\hat{\delta w}) = \hat{b}(\hat{\delta w}\circ \underline{F}^{-1}(x,y))
+$$
+
+
+
+$$
+\mathbf{K^e} = \int_{\Omega} [B]^T [D_b][B]
+$$
+

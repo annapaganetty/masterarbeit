@@ -35,3 +35,14 @@ function geoH(e)
 
     return l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈
 end
+
+function coordMatrix(e)
+    x = []
+    y = []
+    for i = 1:4
+        push!(x, coordinates(e, i)[1])
+        push!(y, coordinates(e, i)[2])
+    end
+    xy = [x[1] y[1]; x[2] y[2]; x[3] y[3]; x[4] y[4]]
+    return xy
+end

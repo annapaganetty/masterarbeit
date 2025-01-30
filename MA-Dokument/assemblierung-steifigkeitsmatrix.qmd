@@ -1,0 +1,332 @@
+## Assemblierung der globalen Steifigkeitsmatrix
+
+Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Dementsprechend hat jeder Knotenpunkt $i$ eines Plattenelements die Freiheitsgrade $w_i$, $\theta_{xi}$ und $\theta_{yi}$. Je nach Wahl des Finite Elemente Ansatzes ergibt sich der Knotenverschiebungsvektor eines Elements zu 
+$$
+\underline{u^e} = \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} &
+w_2 & \theta_{x2} & \theta_{y2} &
+w_3 & \theta_{x3} & \theta_{y3} &
+... &
+w_{n_n} & \theta_{xn_n} & \theta_{yn_n} 
+\end{array}\right]^T
+$${#eq-knotenverschiebungsvekor}
+
+mit $n_n$ Elementknoten. Innerhalb eines Elements $\Omega_e$ wird das Verschiebungsfeld durch 
+$$
+u = \underline{N^e} \underline{u^e}
+$$
+
+mit
+$$
+\underline{N^e} = 
+\begin{bmatrix} 
+N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & 0 & ... & N_{n_n}^e & 0 & 0 \\ 
+0 & N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & ... & 0 & N_{n_n}^e & 0 \\ 
+0 & 0 & N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & ... & 0 & 0 & N_{n_n}^e \\ 
+\end{bmatrix},
+$$
+
+als Matrix der Formfunktionen, approximiert. Durch die Formfunktionen und den Verschiebungsvekor ausgrückt, ergibt sich der Krümmungsvektor 
+$$
+\begin{align}
+\mathbf{\kappa} = 
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+\kappa_{xy}
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+\frac{\partial u}{\partial x} \\
+\frac{\partial v}{\partial y} \\
+\frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \\
+\end{array}\right] 
+= 
+\left[ \begin{array}{center} 
+\frac{\partial \sum N_i^e \theta_{xi}}{\partial x} \\
+\frac{\partial \sum N_i^e \theta_{yi}}{\partial y} \\
+\frac{\partial \sum N_i^e \theta_{xi}}{\partial y} 
++ \frac{\partial \sum N_i^e \theta_{yi}}{\partial x} \\
+\end{array}\right] 
+= 
+\mathbf{B_b} \underline{u^e} 
+\end{align}
+$$
+
+mit 
+$$
+\mathbf{B_b} = 
+\begin{bmatrix} 
+0 & \frac{\partial N_1}{\partial x} & 0 & 
+0 & \frac{\partial N_2}{\partial x} & 0 &
+0 & \frac{\partial N_3}{\partial x} & 0 &
+0 & \frac{\partial N_4}{\partial x} & 0 \\
+0 & 0 & \frac{\partial N_1}{\partial y} &
+0 & 0 & \frac{\partial N_2}{\partial y} &
+0 & 0 & \frac{\partial N_3}{\partial y} & 
+0 & 0 & \frac{\partial N_4}{\partial y}\\
+0 & \frac{\partial N_1}{\partial x} & \frac{\partial N_1}{\partial y} & 
+0 & \frac{\partial N_2}{\partial x} & \frac{\partial N_2}{\partial y} &
+0 & \frac{\partial N_3}{\partial x} & \frac{\partial N_3}{\partial y} &
+0 & \frac{\partial N_4}{\partial x} & \frac{\partial N_4}{\partial y} \\
+\end{bmatrix}
+$$
+
+und $\underline{u^e}$ wie in @eq-knotenverschiebungsvekor beschrieben. Der Momentenvektor kann davon abgeleitet durch 
+$$
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+=
+\mathbf{D_b}
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+\kappa_{xy}
+\end{array}\right]
+=
+\mathbf{D_b} \mathbf{B_b} \underline{u^e} 
+$$
+
+mit
+$$
+\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+$$
+
+beschrieben werden, wobei D die isotrope Plattensteifigkeit darstellt (@eq-plattensteifigkeit).
+
+
+Die Bilinearform 
+$$ 
+a(\varphi_i^e, \varphi_j^e) = k_{ij}^e
+$$
+
+Bilinearform entspricht dem Skalarprodukt zwischen dem Momentenvektor 
+
+$$
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+\qquad \qquad \text{und dem Krümmungsvektor} \qquad \qquad
+\mathbf{\kappa} =
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+2\kappa_{xy}
+\end{array}\right]
+$$
+
+$$ 
+a(w, \delta w) 
+= \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} d \Omega 
+= \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega 
+$$ {#eq-black-scholes-04}
+
+Wie in Kapitel... beschrieben ergeben sich die Momente ausgedrückt durch die Verkrümmungen und dargestellt als Matrix-Vektorprodukt zu
+$$
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+=
+\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+2\kappa_{xy}
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+D \kappa_{xx} + D\nu \kappa_{yy} \\
+D\nu \kappa_{xx} + D \kappa_{yy} \\
+D(1-\nu) \kappa_{xy}
+\end{array}\right].
+$$
+
+$$ 
+\begin{align}
+a(w, \delta w) 
+&= \int_{\Omega} ((D \kappa_{xx} + D\nu \kappa_{yy}) \delta\kappa_{xx} 
+                + 2 (D(1-\nu) \kappa_{xy}) \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} + D \kappa_{yy}) \delta\kappa_{yy} ) d \Omega \\
+&= \int_{\Omega} (D \kappa_{xx} \delta\kappa_{xx} + D\nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 D(1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} \delta\kappa_{yy} + D \kappa_{yy} \delta\kappa_{yy}) ) d \Omega \\
+&= D \int_{\Omega} \kappa_{xx} \delta\kappa_{xx} + \nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 (1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + \nu \kappa_{xx} \delta\kappa_{yy} + \kappa_{yy} \delta\kappa_{yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} + \nu w_{,yy} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} - 2 \nu w_{,xy} \delta w_{,xy} 
+                + \nu w_{,xx} \delta w_{,yy} + w_{,yy} \delta w_{,yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy\} \delta w_{,yy} d \Omega 
+                + \int_{\Omega} \nu (w_{,yy} \delta w_{,xx}  - 2 w_{,xy} \delta w_{,xy} + w_{,xx} \delta w_{,yy}) d \Omega \\
+&= D (1+\nu) \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy} \delta w_{,yy} d \Omega 
+\end{align}
+$$ {#eq-black-scholes-04}
+
+$$ 
+k_{ij}^e
+= \int_{\Omega^e} \mathbf{\kappa}_i^T \mathbf{D_b} \mathbf{\kappa}_j d\Omega
+$$
+
+mit 
+$$
+\mathbf{D_b} = \begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
+$$
+
+--------------------------
+
+
+$$
+\begin{align}
+a(w, \delta w) &= \int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega)
+\end{align}
+$$ {#eq-variationsproblem}
+
+mit 
+$$ 
+\begin{align}  
+\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \\
+\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \\
+\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y} \\ 
+\end{align}
+$$ {#eq-kruemmung}
+
+
+$$
+\begin{align}
+a(w, \delta w) &= D \cdot \int_{\Omega} (\kappa_{xx} \cdot \delta \kappa_{xx}
+                        + \kappa_{xy} \cdot \frac{1}{2} \delta \kappa_{xy}
+                        + \kappa_{yy} \cdot \delta \kappa_{yy}\quad d \Omega)\\
+            &= D \cdot \int_{\Omega} 
+            \left[ \begin{array}{center} 
+            \kappa_{xx} \\
+            \kappa_{yy} \\
+            \kappa_{xy}
+            \end{array}\right] \cdot
+            \left[ \begin{array}{center} 
+            \delta\kappa_{xx} \\
+            \delta\kappa_{yy} \\
+            \frac{1}{2} \delta\kappa_{xy}
+            \end{array}\right] \quad d \Omega\\
+\end{align}
+$$ {#eq-variationsproblem}
+
+
+$$ 
+\begin{align}
+a(w, \delta w) 
+&= \int_{\Omega} ((D \kappa_{xx} + D\nu \kappa_{yy}) \delta\kappa_{xx} 
+                + 2 (D(1-\nu) \kappa_{xy}) \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} + D \kappa_{yy}) \delta\kappa_{yy} ) d \Omega \\
+&= \int_{\Omega} (D \kappa_{xx} \delta\kappa_{xx} + D\nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 D(1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} \delta\kappa_{yy} + D \kappa_{yy} \delta\kappa_{yy}) ) d \Omega \\
+&= D \int_{\Omega} \kappa_{xx} \delta\kappa_{xx} + \nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 (1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + \nu \kappa_{xx} \delta\kappa_{yy} + \kappa_{yy} \delta\kappa_{yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} + \nu w_{,yy} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} - 2 \nu w_{,xy} \delta w_{,xy} 
+                + \nu w_{,xx} \delta w_{,yy} + w_{,yy} \delta w_{,yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy} \delta w_{,yy} d \Omega 
+                + \int_{\Omega} \nu (w_{,yy} \delta w_{,xx}  - 2 w_{,xy} \delta w_{,xy} + w_{,xx} \delta w_{,yy}) d \Omega \\
+&= D (1+\nu) \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy} \delta w_{,yy} d \Omega 
+\end{align}
+$$ {#eq-black-scholes-04}
+
+
+
+## Bilinearform und Elementsteifigkeitsmatrix in der Literatur
+
+$$
+u(x,y) = \sum_i^n N^e d^e
+$$
+
+$$
+N^e = 
+\begin{bmatrix} 
+N_1^e & 0 & N_2^e & 0 & N_3^e & 0 & ... & N_n^e & 0 \\ 
+0 & N_1^e & 0 & N_2^e & 0 & N_3^e & ... & 0 & N_n^e \\ 
+\end{bmatrix}
+$$
+
+$$
+d^e = 
+\begin{bmatrix} 
+u_{x1}^e & u_{y1}^e & u_{x2}^e & u_{y2}^e & u_{x3}^e & u_{y3}^e & ... & u_{xn}^e & u_{yn}^e &
+\end{bmatrix}
+$$
+
+_Bilinearform_
+
+Hartmann
+$$
+\begin{align}
+a(w, \delta w) &= \int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} )\quad d \Omega
+\end{align}
+$$ {#eq-variationsproblem}
+
+Werkle 
+
+$$
+\begin{align}
+\delta W_i &= \int_{\Omega} D \cdot (-m_{xx} \cdot \frac{\partial^2 \delta w}{\partial x^2} -2 \cdot m_{yy} \cdot \frac{\partial \delta w}{\partial x \partial y} -m_{yy} \cdot \frac{\partial^2 \delta w}{\partial y^2}) \quad d \Omega
+\end{align}
+$$ {#eq-variationsproblem}
+
+_Steifigkeitsmatrix_
+
+Hartmann
+$$ 
+k_{ij}^e
+= \int_{\Omega^e} \mathbf{\kappa}_i^T \mathbf{D_b} \mathbf{\kappa}_j d\Omega
+$$
+
+Fish & Belytschko
+$$ 
+k_{ij}^e
+= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e d\Omega
+$$
+
+Werkle 
+$$ 
+K_e
+= \int_{\Omega^e} \mathbf{B}_b^T \mathbf{D_b} \mathbf{B}_b dx dy
+$$
+
+
+$$
+\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+\qquad\text{und} \qquad
+\mathbf{B_b}= 
+\begin{bmatrix} 
+0 & \frac{\partial N_1}{\partial x} & 0 & 
+0 & \frac{\partial N_2}{\partial x} & 0 &
+0 & \frac{\partial N_3}{\partial x} & 0 &
+0 & \frac{\partial N_4}{\partial x} & 0 \\
+0 & 0 & \frac{\partial N_1}{\partial y} &
+0 & 0 & \frac{\partial N_2}{\partial y} &
+0 & 0 & \frac{\partial N_3}{\partial y} & 
+0 & 0 & \frac{\partial N_4}{\partial y}\\
+0 & \frac{\partial N_1}{\partial x} & \frac{\partial N_1}{\partial y} & 
+0 & \frac{\partial N_2}{\partial x} & \frac{\partial N_2}{\partial y} &
+0 & \frac{\partial N_3}{\partial x} & \frac{\partial N_3}{\partial y} &
+0 & \frac{\partial N_4}{\partial x} & \frac{\partial N_4}{\partial y} \\
+\end{bmatrix}
+$$

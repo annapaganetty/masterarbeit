@@ -2,6 +2,8 @@ import GLMakie
 import CairoMakie
 import CairoMakie: Figure,Axis, Axis3, scatter!, lines
 
+import DomainSets
+
 # import Pkg
 # Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
 
@@ -47,6 +49,9 @@ include("generated/plate-kirchhoff-conforming.jl")
 include("generated/plate-kirchhoff-nonconforming.jl")
 include("generated/BTP-Hx-functions.jl")
 include("generated/BTP-Hy-functions.jl")
+include("generated/BTP-Hx-functions-deriv.jl")
+include("generated/BTP-Hy-functions-deriv.jl")
+include("generated/BTP-Ke.jl")
 include("generated/jacobianMatrix.jl")
 
 include("mathematics/BTP-H-functions.jl")
@@ -66,19 +71,22 @@ include("plots/print-BTP-H-functions.jl")
 
 include("results/internal-forces.jl")
 include("results/assembleKr.jl")
+include("results/assembleKr-BTP.jl")
 
 include("static-system/boundary-conditions.jl")
 include("static-system/generate-plate.jl")
 
+include("stiffness_matrix/plate.jl")
 include("stiffness_matrix/weak_form.jl")
+include("stiffness_matrix/weak_form-BTP.jl")
 
 p1 = @var Params()
-p1.lx = 8
-p1.ly = 8
-p1.q = 5e3
+p1.lx = 8		# [m]
+p1.ly = 8		# [m]
+p1.q = 5e3		# [N/m]
 p1.ν = 0.0
-p1.h = 0.2
-p1.E = 31000e6;
+p1.h = 0.2		# [m]
+p1.E = 31000e6;	# [N/m^2]
 
 p2 = @var Params()
 p2.lx = 8

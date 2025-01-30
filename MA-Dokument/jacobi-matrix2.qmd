@@ -1,6 +1,6 @@
 # physikalische und Referenzkoordinaten
 
-![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){width=100%}
+![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=100%}
 
 Bei den folgenden Formeln wird _ein_ Element betrachtet, daher wird übersichtshalber in keiner Formel ein Index für das Element genutzt.
 
@@ -37,17 +37,8 @@ F_{y}(\xi,\eta) \\
 \end{align}
 $$ {#eq-black-scholes-01}
 
-die physikalischen Koordinaten auf dem Element $\Omega$ beschrieben. Die vier linearen Formfunktionen 
-$$
-\begin{align}
-N_1(\xi,\eta) &= \frac{1}{4} \cdot (1-\xi) \cdot (1-\eta), 
-\quad &N_2(\xi,\eta) = \frac{1}{4} \cdot (1+\xi) \cdot (1-\eta), \\
-N_3(\xi,\eta) &= \frac{1}{4} \cdot (1+\xi) \cdot (1+\eta), 
-\quad &N_4(\xi,\eta) = \frac{1}{4} \cdot (1-\xi) \cdot (1+\eta) \\
-\end{align}
-$$ {#eq-black-scholes-02}
-des quadratischen Referenzelements, sind in Abb. ... dargestellt.
-Im weiteren Verlauf werden die Ableitungen 
+die physikalischen Koordinaten auf dem Element $\Omega$ beschrieben. 
+Die vier linearen Formfunktionen entsprechenen den in Kapitel ... besprochenen Funktionen des bilinearen Elements, dargestellt in  @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Im weiteren Verlauf werden die Ableitungen 
 $$
 \begin{align}
 F_{x,1}(\xi,\eta) = \frac{\partial F_{x}(\xi,\eta)}{\partial \xi},
@@ -61,10 +52,18 @@ benötigt. Hierbei beschreibt der tiefgestellte Index $,_1$ die Ableitung zur er
 Um die physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ umzurechnen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
 $$
 \begin{align}
-\xi(x,y) = F_{x}^{-1}(x,y) \\
-\eta(x,y) = F_{y}^{-1}(x,y) 
+\underline{F}^{-1}(x,y) =  
+\left[ \begin{array}{center} 
+\xi(x,y) \\
+\eta(x,y) \\
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+F_{x}^{-1}(x,y) \\
+F_{y}^{-1}(x,y) \\
+\end{array}\right]
 \end{align}
-$$ {#eq-black-scholes-04}
+$$ {#eq-f-1}
 
 notwendig.
 Die Ableitungen der Umkehrfunktionen
@@ -75,22 +74,9 @@ F_{x,1}^{-1}(x,y) = \frac{\partial F_{x}^{-1}(x,y)}{\partial x}
 F_{y,1}^{-1}(x,y) = \frac{\partial F_{y}^{-1}(x,y)}{\partial x}
 \quad \quad F_{y,2}^{-1}(x,y) = \frac{\partial F_{y}^{-1}(x,y)}{\partial y}.
 \end{align}
-$$ {#eq-black-scholes-05}
+$$ {#eq-ableitungen-f-1}
 
-
-<!-- 
-TODO: Beschriftung der Funktionen!
-```{julia}
-#| echo: false
-#| output: true
-#| warning: false
-include("../src/setup.jl")
-V = [ -1 1 1 -1; -1 -1 1 1]
-L = lagrangeelement(V)
-fplot3d(L)
-``` 
--->
-Die Formfunktionen (@eq-black-scholes-02) auf dem Element $\Omega$ mit den Koordinaten $x_i$ und $y_i$ sind
+Die Formfunktionen (@eq-formfunktionen-bilinear) auf dem Element $\Omega$ mit den Koordinaten $x_i$ und $y_i$ sind
 
 $$
 \begin{align}
@@ -127,7 +113,7 @@ N_{i,_2}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{align}
 $$ {#eq-black-scholes-08}
 
-benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-black-scholes-04 vereinfacht zum Matrix-Vektor-Produkt
+benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt
 $$ 
 \left[ \begin{array}{center} 
 \varphi_{i,_1}(x,y) \\

@@ -1,0 +1,3 @@
+Nichtsdestotrotz sollten Ingenieure immer im Hinterkopf behalten, dass alle gemachten Angaben, wie Geometrie und Materialeigenschaften das Modell beeinflussen. Je genauer die Eingaben, desto genau sind die Ergebnisse.
+
+Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.

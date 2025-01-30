@@ -1,0 +1,244 @@
+## Die isoparametrische Formulierung für Finite Elemente
+
+Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die Idee der isoparametrischen Formulierung ist die Projektion des physikalischen Elements 
+$$
+\begin{align}
+\Omega := &(x,y) \in \mathbb{R}^2; \\ 
+& \text{mit} &&x_i = [x_1,x_2,x_3,x_4] \\
+& \text{und} &&y_i = [y_1,y_2,y_3,y_4]
+\end{align}
+$$
+
+auf das Referenzelement 
+$$
+\hat{\Omega} := {(\xi,\eta) \in \mathbb{R}^2 | -1 \le \xi,\eta \le 1}
+$$
+
+(siehe @fig-parametrisierung), um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen. Hierzu muss die Umrechnung der Referenzkoordinaten  $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden.
+
+![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=100%}
+
+Bei der Betrachtung eines zweidimensionalen Elements gibt es vier Möglichkeiten der Skalierung bzw. Verschiebung. Wie in @fig-skalierung-refelement beschrieben können die Koordinaten $\xi$, $\eta$ und die Kombination beider Koordinaten skaliert werden. Zudem kann das gesamte Element durch eine Konstante verschoben werden. Durch das Zusammensetzen der eben genannten Parameter, können die Koordinaten des verzerrten Elements durch 
+$$
+\begin{align}
+x(\xi,\eta) = a_1 + a_2\xi +a_3\eta + a_4\xi\eta \\
+y(\xi,\eta) = a_5 + a_6\xi +a_7\eta + a_8\xi\eta
+\end{align}
+$${#eq-skalierung-x-y}
+
+beschrieben werden. Die Faktoren $a_2$ und $a_6$ skalieren $\xi$, $a_3$ und $a_7$ skalieren $\eta$, $a_4$ und $a_8$ skalieren die Kombination von $\xi$ und $\eta$ und $a_1$ und $a_5$ verschieben das Element. Die physikalischen Koordinaten können somit als Funktionen von $\xi$ und $\eta$ ausgedrückt werden. Die beschriebenen Ansatzfunktionen von $x$ und $y$ (@eq-skalierung-x-y) ensprechen denselben Ansatzfunktionen des Bilinearen Elements (@eq-ansatzfunktion-u) dür die horizontale Verschiebung $u$ und $v$, welche sich gemäß @eq-verschiebung-u und @eq-verschiebung-v von der Verformung ableiten lassen.
+$$
+\begin{align}
+u(\xi,\eta) = a_1 + a_2\xi +a_3\eta + a_4\xi\eta \\
+v(\xi,\eta) = a_5 + a_6\xi +a_7\eta + a_8\xi\eta
+\end{align}
+$$
+
+![Skalierung Referenzelement](00-pics/Skalierung-Referenzelement.png){#fig-skalierung-refelement width=70%}
+
+Um die Spannung (@eq-spannungen), welche essentielle bei der Berechnung der Elementsteifigkeitsmatrizen in Kapitel... sind, zu berechnen müssen die Ableitungen  
+$$
+\frac{\partial u}{\partial x}, \qquad
+\frac{\partial u}{\partial y}, \qquad
+\frac{\partial v}{\partial x} \qquad \text{und} \qquad
+\frac{\partial v}{\partial y}
+$$
+
+berechnet werden. Aufgrund der Tatsache, dass $u$ und $v$ Funktionen von $\xi$ und $\eta$ sind, müssen zunächst die Koordinaten $\xi$ und $\eta$ als Funktionen von $x$ und $y$ formuliert werden. Dadurch können die Ableitungen der horizontalen Verschiebungen durch Anwendung der Kettenregel mit
+$$
+\begin{align}
+\frac{\partial u(\xi,\eta)}{\partial x}
+= \frac{\partial \xi(x,y)}{\partial x} \frac{\partial u(\xi,\eta)}{\partial \xi}
++\frac{\partial \eta(x,y)}{\partial x} \frac{\partial u(\xi,\eta)}{\partial \eta} \\
+\frac{\partial u(\xi,\eta)}{\partial y}
+= \frac{\partial \xi(x,y)}{\partial y} \frac{\partial u(\xi,\eta)}{\partial \xi}
++\frac{\partial \eta(x,y)}{\partial y} \frac{\partial u(\xi,\eta)}{\partial \eta} \\
+\frac{\partial v(\xi,\eta)}{\partial x}
+= \frac{\partial \xi(x,y)}{\partial x} \frac{\partial v(\xi,\eta)}{\partial \xi}
++\frac{\partial \eta(x,y)}{\partial x} \frac{\partial v(\xi,\eta)}{\partial \eta} \\
+\frac{\partial v(\xi,\eta)}{\partial y}
+= \frac{\partial \xi(x,y)}{\partial y} \frac{\partial v(\xi,\eta)}{\partial \xi}
++\frac{\partial \eta(x,y)}{\partial y} \frac{\partial v(\xi,\eta)}{\partial \eta} \\
+\end{align}
+$$
+
+beschrieben werden.
+Zusammengesfasst zu einem Matrix-Vektor-Produkt ergibt sich für die Ableitungen von $u$
+$$
+\left[ \begin{array}{center}
+\frac{\partial u(\xi,\eta)}{\partial x}\\ 
+\frac{\partial u(\xi,\eta)}{\partial y}\\ 
+\end{array}\right]
+= 
+\underbrace{\left[ \begin{array}{center}
+\frac{\partial \xi(x,y)}{\partial x} &
+\frac{\partial \eta(x,y)}{\partial x}  \\
+\frac{\partial \xi(x,y)}{\partial y} &
+\frac{\partial \eta(x,y)}{\partial y}
+\end{array}\right]}_{\mathbf{J}_{F^-1}}
+\left[ \begin{array}{center}
+\frac{\partial u(\xi,\eta)}{\partial \xi}\\ 
+\frac{\partial u(\xi,\eta)}{\partial \eta}\\ 
+\end{array}\right]
+$${#eq-ableitungen-u}
+
+und für die Ableitungen von $v$ 
+$$
+\left[ \begin{array}{center}
+\frac{\partial v(\xi,\eta)}{\partial x}\\ 
+\frac{\partial v(\xi,\eta)}{\partial y}\\ 
+\end{array}\right]
+= 
+\underbrace{\left[ \begin{array}{center}
+\frac{\partial \xi(x,y)}{\partial x} &
+\frac{\partial \eta(x,y)}{\partial x}  \\
+\frac{\partial \xi(x,y)}{\partial y} &
+\frac{\partial \eta(x,y)}{\partial y}
+\end{array}\right]}_{\mathbf{J}_{F^-1}}
+\left[ \begin{array}{center}
+\frac{\partial v(\xi,\eta)}{\partial \xi}\\ 
+\frac{\partial v(\xi,\eta)}{\partial \eta}\\ 
+\end{array}\right]
+$${#eq-ableitungen-v}
+
+
+<!-- Warum sind das die gleichen Funktionen ???  -->
+
+Durch die in @eq-skalierung-x-y beschriebenen Ansatzfunktionen ergeben sich die physikalischen Koordinaten auf dem Element $\Omega$ , für einen beliebigen Punkt $(\xi,\eta)$ auf dem Referenzelement, zu 
+
+$$
+\begin{align}
+\underline{F}(\xi,\eta) =  
+\left[ \begin{array}{center} 
+x(\xi,\eta) \\
+y(\xi,\eta) \\
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+F_{x}(\xi,\eta) \\
+F_{y}(\xi,\eta) \\
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+\sum_{i=1}^n N_i(\xi,\eta) \cdot x_i  \\
+\sum_{i=1}^n N_i(\xi,\eta) \cdot y_i \\
+\end{array}\right]
+\end{align}
+$$ {#eq-F}
+
+wobei, $N_i$ die Formfunktionen des Bilinearen Referenzelements sind. Um die Umrechnung in die andere Richtung, von den physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ durchzuführen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
+$$
+\begin{align}
+\underline{F}^{-1}(x,y) =  
+\left[ \begin{array}{center} 
+\xi(x,y) \\
+\eta(x,y) \\
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+F_{x}^{-1}(x,y) \\
+F_{y}^{-1}(x,y) \\
+\end{array}\right]
+\end{align}
+$$ {#eq-Umkehrfunktion-F}
+
+notwendig. Die aus @eq-ableitungen-u und @eq-ableitungen-v abgeleitete Matrix
+$$ 
+\mathbf{J}_{F^{-1}}(x,y) = 
+\left[ \begin{array}{center} 
+\xi_{,_1}(x,y) & \eta_{,_1}(x,y) \\
+\xi_{,_2}(x,y) & \eta_{,_2}(x,y) 
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+\frac{\partial F_{x}^{-1}(x,y)}{\partial x} & \frac{\partial F_{y}^{-1}(x,y)}{\partial x} \\
+\frac{\partial F_{x}^{-1}(x,y)}{\partial y} & \frac{\partial F_{y}^{-1}(x,y)}{\partial y} 
+\end{array}\right]
+$$ {#eq-inverse-Jacobi-Matrix}
+
+wird in der Literatur Jacobi-Matrix der inversen Funktionen $F_x^{-1}$ und $F_y^{-1}$ bezeichnet und entspricht nach dem _Inverse function theorem_ der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$. Somit gilt
+
+$$
+\mathbf{J}_{F^{-1}}(x,y) =
+(\mathbf{J}_{F})^{-1}(\xi,\eta) = 
+\left[ \begin{array}{center} 
+x_{,_1}(\xi,\eta) & y_{,_1}(\xi,\eta) \\
+x_{,_2}(\xi,\eta) & y_{,_2}(\xi,\eta) 
+\end{array}\right]^{-1}
+=
+\left[ \begin{array}{center} 
+\frac{\partial F_{x}(\xi,\eta)}{\partial \xi} & \frac{\partial F_{y}(\xi,\eta)}{\partial \xi} \\
+\frac{\partial F_{x}(\xi,\eta)}{\partial \eta} & \frac{\partial F_{y}(\xi,\eta)}{\partial \eta} 
+\end{array}\right]^{-1},
+$$ {#eq-inverse-normal-Jacobi-Matrix}
+
+wobei $\mathbf{J}_{F}$ die Bezeichnung der Jacobi-Matrix ist. Die Einträge der Transformationsmatrix ergeben sich aus der Definition von $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ in @eq-F, sodass
+$$
+\mathbf{J}_{F} =
+\left[ \begin{array}{center} 
+\sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \xi} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \xi} \cdot y_i^e \\
+\sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \eta} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \eta} \cdot y_i^e
+\end{array}\right] 
+=
+\left[ \begin{array}{center} 
+\frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi} \\
+\frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}
+\end{array}\right]
+\left[ \begin{array}{center} 
+x_1^e & y_1^e \\
+x_2^e & y_2^e \\
+x_3^e & y_3^e \\
+x_4^e & y_4^e 
+\end{array}\right]
+$$
+
+Es ergeben sich, aus den Ableitungen der bilinearen Formfunktionen $N_i$ und den Koordinaten der Elementknoten, die Komponenten der Jacobi-Matrix
+$$
+\begin{align}
+J_{11}  &= \frac{1}{4} \cdot (-x_1^e + x_2^e + x_3^e - x_4^e + \eta (x_1^e - x_2^e + x_3^e - x_4^e)) \\
+J_{12}  &= \frac{1}{4} \cdot (-y_1^e + y_2^e + y_3^e - y_4^e + \eta (y_1^e - y_2^e + y_3^e - y_4^e)) \\
+J_{21}  &= \frac{1}{4} \cdot (-x_1^e - x_2^e + x_3^e + x_4^e + \xi (x_1^e - x_2^e + x_3^e - x_4^e)) \\
+J_{22}  &= \frac{1}{4} \cdot (-y_1^e - y_2^e + y_3^e + y_4^e + \xi (y_1^e - y_2^e + y_3^e - y_4^e)) \\
+\end{align}
+$$
+
+und die Komponenten der inversen Transformationsmatrix 
+$$ 
+\begin{align}
+j_{11} &= \frac{1}{det(\mathbf{J})} \cdot J_{22}, \quad &j_{12} = \frac{1}{det(\mathbf{J})} \cdot J_{12}, \\
+j_{21} &= \frac{1}{det(\mathbf{J})} \cdot J_{21}, \quad &j_{22} = \frac{1}{det(\mathbf{J})} \cdot J_{11} \\
+\end{align}
+$$ 
+
+mit der Determinanten 
+$$
+det(\mathbf{J}) =   \frac{1}{8} \cdot (y_{42}^e x_{31}^e - y_{31}^e x_{42}^e) +
+                    \frac{\xi}{8} \cdot (y_{34}^e x_{21}^e - y_{21}^e x_{34}^e) +
+                    \frac{\eta}{8} \cdot (y_{41}^e x_{32}^e - y_{32}^e x_{41}^e)
+$$
+
+
+
+<!-- --------------------------
+
+Wie in Kapitel.. beschrieben ergibt sich der Vektor der Dehung ausgedrückt durch die Ableitungen der horizontalen Verschiebungen $u$ und $v$ (siehe @fig-horizontale-Verschiebung)
+
+$$
+\left[ \begin{array}{center}
+\epsilon_{xx} \\ 
+\epsilon_{yy} \\ 
+\gamma_{xy} 
+\end{array}\right]
+= 
+\left[ \begin{array}{center}
+\frac{\partial u}{\partial x} \\
+\frac{\partial v}{\partial y} \\
+\frac{\partial u}{\partial x} +\frac{\partial v}{\partial y}
+\end{array}\right]
+=
+\left[ \begin{array}{center}
+\frac{\partial u}{\partial x} \\
+\frac{\partial v}{\partial y} \\
+\frac{\partial u}{\partial x} +\frac{\partial v}{\partial y}
+\end{array}\right]
+$$ -->

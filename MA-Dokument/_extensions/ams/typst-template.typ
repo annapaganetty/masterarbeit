@@ -2,8 +2,8 @@
 #let script-size = 7.97224pt
 #let footnote-size = 8.50012pt
 #let small-size = 9.24994pt
-#let normal-size = 10.00002pt
-#let large-size = 11.74988pt
+#let normal-size = 12pt
+#let large-size = 15pt
 
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the American Mathematical Society.
@@ -49,35 +49,28 @@
     paper: paper-size,
     // Seitenränder
     margin:(
-        top: 3cm,
-        bottom: 2cm)
+        top: 3.5cm,
+        bottom: 4cm,
+        left: 3cm,
+        right: 2cm)
     ,
 
     // The page header should show the page number and list of
-    // authors, except on the first page. The page number is on
-    // the left for even pages and on the right for odd pages.
-    header-ascent: 14pt,
+    // authors, except on the first page.
+    header-ascent: 10pt,
     header: locate(loc => {
       let i = counter(page).at(loc).first()
       if i == 1 { return }
       set text(size: script-size)
-      grid(
-        columns: (6em, 1fr, 6em),
-        if calc.even(i) [#i],
-        align(center, upper(
-          if calc.odd(i) { title } else { author-string }
-        )),
-        if calc.odd(i) { align(right)[#i] }
-      )
+      align(right, upper({ title }))
+      
     }),
-
-    // On the first page, the footer should contain the page number.
+    // page number on the footer
     footer-descent: 12pt,
     footer: locate(loc => {
       let i = counter(page).at(loc).first()
-      if i == 1 {
-        align(center, text(size: script-size, [#i]))
-      }
+      set text(size: script-size)
+      align(center, text(size: script-size, [#i]))
     })
   )
 
@@ -94,24 +87,24 @@
     // The other ones are run-in.
     set text(size: large-size, weight: 400)
     if it.level == 1 {
-      set text(size: normal-size)
+      set text(size: large-size, weight: 600)
       [
         #v(15pt, weak: true)
         #number
         #it.body
         #v(normal-size, weak: true)
       ]
-      counter(figure.where(kind: "theorem")).update(0)
     } else {
-      v(11pt, weak: true)
-      number
-      let styled = if it.level == 2 { strong } else { emph }
-      styled(it.body + [. ])
-      h(7pt, weak: true)
+      set text(size: normal-size, weight: 600)
+      [
+        #v(15pt, weak: true)
+        #number
+        #it.body
+        #v(normal-size, weak: true)
+      ]
     }
   }
 
-  // Configure lists and links.
   set list(indent: 24pt, body-indent: 5pt)
   set enum(indent: 24pt, body-indent: 5pt)
   show link: set text(font: "New Computer Modern Mono")
@@ -124,35 +117,64 @@
   // Configure citation and bibliography styles.
   set bibliography(style: "apa", title: "References")
 
-  // show figure.where(kind: table): set figure(supplement: [Tab.])
+  set table(stroke:none)
 
-  // show figure: set text(weight:400)
-  // show figure.where(kind: image): set figure(supplement:[Abb.])
-  // set figure.caption(separator: [ --- ])
-
-
+  // show figure.where(kind: table): set figure.caption(position: top)
   // show figure: it => {
-  //   show: pad.with(x: 23pt)
   //   set align(center)
-
-  //   v(12.5pt, weak: true)
-
-  //   // Display the figure's body.
-  //   it.body
-
-  //   // Display the figure's caption.
-  //   if it.has("caption") {
-  //     // Gap defaults to 17pt.
-  //     v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
-  //     smallcaps[Figur]
-  //     if it.numbering != none {
-  //       [ #counter(figure).display(it.numbering)]
-  //     }
-  //     [: ]
-  //     it.caption
-  //   }
   //   v(15pt, weak: true)
-  // }
+  //   it.body 
+  //   it.caption
+  //   v(15pt, weak: true)
+  // } 
+  show figure: it => {
+    show: pad.with(x: 23pt)
+    set align(center)
+
+    v(12.5pt, weak: true)
+
+    // Display the figure's body.
+    it.body
+
+    // Display the figure's caption.
+    if it.has("caption") {
+      // Gap defaults to 17pt.
+      v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
+      smallcaps[Figure]
+      if it.numbering != none {
+        [ #counter(figure).display(it.numbering)]
+      }
+      [. ]
+      it.caption
+    }
+
+    v(15pt, weak: true)
+  }
+  // show figure: it => {
+  //   set align(center)
+  //   if figure.where(kind:table) != true {
+  //     [
+  //       #v(15pt, weak: true)
+  //       #it.body
+  //       #smallcaps[Abbildung]
+  //       #counter(figure).display(it.numbering)
+  //       #[: ]
+  //       #it.caption
+  //       #v(15pt, weak: true)
+  //     ]      
+  //   } else {
+  //     [
+  //       #v(15pt, weak: true)
+  //       #it.body
+  //       #smallcaps[Tabelle]
+  //       #counter(figure.where(kind:table)).display(it.numbering)
+  //       #[: ]
+  //       #it.caption
+  //       #v(15pt, weak: true)
+  //     ] 
+  //   } 
+  // } 
+
 
   // Display the title and authors.
   v(35pt, weak: true)
@@ -164,7 +186,7 @@
 
   // Configure paragraph properties.
   set par(justify: true, leading: 0.58em)
-  show par: set block(spacing: 0.58em)
+  show par: set block(spacing: 1.5em)
 
   // Display the abstract
   if abstract != none {
