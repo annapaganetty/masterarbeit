@@ -8,7 +8,7 @@ const Ni = lagrangeelement(V)
 const ∇N = [∂x(Ni[1]) ∂x(Ni[2]) ∂x(Ni[3]) ∂x(Ni[4]); ∂y(Ni[1]) ∂y(Ni[2]) ∂y(Ni[3]) ∂y(Ni[4])]
 
 # Element matrix
-function heatKe(p)
+function plateKe(p)
     function keFunc(e)
         ν = p.ν
         E = p.E
@@ -19,8 +19,8 @@ function heatKe(p)
         xy =coordMatrix(e)
         jF = ∇N * xy
 
-        Hxserendip = btpHxNew(e)
-        Hyserendip = btpHyNew(e)
+        Hxserendip = btpHx(e)
+        Hyserendip = btpHy(e)
 
 
         Hxderivξ = []
@@ -48,7 +48,7 @@ function heatKe(p)
 end
 
 # Element vector
-function heatRe(q)
+function plateRe(q)
     function reFunc(e)
         a,b = ab(e)
         re = zeros(12)

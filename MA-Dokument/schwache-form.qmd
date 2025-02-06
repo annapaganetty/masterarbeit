@@ -1,14 +1,14 @@
 ## Vorbereitung 
 
-### Herleitung der schwachen Form
+### Herleitung der schwachen Form {#sec-schwache-form}
 
-Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der staken Form, der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
+Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der starken Form, der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
 
 $$
 D \cdot \Delta \Delta w = q 
 $$ {#eq-diffgl-laplace}
 
-ergibt sich nach Multiplikation mit der Testfunktion $\delta w : [0,l]^2 \to \mathbb{R}^2$
+ergibt sich nach Multiplikation mit der Testfunktion $\delta w : \Omega \to \mathbb{R}$
 
 $$
 D \cdot  \frac{\partial^4 w}{\partial x^4} \cdot \delta w 
@@ -22,27 +22,27 @@ $$
 D \cdot [ \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial y^4}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-diffgl-testfunk-integral}
 
-Nach zweifacher partieller Integration der drei Summanden auf der linken Seite der Gleichung ergeben sich die Teilergebnisse für
+Nach zweifacher partieller Integration der drei Summanden auf der linken Seite der Gleichung und der Annahme, dass alle Randtherme $=0$, ergeben sich die Teilergebnisse für
 $$
 \begin{flalign}
 &\text{den 1. Summanden} \\
 \\
-&\int_y\int_x \frac{\partial^4 w}{\partial x^4} \cdot \delta w \cdot d x d y
-&&= \underbrace{\int_y \delta w \frac{\partial^3 w}{\partial x^3} dy - \int_y \frac{\partial \delta w}{\partial x} \frac{\partial^2 w}{\partial x^2} dy}_{\int_y \frac{\delta w \partial^3 w}{\partial x^3} - \int_y \frac{\delta w \partial^3 w}{\partial x^3} = 0}
-- \int_y \int_x \frac{\partial^2 \delta w}{\partial x^2} \frac{\partial^2 w}{\partial x^2} \quad dxdy \\
+&\int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \quad d \Omega
+&&=
+- \int_{\Omega} \frac{\partial^2 \delta w}{\partial x^2} \frac{\partial^2 w}{\partial x^2} \quad d \Omega \\
 \\
 \\
 &\text{den 2. Summanden} \\
 \\
-&\int_y\int_x 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad dxdy 
-&&= \int_y\int_x 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \quad dxdy \\
+&\int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad d \Omega
+&&= \int_{\Omega} 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \quad d \Omega \\
 \\
 \\
 &\text{und den 3. Summanden} \\
 \\
-&\int_x\int_y \frac{\partial^4 w}{\partial y^4} \cdot \delta w \quad dydx 
-&&= \underbrace{\int_x \delta w \frac{\partial^3 w}{\partial y^3} dx - \int_x \frac{\partial \delta w}{\partial y} \frac{\partial^2 w}{\partial y^2} dx}_{\int_x \frac{\delta w \partial^3 w}{\partial y^3} - \int_x \frac{\delta w \partial^3 w}{\partial y^3} = 0}
-- \int_x \int_y \frac{\partial^2 \delta w}{\partial y^2} \frac{\partial^2 w}{\partial y^2} \quad dydx
+&\int_{\Omega} \frac{\partial^4 w}{\partial y^4} \cdot \delta w \quad d \Omega
+&&=
+- \int_{\Omega} \frac{\partial^2 \delta w}{\partial y^2} \frac{\partial^2 w}{\partial y^2} \quad d \Omega
 \end{flalign}
 $$
 
@@ -50,10 +50,10 @@ $$
 Durch das Zusammenführen der Teilergebnisse ergibt sich das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
+__FALSCH__
 *Variations Problem (V)* \
 
-Gesucht ist die Funktion $w:[0,l]^2 \to \mathbb{R}^2$ welche die Differentialgleichung
+Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$ welche die Differentialgleichung
 \
 \
 $$
@@ -64,12 +64,33 @@ $$
 $$ {#eq-variationsproblem}
 
 \
+__Eigentlich RICHTIG__
+$$
+\begin{align}
+\int_{\Omega}  D (1+\nu) \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega) \\ 
+= \int_{\Omega} q \cdot \delta w \quad d \Omega
+\end{align}
+$$ {#eq-variationsproblem-2}
 
 für jede (fast) beliebige Testfunktion $\delta w$.
 
 :::
 
-Es lässt sich für die Funktionen $\mathbf{w}$ und $\mathbf{\delta w}$ die Bilinearform für die Kirchhoffplatte in kompakter Schreibweise
+Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen. Die linke Seite der @eq-variationsproblem wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes Variationsproblem* 
+\
+\
+Gesucht ist die Funktion $w \in V$, sodass 
+$$
+a(w, \delta w)= b(\delta w)  \quad \forall \quad \delta w \in V
+$${#eq-abstraktes-variationsproblem}
+
+:::
+
+Die Bilinearform für die Kirchhoffplatte lässt sich in kompakter Schreibweise durch
 $$ 
 a(\mathbf{w}, \mathbf{\delta w}) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
 $$ {#eq-bilinearform}
@@ -79,12 +100,14 @@ $$
 D = \frac{Eh^3}{12(1+\nu^2)}
 $$
 
-und die Linearform 
+ausdrücken. Die Linearform ergibt sich zu
 $$ 
-b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega
+b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-linearform}
 
-entwickeln. Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
+Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
+
+-----------------------------------------------------
 
 $$
 \mathbf{m} = 

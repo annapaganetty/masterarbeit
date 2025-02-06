@@ -3,39 +3,48 @@ function postprocessor(params, wHat)
 
         # Element size and differential operators
         _, a, b = _fsize(face)
-        ∂X(we) = (2 / a) * ∂x(we)
-        ∂Y(we) = (2 / b) * ∂y(we)
-        ∂XX(we) = (2 / a)^2 * ∂xx(we)
-        ∂YY(we) = (2 / b)^2 * ∂yy(we)
-        ∂XY(we) = (2 / a) * (2 / b) * ∂xy(we)
+        ∂X(betax) = ∂x(betax)
+        ∂Y(betay) = ∂y(betay)
+        ∂XY(betax,betay) = ∂y(betax) + ∂x(betay)
 
         # Element displacement function
         idxs = idxDOFs(nodeindices(face), 3)
-        t = repeat([1,a / 2, b / 2], 4)
-        we = sum(wHat[idxs] .* t .* H4) # TODO make dot work
+        idxsWe = idxDOFs(nodeindices(face), 3)[1:3:end]  
 
-        # Quick return
-        name == :w && return we
-
-        # Derivatives
-        wxx = ∂XX(we)
-        wyy = ∂YY(we)
-        wxy = ∂XY(we)
-        Δw = wxx + wyy
-
-        # Return
-        name == :wx && return ∂X(we)
-        name == :wy && return ∂Y(we)
-        name == :wxx && return wxx
-        name == :wyy && return wyy
-        name == :wxy && return wxy
-        name == :Δw && return Δw
+        V = [-1 1 1 -1; -1 -1 1 1]
+        H4 = lagrangeelement(V)
+        we = sum(wHat[idxsWe] .* H4)
 
         # Plate properties
         h = params.h
         E = params.E
         ν = params.ν
-        D = E * h^3 / (12 * (1 - ν^2))
+        D = E*h^3 / 12*(1-ν^2) 
+
+        # H functions (BTP)
+        Hxserendip = btpHx(face)
+        Hyserendip = btpHy(face)
+
+        # first Derivatives w = beta 
+        wx = -sum(Hxserendip .* wHat[idxs]) # Beta x = -wx
+        wy = -sum(Hyserendip .* wHat[idxs]) # Beta y = -wy
+
+        # Quick return
+        name == :w && return we
+
+        # Derivatives
+        wxx = ∂X(wx)
+        wyy = ∂Y(wy)
+        wxy = ∂XY(wx,wy)
+        Δw = wxx + wyy
+
+        # Return
+        name == :wx && return wx
+        name == :wy && return wy
+        name == :wxx && return wxx
+        name == :wyy && return wyy
+        name == :wxy && return wxy
+        name == :Δw && return Δw
 
         # Section forces (Altenbach et al. p176)
         mx = -1e-3 * D * (wxx + ν * wyy)
@@ -44,9 +53,9 @@ function postprocessor(params, wHat)
         qx = -1e-3 * D * ∂X(Δw)
         qy = -1e-3 * D * ∂Y(Δw)
 
-        # From equilibrium
-        qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work
-        qye = ∂X(mxy) + ∂Y(my)
+        # # From equilibrium
+        # qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work
+        # qye = ∂X(mxy) + ∂Y(my)
 
         # Return
         name == :mx && return mx
@@ -54,15 +63,15 @@ function postprocessor(params, wHat)
         name == :mxy && return mxy
         name == :qx && return qx
         name == :qy && return qy
-        name == :qxe && return qxe
-        name == :qye && return qye
-        name == :mxg && return interpolateg(mx, 2)
-        name == :myg && return interpolateg(my, 2)
-        name == :mxyg && return interpolateg(mxy, 2)
-        name == :qxg && return interpolateg(qx, 2)
-        name == :qyg && return interpolateg(qy, 2)
-        name == :qxgg && return ∂X(interpolateg(mx, 2)) + ∂Y(interpolateg(mxy, 2))
-        name == :qygg && return ∂X(interpolateg(mxy, 2)) + ∂Y(interpolateg(my, 2))
+        # name == :qxe && return qxe
+        # name == :qye && return qye
+        # name == :mxg && return interpolateg(mx, 2)
+        # name == :myg && return interpolateg(my, 2)
+        # name == :mxyg && return interpolateg(mxy, 2)
+        # name == :qxg && return interpolateg(qx, 2)
+        # name == :qyg && return interpolateg(qy, 2)
+        # name == :qxgg && return ∂X(interpolateg(mx, 2)) + ∂Y(interpolateg(mxy, 2))
+        # name == :qygg && return ∂X(interpolateg(mxy, 2)) + ∂Y(interpolateg(my, 2))
 
         # Unknown label
         error("Unkown function: ", name)
@@ -70,12 +79,16 @@ function postprocessor(params, wHat)
 end
 
 function nodalresult(m, result)
+    # Vektor mit 0en: Anzahl 0en = Anzahl Knoten
 	sr = zeros(nnodes(m))
+    # Vektor mit Koordinaten Referenzelement
 	VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
 	for f ∈ faces(m)
 		sr[nodeindices(f)] .+= m.data[:post](f, result).(VV)
 	end
 	for (i, n) ∈ enumerate(nodes(m))
+    # nfaces(n) = Anzahl der Elemente die an dem Knoten angrenzen 
+    # i = Anzahl der Knoten
 		sr[i] /= nfaces(n)
 	end
 	return sr

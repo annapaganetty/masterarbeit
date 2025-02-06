@@ -1,8 +1,69 @@
 ## Assemblierung der globalen Steifigkeitsmatrix
 
-Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Dementsprechend hat jeder Knotenpunkt $i$ eines Plattenelements die Freiheitsgrade $w_i$, $\theta_{xi}$ und $\theta_{yi}$. Je nach Wahl des Finite Elemente Ansatzes ergibt sich der Knotenverschiebungsvektor eines Elements zu 
+Das Abstrakte Variationsproblem @eq-abstraktes-variationsproblem kann auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Die Näherungslösungen von $w_h$, $\theta_{xh}$ und $\theta_{yh}$ werden durch 
 $$
-\underline{u^e} = \left[ \begin{array}{center} 
+\begin{align}
+&w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i \\
+\\
+&\theta_{xh}(x,y) = \frac{\partial w_h(x,y)}{\partial y}
+= \frac{\partial \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i }{\partial x} \\
+\\
+&\theta_{yh}(x,y) =  \frac{\partial w_h(x,y)}{\partial x}
+= \frac{\partial \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i}{\partial y}
+\end{align}
+$${#eq-linearkombination-platte}
+
+mit 
+$$
+\begin{align}
+&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
+&V_h \subset V
+\end{align}
+$${#eq-subspace}
+
+ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes, diskretes Variationsproblem* 
+\
+\
+Gesucht ist eine Funktion $w_h \in V_h$, sodass 
+$$
+a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
+$${#eq-abstraktes-diskretes-variationsproblem}
+
+:::
+
+Zur numerischen Lösung des abstrakten, diskreten Variationsproblems werden 
+
+$$
+\delta w_h = \sum_{i=1}^N \varphi_i \cdot \delta \hat{w}_i 
+\quad \quad \text{und} \quad \quad
+w_h = \sum_{j=1}^N \varphi_j \cdot \hat{w}_j 
+$$
+
+in @eq-abstraktes-diskretes-variationsproblem eingesetzt, wodurch sich das Gleichungssystem 
+$$
+\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad i,j = 1,...,N,
+$${#eq-weißnochnicht02}
+
+ergibt. $N$ gibt die Anzahl der Gleichungen an. Das lineare Gleichungssystem wird weitgehend in der Literatur durch 
+$$
+\mathbf{K} \boldsymbol{\hat{w}} = \boldsymbol{r}.
+$${#eq-gleichungssystem-balken}
+
+mit
+$$
+\begin{align}
+&\mathbf{K} &&= K_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\boldsymbol{r} &&= r_i    &&= b(\varphi_i) \quad \text{mit} \quad i,j = 1,...,N,
+\end{align}
+$$
+
+beschrieben. $\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Gesamtsteifigkeitsmatrix setzt sich aus den Elementsteifigkeitsmatrizen zusammen. Je nach Wahl des Finite Elemente Ansatzes ergibt sich für die Kirchhoff Platte der Knotenverschiebungsvektor eines Elements zu 
+$$
+\boldsymbol{\hat{w}_e}= \left[ \begin{array}{center} 
 w_1 & \theta_{x1} & \theta_{y1} &
 w_2 & \theta_{x2} & \theta_{y2} &
 w_3 & \theta_{x3} & \theta_{y3} &
@@ -11,14 +72,15 @@ w_{n_n} & \theta_{xn_n} & \theta_{yn_n}
 \end{array}\right]^T
 $${#eq-knotenverschiebungsvekor}
 
-mit $n_n$ Elementknoten. Innerhalb eines Elements $\Omega_e$ wird das Verschiebungsfeld durch 
+mit $n_n$ Elementknoten. 
+Das Verschiebungsfeld eines Elementes $\Omega_e$ wird entsprechend der Linearkombination (@eq-linearkombination-platte) somit durch das Matrix-Vektor-Produkt
 $$
-u = \underline{N^e} \underline{u^e}
+w = \boldsymbol{N_e} \boldsymbol{\hat{w}_e}
 $$
 
-mit
+mit der Matrix der Formfunktionen (in @eq-linearkombination-platte beschrieben durch $\varphi_i$)
 $$
-\underline{N^e} = 
+\boldsymbol{N_e} = 
 \begin{bmatrix} 
 N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & 0 & ... & N_{n_n}^e & 0 & 0 \\ 
 0 & N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & ... & 0 & N_{n_n}^e & 0 \\ 
@@ -26,7 +88,15 @@ N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & 0 & ... & N_{n_n}^e & 0 & 0 \\
 \end{bmatrix},
 $$
 
-als Matrix der Formfunktionen, approximiert. Durch die Formfunktionen und den Verschiebungsvekor ausgrückt, ergibt sich der Krümmungsvektor 
+approximiert. 
+
+
+
+
+
+
+
+Durch die Formfunktionen und den Verschiebungsvekor ausgrückt, ergibt sich der Krümmungsvektor 
 $$
 \begin{align}
 \mathbf{\kappa} = 
@@ -330,3 +400,4 @@ $$
 0 & \frac{\partial N_4}{\partial x} & \frac{\partial N_4}{\partial y} \\
 \end{bmatrix}
 $$
+

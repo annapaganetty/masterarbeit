@@ -35,22 +35,11 @@ update_theme!(faceplotmesh=0.5)
 update_theme!(edgelinewidth=0.5)
 update_theme!(colormap=:aquamarine)
 
-function _fsize(face)
-	x = coordinates(face)
-	p = x[:, 1]
-	l1 = x[1, 2] - x[1, 1]
-	l2 = x[2, 3] - x[2, 2]
-	return p, l1, l2
-end
-
 include("generated/plate-hartmann-conforming.jl")
 include("generated/plate-hartmann-nonconforming.jl")
 include("generated/plate-kirchhoff-conforming.jl")
 include("generated/plate-kirchhoff-nonconforming.jl")
-include("generated/BTP-Hx-functions.jl")
-include("generated/BTP-Hy-functions.jl")
-include("generated/BTP-Hx-functions-deriv.jl")
-include("generated/BTP-Hy-functions-deriv.jl")
+include("generated/BTP-gen-H-functions.jl")
 include("generated/BTP-Ke.jl")
 include("generated/jacobianMatrix.jl")
 
@@ -64,10 +53,11 @@ include("mathematics/serendipityfunctions.jl")
 include("mesh/make-mesh.jl")
 include("mesh/geometrie.jl")
 
-include("plots/plot.jl")
+# include("plots/plot.jl")
 include("plots/plot-functions.jl")
 include("plots/print-stiffness-matrix.jl")
 include("plots/print-BTP-H-functions.jl")
+include("plots/plot-BTP.jl")
 
 include("results/internal-forces.jl")
 include("results/assembleKr.jl")

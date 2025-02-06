@@ -146,3 +146,31 @@ $$
 sind in @fig-Serendipity-Formfunktionen dargestellt. Häufig finden die Formfunktionen der Serendipiy Klasse Anwendung bei der Berechnung von Strukturen, dessen Elemente isoparametrisch sind. Dies ist vorallem dann der Fall, wenn die Struktur eine unregelmäßige, unsymmetrische Geometrie hat und die Elemente dementsprechend schiefwinklig und in beliebiger Lage angeordnet sind. Auf die Formulierung für allgemeine Viereckelemente wird in Kapitel... näher eingegangen.
 
 ![Formfunktionen des Serendipity Elements auf dem Referenzelement](00-pics/Serendipity-Formfunktionen.png){#fig-Serendipity-Formfunktionen width=75%}
+
+### Kontinuität {#sec-kontinuität}
+
+Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 \le j \le n$ stetig in allen Punkten ist. Bei der FEM sind vorrangig $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen von bedeutung. Beispiele dieser sind in ... dargestellt. Die Ableitung einer C^0 Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist einen die Ableitung der $C^0$-Funktioen eine $C^{-1}$-Funktion welche an den Knicken einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
+
+|Kontinuität | Knicke | Sprünge | Kommentar             |
+|:----------:|:------:|:-------:|:---------------------|
+| $C^{-1}$   | Ja     | Ja      | stückweise stetig     |
+| $C^{0}$    | Ja     | Nein    | stückweise stetig differenzierbar|
+| $C^{1}$    | Nein   | Nein    | stetig differenzierbar|
+
+:  {#tbl-kontinuität}
+
+Die Formfunktionen der oben beschriebenen, unterschiedlichen finite Elemente Ansätze, werden elementweise definiert. In Abbildung ... sind zufällige Kombinationen der Formfunktionen des
+
+a) bilinearen Elements
+
+b) konformen Hermite Elements
+
+c) nichtkonformen Hermite Elements
+
+d) Elements der Serendipity Klasse
+
+auf einer $8m \times 8m$  Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist direkt erkennbar, dass es sich um $C^{0}$-Funktionen handelt, da _Knicke_ an den Elementkanten vorhanden sind. 
+
+TODO: Abbildungen erstellen + beschreiben!
+
+![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=75%}

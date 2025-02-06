@@ -6,10 +6,10 @@ book:
   reader-mode: true
 
   chapters:
-      # - eidesstattliche-erklaerung.qmd
+      - eidesstattliche-erklaerung.qmd
       # - danksagung.qmd
 
-      # - part: einleitung.qmd
+      - part: einleitung.qmd
       #   chapters:
       #     - motivation.qmd
       #     - problemstellung.qmd

@@ -1,11 +1,6 @@
-# Mechanische und mathematische Grundlagen
+# Mechanische und mathematische Grundlagen{#sec-mech-math-grundlagen}
 
+Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Verschiebungsfeld (@sec-kinematik), Verzerrungsfeld (@sec-verzerrung) und  Gleichgewichtsbeziehungen (@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz (@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung. 
 
-blablabla einführung kapitel
-
-Verlinkungen funktionieren noch nicht 
-
-@sec-einfuehrung-plattentragwerke
-
-@sec-dgl-einer-platte-nach-der-kirchhoffschen-plattentheorie
+Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente. Dessen formale Definition erfolgt in @sec-def-finites-element. Weiter werden in @sec-funktionale die für die Lösung verwendeten Funktionale kurz erläutert.
 

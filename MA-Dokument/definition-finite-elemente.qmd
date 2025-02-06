@@ -1,0 +1,19 @@
+## formale Definition finite Elemente {#sec-def-finites-element}
+
+Das in Kap. @sec-gleichgewicht definierte Randwertproblem lässt sich nach Ableitung in die schwache Form (@sec-schwache-form) als Bilinear- und Linearform durch
+$$
+a(w,\delta w) = b(\delta w)
+$$
+
+ausdrücken.
+
+
+The first aspect, and certainly the most characteristic, is that a triangulation ffh is established over the set ii, i.e., the set ii is subdivided into a finite number of subsets K, called finite elements, in such a way that the following properties are satisfied: 
+(ffhl) jj = UKefThK.  
+(ffh2) For each K E ffh, the set K is closed and the interior K is non empty. 
+(.o/'h3) Foreach distinct K~> K 2E ffh, one has K1 n K2 = q,. 
+(.o/'h4) For each K E .o/'h, the boundary aK is Lipschitz-continuous.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+_Definition_ (finites Element): 
+:::

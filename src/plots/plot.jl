@@ -1,17 +1,16 @@
 function mkfig2d(
     ;title=""
 )
-    fig = Figure(;size = (360, 288),linewidth = 0.5,fontsize = 12,font="arial")
-    ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="arial",xlabelfont = "arial",ylabelfont ="arial")
+    fig = Figure(;size = (600, 500),linewidth = 0.5,fontsize = 12,font="calibri")
+    ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="calibri",xlabelfont = "calibri",ylabelfont ="calibri")
     hidedecorations!(ax)
     hidespines!(ax)
     return fig
 end
 
-
 function mkfig3d(
     ;title ="")
-    fig = Figure(;size = (500,400),linewidth = 0.5,fontsize = 12,font="arial")
+    fig = Figure(;size = (500,400),linewidth = 0.5,fontsize = 12,font="calibri")
     ax = Axis3(
         fig[1, 1],
         aspect=:data,
@@ -20,10 +19,10 @@ function mkfig3d(
         perspectiveness=0.5,
         limits=(nothing, nothing, nothing),
         protrusions=0,
-        titlefont = "arial",
-        xlabelfont = "arial",
-        ylabelfont = "arial",
-        zlabelfont = "arial")
+        titlefont = "calibri",
+        xlabelfont = "calibri",
+        ylabelfont = "calibri",
+        zlabelfont = "calibri")
     hidedecorations!(ax)
     hidespines!(ax)
     return fig
@@ -35,8 +34,8 @@ function plotmesh(m;title)
     m,
     faceplotzscale= 0.05,
     faceplotmesh=5,
-    edgesvisible=false, 
-    edgelinewidth=2.5,
+    edgesvisible=true, 
+    edgelinewidth=0.5,
     nodesvisible=true,
     featureedgelinewidth=0.2,
     color=5,
@@ -68,8 +67,6 @@ function makewe(wHat;conforming=false)
         end
     end
 end
-
-
 
 # Plot der Verformung
 function plotw(
@@ -114,57 +111,52 @@ end
 # end
 #____________________________________________________________
 
-function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
-	# if false
-		fig = Figure(size = (1200, 800))
-		if a3d == true
-			ax = Axis3(fig[1, 1])
-			zscale = 1
+# function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
+# 	# if false
+# 		fig = Figure(size = (1200, 800))
+# 		if a3d == true
+# 			ax = Axis3(fig[1, 1])
+# 			zscale = 1
             
-		else
-			ax = Axis(fig[1, 1], aspect = DataAspect())
-			zscale = 0
-            println("klappt")
-		end
+# 		else
+# 			ax = Axis(fig[1, 1], aspect = DataAspect())
+# 			zscale = 0
+#             println("klappt")
+# 		end
 
-		warpnodes = nothing
+# 		warpnodes = nothing
 
-		if nodal == true
-			r = nodalresult(m, result)
-			if a3d
-				warpnodes = r
-			end
-		else
-			r = result
-            println("klappt")
-		end
+# 		if nodal == true
+# 			r = nodalresult(m, result)
+# 			if a3d
+# 				warpnodes = r
+# 			end
+# 		else
+# 			r = result
+#             println("klappt")
+# 		end
 
-		p = mplot!(
-			m, r, edgesvisible = a3d,
-			nodewarp = warpnodes,
-			faceplotzscale = zscale, faceplotnpoints = npoints,
-			colorrange = cr,
-		)
+# 		p = mplot!(
+# 			m, r, edgesvisible = a3d,
+# 			nodewarp = warpnodes,
+# 			faceplotzscale = zscale, faceplotnpoints = npoints,
+# 			colorrange = cr,
+# 		)
 
-		if !a3d
-			mplot!(m, edgesvisible = false, facesvisible = false)
-		end
+# 		if !a3d
+# 			mplot!(m, edgesvisible = false, facesvisible = false)
+# 		end
 
-		Colorbar(fig[1, 2], p)
-		hidespines!(ax)
-		hidedecorations!(ax)
-		ax.title = maketitle(p, title)
+# 		Colorbar(fig[1, 2], p)
+# 		hidespines!(ax)
+# 		hidedecorations!(ax)
+# 		ax.title = maketitle(p, title)
 
-		return fig
-	# else
-	# 	return L"Zeitweise außer Betrieb"
-	# end
-end
-
-function maketitle(p, title)
-	min, max = string.(round.(valuerange(p), digits = 2))
-	return title * " | min: " * min * " | max: " * max
-end
+# 		return fig
+# 	# else
+# 	# 	return L"Zeitweise außer Betrieb"
+# 	# end
+# end
 
 function valuerange(p)
 	values = p.plots[1].kw[:color]

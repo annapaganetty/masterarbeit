@@ -46,3 +46,11 @@ function coordMatrix(e)
     xy = [x[1] y[1]; x[2] y[2]; x[3] y[3]; x[4] y[4]]
     return xy
 end
+
+function _fsize(face)
+	x = coordinates(face)
+	p = x[:, 1]
+	l1 = x[1, 2] - x[1, 1]
+	l2 = x[2, 3] - x[2, 2]
+	return p, l1, l2
+end

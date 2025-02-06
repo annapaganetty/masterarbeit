@@ -78,19 +78,19 @@
   set heading(numbering: "1.")
   show heading: it => {
     // Create the heading numbering.
-    let number = if it.numbering != none {
-      counter(heading).display(it.numbering)
-      h(7pt, weak: true)
-    }
+    // let number = if it.numbering != none {
+    //   counter(heading).display(it.numbering)
+    //   h(7pt, weak: true)
+    // }
 
     // Level 1 headings are centered and smallcaps.
     // The other ones are run-in.
     set text(size: large-size, weight: 400)
-    if it.level == 1 {
+    if it.level == 0 {
       set text(size: large-size, weight: 600)
       [
         #v(15pt, weak: true)
-        #number
+        #counter(heading).display(it.numbering)
         #it.body
         #v(normal-size, weak: true)
       ]
@@ -98,7 +98,7 @@
       set text(size: normal-size, weight: 600)
       [
         #v(15pt, weak: true)
-        #number
+        #counter(heading).display(it.numbering)
         #it.body
         #v(normal-size, weak: true)
       ]
