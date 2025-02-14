@@ -74,7 +74,7 @@ end
 
 # Ausgabe der Koeffizienten (musste nur einmalig berechnet werden, dann kopieren und in nachfolgende Funktion kopiert)
 function printBTPhy(coeffizients)
-for i = 1:12
-    println("Hy[",i,"] = sum.([",coeffizients[i][1],",",coeffizients[i][2],",",coeffizients[i][3],",",coeffizients[i][4],",",coeffizients[i][5],",",coeffizients[i][6],",",coeffizients[i][7],",",coeffizients[i][8],"] .* N)")    
-end
+    for i = 1:12
+        println("Hy[",i,"] = sum.([",coeffizients[i][1],",",coeffizients[i][2],",",coeffizients[i][3],",",coeffizients[i][4],",",coeffizients[i][5],",",coeffizients[i][6],",",coeffizients[i][7],",",coeffizients[i][8],"] .* N)")    
+    end
 end

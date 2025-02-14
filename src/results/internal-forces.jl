@@ -1,46 +1,45 @@
 function postprocessor(params, wHat)
     return (face, name) -> begin
 
-        # Element size and differential operators
-        _, a, b = _fsize(face)
-        ∂X(betax) = ∂x(betax)
-        ∂Y(betay) = ∂y(betay)
-        ∂XY(betax,betay) = ∂y(betax) + ∂x(betay)
-
-        # Element displacement function
-        idxs = idxDOFs(nodeindices(face), 3)
-        idxsWe = idxDOFs(nodeindices(face), 3)[1:3:end]  
-
-        V = [-1 1 1 -1; -1 -1 1 1]
-        H4 = lagrangeelement(V)
-        we = sum(wHat[idxsWe] .* H4)
-
         # Plate properties
         h = params.h
         E = params.E
         ν = params.ν
         D = E*h^3 / 12*(1-ν^2) 
 
-        # H functions (BTP)
-        Hxserendip = btpHx(face)
-        Hyserendip = btpHy(face)
+        # Element displacement function
+            # Indices
+        idxs = idxDOFs(nodeindices(face), 3)
+        idxsWe = idxs[1:3:end]  
 
-        # first Derivatives w = beta 
-        wx = -sum(Hxserendip .* wHat[idxs]) # Beta x = -wx
-        wy = -sum(Hyserendip .* wHat[idxs]) # Beta y = -wy
+    #------------------------------------------------------------------------
+    # TODO figure out why this does not work
+        # displ = bMatrix(face) * wHat[idxs]
+
+        # we =   sum(bMatrix(face)[1,:] .* wHat[idxs]) # Ni = functions of Lagrange Element
+        # βx = - sum(bMatrix(face)[2,:] .* wHat[idxs]) # Beta x = -wx
+        # βy = - sum(bMatrix(face)[3,:] .* wHat[idxs]) # Beta y = -wy
+    #------------------------------------------------------------------------
+        
+        # this works 
+        we = sum(wHat[idxsWe] .* Ni) # Ni = functions of Lagrange Element
+
+        # first Derivatives of w = beta 
+        βx = -sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
+        βy = -sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
 
         # Quick return
         name == :w && return we
 
         # Derivatives
-        wxx = ∂X(wx)
-        wyy = ∂Y(wy)
-        wxy = ∂XY(wx,wy)
+        wxx = ∂x(βx)
+        wyy = ∂y(βy)
+        wxy = ∂y(βx) + ∂x(βy)
         Δw = wxx + wyy
 
         # Return
-        name == :wx && return wx
-        name == :wy && return wy
+        name == :βx && return βx
+        name == :βx && return βx
         name == :wxx && return wxx
         name == :wyy && return wyy
         name == :wxy && return wxy
@@ -50,8 +49,8 @@ function postprocessor(params, wHat)
         mx = -1e-3 * D * (wxx + ν * wyy)
         my = -1e-3 * D * (ν * wxx + wyy)
         mxy = -1e-3 * D * (1 - ν) * wxy
-        qx = -1e-3 * D * ∂X(Δw)
-        qy = -1e-3 * D * ∂Y(Δw)
+        qx = -1e-3 * D * ∂x(Δw)
+        qy = -1e-3 * D * ∂y(Δw)
 
         # # From equilibrium
         # qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work

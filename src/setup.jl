@@ -40,8 +40,7 @@ include("generated/plate-hartmann-nonconforming.jl")
 include("generated/plate-kirchhoff-conforming.jl")
 include("generated/plate-kirchhoff-nonconforming.jl")
 include("generated/BTP-gen-H-functions.jl")
-include("generated/BTP-Ke.jl")
-include("generated/jacobianMatrix.jl")
+include("generated/BTP-gen-H-functions-copy.jl")
 
 include("mathematics/BTP-H-functions.jl")
 include("mathematics/hermitefunctions-1D.jl")
@@ -53,22 +52,18 @@ include("mathematics/serendipityfunctions.jl")
 include("mesh/make-mesh.jl")
 include("mesh/geometrie.jl")
 
-# include("plots/plot.jl")
-include("plots/plot-functions.jl")
+include("plots/plot.jl")
 include("plots/print-stiffness-matrix.jl")
-include("plots/print-BTP-H-functions.jl")
 include("plots/plot-BTP.jl")
 
 include("results/internal-forces.jl")
 include("results/assembleKr.jl")
-include("results/assembleKr-BTP.jl")
 
 include("static-system/boundary-conditions.jl")
 include("static-system/generate-plate.jl")
 
-include("stiffness_matrix/plate.jl")
+include("stiffness_matrix/ke-BTP.jl")
 include("stiffness_matrix/weak_form.jl")
-include("stiffness_matrix/weak_form-BTP.jl")
 
 p1 = @var Params()
 p1.lx = 8		# [m]

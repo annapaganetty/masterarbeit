@@ -47,6 +47,5 @@ book:
 
       # - part: Literatur.qmd
 
-
 format:
   ams-typst: default

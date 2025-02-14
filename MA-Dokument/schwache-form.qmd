@@ -50,7 +50,6 @@ $$
 Durch das Zusammenführen der Teilergebnisse ergibt sich das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-__FALSCH__
 *Variations Problem (V)* \
 
 Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$ welche die Differentialgleichung
@@ -64,6 +63,7 @@ $$
 $$ {#eq-variationsproblem}
 
 \
+<!-- 
 __Eigentlich RICHTIG__
 $$
 \begin{align}
@@ -71,7 +71,7 @@ $$
 = \int_{\Omega} q \cdot \delta w \quad d \Omega
 \end{align}
 $$ {#eq-variationsproblem-2}
-
+ -->
 für jede (fast) beliebige Testfunktion $\delta w$.
 
 :::
@@ -106,42 +106,7 @@ b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-linearform}
 
 Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
-
------------------------------------------------------
-
-$$
-\mathbf{m} = 
-\left[ \begin{array}{center} 
-m_{xx} \\
-m_{yy} \\
-m_{xy}
-\end{array}\right]
-=
-\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-2\kappa_{xy}
-\end{array}\right]
-=
-\left[ \begin{array}{center} 
-D \kappa_{xx} + D\nu \kappa_{yy} \\
-D\nu \kappa_{xx} + D \kappa_{yy} \\
-D(1-\nu) \kappa_{xy}
-\end{array}\right].
-$$
-
-$$
-\int_y 
-\delta w(a,y) \frac{\partial^3 w(a,y)}{\partial x^3} -
-\delta w(0,y) \frac{\partial^3 w(0,y)}{\partial x^3} 
-dy 
-- \int_y 
-\frac{\partial \delta w(a,y)}{\partial x} \frac{\partial^2 w(a,y)}{\partial x^2} 
-\frac{\partial \delta w(0,y)}{\partial x} \frac{\partial^2 w(0,y)}{\partial x^2}
-dy
-$$
-
+<!-- 
 ### Parametrisierung (Jacobi-Matrix)
 
 Analog zu Kapitel ... erfolgt die Abbildung der physikalischen Koordinaten $(x,y) \in [(x_1,y_1),(x_2,y_2),(x_3,y_3),(x_4,y_4)]$, auf die Referenzkoordinaten $(\xi,\eta) \text{ mit} -1 \le \xi,\eta \le 1$, durch Bestimmung der Bilinearform $\hat{a}$ und  der Linearform $\hat{b}$. Für die Platte ergibt sich somit aus dem Variationsproblem (@eq-variationsproblem) die Gleichung 
@@ -384,4 +349,4 @@ Weak form:
     Requirements on u
     - differential equation fulfilled in an integral sense
     - one time differentiable (Fish and Belytschko 2007, p. 49)
-
+ -->

@@ -10,5 +10,6 @@ contributes:
         - typst-template.typ
         - typst-show.typ
       filters:
-        # - ams.lua
-        - latex-environment.lua
+        - ams.lua
+        # - latex-environment.lua
+

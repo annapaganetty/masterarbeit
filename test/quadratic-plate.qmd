@@ -1,5 +1,14 @@
 ```{julia}
 include("../src/setup.jl")
+
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=:redblue,
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=true,
+    featureedgelinewidth=2.5)
 ```
 
 # Beispiel quadratische Platte
@@ -7,7 +16,7 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-xElem = 20
+xElem = 10
 m1 = makequadratcicMesh(p1, xElem)
 plotmesh(m1;title="quadratische Platte")
 ```
@@ -15,17 +24,13 @@ plotmesh(m1;title="quadratische Platte")
 ## Verformung 
 
 Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
+
 ```{julia}
-nf = 3
-bcs = [true, true, true]
-m1.data[:kefunc] = plateKe(p1)
-m1.data[:refunc] = plateRe(p1.q)
-K,r = assembleKrBTP(m1,nf)
-applyDirichletBCs!(m1.groups[:boundarynodes], K, r, bcs)
-w = K \ r
+w = plate(m1, p1, "BTP")
 ```
 
 Ausgabe maximale Verformung und prozentuale Abweichung von der Berechnung nach den Czerny-Tafeln
+
 ```{julia}
 w_fe = maximum(w[1:3:end])
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
@@ -49,30 +54,67 @@ plotThetayBTP(m1, w; title="Verdrehung θy")
 ## Schnittgrößen Plotten 
 
 ```{julia}
-m1.data[:post] = postprocessor(p1, w)
-```
-
-```{julia}
 post = m1.data[:post]
+
 for i = 1 : nelements(m1)
     ff = face(m1, i)
     we = post(ff, :mx)
     println("mx[",i,"] = ",we)
+    # println(typeof(we))
 end
 ```
 
 ### Mx
+
 ```{julia}
-plotrBTP(m1, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
+function makeMoment(result,m)
+    post = m.data[:post]
+    return face -> begin
+        rElement = post(face, result)
+        println("mx[",face,"] = ",rElement)
+        return rElement
+    end
+end
+
+makeMoment(:mx,m1)
+# function plotMx(
+#     m, result;
+#     w=600, h=600, title="",
+# )
+#     fig = mkfig3d(title=title)
+#     mplot!(
+#         m, makeMoment(result,m),
+#         nodewarp = nothing,
+#         faceplotnpoints = 15, colorrange = (-10, 10),
+#         faceplotzscale = 1000,
+#         edgesvisible = false, 
+#         edgelinewidth = 0.2,
+#         nodesvisible=false,
+#         featureedgelinewidth = 0.5,
+#         color=5,
+#         colormap = Makie.theme(:colormap),
+#         limits = (nothing, nothing, nothing)
+#     )
+#     fig
+# end
+# plotMx(m1, :mx,title = "Biegemoment mx")
+```
+
+
+```{julia}
+plotrBTP(m1, :mx, "Biegemoment mx", (-7, 7),nodal = false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(m1, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
+plotrBTP(m1, :my, "Biegemoment my", (-7, 7),nodal = false, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(m1, :mxy, "Biegemoment mxy", (-17, 17),nodal = true, a3d=true)
+plotrBTP(m1, :mxy, "Biegemoment mxy", (-7, 7),nodal = false, a3d=true)
 ```
 
+```{julia}
+plotrBTP(m1, :qx, "qx", (-3, 3),nodal = false, a3d=true)
+```

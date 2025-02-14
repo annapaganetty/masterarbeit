@@ -10,36 +10,19 @@ const ∇N = [∂x(Ni[1]) ∂x(Ni[2]) ∂x(Ni[3]) ∂x(Ni[4]); ∂y(Ni[1]) ∂y(
 # Element matrix
 function plateKe(p)
     function keFunc(e)
-        ν = p.ν
-        E = p.E
-        h = p.h
-        D = E*h^3 / 12*(1-ν^2) * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
+        D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
 
         Ke = zeros(12,12)
-        xy =coordMatrix(e)
+        xy = coordMatrix(e)
         jF = ∇N * xy
-
-        Hxserendip = btpHx(e)
-        Hyserendip = btpHy(e)
-
-
-        Hxderivξ = []
-        Hxderivη = []
-        Hyderivξ = []
-        Hyderivη = []
-        for i = 1:12
-            push!(Hxderivξ, ∂x(Hxserendip[i]))
-            push!(Hxderivη, ∂y(Hxserendip[i]))
-            push!(Hyderivξ, ∂x(Hyserendip[i]))
-            push!(Hyderivη, ∂y(Hyserendip[i]))
-        end
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
             J = [jF[1,1](ξ) jF[1,2](ξ); jF[2,1](ξ) jF[2,2](ξ)]
             Jinv = inv(J)
-            B =     [hcat([[sum([Jinv[1,1] * Hxderivξ[i](ξ) + Jinv[1,2] * Hxderivη[i](ξ)])] for i = 1:12]...);
-                    hcat([[sum([Jinv[2,1] * Hyderivξ[i](ξ) + Jinv[2,2] * Hyderivη[i](ξ)])] for i = 1:12]...);
-                    hcat([[sum([Jinv[1,1] * Hyderivξ[i](ξ) + Jinv[1,2] * Hyderivη[i](ξ) + Jinv[2,1] * Hxderivξ[i](ξ) + Jinv[2,2] * Hxderivη[i](ξ)])] for i = 1:12]...)]
+            # B-Matrix gemäß Gl. 13 aus Batoz und Tahar Paper
+            B =    [hcat([[sum([Jinv[1,1] * ∂x(btpHx(e)[i])(ξ) + Jinv[1,2] * ∂y(btpHx(e)[i])(ξ)])] for i = 1:12]...);
+                    hcat([[sum([Jinv[2,1] * ∂x(btpHy(e)[i])(ξ) + Jinv[2,2] * ∂y(btpHy(e)[i])(ξ)])] for i = 1:12]...);
+                    hcat([[sum([Jinv[1,1] * ∂x(btpHy(e)[i])(ξ) + Jinv[1,2] * ∂y(btpHy(e)[i])(ξ) + Jinv[2,1] * ∂x(btpHx(e)[i])(ξ) + Jinv[2,2] * ∂y(btpHx(e)[i])(ξ)])] for i = 1:12]...)]
             Ke += w * B' * D * B * det(J)
         end
         return Ke

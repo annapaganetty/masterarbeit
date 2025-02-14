@@ -149,7 +149,7 @@ sind in @fig-Serendipity-Formfunktionen dargestellt. Häufig finden die Formfunk
 
 ### Kontinuität {#sec-kontinuität}
 
-Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 \le j \le n$ stetig in allen Punkten ist. Bei der FEM sind vorrangig $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen von bedeutung. Beispiele dieser sind in ... dargestellt. Die Ableitung einer C^0 Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist einen die Ableitung der $C^0$-Funktioen eine $C^{-1}$-Funktion welche an den Knicken einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
+Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 \le j \le n$ stetig in allen Punkten ist. Bei der FEM sind vorrangig $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen von bedeutung. Beispiele dieser sind in @fig-c-funktionen dargestellt. Die Ableitung einer C^0 Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist einen die Ableitung der $C^0$-Funktioen eine $C^{-1}$-Funktion welche an den Knicken einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
 
 |Kontinuität | Knicke | Sprünge | Kommentar             |
 |:----------:|:------:|:-------:|:---------------------|
@@ -159,18 +159,24 @@ Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $
 
 :  {#tbl-kontinuität}
 
-Die Formfunktionen der oben beschriebenen, unterschiedlichen finite Elemente Ansätze, werden elementweise definiert. In Abbildung ... sind zufällige Kombinationen der Formfunktionen des
+Die Formfunktionen der oben beschriebenen, unterschiedlichen finite Elemente Ansätze, werden elementweise definiert. In @fig-bilinear und @fig-konf-hermite sind die Formfunktionen des
 
 a) bilinearen Elements
 
 b) konformen Hermite Elements
 
-c) nichtkonformen Hermite Elements
+<!-- c) nichtkonformen Hermite Elements -->
 
-d) Elements der Serendipity Klasse
+<!-- d) Elements der Serendipity Klasse -->
 
 auf einer $8m \times 8m$  Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist direkt erkennbar, dass es sich um $C^{0}$-Funktionen handelt, da _Knicke_ an den Elementkanten vorhanden sind. 
 
-TODO: Abbildungen erstellen + beschreiben!
+::: {#fig-elephants layout-nrow=2}
+![bilineare Basisfunktionen](00-pics/Basisfunktionen_Bilinear.png){#fig-bilinear width=100%}
+
+![konforme Hermite Basisfunktionen](00-pics/Basisfunktionen_Hermite.png){#fig-konf-hermite width=100%}
+
+Basisfunktionen unterschiedlicher Elementansätze angewandt auf $8m \times 8m$ Platte mit 9 Elementen  
+:::
 
 ![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=75%}

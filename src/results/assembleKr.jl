@@ -25,5 +25,5 @@ function assembleKr(s,nf)
         # Addition von re auf den globalen Lastvektor
         r[I] += re
     end
-    return   K ,r
+    return  K ,r
 end

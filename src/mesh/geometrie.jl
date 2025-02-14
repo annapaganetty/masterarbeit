@@ -54,3 +54,13 @@ function _fsize(face)
 	l2 = x[2, 3] - x[2, 2]
 	return p, l1, l2
 end
+
+function ab(e)
+    x1 = coordinates(e, 1)
+    x2 = coordinates(e, 2)
+    x3 = coordinates(e, 3)
+    x4 = coordinates(e, 4)
+    a = x2[1] - x1[1]       # Länge in xi-Richtung
+    b = x3[2] - x1[2]       # Länge in eta-Richtung
+    return a,b
+end

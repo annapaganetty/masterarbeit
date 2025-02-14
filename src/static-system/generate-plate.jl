@@ -1,13 +1,3 @@
-function ab(e)
-    x1 = coordinates(e, 1)
-    x2 = coordinates(e, 2)
-    x3 = coordinates(e, 3)
-    x4 = coordinates(e, 4)
-    a = x2[1] - x1[1]       # Länge in xi-Richtung
-    b = x3[2] - x1[2]       # Länge in eta-Richtung
-    return a,b
-end
-
 function plate(m, p, model::String)
     nf = 0
     bcs = []
@@ -32,6 +22,11 @@ function plate(m, p, model::String)
         bcs = [true, true, true]
         m.data[:kefunc] = phnKe(p)
         m.data[:refunc] = phnRe(p.q)
+    elseif model == "BTP"
+        nf = 3
+        bcs = [true, true, true]
+        m.data[:kefunc] = plateKe(p)
+        m.data[:refunc] = plateRe(p.q)
     end
 
     K,r = assembleKr(m, nf)

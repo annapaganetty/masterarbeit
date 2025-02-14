@@ -1,6 +1,8 @@
 ## Assemblierung der globalen Steifigkeitsmatrix
 
-Das Abstrakte Variationsproblem @eq-abstraktes-variationsproblem kann auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Die Näherungslösungen von $w_h$, $\theta_{xh}$ und $\theta_{yh}$ werden durch 
+Zur Herleitung der Systemgleichung für das gesamte System, aufgeteilt in mehrere Plattenelemente, wird zunächst die Bilinearform für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten.
+
+Entsprechend der Vorgehensweise bei dem Einführungsbeispiel (@sec-einfuehrungsbeispiel) wird das Abstrakte Variationsproblem @eq-abstraktes-variationsproblem  zunächst auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Die Näherungslösungen von $w_h$, $\theta_{xh}$ und $\theta_{yh}$ werden durch 
 $$
 \begin{align}
 &w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i \\
@@ -35,23 +37,125 @@ $${#eq-abstraktes-diskretes-variationsproblem}
 
 :::
 
-Zur numerischen Lösung des abstrakten, diskreten Variationsproblems werden 
+Zur numerischen Lösung des abstrakten, diskreten Variationsproblems, wird dieses zunächst als Skalarprodukt von Momentenvektor
 
 $$
-\delta w_h = \sum_{i=1}^N \varphi_i \cdot \delta \hat{w}_i 
-\quad \quad \text{und} \quad \quad
-w_h = \sum_{j=1}^N \varphi_j \cdot \hat{w}_j 
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+\qquad \qquad \text{und Krümmungsvektor} \qquad \qquad
+\mathbf{\kappa} =
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+2\kappa_{xy}
+\end{array}\right]
 $$
 
-in @eq-abstraktes-diskretes-variationsproblem eingesetzt, wodurch sich das Gleichungssystem 
-$$
-\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad i,j = 1,...,N,
-$${#eq-weißnochnicht02}
+ausgedrückt. Es ergibt sich
+$$ 
+a(w, \delta w) 
+= \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} d \Omega 
+= \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega. 
+$$ {#eq-bilinearform-Skalarprodukt-m-kappa}
 
-ergibt. $N$ gibt die Anzahl der Gleichungen an. Das lineare Gleichungssystem wird weitgehend in der Literatur durch 
+Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $\theta_{xh}$ und $\theta_{yh}$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $u^e$ (@eq-knotenverschiebungsvekor), die Formulierung des Krümmungsvektors für das Element $i$  
+
 $$
-\mathbf{K} \boldsymbol{\hat{w}} = \boldsymbol{r}.
-$${#eq-gleichungssystem-balken}
+\begin{align}
+\mathbf{\kappa_i} = 
+% \left[ \begin{array}{center} 
+% \frac{\partial \sum N_i^e \theta_{xi}}{\partial x} \\
+% \frac{\partial \sum N_i^e \theta_{yi}}{\partial y} \\
+% \frac{\partial \sum N_i^e \theta_{xi}}{\partial y} 
+% + \frac{\partial \sum N_i^e \theta_{yi}}{\partial x} \\
+% \end{array}\right] 
+% = 
+\mathbf{B_b} \boldsymbol{\hat{w}^e}
+\end{align}
+$$ {#eq-kruemmungsvekor-mit-B-Matrix}
+
+mit der B-Matrix
+$$
+\mathbf{B_b} = 
+\begin{bmatrix} 
+0 & \frac{\partial \varphi_1}{\partial x} & 0 & 
+0 & \frac{\partial \varphi_2}{\partial x} & 0 &
+0 & \frac{\partial \varphi_3}{\partial x} & 0 & ... &
+0 & \frac{\partial \varphi_{n_n}}{\partial x} & 0 \\
+0 & 0 & \frac{\partial \varphi_1}{\partial y} &
+0 & 0 & \frac{\partial \varphi_2}{\partial y} &
+0 & 0 & \frac{\partial \varphi_3}{\partial y} & ... &
+0 & 0 & \frac{\partial \varphi_{n_n}}{\partial y}\\
+0 & \frac{\partial \varphi_1}{\partial x} & \frac{\partial \varphi_1}{\partial y} & 
+0 & \frac{\partial \varphi_2}{\partial x} & \frac{\partial \varphi_2}{\partial y} &
+0 & \frac{\partial \varphi_3}{\partial x} & \frac{\partial \varphi_3}{\partial y} & ... &
+0 & \frac{\partial \varphi_{n_n}}{\partial x} & \frac{\partial \varphi_{n_n}}{\partial y} \\
+\end{bmatrix}.
+$$
+
+wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt.
+Der Momentenvektor kann dementsprechend durch 
+
+$$
+\mathbf{m_i} = 
+\mathbf{D_b}
+\mathbf{\kappa_i}
+% \left[ \begin{array}{center} 
+% \kappa_{xx} \\
+% \kappa_{yy} \\
+% \kappa_{xy}
+% \end{array}\right]
+=
+\mathbf{D_b} \mathbf{B_b} \boldsymbol{\hat{w}^e}
+$$ {#eq-momentenvekor-mit-B-Matrix}
+
+mit
+$$
+\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+$$
+
+beschrieben werden, wobei D die isotrope Plattensteifigkeit darstellt (@eq-plattensteifigkeit).
+Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu 
+$$ 
+\begin{align}
+a(w^e, \delta w^e) 
+% &=  \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} \mathbf{m}^T \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} (\mathbf{D_b}\mathbf{\kappa})^T \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} \mathbf{\kappa}^T \mathbf{D_b} \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega}  (\mathbf{B_b} \underline{u^e})^T \mathbf{D_b}  (\mathbf{B_b} \underline{u^e})  \quad d \Omega \\
+&=  \int_{\Omega}  \mathbf{B_b}^T \mathbf{D_b} \mathbf{B_b} \boldsymbol{\hat{w}^e} \quad d \Omega \\
+\end{align}
+$$
+
+Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
+
+$$ 
+\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
+= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e d\Omega
+$$ {#eq-elementsteifigkeitsmatrix}
+
+und den Knotenverschiebungsvektor eines Elements 
+
+$$
+\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} &
+w_2 & \theta_{x2} & \theta_{y2} &
+w_3 & \theta_{x3} & \theta_{y3} &
+... &
+w_{n_n} & \theta_{xn_n} & \theta_{yn_n} 
+\end{array}\right]^T
+$${#eq-knotenverschiebungsvekor}
+
+ausgedrückt. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
+
+$$
+\mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r}.
+$${#eq-lin-gleichungssystem}
 
 mit
 $$
@@ -61,267 +165,80 @@ $$
 \end{align}
 $$
 
-beschrieben. $\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Gesamtsteifigkeitsmatrix setzt sich aus den Elementsteifigkeitsmatrizen zusammen. Je nach Wahl des Finite Elemente Ansatzes ergibt sich für die Kirchhoff Platte der Knotenverschiebungsvektor eines Elements zu 
+$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+
+|                     | Gesamtsystem         | Element|
+|:--------------------|:--------------------:|:-----------:|
+| Bilinearform (Variationsproblem) | $a(w, \delta w)$ | $a(w^e, \delta w^e)$ | 
+| Steifigkeitsmatrix  | $\mathbf{K}$         |$\mathbf{k_{ij}^e}$|
+| Bilinearform (Steifigkeitsmatrix) | $a(\varphi_j, \varphi_i)$ | $a(\varphi^e_j, \varphi^e_i)$|
+| Lastvektor          | $\mathbf{r}$         |$\mathbf{r^e}$|
+| Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
+
+: Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise. {#tbl-Variablen}
+
+### Anwendung an dem konformen Hermite Element
+
+Für ein klassisches Plattenelement mit einer Differentialgleichung  dritter Ordnung bildet das Bogner-Fox-Schmit (BFS) Element, beschrieben in @sec-FE-BFS, mit dessen Formfunktionen, dargestellt in @fig-Bogner-Fox-Schmitt-Formfunktionen, einen geeigneten Ansatz. Durch den zusätzlichen Freiheitsgrad $\theta_{xy}$ wird der Ansatz nur selten in der Praxis genutzt, da er nur für reine Rechteckelemente Verwendung findet. Das BFS-Element besitzt in jedem Knoten vier Freiheitsgrade (fig), wodurch sich der Knotenverschiebungsvektor zu 
+
 $$
-\boldsymbol{\hat{w}_e}= \left[ \begin{array}{center} 
-w_1 & \theta_{x1} & \theta_{y1} &
-w_2 & \theta_{x2} & \theta_{y2} &
-w_3 & \theta_{x3} & \theta_{y3} &
-... &
-w_{n_n} & \theta_{xn_n} & \theta_{yn_n} 
+\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} & \theta_{xy1} &
+w_2 & \theta_{x2} & \theta_{y2} & \theta_{xy2} &
+w_3 & \theta_{x3} & \theta_{y3} & \theta_{xy3} &
+w_4 & \theta_{x4} & \theta_{y4} & \theta_{xy4}
 \end{array}\right]^T
-$${#eq-knotenverschiebungsvekor}
+$${#eq-knotenverschiebungsvekor-BFS}
 
-mit $n_n$ Elementknoten. 
-Das Verschiebungsfeld eines Elementes $\Omega_e$ wird entsprechend der Linearkombination (@eq-linearkombination-platte) somit durch das Matrix-Vektor-Produkt
+ergibt. Abweichend 
+
+als geeignete Linearkombination der vier Monome 1, ξ, ξ2, ξ3 eine nodale Basis (siehe Abbildung 4.2).
+
+
+
+
+###
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 $$
-w = \boldsymbol{N_e} \boldsymbol{\hat{w}_e}
-$$
+\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad i,j = 1,...,N,
+$${#eq-weißnochnicht02}
+ -->
 
-mit der Matrix der Formfunktionen (in @eq-linearkombination-platte beschrieben durch $\varphi_i$)
-$$
-\boldsymbol{N_e} = 
-\begin{bmatrix} 
-N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & 0 & ... & N_{n_n}^e & 0 & 0 \\ 
-0 & N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & 0 & ... & 0 & N_{n_n}^e & 0 \\ 
-0 & 0 & N_1^e & 0 & 0 & N_2^e & 0 & 0 & N_3^e & ... & 0 & 0 & N_{n_n}^e \\ 
-\end{bmatrix},
-$$
-
-approximiert. 
-
-
-
-
-
-
-
-Durch die Formfunktionen und den Verschiebungsvekor ausgrückt, ergibt sich der Krümmungsvektor 
-$$
-\begin{align}
-\mathbf{\kappa} = 
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-\kappa_{xy}
-\end{array}\right]
-= 
-\left[ \begin{array}{center} 
-\frac{\partial u}{\partial x} \\
-\frac{\partial v}{\partial y} \\
-\frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \\
-\end{array}\right] 
-= 
-\left[ \begin{array}{center} 
-\frac{\partial \sum N_i^e \theta_{xi}}{\partial x} \\
-\frac{\partial \sum N_i^e \theta_{yi}}{\partial y} \\
-\frac{\partial \sum N_i^e \theta_{xi}}{\partial y} 
-+ \frac{\partial \sum N_i^e \theta_{yi}}{\partial x} \\
-\end{array}\right] 
-= 
-\mathbf{B_b} \underline{u^e} 
-\end{align}
-$$
-
-mit 
-$$
-\mathbf{B_b} = 
-\begin{bmatrix} 
-0 & \frac{\partial N_1}{\partial x} & 0 & 
-0 & \frac{\partial N_2}{\partial x} & 0 &
-0 & \frac{\partial N_3}{\partial x} & 0 &
-0 & \frac{\partial N_4}{\partial x} & 0 \\
-0 & 0 & \frac{\partial N_1}{\partial y} &
-0 & 0 & \frac{\partial N_2}{\partial y} &
-0 & 0 & \frac{\partial N_3}{\partial y} & 
-0 & 0 & \frac{\partial N_4}{\partial y}\\
-0 & \frac{\partial N_1}{\partial x} & \frac{\partial N_1}{\partial y} & 
-0 & \frac{\partial N_2}{\partial x} & \frac{\partial N_2}{\partial y} &
-0 & \frac{\partial N_3}{\partial x} & \frac{\partial N_3}{\partial y} &
-0 & \frac{\partial N_4}{\partial x} & \frac{\partial N_4}{\partial y} \\
-\end{bmatrix}
-$$
-
-und $\underline{u^e}$ wie in @eq-knotenverschiebungsvekor beschrieben. Der Momentenvektor kann davon abgeleitet durch 
-$$
-\mathbf{m} = 
-\left[ \begin{array}{center} 
-m_{xx} \\
-m_{yy} \\
-m_{xy}
-\end{array}\right]
-=
-\mathbf{D_b}
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-\kappa_{xy}
-\end{array}\right]
-=
-\mathbf{D_b} \mathbf{B_b} \underline{u^e} 
-$$
-
-mit
-$$
-\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
-$$
-
-beschrieben werden, wobei D die isotrope Plattensteifigkeit darstellt (@eq-plattensteifigkeit).
-
-
-Die Bilinearform 
-$$ 
-a(\varphi_i^e, \varphi_j^e) = k_{ij}^e
-$$
-
-Bilinearform entspricht dem Skalarprodukt zwischen dem Momentenvektor 
-
-$$
-\mathbf{m} = 
-\left[ \begin{array}{center} 
-m_{xx} \\
-m_{yy} \\
-m_{xy}
-\end{array}\right]
-\qquad \qquad \text{und dem Krümmungsvektor} \qquad \qquad
-\mathbf{\kappa} =
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-2\kappa_{xy}
-\end{array}\right]
-$$
-
-$$ 
-a(w, \delta w) 
-= \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} d \Omega 
-= \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega 
-$$ {#eq-black-scholes-04}
-
-Wie in Kapitel... beschrieben ergeben sich die Momente ausgedrückt durch die Verkrümmungen und dargestellt als Matrix-Vektorprodukt zu
-$$
-\mathbf{m} = 
-\left[ \begin{array}{center} 
-m_{xx} \\
-m_{yy} \\
-m_{xy}
-\end{array}\right]
-=
-\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-2\kappa_{xy}
-\end{array}\right]
-=
-\left[ \begin{array}{center} 
-D \kappa_{xx} + D\nu \kappa_{yy} \\
-D\nu \kappa_{xx} + D \kappa_{yy} \\
-D(1-\nu) \kappa_{xy}
-\end{array}\right].
-$$
-
-$$ 
-\begin{align}
-a(w, \delta w) 
-&= \int_{\Omega} ((D \kappa_{xx} + D\nu \kappa_{yy}) \delta\kappa_{xx} 
-                + 2 (D(1-\nu) \kappa_{xy}) \delta\kappa_{xy} 
-                + (D\nu \kappa_{xx} + D \kappa_{yy}) \delta\kappa_{yy} ) d \Omega \\
-&= \int_{\Omega} (D \kappa_{xx} \delta\kappa_{xx} + D\nu \kappa_{yy} \delta\kappa_{xx} 
-                + 2 D(1-\nu) \kappa_{xy} \delta\kappa_{xy} 
-                + (D\nu \kappa_{xx} \delta\kappa_{yy} + D \kappa_{yy} \delta\kappa_{yy}) ) d \Omega \\
-&= D \int_{\Omega} \kappa_{xx} \delta\kappa_{xx} + \nu \kappa_{yy} \delta\kappa_{xx} 
-                + 2 (1-\nu) \kappa_{xy} \delta\kappa_{xy} 
-                + \nu \kappa_{xx} \delta\kappa_{yy} + \kappa_{yy} \delta\kappa_{yy} d \Omega \\
-&= D \int_{\Omega} w_{,xx} \delta w_{,xx} + \nu w_{,yy} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} - 2 \nu w_{,xy} \delta w_{,xy} 
-                + \nu w_{,xx} \delta w_{,yy} + w_{,yy} \delta w_{,yy} d \Omega \\
-&= D \int_{\Omega} w_{,xx} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} 
-                + w_{,yy\} \delta w_{,yy} d \Omega 
-                + \int_{\Omega} \nu (w_{,yy} \delta w_{,xx}  - 2 w_{,xy} \delta w_{,xy} + w_{,xx} \delta w_{,yy}) d \Omega \\
-&= D (1+\nu) \int_{\Omega} w_{,xx} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} 
-                + w_{,yy} \delta w_{,yy} d \Omega 
-\end{align}
-$$ {#eq-black-scholes-04}
-
-$$ 
-k_{ij}^e
-= \int_{\Omega^e} \mathbf{\kappa}_i^T \mathbf{D_b} \mathbf{\kappa}_j d\Omega
-$$
-
-mit 
-$$
-\mathbf{D_b} = \begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
-$$
-
---------------------------
-
-
-$$
-\begin{align}
-a(w, \delta w) &= \int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega)
-\end{align}
-$$ {#eq-variationsproblem}
-
-mit 
-$$ 
-\begin{align}  
-\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \\
-\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \\
-\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y} \\ 
-\end{align}
-$$ {#eq-kruemmung}
-
-
-$$
-\begin{align}
-a(w, \delta w) &= D \cdot \int_{\Omega} (\kappa_{xx} \cdot \delta \kappa_{xx}
-                        + \kappa_{xy} \cdot \frac{1}{2} \delta \kappa_{xy}
-                        + \kappa_{yy} \cdot \delta \kappa_{yy}\quad d \Omega)\\
-            &= D \cdot \int_{\Omega} 
-            \left[ \begin{array}{center} 
-            \kappa_{xx} \\
-            \kappa_{yy} \\
-            \kappa_{xy}
-            \end{array}\right] \cdot
-            \left[ \begin{array}{center} 
-            \delta\kappa_{xx} \\
-            \delta\kappa_{yy} \\
-            \frac{1}{2} \delta\kappa_{xy}
-            \end{array}\right] \quad d \Omega\\
-\end{align}
-$$ {#eq-variationsproblem}
-
-
-$$ 
-\begin{align}
-a(w, \delta w) 
-&= \int_{\Omega} ((D \kappa_{xx} + D\nu \kappa_{yy}) \delta\kappa_{xx} 
-                + 2 (D(1-\nu) \kappa_{xy}) \delta\kappa_{xy} 
-                + (D\nu \kappa_{xx} + D \kappa_{yy}) \delta\kappa_{yy} ) d \Omega \\
-&= \int_{\Omega} (D \kappa_{xx} \delta\kappa_{xx} + D\nu \kappa_{yy} \delta\kappa_{xx} 
-                + 2 D(1-\nu) \kappa_{xy} \delta\kappa_{xy} 
-                + (D\nu \kappa_{xx} \delta\kappa_{yy} + D \kappa_{yy} \delta\kappa_{yy}) ) d \Omega \\
-&= D \int_{\Omega} \kappa_{xx} \delta\kappa_{xx} + \nu \kappa_{yy} \delta\kappa_{xx} 
-                + 2 (1-\nu) \kappa_{xy} \delta\kappa_{xy} 
-                + \nu \kappa_{xx} \delta\kappa_{yy} + \kappa_{yy} \delta\kappa_{yy} d \Omega \\
-&= D \int_{\Omega} w_{,xx} \delta w_{,xx} + \nu w_{,yy} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} - 2 \nu w_{,xy} \delta w_{,xy} 
-                + \nu w_{,xx} \delta w_{,yy} + w_{,yy} \delta w_{,yy} d \Omega \\
-&= D \int_{\Omega} w_{,xx} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} 
-                + w_{,yy} \delta w_{,yy} d \Omega 
-                + \int_{\Omega} \nu (w_{,yy} \delta w_{,xx}  - 2 w_{,xy} \delta w_{,xy} + w_{,xx} \delta w_{,yy}) d \Omega \\
-&= D (1+\nu) \int_{\Omega} w_{,xx} \delta w_{,xx} 
-                + 2 w_{,xy} \delta w_{,xy} 
-                + w_{,yy} \delta w_{,yy} d \Omega 
-\end{align}
-$$ {#eq-black-scholes-04}
-
-
-
+<!-- 
 ## Bilinearform und Elementsteifigkeitsmatrix in der Literatur
 
 $$
@@ -401,3 +318,33 @@ $$
 \end{bmatrix}
 $$
 
+---------------------
+
+Unterschied zwischen Literatur und meinem Ergebnis der Bilinearform 
+
+$$ 
+\begin{align}
+a(w, \delta w) 
+&= \int_{\Omega} ((D \kappa_{xx} + D\nu \kappa_{yy}) \delta\kappa_{xx} 
+                + 2 (D(1-\nu) \kappa_{xy}) \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} + D \kappa_{yy}) \delta\kappa_{yy} ) d \Omega \\
+&= \int_{\Omega} (D \kappa_{xx} \delta\kappa_{xx} + D\nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 D(1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + (D\nu \kappa_{xx} \delta\kappa_{yy} + D \kappa_{yy} \delta\kappa_{yy}) ) d \Omega \\
+&= D \int_{\Omega} \kappa_{xx} \delta\kappa_{xx} + \nu \kappa_{yy} \delta\kappa_{xx} 
+                + 2 (1-\nu) \kappa_{xy} \delta\kappa_{xy} 
+                + \nu \kappa_{xx} \delta\kappa_{yy} + \kappa_{yy} \delta\kappa_{yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} + \nu w_{,yy} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} - 2 \nu w_{,xy} \delta w_{,xy} 
+                + \nu w_{,xx} \delta w_{,yy} + w_{,yy} \delta w_{,yy} d \Omega \\
+&= D \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy\} \delta w_{,yy} d \Omega 
+                + \int_{\Omega} \nu (w_{,yy} \delta w_{,xx}  - 2 w_{,xy} \delta w_{,xy} + w_{,xx} \delta w_{,yy}) d \Omega \\
+&= D (1+\nu) \int_{\Omega} w_{,xx} \delta w_{,xx} 
+                + 2 w_{,xy} \delta w_{,xy} 
+                + w_{,yy} \delta w_{,yy} d \Omega 
+\end{align}
+$$  
+
+-->

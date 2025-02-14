@@ -119,7 +119,10 @@
 
   set table(stroke:none)
 
-  // show figure.where(kind: table): set figure.caption(position: top)
+  show figure.where(kind: table): set figure.caption(position: bottom)
+
+  show figure.where(kind: image): set figure.caption(position: top)
+
   // show figure: it => {
   //   set align(center)
   //   v(15pt, weak: true)
@@ -127,29 +130,29 @@
   //   it.caption
   //   v(15pt, weak: true)
   // } 
-  show figure: it => {
-    show: pad.with(x: 23pt)
-    set align(center)
+  // show figure: it => {
+  //   show: pad.with(x: 23pt)
+  //   set align(center)
 
-    v(12.5pt, weak: true)
+  //   v(12.5pt, weak: true)
 
-    // Display the figure's body.
-    it.body
+  //   // Display the figure's body.
+  //   it.body
 
-    // Display the figure's caption.
-    if it.has("caption") {
-      // Gap defaults to 17pt.
-      v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
-      smallcaps[Figure]
-      if it.numbering != none {
-        [ #counter(figure).display(it.numbering)]
-      }
-      [. ]
-      it.caption
-    }
+  //   // Display the figure's caption.
+  //   if it.has("caption") {
+  //     // Gap defaults to 17pt.
+  //     v(if it.has("gap") { it.gap } else { 17pt }, weak: true)
+  //     smallcaps[Figure]
+  //     if it.numbering != none {
+  //       [ #counter(figure).display(it.numbering)]
+  //     }
+  //     [. ]
+  //     it.caption
+  //   }
 
-    v(15pt, weak: true)
-  }
+  //   v(15pt, weak: true)
+  // }
   // show figure: it => {
   //   set align(center)
   //   if figure.where(kind:table) != true {
