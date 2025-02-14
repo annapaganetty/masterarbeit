@@ -1,3 +1,4 @@
+# Erstellt geometrische Größen für ein Element, die für die BTP Formulierung wichtig sind
 function geoH(e)
     x = []
     y = []
@@ -36,6 +37,7 @@ function geoH(e)
     return l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈
 end
 
+# gibt Koordinaten eines Elementes zurück
 function coordMatrix(e)
     x = []
     y = []
@@ -47,6 +49,7 @@ function coordMatrix(e)
     return xy
 end
 
+# gibt Länge und Breite eines Elementes zurück 
 function _fsize(face)
 	x = coordinates(face)
 	p = x[:, 1]
@@ -55,6 +58,8 @@ function _fsize(face)
 	return p, l1, l2
 end
 
+# TODO delete function
+# macht das gleiche wir _fsize(face)
 function ab(e)
     x1 = coordinates(e, 1)
     x2 = coordinates(e, 2)

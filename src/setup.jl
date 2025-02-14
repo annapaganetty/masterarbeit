@@ -50,7 +50,7 @@ include("mathematics/lagrangefunctions.jl")
 include("mathematics/serendipityfunctions.jl")
 
 include("mesh/make-mesh.jl")
-include("mesh/geometrie.jl")
+include("mesh/geo-element.jl")
 
 include("plots/plot.jl")
 include("plots/print-stiffness-matrix.jl")
