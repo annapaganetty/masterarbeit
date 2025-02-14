@@ -13,11 +13,11 @@ function plateKe(p)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
 
         Ke = zeros(12,12)
-        xy = coordElement(e)
-        jF = ∇N * xy
+        jF = jacobianMatrix(e)
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
-            J = [jF[1,1](ξ) jF[1,2](ξ); jF[2,1](ξ) jF[2,2](ξ)]
+            # Jacobi matrix ausgewertet an der Stelle ξ
+            J = [jF[1,1](ξ) jF[1,2](ξ); jF[2,1](ξ) jF[2,2](ξ)] 
             Jinv = inv(J)
             # B-Matrix gemäß Gl. 13 aus Batoz und Tahar Paper
             B =    [hcat([[sum([Jinv[1,1] * ∂x(btpHx(e)[i])(ξ) + Jinv[1,2] * ∂y(btpHx(e)[i])(ξ)])] for i = 1:12]...);
