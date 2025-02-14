@@ -122,20 +122,9 @@ plotrBTP(m1, :qx, "qx", (-3, 3),nodal = false, a3d=true)
 
 
 ```{julia}
-bc = [true,true,true]
-dofs = [1,2,3,4,6,7,8,9]
-
-cnt = 1
-nff = sum(bc)        # summe (true = 1; false = 0)
-nf = length(bc)      # länge vektor 
-idxs = zeros(Int, nff * lengtdofsh()) # Anzahl der Freiheitsgrade für die Randknoten
-
-for i = dofs, j = 1:nf
-    if bc[j]
-        idxs[cnt] = (i - 1) * nf + j
-        println(idxs[cnt])
-        cnt = cnt + 1
-    end
-end
-idxs
+e = element(m1,1)
+jacobianMatrix(e)
+generateJacobi()
 ```
+
+

@@ -13,7 +13,7 @@ function plateKe(p)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
 
         Ke = zeros(12,12)
-        xy = coordMatrix(e)
+        xy = coordElement(e)
         jF = ∇N * xy
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)

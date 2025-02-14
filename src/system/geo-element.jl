@@ -38,7 +38,7 @@ function geoH(e)
 end
 
 # gibt Koordinaten eines Elementes zurück
-function coordMatrix(e)
+function coordElement(e)
     x = []
     y = []
     for i = 1:4

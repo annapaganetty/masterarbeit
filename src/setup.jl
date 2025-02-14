@@ -35,35 +35,40 @@ update_theme!(faceplotmesh=0.5)
 update_theme!(edgelinewidth=0.5)
 update_theme!(colormap=:aquamarine)
 
-include("generated/plate-hartmann-conforming.jl")
-include("generated/plate-hartmann-nonconforming.jl")
-include("generated/plate-kirchhoff-conforming.jl")
-include("generated/plate-kirchhoff-nonconforming.jl")
 include("generated/BTP-gen-H-functions.jl")
 include("generated/BTP-gen-H-functions-copy.jl")
 
-include("mathematics/BTP-H-functions.jl")
-include("mathematics/hermitefunctions-1D.jl")
-include("mathematics/hermitefunctions.jl")
-include("mathematics/jacobi-matrix.jl")
-include("mathematics/lagrangefunctions.jl")
-include("mathematics/serendipityfunctions.jl")
+# Formfunktionen unterschiedlicher Elementansätze
+include("shapefunctions/BTP-H-functions.jl") ##### 
+include("shapefunctions/hermitefunctions-1D.jl")
+include("shapefunctions/hermitefunctions.jl")
+include("shapefunctions/jacobi-matrix.jl") #######
+include("shapefunctions/lagrangefunctions.jl")
+include("shapefunctions/serendipityfunctions.jl")
 
-include("mesh/make-mesh.jl")
-include("mesh/geo-element.jl")
+# Berechnungen Gesamtsteifigkeitsmatrix, Schnittgrößen 
+include("calculation/internal-forces.jl")
+include("calculation/assembleKr.jl")
 
+# System Geometrie, Netz, Randbedinungen (Einspannungen etc.)
+include("system/boundary-conditions.jl")
+include("system/generate-plate.jl")
+include("system/make-mesh.jl")
+include("system/geo-element.jl")
+
+# Elementsteifigkeitmatrizen unterschiedlicher Elementansätze
+include("stiffness_matrix/ke-batoz-tahar.jl")
+include("stiffness_matrix/weak_form.jl") ####
+include("stiffness_matrix/ke-hartmann-conforming.jl")
+include("stiffness_matrix/ke-hartmann-nonconforming.jl")
+include("stiffness_matrix/ke-kirchhoff-conforming.jl")
+include("stiffness_matrix/ke-kirchhoff-nonconforming.jl")
+
+# Ausgabe der Ergebnisse und Zwischenergebnisse
 include("plots/plot.jl")
 include("plots/print-stiffness-matrix.jl")
 include("plots/plot-BTP.jl")
 
-include("results/internal-forces.jl")
-include("results/assembleKr.jl")
-
-include("static-system/boundary-conditions.jl")
-include("static-system/generate-plate.jl")
-
-include("stiffness_matrix/ke-BTP.jl")
-include("stiffness_matrix/weak_form.jl")
 
 p1 = @var Params()
 p1.lx = 8		# [m]
