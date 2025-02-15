@@ -118,13 +118,3 @@ plotrBTP(m1, :mxy, "Biegemoment mxy", (-7, 7),nodal = false, a3d=true)
 ```{julia}
 plotrBTP(m1, :qx, "qx", (-3, 3),nodal = false, a3d=true)
 ```
-
-
-
-```{julia}
-e = element(m1,1)
-jacobianMatrix(e)
-generateJacobi()
-```
-
-

@@ -37,6 +37,13 @@ function geoH(e)
     return l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈
 end
 
+# Jacobi-Matrix für 2D Elemente
+function jacobianMatrix(e)
+    xy = coordElement(e)
+    J = ∇N * xy
+    return J
+end
+
 # gibt Koordinaten eines Elementes zurück
 function coordElement(e)
     x = []

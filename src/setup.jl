@@ -35,14 +35,14 @@ update_theme!(faceplotmesh=0.5)
 update_theme!(edgelinewidth=0.5)
 update_theme!(colormap=:aquamarine)
 
-include("generated/BTP-gen-H-functions.jl")
-include("generated/BTP-gen-H-functions-copy.jl")
+# H-Funktionen aus dem Batoz Tahar Paper
+include("h-functions/BTP-gen-H-functions.jl")
+include("h-functions/BTP-H-functions.jl")
 
 # Formfunktionen unterschiedlicher Elementansätze
-include("shapefunctions/BTP-H-functions.jl") ##### 
+
 include("shapefunctions/hermitefunctions-1D.jl")
 include("shapefunctions/hermitefunctions.jl")
-include("shapefunctions/jacobi-matrix.jl") #######
 include("shapefunctions/lagrangefunctions.jl")
 include("shapefunctions/serendipityfunctions.jl")
 
@@ -58,7 +58,7 @@ include("system/geo-element.jl")
 
 # Elementsteifigkeitmatrizen unterschiedlicher Elementansätze
 include("stiffness_matrix/ke-batoz-tahar.jl")
-include("stiffness_matrix/weak_form.jl") ####
+include("stiffness_matrix/weak_form-kirchhoff.jl") ####
 include("stiffness_matrix/ke-hartmann-conforming.jl")
 include("stiffness_matrix/ke-hartmann-nonconforming.jl")
 include("stiffness_matrix/ke-kirchhoff-conforming.jl")
