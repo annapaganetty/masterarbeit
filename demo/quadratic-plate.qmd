@@ -16,7 +16,7 @@ update_theme!(
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-xElem = 4 # 10
+xElem = 10
 m1 = makequadratcicMesh(p1, xElem)
 plotmesh(m1; title="quadratische Platte")
 ```
