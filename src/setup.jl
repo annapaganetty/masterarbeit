@@ -1,13 +1,11 @@
+import Makie
 import GLMakie
+import WGLMakie
 import CairoMakie
-import CairoMakie: Figure,Axis, Axis3, scatter!, lines
-
-import DomainSets
-
-# import Pkg
-# Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
-
-using CairoMakie
+import CairoMakie: 
+    activate!, set_theme!, theme_minimal, update_theme!,
+    Figure,Axis, Axis3, scatter!, lines, DataAspect, 
+    hidedecorations!, hidespines!, Colorbar
 
 using MMJMesh
 using MMJMesh.Plots
@@ -17,19 +15,17 @@ using MMJMesh.Utilities
 using MMJMesh.Topologies
 using MMJMesh.Mathematics
 
-using DomainSets: ×, (..)
+using MMJMesh.Utilities: makemeshonrectangle
 
-using Makie
 using Revise
 using Latexify
-using GLMakie
-using WGLMakie
+using Symbolics
 using VarStructs
+using LaTeXStrings
 using SparseArrays
 using LinearAlgebra
-using Symbolics
 
-# GLMakie.activate!()
+activate!()
 set_theme!(theme_minimal())
 update_theme!(faceplotmesh=0.5)
 update_theme!(edgelinewidth=0.5)
@@ -85,3 +81,7 @@ p2.q = 5e3
 p2.ν = 0.2
 p2.h = 0.2
 p2.E = 31000e6;
+
+
+Base.setindex!(d::MMJMesh.Meshes.Data, x, s::Symbol) = setdata!(d.mesh, s, x)
+Base.getindex(d::MMJMesh.Meshes.Data, s::Symbol) = data(d.mesh, s)

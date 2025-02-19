@@ -4,3 +4,4 @@
 *.ipynb
 *.tex
 /.luarc.json
+Manifest.toml
