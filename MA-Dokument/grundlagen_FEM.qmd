@@ -3,3 +3,9 @@
 Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung. 
 
 Nach einer kurzen Einführung in die FEM im Bauwesen, beschäftigt sich @sec-finite-elemente mit den unterschiedlichen Finite Elemente Ansätzen und der Kontinuität der dafür genutzten Formfunktionen. Nach Erläuterung der mathematischen Werkzeuge in @sec-numerische-integration, auf die im Zuge der FEM zurückgegriffen wird, wird das Vorgehen anhand eines Einführungsbeispiels in @sec-einfuehrungsbeispiel demonstriert.
+
+{{< include einfuehrung_FEM.qmd >}}
+{{< include finite-elemente.qmd >}}
+{{< include numerische-integration.qmd >}}
+{{< include einfuehrungsbeispiel.qmd >}} 
+

@@ -20,7 +20,7 @@ function hermiteelement(V;conforming=true)
         end
         Imatrix = Matrix{Int}(I, m, m)
         M = [n(p) for p in P, n in N]
-        Minv = round.(M \ Imatrix, digits=10)
+        Minv = (M \ Imatrix) #round.(...., digits=10) 
         H4 = (Minv*P)
     return H4
 end

@@ -118,3 +118,17 @@ plotrBTP(m1, :mxy, "Biegemoment mxy", (-7, 7),nodal = false, a3d=true)
 ```{julia}
 plotrBTP(m1, :qx, "qx", (-3, 3),nodal = false, a3d=true)
 ```
+
+
+-----------------------------------
+
+```{julia}
+V = [0 a a 0; 0 0 b b]
+H4 = hermiteelement(V;conforming=true)
+Ke = weakform(H4,"standard")
+```
+
+
+```{julia}
+pKe(Ke)
+```

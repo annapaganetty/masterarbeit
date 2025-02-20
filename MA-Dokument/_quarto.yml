@@ -1,25 +1,34 @@
 project:
+  # type: book
   output-dir: _output
+  
+  #../_build/julia/skript
+
+# project:
+#   output-dir: _output
+
+lang: de
 
 book:
-  title: "R for Data Science (2e)"
-  reader-mode: true
-
+  title: "Finite Elemente für Plattentragwerke"
+  subtitle: "Theoretische Grundlagen und Programmierung in Julia"
+  author: "Anna Paganetty"
   chapters:
+      - index.qmd
       - eidesstattliche-erklaerung.qmd
-      # - danksagung.qmd
+      - danksagung.qmd
 
       - part: einleitung.qmd
-      #   chapters:
-      #     - motivation.qmd
-      #     - problemstellung.qmd
-      #     - zielsetzung-gliederung.qmd
+        chapters:
+          - motivation.qmd
+          - problemstellung.qmd
+          - zielsetzung-gliederung.qmd
 
       - part: grundlagen_FEM.qmd
         chapters:
           - einfuehrung_FEM.qmd
           - finite-elemente.qmd
-          - numerische Integration    
+          - numerische-integration.qmd  
           - einfuehrungsbeispiel.qmd
 
       - part: grundlagen_mech_math.qmd
@@ -46,6 +55,11 @@ book:
       # - part: Zusammenfassung-und-Ausblick.qmd
 
       # - part: Literatur.qmd
+  downloads: 
+    - pdf
 
+# format:
+#   pdf:
+#     documentclass: scrreprt
 format:
   ams-typst: default
