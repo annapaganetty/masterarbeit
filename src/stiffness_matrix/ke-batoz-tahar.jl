@@ -26,7 +26,7 @@ function plateKe(p)
             J = jF(ξ)
             ∇ₓN = (inv(J') * ∇ξN(ξ))
             ∇yN = (inv(J') * ∇ηN(ξ)) 
-            B = [∇ₓN[1,:]', ∇yN[1,:]', ∇ₓN[1,:]' + ∇yN[1,:]']
+            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
             Ke += w * B' * D * B * det(J)
         end
         return Ke
