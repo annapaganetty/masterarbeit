@@ -4,8 +4,8 @@ import CairoMakie: Figure,Axis, Axis3, scatter!, lines
 
 import DomainSets
 
-# import Pkg
-# Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
+import Pkg
+Pkg.add(url="https://github.com/matthiasbaitsch/mmjmesh.git")
 
 using CairoMakie
 

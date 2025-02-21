@@ -6,17 +6,19 @@
 #let middle-size = 16pt
 #let large-size = 25pt
 
+#set text(lang: "de")
 // This function gets your whole document as its `body` and formats
 // it as an article in the style of the American Mathematical Society.
 #let ams-article(
-  title: "Paper title",
+  title: "",
   paper-size: "a4",
   body,
 ) = {
 
   // Set the body font. AMS uses the LaTeX font.
   // set text(size: normal-size,font: "Arial")
-  set text(weight: "light", size: 11pt,font: "New Computer Modern",lang: "de")
+  
+  set text(weight: "light", size: 11pt,font: "New Computer Modern",lang: "ger")
   // Configure the page.
   set page(
     paper: paper-size,
@@ -28,8 +30,6 @@
         right: 2cm)
     ,
 
-    // The page header should show the page number and list of
-    // authors, except on the first page.
     header-ascent: 10pt,
     header: locate(loc => {
       let i = counter(page).at(loc).first()
@@ -55,32 +55,39 @@
     //   counter(heading).display(it.numbering)
     //   h(7pt, weak: true)
     // }
-    if it.level == 1 {
-      set text(size: 22pt, weight: 600)
-      [
-        #v(15pt, weak: true)
-        Kapitel
-        #counter(heading).display(it.numbering)
-        #v(50pt, weak: true)]
-      set text(size: large-size, weight: 600)
-        [#it.body
-        #v(50pt, weak: true)]
-    } else if it.level == 2 {
-      set text(size: middle-size, weight: 600)
-      [
-        #v(40pt, weak: true)
-        #counter(heading).display(it.numbering)
-        #it.body
-        #v(middle-size, weak: true)
-      ]
-    } else {
-      set text(size: normal-size, weight: 600)
-      [
-        #v(15pt, weak: true)
-        #counter(heading).display(it.numbering)
-        #it.body
-        #v(middle-size, weak: true)
-      ]
+    if it.numbering == none {
+        set text(size: 22pt, weight: 600)
+        [   #it.body
+            #v(700pt, weak: true)]
+    }
+    else {
+      if it.level == 1 {
+        set text(size: 22pt, weight: 600)
+        [
+          #v(15pt, weak: true)
+          Kapitel
+          #counter(heading).display(it.numbering)
+          #v(50pt, weak: true)]
+        set text(size: large-size, weight: 600)
+          [#it.body
+          #v(50pt, weak: true)]
+      } else if it.level == 2 {
+        set text(size: middle-size, weight: 600)
+        [
+          #v(40pt, weak: true)
+          #counter(heading).display(it.numbering)
+          #it.body
+          #v(middle-size, weak: true)
+        ]
+      } else {
+        set text(size: normal-size, weight: 600)
+        [
+          #v(15pt, weak: true)
+          #counter(heading).display(it.numbering)
+          #it.body
+          #v(middle-size, weak: true)
+        ]
+      }
     }
   }
 
