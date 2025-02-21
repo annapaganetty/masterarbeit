@@ -10,6 +10,5 @@ Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 VarStructs = "f7972512-fcde-4f7f-ad6d-ee9cbeb5126f"
 WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 
-[sources]
-MMJMesh = {url = "https://github.com/matthiasbaitsch/mmjmesh.git"}
-
+[sources.MMJMesh]
+url = "https://github.com/matthiasbaitsch/mmjmesh.git"

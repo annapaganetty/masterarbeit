@@ -11,15 +11,38 @@ update_theme!(
     featureedgelinewidth=2.5)
 ```
 
+
 # Beispiel quadratische Platte
 
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-xElem = 10
+xElem = 2
 m1 = makequadratcicMesh(p1, xElem)
 plotmesh(m1; title="quadratische Platte")
 ```
+
+
+```{julia}
+using MMJMesh.Geometries
+e = element(m1,1)
+Ke = zeros(12,12)
+jF = jacobian(parametrization(geometry(e)))
+        
+Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
+Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
+∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx))
+∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+
+for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
+    # Jacobi matrix ausgewertet an der Stelle ξ
+    J = jF(ξ)
+    ∇ₓN = (inv(J) * ∇ξN(ξ)) # 2x2 mal 2x12
+    ∇yN = (inv(J) * ∇ηN(ξ)) 
+    B = [∇ₓN[1,:]', ∇yN[1,:]', ∇ₓN[1,:]'+ ∇yN[1,:]']
+    Ke = w * B' * B * det(J)
+end
+``` 
 
 ## Verformung 
 
