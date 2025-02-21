@@ -6,8 +6,6 @@ const gaussPoints = 1 / sqrt(3) * [[-1, -1], [1, -1], [1, 1], [-1, 1]]
 # Shape functions and gradients
 V = [ -1 1 1 -1; -1 -1 1 1]
 const N = MappingFromComponents(lagrangeelement(V)...)
-# const ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(N))
-# const ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(N))
 
 # Element matrix
 function plateKe(p)

@@ -22,7 +22,8 @@ function postprocessor(params, wHat)
     #------------------------------------------------------------------------
         
         # this works 
-        we = sum(wHat[idxsWe] .* Ni) # Ni = functions of Lagrange Element
+        V = [ -1 1 1 -1; -1 -1 1 1]
+        we = sum(wHat[idxsWe] .* lagrangeelement(V)) # N = functions of Lagrange Element
 
         # first Derivatives of w = beta 
         βx = -sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
