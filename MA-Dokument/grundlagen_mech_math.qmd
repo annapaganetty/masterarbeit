@@ -4,3 +4,7 @@ Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt d
 
 Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente. Dessen formale Definition erfolgt in @sec-def-finites-element. Weiter werden in @sec-funktionale die für die Lösung verwendeten Funktionale kurz erläutert.
 
+
+{{< include einfuehrung_platten.qmd  >}}
+{{< include kirchhoffsche-plattentheorie.qmd  >}}
+{{< include funktionale.qmd   >}}

@@ -1,0 +1,3 @@
+# FEM für Plattentragwerke
+
+{{< include schwache-form-copy.qmd >}}

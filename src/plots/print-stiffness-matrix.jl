@@ -81,18 +81,21 @@ function pKe(Ke)
             if KeNew[i,j] == 1
             else 
                 KeNew[i,j] = 1 
-                print("Ke[",i,",",j,"]")
+                print("k_{",i,",",j,"}")
                 for m = 1:l
                     for n = 1:l
                         if m==i && j==n 
                         elseif isequal(expand(Ke[i,j]),expand(Ke[m,n])) == true 
                         KeNew[m,n] = 1.0
-                        print(" = ", "Ke[",m,",",n,"]")
+                        print(" = ", "k_{",m,",",n,"}")
+                        elseif isequal(expand(Ke[i,j]),-expand(Ke[m,n])) == true 
+                        KeNew[m,n] = 1.0
+                        print(" = ", "- k_{",m,",",n,"}")
                         else
                         end
                     end
                 end
-            println(" = ", Ke[i,j])
+            println(" = ", latexify(Ke[i,j], env=:raw))
             end
         end
     end

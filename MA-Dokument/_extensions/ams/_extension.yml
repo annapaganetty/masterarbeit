@@ -11,5 +11,7 @@ contributes:
         - typst-show.typ
       filters:
         - ams.lua
+      section-numbering: 1.1.1
         # - latex-environment.lua
+lang: "de"
 

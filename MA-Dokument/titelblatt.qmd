@@ -8,7 +8,7 @@
 ))
 #align(center+horizon, text(25pt)[
   Finite Elemente für Plattentragwerke:\
-  Theoretische Grundlagen und Programmierung in Julia
+  Theoretische Grundlagen und \ Programmierung in Julia
 ])\
 #align(center, text(12pt)[
   Masterthesis im Studiengang Bauingenieurwesen
@@ -24,6 +24,6 @@
   dy: 25%,
   align(center+bottom)[
   *1.Prüfer*: Prof. Dr.-Ing. Matthias Baitsch\
-  *2.Prüfer*:
+  *2.Prüfer*: Prof. Dr.-Ing. Abdullah Alsahly
   ])
 ```

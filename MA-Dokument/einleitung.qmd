@@ -1,21 +1,9 @@
-# Einleitung {#sec-einleitung}
+---
+title : " Einleitung "
+---
 
-bla 
+# Einleitung
 
-## test1
-
-bla 
-
-### test2
-
-bla 
-
-## test3
-
-bla 
-
-### test4
-
-bla 
-
-### test5
+{{< include motivation.qmd >}}
+{{< include problemstellung.qmd >}}
+{{< include zielsetzung-gliederung.qmd >}}
