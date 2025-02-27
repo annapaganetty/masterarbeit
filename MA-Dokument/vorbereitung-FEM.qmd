@@ -1,4 +1,4 @@
-## Vorbereitung 
+## Vorbereitung {#sec-vorbereitung}
 
 ### Herleitung der schwachen Form {#sec-schwache-form}
 
@@ -8,56 +8,63 @@ $$
 D \cdot \Delta \Delta w = q 
 $$ {#eq-diffgl-laplace}
 
+<!-- 
+$$
+\Delta w = \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}
+$$ {#eq-diffgl-laplace} 
+-->
+
 ergibt sich nach Multiplikation mit der Testfunktion $\delta w : \Omega \to \mathbb{R}$
 
 $$
-D \cdot  \frac{\partial^4 w}{\partial x^4} \cdot \delta w 
-+ D \cdot  2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w 
-+D \cdot \frac{\partial^4 w}{\partial y^4}\cdot \delta w  
+D \cdot  (w_{,xxxx} \cdot \delta w 
++ 2 \cdot w_{,xxyy} \cdot \delta w 
++ \cdot w_{,yyyy}\cdot \delta w)
 =  q \cdot \delta w .
 $$ {#eq-diffgl-testfunk}
 
 Nach der Integration beider Seiten über die Fläche $\Omega$ und durch Anwendung der Summenregel für Integrale folgt
 $$
-D \cdot [ \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} \frac{\partial^4 w}{\partial y^4}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
+D \cdot [ \underbrace{\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} w_{,yyyy}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-diffgl-testfunk-integral}
 
-Nach zweifacher partieller Integration der drei Summanden auf der linken Seite der Gleichung und der Annahme, dass alle Randtherme $=0$, ergeben sich die Teilergebnisse für
+Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Rantherme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
+
 $$
 \begin{flalign}
 &\text{den 1. Summanden} \\
 \\
-&\int_{\Omega} \frac{\partial^4 w}{\partial x^4} \cdot \delta w \quad d \Omega
+&\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega
 &&=
-- \int_{\Omega} \frac{\partial^2 \delta w}{\partial x^2} \frac{\partial^2 w}{\partial x^2} \quad d \Omega \\
+- \int_{\Omega} \delta w_{,xx} \cdot w_{,xx} \quad d \Omega \\
 \\
 \\
 &\text{den 2. Summanden} \\
 \\
-&\int_{\Omega} 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} \cdot \delta w \quad d \Omega
-&&= \int_{\Omega} 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} \quad d \Omega \\
+&\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega
+&&= \int_{\Omega} 2 \cdot \delta w_{,xy} \cdot w_{,xy} \quad d \Omega \\
 \\
 \\
 &\text{und den 3. Summanden} \\
 \\
-&\int_{\Omega} \frac{\partial^4 w}{\partial y^4} \cdot \delta w \quad d \Omega
+&\int_{\Omega} w_{,yyyy} \cdot \delta w \quad d \Omega
 &&=
-- \int_{\Omega} \frac{\partial^2 \delta w}{\partial y^2} \frac{\partial^2 w}{\partial y^2} \quad d \Omega
+- \int_{\Omega} \delta w_{,yy} \cdot w_{,yy} \quad d \Omega
 \end{flalign}
 $$
 
 
-Durch das Zusammenführen der Teilergebnisse ergibt sich das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
+Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 *Variations Problem (V)* \
 
-Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$ welche die Differentialgleichung
+Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass 
 \
 \
 $$
 \begin{align}
-\int_{\Omega} D \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega) \\ 
+\int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
 = \int_{\Omega} q \cdot \delta w \quad d \Omega
 \end{align}
 $$ {#eq-variationsproblem}
@@ -72,7 +79,7 @@ $$
 \end{align}
 $$ {#eq-variationsproblem-2}
  -->
-für jede (fast) beliebige Testfunktion $\delta w$.
+für jede (fast) beliebige Testfunktion $\delta w:\Omega \to \mathbb{R}$.
 
 :::
 
@@ -85,53 +92,55 @@ Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle F
 \
 Gesucht ist die Funktion $w \in V$, sodass 
 $$
-a(w, \delta w)= b(\delta w)  \quad \forall \quad \delta w \in V
+a(w, \delta w)= b(\delta w)
 $${#eq-abstraktes-variationsproblem}
+
+für alle Testfunktionen $\delta w \in V$
 
 :::
 
-Die Bilinearform für die Kirchhoffplatte lässt sich in kompakter Schreibweise durch
+Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt. Im Fall der Kirchhoffplatte ist die Bilinearform 
+
 $$ 
-a(\mathbf{w}, \mathbf{\delta w}) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
+\begin{align}
+&a(\mathbf{w}, \mathbf{\delta w}) &&= \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
+&\text{mit} \qquad
+D &&= \frac{Eh^3}{12(1+\nu^2)} \qquad \text{(isotrope Plattensteifigkeit)}
+\end{align}
 $$ {#eq-bilinearform}
 
-mit
-$$
-D = \frac{Eh^3}{12(1+\nu^2)}
-$$
+und die Linearform
 
-ausdrücken. Die Linearform ergibt sich zu
 $$ 
 b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-linearform}
 
 Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
 
-----------------------------
-Zur Herleitung der Systemgleichung für das gesamte System, aufgeteilt in mehrere Plattenelemente, wird zunächst die Bilinearform für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten.
+### Approximation von Funktionen {#sec-approximation-funktionen}
 
-Entsprechend der Vorgehensweise bei dem Einführungsbeispiel (@sec-einfuehrungsbeispiel) wird das Abstrakte Variationsproblem @eq-abstraktes-variationsproblem  zunächst auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$, $\theta_x$ und $\theta_y$ beschrieben. Die Näherungslösungen von $w_h$, $\theta_{xh}$ und $\theta_{yh}$ werden durch 
+Die FEM-Lösung basiert im wesentlichen auf zwei Ideen:
+
+1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen
+2. Funktionen stückweise definieren auf sogenannten Elementen
+
+Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
 $$
 \begin{align}
-&w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i \\
-\\
-&\theta_{xh}(x,y) = \frac{\partial w_h(x,y)}{\partial y}
-= \frac{\partial \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i }{\partial x} \\
-\\
-&\theta_{yh}(x,y) =  \frac{\partial w_h(x,y)}{\partial x}
-= \frac{\partial \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i}{\partial y}
+&w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i 
 \end{align}
 $${#eq-linearkombination-platte}
 
-mit 
+approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $\Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $\varphi_1, \varphi_2,...,\varphi_N$ ist der endlich dimensionale Vektorraum 
+
 $$
 \begin{align}
 &V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
-&V_h \subset V
+% &V_h \subset V
 \end{align}
 $${#eq-subspace}
 
-ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $\varphi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -145,121 +154,46 @@ $${#eq-abstraktes-diskretes-variationsproblem}
 
 :::
 
-Zur numerischen Lösung des abstrakten, diskreten Variationsproblems, wird dieses zunächst als Skalarprodukt von Momentenvektor
+Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $\Omega$, in diesem Fall die Platte, wird in die Elemente $\Omega_e, e = 1,...,N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann (siehe @sec-finite-elemente). Die Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $\hat{w}_i \in \mathbb{R}$ werden Freiheitsgrade bzw. im englischen _degrees of freedom_ (abgekürzt DOF) bezeichnet.
+
+### numerische Lösung {#sec-numerische-loesung}
+
+Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
+wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
 
 $$
-\mathbf{m} = 
-\left[ \begin{array}{center} 
-m_{xx} \\
-m_{yy} \\
-m_{xy}
-\end{array}\right]
-\qquad \qquad \text{und Krümmungsvektor} \qquad \qquad
-\mathbf{\kappa} =
-\left[ \begin{array}{center} 
-\kappa_{xx} \\
-\kappa_{yy} \\
-2\kappa_{xy}
-\end{array}\right]
+\delta w_h = \sum_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i
 $$
 
-ausgedrückt. Es ergibt sich
-$$ 
-a(w, \delta w) 
-= \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} d \Omega 
-= \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega. 
-$$ {#eq-bilinearform-Skalarprodukt-m-kappa}
+eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die in @sec-funktionale besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze 
 
-Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $\theta_{xh}$ und $\theta_{yh}$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $u^e$ (@eq-knotenverschiebungsvekor), die Formulierung des Krümmungsvektors für das Element $i$  
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
 $$
 \begin{align}
-\mathbf{\kappa_i} = 
-% \left[ \begin{array}{center} 
-% \frac{\partial \sum N_i^e \theta_{xi}}{\partial x} \\
-% \frac{\partial \sum N_i^e \theta_{yi}}{\partial y} \\
-% \frac{\partial \sum N_i^e \theta_{xi}}{\partial y} 
-% + \frac{\partial \sum N_i^e \theta_{yi}}{\partial x} \\
-% \end{array}\right] 
-% = 
-\mathbf{B_b} \boldsymbol{\hat{w}^e}
+a(w_h, \delta w_h) &= b(\delta w_h) \qquad &&\forall \delta w_h \in V_h \\
+a(w_h, \Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i)&= b(\Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i) \quad &&\forall \quad \delta w_h \in V_h \\
+a(w_h, \varphi_i)&= b(\varphi_i) \qquad &&i = 1,...,N
 \end{align}
-$$ {#eq-kruemmungsvekor-mit-B-Matrix}
+$${#eq-03}
 
-mit der B-Matrix
-$$
-\mathbf{B_b} = 
-\begin{bmatrix} 
-0 & \frac{\partial \varphi_1}{\partial x} & 0 & 
-0 & \frac{\partial \varphi_2}{\partial x} & 0 &
-0 & \frac{\partial \varphi_3}{\partial x} & 0 & ... &
-0 & \frac{\partial \varphi_{n_n}}{\partial x} & 0 \\
-0 & 0 & \frac{\partial \varphi_1}{\partial y} &
-0 & 0 & \frac{\partial \varphi_2}{\partial y} &
-0 & 0 & \frac{\partial \varphi_3}{\partial y} & ... &
-0 & 0 & \frac{\partial \varphi_{n_n}}{\partial y}\\
-0 & \frac{\partial \varphi_1}{\partial x} & \frac{\partial \varphi_1}{\partial y} & 
-0 & \frac{\partial \varphi_2}{\partial x} & \frac{\partial \varphi_2}{\partial y} &
-0 & \frac{\partial \varphi_3}{\partial x} & \frac{\partial \varphi_3}{\partial y} & ... &
-0 & \frac{\partial \varphi_{n_n}}{\partial x} & \frac{\partial \varphi_{n_n}}{\partial y} \\
-\end{bmatrix}.
-$$
+:::
 
-wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt.
-Der Momentenvektor kann dementsprechend durch 
+alle äquivalent sind. 
+
+Im zweiten Schritt wird 
 
 $$
-\mathbf{m_i} = 
-\mathbf{D_b}
-\mathbf{\kappa_i}
-% \left[ \begin{array}{center} 
-% \kappa_{xx} \\
-% \kappa_{yy} \\
-% \kappa_{xy}
-% \end{array}\right]
-=
-\mathbf{D_b} \mathbf{B_b} \boldsymbol{\hat{w}^e}
-$$ {#eq-momentenvekor-mit-B-Matrix}
-
-mit
-$$
-\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+w_h = \sum_{j = 1}^N \varphi_j \cdot \hat{w}_j
 $$
 
-beschrieben werden, wobei D die isotrope Plattensteifigkeit darstellt (@eq-plattensteifigkeit).
-Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu 
-$$ 
-\begin{align}
-a(w^e, \delta w^e) 
-% &=  \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} \quad d \Omega \\
-% &=  \int_{\Omega} \mathbf{m}^T \mathbf{\kappa} \quad d \Omega \\
-% &=  \int_{\Omega} (\mathbf{D_b}\mathbf{\kappa})^T \mathbf{\kappa} \quad d \Omega \\
-% &=  \int_{\Omega} \mathbf{\kappa}^T \mathbf{D_b} \mathbf{\kappa} \quad d \Omega \\
-% &=  \int_{\Omega}  (\mathbf{B_b} \underline{u^e})^T \mathbf{D_b}  (\mathbf{B_b} \underline{u^e})  \quad d \Omega \\
-&=  \int_{\Omega}  \mathbf{B_b}^T \mathbf{D_b} \mathbf{B_b} \boldsymbol{\hat{w}^e} \quad d \Omega \\
-\end{align}
-$$
-
-Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
-
-$$ 
-\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
-= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e d\Omega
-$$ {#eq-elementsteifigkeitsmatrix}
-
-und den Knotenverschiebungsvektor eines Elements 
+eingesetzt in die lezten Gleichung von @eq-03, dessen Ergebniss, nach gleicher Vorhergehensweise wir oben, 
 
 $$
-\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
-w_1 & \theta_{x1} & \theta_{y1} &
-w_2 & \theta_{x2} & \theta_{y2} &
-w_3 & \theta_{x3} & \theta_{y3} &
-... &
-w_{n_n} & \theta_{xn_n} & \theta_{yn_n} 
-\end{array}\right]^T
-$${#eq-knotenverschiebungsvekor}
+\sum_{j = 1}^N \underbrace{a(\varphi_j, \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
+$$
 
-ausgedrückt. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
+ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
 
 $$
 \mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r}.
@@ -268,12 +202,13 @@ $${#eq-lin-gleichungssystem}
 mit
 $$
 \begin{align}
-&\mathbf{K} &&= K_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\mathbf{K} &&= k_{ij} &&= a(\varphi_j, \varphi_i) \\
 &\boldsymbol{r} &&= r_i    &&= b(\varphi_i) \quad \text{mit} \quad i,j = 1,...,N,
 \end{align}
 $$
 
-$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+
 
 |                     | Gesamtsystem         | Element|
 |:--------------------|:--------------------:|:-----------:|

@@ -1,3 +1,5 @@
 # FEM für Plattentragwerke
 
-{{< include schwache-form-copy.qmd >}}
+{{< include vorbereitung-FEM.qmd >}}
+{{< include assemblierung-steifigkeitsmatrix.qmd >}}
+

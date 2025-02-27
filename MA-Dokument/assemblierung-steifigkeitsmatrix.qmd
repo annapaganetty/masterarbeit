@@ -1,0 +1,315 @@
+## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-Steifigkeitsmatrix}
+
+### BFS-Rechteckelement
+
+Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
+
+$$
+\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} & \theta_{xy1} &
+w_2 & \theta_{x2} & \theta_{y2} & \theta_{xy2} &
+w_3 & \theta_{x3} & \theta_{y3} & \theta_{xy3} &
+w_4 & \theta_{x4} & \theta_{y4} & \theta_{xy4}
+\end{array}\right]^T
+$${#eq-knotenverschiebungsvekor-BFS}
+
+ist. Für die Herleitung der globalen Steifigkeitsmatrix mit dem Elementansatz des Bogner-Fox-Schmitt Rechteckelements wird das abstrakte, diskrete Variationsproblem, durch das Skalarprodukt von Momentenvektor
+
+$$
+\mathbf{m} = 
+\left[ \begin{array}{center} 
+m_{xx} \\
+m_{yy} \\
+m_{xy}
+\end{array}\right]
+\qquad \qquad \text{und Krümmungsvektor} \qquad \qquad
+\mathbf{\kappa} =
+\left[ \begin{array}{center} 
+\kappa_{xx} \\
+\kappa_{yy} \\
+2\kappa_{xy}
+\end{array}\right]
+$$
+
+ausgedrückt. Das Ergebnis ist die Formulierung 
+$$ 
+a(w, \delta w) 
+= \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} d \Omega 
+= \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega. 
+$$ {#eq-bilinearform-Skalarprodukt-m-kappa}
+
+für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $\theta_{xh}$ und $\theta_{yh}$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $\mathbf{\hat{w}^e}$ (@eq-knotenverschiebungsvekor), die Formulierung des Krümmungsvektors für das Element $i$  
+
+$$
+\begin{align}
+\mathbf{\kappa_i} = 
+% \left[ \begin{array}{center} 
+% \frac{\partial \sum N_i^e \theta_{xi}}{\partial x} \\
+% \frac{\partial \sum N_i^e \theta_{yi}}{\partial y} \\
+% \frac{\partial \sum N_i^e \theta_{xi}}{\partial y} 
+% + \frac{\partial \sum N_i^e \theta_{yi}}{\partial x} \\
+% \end{array}\right] 
+% = 
+\mathbf{B_b} \mathbf{\hat{w}^e}
+\end{align}
+$$ {#eq-kruemmungsvekor-mit-B-Matrix}
+
+mit der B-Matrix
+$$
+\mathbf{B_b} = 
+\begin{bmatrix} 
+0 & \frac{\partial \varphi_1}{\partial x} & 0 & 0 & 
+0 & \frac{\partial \varphi_2}{\partial x} & 0 & 0 & 
+0 & \frac{\partial \varphi_3}{\partial x} & 0 & 0 &
+0 & \frac{\partial \varphi_4}{\partial x} & 0 & 0 \\
+0 & 0 & \frac{\partial \varphi_1}{\partial y} & 0 & 
+0 & 0 & \frac{\partial \varphi_2}{\partial y} & 0 & 
+0 & 0 & \frac{\partial \varphi_3}{\partial y} & 0 & 
+0 & 0 & \frac{\partial \varphi_4}{\partial y} & 0 \\
+0 & \frac{\partial \varphi_1}{\partial y} & \frac{\partial \varphi_1}{\partial x} & 0 & 
+0 & \frac{\partial \varphi_2}{\partial y} & \frac{\partial \varphi_2}{\partial x} & 0 & 
+0 & \frac{\partial \varphi_3}{\partial y} & \frac{\partial \varphi_3}{\partial x} & 0 &
+0 & \frac{\partial \varphi_4}{\partial y} & \frac{\partial \varphi_4}{\partial x}  & 0  \\
+\end{bmatrix}.
+$$
+
+wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt.
+Der Momentenvektor kann dementsprechend durch 
+
+$$
+\mathbf{m_i} = 
+\mathbf{D_b}
+\mathbf{\kappa_i}
+% \left[ \begin{array}{center} 
+% \kappa_{xx} \\
+% \kappa_{yy} \\
+% \kappa_{xy}
+% \end{array}\right]
+=
+\mathbf{D_b} \mathbf{B_b} \mathbf{\hat{w}^e}
+$$ {#eq-momentenvekor-mit-B-Matrix}
+
+mit
+$$
+\mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
+$$
+
+beschrieben werden, wobei D die isotrope Plattensteifigkeit ist (@eq-plattensteifigkeit).
+Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu 
+$$ 
+\begin{align}
+a(w^e, \delta w^e) 
+% &=  \int_{\Omega} \mathbf{m} \cdot \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} \mathbf{m}^T \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} (\mathbf{D_b}\mathbf{\kappa})^T \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega} \mathbf{\kappa}^T \mathbf{D_b} \mathbf{\kappa} \quad d \Omega \\
+% &=  \int_{\Omega}  (\mathbf{B_b} \underline{u^e})^T \mathbf{D_b}  (\mathbf{B_b} \underline{u^e})  \quad d \Omega \\
+&=  \int_{\Omega}  \mathbf{B_b}^T \mathbf{D_b} \mathbf{B_b} \mathbf{\hat{w}^e} \quad d \Omega \\
+\end{align}
+$$
+
+Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
+
+$$ 
+\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
+= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e d\Omega
+$$ {#eq-elementsteifigkeitsmatrix}
+
+und den Knotenverschiebungsvektor eines Elements 
+
+$$
+\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} &
+w_2 & \theta_{x2} & \theta_{y2} &
+w_3 & \theta_{x3} & \theta_{y3} &
+... &
+w_{n_n} & \theta_{xn_n} & \theta_{yn_n} 
+\end{array}\right]^T
+$${#eq-knotenverschiebungsvekor}
+
+ausgedrückt. 
+
+----------
+
+$$
+\begin{align}
+a(w,\delta w) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
+\rightsquigarrow \mathbf{k_{ij}} = a(\varphi_j, \varphi_i) = \int_{\Omega} D (\varphi_{j_{,xx}} \varphi_{i_{,xx}} + 2 \varphi_{j_{,xy}} \varphi_{i_{,xy}} + \varphi_{j_{,yy}} \varphi_{i_{,yy}} ) 
+\end{align}
+$$
+
+
+
+### DKQ Element
+
+Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Dieses sogenannte DKQ (_discrete Kirchhoff quadrilateral_) Element basiert auf den folgenden Annahmen: 
+
+1. Die Verdrehungen $\beta_x$ um die $y$-Achse und $\beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination @eq-linearkombination-platte zu verstehen.
+$$
+\begin{align}
+&\beta_x &\quad= - w,_x &\quad= \theta_y &\quad= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x} \\
+&\beta_y &\quad= - w,_y &\quad= - \theta_x &\quad= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x} \\
+\end{align}
+$$ {#eq-betaX-betaY}
+Als Formfunktionen $\varphi_i(x,y)$ dienen die Funktionen des in @sec-finite-elemente vorgestellten Serendipity-Elements abhängig von den Variablen $\xi$ und $\eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $\hat{w}_i$ mit $i = 1,...,8$, wobei $i$ die Nummer des Knotens nach Abb... angibt.
+
+2. Entsprechend der Kirchhoff Theorie sind die Verdrehungen an den 
+a) Eckknoten $i$
+$$
+\begin{align}
+&\beta_x_i = - w,_x_i \\
+&\beta_y_i = - w,_y_i \qquad \text{mit} i = 1,2,3,4,
+\end{align}
+$$ {#eq-verdrehungen-beta-i}
+(Ableitungen der Verformung $w$ nach $x$ und nach $y$ an den Knoten $i$) und an den 
+b) Mittelknoten $k$
+$$
+\begin{align}
+&\beta_s_k = - w,_s_k \\
+&\beta_n_k = - w,_n_k \qquad \text{mit} k = 5,6,7,8,
+\end{align}
+$$ {#eq-verdrehungen-beta-k}
+(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. (siehe Abb.)
+
+3. $\beta_s$ ist die Verdrehung um die $n$-Achse. Nach BATOZ und TAHAR wird, zur Bestimmung von $\beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form
+$$
+w(s) = a s^3 + bs^2 +cs +d
+$$
+mit den Randbedingungen
+$$
+\begin{align}
+&w(s_i) = w_i   &&\qquad w'(s_i) = w,_{si} \\
+&w(s_j) = w_j   &&\qquad w'(s_j) = w,_{sj}
+\end{align}
+$$
+gelöst. Für die Verdrehung um die n-Achse ergibt sich
+$$
+w,_{sk} = w'(0) = \frac{-3}{l_{ij}} (w_i - w_j) - \frac{1}{4}(w,_{si}+w,_{sj})
+$$ {#eq-verdrehungen-beta-x-Formel}
+wobei $k = 5,6,7,8$ die Mittelknoten der Elementkanten $ij = 12,23,34,41$ sind. $l_{ij}$ ist die Länge der Seiten $ij$.
+
+4. $\beta_n$ ist die Verdrehung um die $s$-Achse und wird entlang der Elementkanten durch eine lineare Funktion ausgedrückt.
+$$
+w'(s) = ax+b
+$$
+mit den Randbedingungen  
+$$
+\begin{align}
+w'(s_i) = w,_{ni}   &&\qquad w'(s_j) = w,_{nj}
+\end{align}
+$$
+ausgedrückt. Es ergibt sich somit für 
+$$
+w,_n_k = w'(0) = -\frac{1}{2}(w,_{ni}+w,_{nj})
+$$
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+Zusammengefasst sind die die Verdrehungen der Knoten  
+$$
+\begin{align}
+&\qquad\qquad\qquad\beta_x_i = - w,_x_i \\
+&\qquad\qquad\qquad\beta_y_i = - w,_y_i
+&&\text{mit} i = 1,2,3,4 \\
+&\qquad\qquad\qquad\beta_s_k = - w,_s_k = \frac{-3}{l_{ij}} (w_i - w_j) - \frac{1}{4}(w,_{si}+w,_{sj}) \\
+&\qquad\qquad\qquad\beta_n_k = - w,_n_k = -\frac{1}{2}(w,_{ni}+w,_{nj})
+&&\text{mit} k = 5,6,7,8 
+\end{align}
+$$ {#eq-verdrehungen-beta}
+
+:::
+
+Die Formeln für die die Verdrehungen an den Eckknoten um die $x$-Achse und die $y$-Achse und für die Verdrehung an den Mittelknoten um die $s$-Achse und die $n$-Achse sind vorhanden. Da bei isoparametrischen Elementen die Elementkanten nicht parallel zu den Koordinatenachsen verlaufen ist eine Umrechnung der Verdrehung der Mittelknoten, auf die Verdrehung um die $x$- und $y$-Achse notwendig. 
+
+
+
+
+$$
+\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
+w_1 & \theta_{x1} & \theta_{y1} &
+w_2 & \theta_{x2} & \theta_{y2} &
+w_3 & \theta_{x3} & \theta_{y3} &
+w_4 & \theta_{x4} & \theta_{y4} 
+\end{array}\right]^T
+$${#eq-knotenverschiebungsvekor-DKQ}
+
+
+
+$$
+\begin{bmatrix}\beta_x \\ \beta_y \end{bmatrix} = 
+\begin{bmatrix} 
+\frac{\partial \varphi_1}{\partial x} &
+\frac{\partial \varphi_2}{\partial x} &
+\frac{\partial \varphi_3}{\partial x} &
+\frac{\partial \varphi_4}{\partial x} &
+\frac{\partial \varphi_5}{\partial x} &
+\frac{\partial \varphi_6}{\partial x} &
+\frac{\partial \varphi_7}{\partial x} &
+\frac{\partial \varphi_8}{\partial x} \\
+\frac{\partial \varphi_1}{\partial y} & 
+\frac{\partial \varphi_2}{\partial y} &  
+\frac{\partial \varphi_3}{\partial y} & 
+\frac{\partial \varphi_4}{\partial y} &
+\frac{\partial \varphi_5}{\partial y} &
+\frac{\partial \varphi_6}{\partial y} &
+\frac{\partial \varphi_7}{\partial y} &
+\frac{\partial \varphi_8}{\partial y} \\
+\end{bmatrix}
+\begin{bmatrix} 
+w_1 \\ w_2 \\ w_3 \\ w_4 \\ w_5 \\ w_6 \\ w_7 \\ w_8
+\end{bmatrix}
+$$ 
+
+<!-- 
+$$
+\begin{bmatrix}\beta_x \\ \beta_y \\ \beta_{xy} \end{bmatrix} = 
+\underbrace{\begin{bmatrix} 
+0 & \frac{\partial \varphi_1}{\partial x} & 0 &
+0 & \frac{\partial \varphi_2}{\partial x} & 0 & 
+0 & \frac{\partial \varphi_3}{\partial x} & 0 & \cdots &
+0 & \frac{\partial \varphi_8}{\partial x} & 0  \\
+0 & 0 & \frac{\partial \varphi_1}{\partial y} & 
+0 & 0 & \frac{\partial \varphi_2}{\partial y} &  
+0 & 0 & \frac{\partial \varphi_3}{\partial y} & \cdots &
+0 & 0 & \frac{\partial \varphi_8}{\partial y} \\
+0 & \frac{\partial \varphi_1}{\partial y} & \frac{\partial \varphi_1}{\partial x} & 
+0 & \frac{\partial \varphi_2}{\partial y} & \frac{\partial \varphi_2}{\partial x} &  
+0 & \frac{\partial \varphi_3}{\partial y} & \frac{\partial \varphi_3}{\partial x} & \cdots &
+0 & \frac{\partial \varphi_8}{\partial y} & \frac{\partial \varphi_8}{\partial x} \\
+\end{bmatrix}}_{B} \cdot 
+$$  
+-->
+
+
+
+mit der B-Matrix
+$$
+\mathbf{B_b} = 
+\begin{bmatrix} 
+\frac{\partial H^x}{\partial x} \\
+\frac{\partial H^y}{\partial y} \\
+\frac{\partial H^x}{\partial y} + \frac{\partial H^y}{\partial x} \\
+\end{bmatrix}.
+$$
+
+wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt.
+Der Momentenvektor kann dementsprechend durch 
+
+
+
+
+$$ 
+\begin{align}
+\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
+&= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e \quad d\Omega \\
+&= \int_{-1}^{1} \int_{-1}^{1} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e det[J] \quad d\xi \eta
+\end{align}
+$$ {#eq-elementsteifigkeitsmatrix_DKQ}
+
+----------
+
+$$
+\begin{align}
+a(w,\delta w) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
+\rightsquigarrow \mathbf{k_{ij}} = a(\varphi_j, \varphi_i) = \int_{\Omega} D (\varphi_{j_{,xx}} \varphi_{i_{,xx}} + 2 \varphi_{j_{,xy}} \varphi_{i_{,xy}} + \varphi_{j_{,yy}} \varphi_{i_{,yy}} ) 
+\end{align}
+$$
