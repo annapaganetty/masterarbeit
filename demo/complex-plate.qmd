@@ -1,24 +1,13 @@
 ```{julia}
 include("../src/setup.jl")
-
-update_theme!(
-    colormap=:redblue,
-    color=3,
-    faceplotzscale=1,
-    faceplotnpoints=15,
-    faceplotmesh=0,
-    edgesvisible=true,
-    featureedgelinewidth=2.5)
 ```
 
-
-# Beispiel quadratische Platte
+# Beispiel komplexe Platte
 
 ## Plot der Plattenelemente
 ```{julia}
-WGLMakie.activate!()
-xElem = 10
-m1 = makequadratcicMesh(p1, xElem)
+using MMJMesh.Gmsh
+m1 = Mesh("gmesh/complex-plate-02.msh")
 plotmesh(m1; title="quadratische Platte")
 ```
 
@@ -39,6 +28,14 @@ w_abw = 100 * abs(w_fe - w_czerny) / w_czerny
 ```
 
 ```{julia}
+update_theme!(
+    colormap=:redblue,
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    faceplotmesh=0,
+    edgesvisible=true,
+    featureedgelinewidth=2.5)
 plotwBTP(m1, w; title="Verformung")
 ```
 
@@ -57,30 +54,30 @@ plotThetayBTP(m1, w; title="Verdrehung θy")
 ```{julia}
 post = m1.data[:post]
 
-for i = 1:nelements(m1)
-    ff = face(m1, i)
-    we = post(ff, :mx)
-    println("mx[", i, "] = ", we)
-    # println(typeof(we))
-end
+# for i = 1:nelements(m1)
+#     ff = face(m1, i)
+#     we = post(ff, :mx)
+#     println("mx[", i, "] = ", we)
+#     # println(typeof(we))
+# end
 ```
 
 ### Mx
 
 ```{julia}
-plotrBTP(m1, :mx, "Biegemoment mx", (-7, 7), nodal=true, a3d=true)
+plotrBTP(m1, :mx, "Biegemoment mx", (-0.001, 0.001), nodal=false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(m1, :my, "Biegemoment my", (-7, 7), nodal=false, a3d=true)
+plotrBTP(m1, :my, "Biegemoment my", (-0.001, 0.001), nodal=false, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(m1, :mxy, "Biegemoment mxy", (-7, 7), nodal=false, a3d=true)
+plotrBTP(m1, :mxy, "Biegemoment mxy", (-0.001, 0.001), nodal=true, a3d=true)
 ```
 
 ```{julia}
-plotrBTP(m1, :qx, "qx", (-3, 3), nodal=true, a3d=true)
+plotrBTP(m1, :qx, "qx", (-0.001, 0.001), nodal=false, a3d=true)
 ```

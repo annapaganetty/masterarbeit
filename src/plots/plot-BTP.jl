@@ -65,7 +65,7 @@ end
 # Plot Verformung
 function plotwBTP(
     m, wHat;
-    zs=100,
+    zs=1000,
     w=600, h=500, title="",
     edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
     featureedgelinewidth = 0.5,
