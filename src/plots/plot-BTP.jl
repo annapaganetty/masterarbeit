@@ -57,7 +57,6 @@ function makeThetayBTP(wHat)
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
         Hy = btpHy(face)
-        println("ThetaY = ",(sum(wHat[idxs] .* Hy)))
         return sum(wHat[idxs] .* Hy)
     end
 end
