@@ -78,7 +78,7 @@ plotrBTP(m1, :my, "Biegemoment my", (-7, 7), nodal=false, a3d=true)
 
 ### Mxy
 ```{julia}
-plotrBTP(m1, :mxy, "Biegemoment mxy", (-7, 7), nodal=false, a3d=true)
+plotrBTP(m1, :mxy, "Biegemoment mxy", (-3,3), nodal=true, a3d=true)
 ```
 
 ```{julia}

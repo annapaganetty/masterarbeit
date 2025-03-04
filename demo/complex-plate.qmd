@@ -53,19 +53,12 @@ plotThetayBTP(m1, w; title="Verdrehung θy")
 
 ```{julia}
 post = m1.data[:post]
-
-# for i = 1:nelements(m1)
-#     ff = face(m1, i)
-#     we = post(ff, :mx)
-#     println("mx[", i, "] = ", we)
-#     # println(typeof(we))
-# end
 ```
 
 ### Mx
 
 ```{julia}
-plotrBTP(m1, :mx, "Biegemoment mx", (-0.001, 0.001), nodal=false, a3d=true)
+plotrBTP(m1, :mx, "Biegemoment mx", (-0.001, 0.001), nodal=false, a3d=false)
 ```
 
 ### My
