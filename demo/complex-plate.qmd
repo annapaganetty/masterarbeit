@@ -8,7 +8,8 @@ include("../src/setup.jl")
 ```{julia}
 using MMJMesh.Gmsh
 m1 = Mesh("gmesh/complex-plate-02.msh")
-plotmesh(m1; title="quadratische Platte")
+fig = plotmesh(m1; title="complex-plate.msh")
+# save("complex-plate.png",fig)
 ```
 
 ## Verformung 

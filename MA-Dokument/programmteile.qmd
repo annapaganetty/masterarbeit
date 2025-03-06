@@ -1,0 +1,279 @@
+## Programmteile {#sec-Programmteile}
+
+Nachfolgend werden die Programmteile vorgestellt
+
+### Parameter {#sec-Parameter}
+
+Als erstes werden die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt. 
+
+```{{julia}}
+p = @var Params()
+p.lx = 8
+p.ly = 8
+p.q = 5e3
+p.ν = 0.2
+p.h = 0.2
+p.E = 31000e6;
+```
+
+Die Definition der Parameter p.lx und p.ly ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion _makemeshonrectangle()_, ein FE-Netz für die Platte der Länge p.lx und der Breite p.ly erzeugt werden. Die Parameter p.q, p.ν, p.h und p.E beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
+
+### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
+
+Die Definition eines Netzes erfolgt mit Hilfe der MMJMesh.Meshes Bilbliothek. Für die Beispiele in Kapitel... sind die nachfolgenden drei Funktionen wichtig. Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen lx und ly und einem  gleichmäßiges Netz mit gleichgroßen Elementen wird die Funktion _makemeshonrectangle(lx, ly, nx, ny)_ genutzt. Die Eingabeparameter _nx_ und _ny_ geben die Anzahl der Unterteilungen je Seite an.
+
+```{{julia}}
+m = makemeshonrectangle(lx, ly, nx, ny)
+```
+
+![FE-Netz erzueugt mit der Funktion _makemeshonrectangle_](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
+
+
+Alternativ kann die Platte und das FE-Netz mit selbstdefinierten Koordinaten _coords_ und der Verbindung von vier Knoten zu einem Element durch _elts_ erzeugt werden.
+
+```{{julia}}
+coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
+          0.0 0.0  0.0  10.0 10.0 10.0 20.0 20.0 20.0]
+elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
+m = Mesh(coords, elts, 2);
+```
+![FE-Netz erzeugt mit der Funktion _Mesh()_](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
+
+Alternativ kann eine .msh Datei eingepflegt werden mit
+
+```{{julia}}
+m = Mesh("complex-plate.msh")
+```
+
+![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
+
+### Formfunktionen 
+
+__Hermite-Elemente__
+
+```{{julia}}
+function hermiteelement(V;conforming=true)
+    if conforming
+        m = 16
+        P = mmonomials(2, 3, QHat  ,type = Int)
+        N = vcat(
+            [   [ValueAtLF(p), 
+                PDerivativeAtLF(p, [1, 0]), 
+                PDerivativeAtLF(p, [0, 1]), 
+                PDerivativeAtLF(p, [1, 1])]
+                for p in eachcol(V)]...
+            )
+    else 
+        m = 12
+        P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = Int)
+        N = vcat(
+            [   [ValueAtLF(p), 
+                PDerivativeAtLF(p, [1, 0]), 
+                PDerivativeAtLF(p, [0, 1])]
+                for p in eachcol(V)]...
+        )
+    end
+    Imatrix = Matrix{Int}(I, m, m)
+    M = [n(p) for p in P, n in N]
+    Minv = (M \ Imatrix) #round.(...., digits=10) 
+    H4 = (Minv*P)
+    return H4
+end;
+```
+
+__Lagrange-Elemente__
+
+```{{julia}}
+function lagrangeelement(V)
+        m = 4
+        P = mmonomials(2, 1, QHat  ,type = Int)
+        N = vcat(
+            [   [ValueAtLF(p)]
+                for p in eachcol(V)]...
+            )
+        Imatrix = Matrix{Int}(I, m, m)
+        M = [n(p) for p in P, n in N]
+        Minv = simplifyx.(M \ Imatrix)
+        L4 = Minv*P
+    return L4
+end;
+```
+
+__Serendipity-Elemente__
+
+```{{julia}}
+function serendipityelement(V)
+    W = Array{Int64,2}(undef, 2,4)
+    for i = 1:3
+            W[1,i] = (V[1,i] + V[1,i+1]) * 0.5
+            W[2,i] = (V[2,i] + V[2,i+1]) * 0.5
+    end
+    W[1,4] = (V[1,4] + V[1,1]) * 0.5
+    W[2,4] = (V[2,4] + V[2,1]) * 0.5
+    P = mmonomials(2, 2, QHat,(p1, p2) -> p1 + p2 < 4, type = Int)
+    N = vcat(
+        [   ValueAtLF(p)
+            for p in eachcol(V)],
+        [   [ValueAtLF(q)]
+            for q in eachcol(W)]...
+    )
+    M = [n(p) for p in P, n in N]
+    S8 = inv(M)*P
+    return S8
+end;
+```
+
+### Elementsteifigkeitsmatrizen & Elementlastvektoren
+
+für Bogner-Fox-Schmitt Formulierung
+
+
+für allgemeine Vierecke:
+
+```{{julia}}
+using MMJMesh.Geometries
+# Gauss points for numerical integration
+const gaussWeights = ones(4)
+const gaussPoints = 1 / sqrt(3) * [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+
+# Shape functions and gradients
+V = [ -1 1 1 -1; -1 -1 1 1]
+const N = MappingFromComponents(lagrangeelement(V)...)
+
+# Element matrix
+function plateKe(p)
+    function keFunc(e)
+        D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
+        Ke = zeros(12,12)
+        jF = jacobian(parametrization(geometry(e)))
+        
+        Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
+        Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
+        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx))
+        ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+
+        for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
+            # Jacobi matrix ausgewertet an der Stelle ξ
+            J = jF(ξ)
+            ∇ₓN = (inv(J') * ∇ξN(ξ))
+            ∇yN = (inv(J') * ∇ηN(ξ)) 
+            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+ ∇ₓN[2,:]']
+            Ke += w * B' * D * B * det(J)
+        end
+        return Ke
+    end
+    return keFunc
+end;
+```
+
+Die Funktionen Hx und Hy werden wie in Kapitel ... beschrieben hergeleitet. Ke = Gl. (16) aus dem Paper von Batoz und Tahar.
+
+### Randbedingungen
+
+```{{julia}}
+function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])
+    dofs = fixedDOFs(fixedNodes,fixed)
+    r[dofs] .= 0
+    K[dofs, :] .= 0
+    K[diagind(K)[dofs]] .= 1
+    return nothing 
+end;
+```
+
+### Assemblierung Steifigkeitsmatrix
+
+```{{julia}}
+function assembleKr(s, nf)
+    N = nnodes(s) * nf
+    K = zeros(N, N)
+    r = zeros(N)
+
+    for e ∈ elements(s)
+        # Indexvektor
+        nI = nodeindices(e)
+        I = fill(1, nf * 4)      # Vektor (mit 1 gefüllt)
+        for i = 1:nf
+            I[i+0*nf] = nI[1] * nf - nf + i
+            I[i+1*nf] = nI[2] * nf - nf + i
+            I[i+2*nf] = nI[3] * nf - nf + i
+            I[i+3*nf] = nI[4] * nf - nf + i
+        end
+        # Berechnung ke für jedes Element
+        kef = data(e, :kefunc)
+        Ke = kef(e)
+        # Addition von ke auf die globale Steifigkeitsmatrix K
+        K[I, I] += Ke
+
+        # Berechnung re für jedes Element
+        ref = data(e, :refunc)
+        re = ref(e)
+        # Addition von re auf den globalen Lastvektor
+        r[I] += re
+    end
+    return K, r
+end;
+```
+
+### Postprozessor
+
+
+für die Formulierung allgemeiner Vierecke werden die Schnittgrößen von den Verdrehungen $\beta_x$ und $\beta_y$ abgeleitet gemäß Batoz und Tahar, da für die Verschiebung w keine weiteren Aussagen getätigt werden.
+
+```{{julia}}
+function postprocessor(params, wHat)
+    return (face, name) -> begin
+
+        # Plate properties
+        h = params.h
+        E = params.E
+        ν = params.ν
+        D = E*h^3 / 12*(1-ν^2) 
+
+        # Element displacement function
+            # Indices
+        idxs = idxDOFs(nodeindices(face), 3)
+        idxsWe = idxs[1:3:end]  
+
+        V = [ -1 1 1 -1; -1 -1 1 1]
+        we = sum(wHat[idxsWe] .* lagrangeelement(V))
+
+        # first Derivatives of w = beta 
+        βx = -sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
+        βy = -sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
+
+        # Quick return
+        name == :w && return we
+
+        # Derivatives
+        wxx = ∂x(βx)
+        wyy = ∂y(βy)
+        wxy = ∂y(βx) + ∂x(βy)
+        Δw = wxx + wyy
+
+        # Return
+        name == :βx && return βx
+        name == :βx && return βx
+        name == :wxx && return wxx
+        name == :wyy && return wyy
+        name == :wxy && return wxy
+        name == :Δw && return Δw
+
+        # Section forces (Altenbach et al. p176)
+        mx = -1e-3 * D * (wxx + ν * wyy)
+        my = -1e-3 * D * (ν * wxx + wyy)
+        mxy = -1e-3 * D * (1 - ν) * wxy
+        qx = -1e-3 * D * ∂x(Δw)
+        qy = -1e-3 * D * ∂y(Δw)
+
+        # Return
+        name == :mx && return mx
+        name == :my && return my
+        name == :mxy && return mxy
+        name == :qx && return qx
+        name == :qy && return qy
+
+        # Unknown label
+        error("Unkown function: ", name)
+    end
+end;
+```

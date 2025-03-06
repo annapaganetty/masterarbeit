@@ -13,5 +13,6 @@ contributes:
         - ams.lua
       section-numbering: 1.1.1
         # - latex-environment.lua
+      code-line-numbers: true
 lang: "de"
 

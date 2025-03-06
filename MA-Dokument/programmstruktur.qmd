@@ -1,0 +1,7 @@
+## Programmstruktur {#sec-Programmstruktur}
+
+Umsetzung in JULIA entsprechend dem mathematischen Konzept welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. 
+
+Die Abbildung zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden.
+
+

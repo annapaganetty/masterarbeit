@@ -10,6 +10,6 @@ function lagrangeelement(V)
         Imatrix = Matrix{Int}(I, m, m)
         M = [n(p) for p in P, n in N]
         Minv = simplifyx.(M \ Imatrix)
-        H4 = Minv*P
-    return H4
+        L4 = Minv*P
+    return L4
 end
