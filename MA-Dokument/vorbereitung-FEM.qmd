@@ -2,7 +2,7 @@
 
 ### Herleitung der schwachen Form {#sec-schwache-form}
 
-Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der starken Form, der Differentialgleichung (Gleichung... ) der Kirchhoffplatte, vereinfacht ausgedrückt durch den Laplace-Operator,
+Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der Differentialgleichung der Kirchhoffplatte, ausgedrückt durch den Laplace-Operator,
 
 $$
 D \cdot \Delta \Delta w = q 
@@ -28,7 +28,7 @@ $$
 D \cdot [ \underbrace{\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} w_{,yyyy}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-diffgl-testfunk-integral}
 
-Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Rantherme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
+Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Ranterme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
 
 $$
 \begin{flalign}
@@ -57,7 +57,7 @@ $$
 Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-*Variations Problem (V)* \
+*Variationsproblem (V)* \
 
 Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass 
 \
@@ -83,6 +83,7 @@ für jede (fast) beliebige Testfunktion $\delta w:\Omega \to \mathbb{R}$.
 
 :::
 
+<!-- 
 Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen. Die linke Seite der @eq-variationsproblem wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
@@ -99,31 +100,32 @@ für alle Testfunktionen $\delta w \in V$
 
 :::
 
-Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt. Im Fall der Kirchhoffplatte ist die Bilinearform 
+Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt.  
+-->
+
+Im Fall der Kirchhoffplatte ist die Bilinearform 
 
 $$ 
 \begin{align}
-&a(\mathbf{w}, \mathbf{\delta w}) &&= \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
-&\text{mit} \qquad
-D &&= \frac{Eh^3}{12(1+\nu^2)} \qquad \text{(isotrope Plattensteifigkeit)}
+&a(w, \delta w) &&= \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
 \end{align}
 $$ {#eq-bilinearform}
 
 und die Linearform
 
 $$ 
-b(\mathbf{\delta w}) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
+b(\delta w) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-linearform}
 
-Sowohl $\mathbf{w}$ als auch $\mathbf{\delta w}$ sind als Tupel von Funktionen zu verstehen.
 
 ### Approximation von Funktionen {#sec-approximation-funktionen}
 
-Die FEM-Lösung basiert im wesentlichen auf zwei Ideen:
+Die zwei wesentlichen Ideen der FEM-Lösung:
 
-1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen
+1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
 2. Funktionen stückweise definieren auf sogenannten Elementen
 
+werden nachfolgend näher erläutert.
 Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
 $$
 \begin{align}
@@ -179,15 +181,13 @@ $${#eq-03}
 
 :::
 
-alle äquivalent sind. 
-
-Im zweiten Schritt wird 
+äquivalent sind. Im zweiten Schritt wird 
 
 $$
 w_h = \sum_{j = 1}^N \varphi_j \cdot \hat{w}_j
 $$
 
-eingesetzt in die lezten Gleichung von @eq-03, dessen Ergebniss, nach gleicher Vorhergehensweise wir oben, 
+in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben, 
 
 $$
 \sum_{j = 1}^N \underbrace{a(\varphi_j, \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
@@ -219,18 +219,6 @@ $\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastv
 | Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
 
 : Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise. {#tbl-Variablen}
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- 
 ### Parametrisierung (Jacobi-Matrix)
@@ -451,28 +439,9 @@ $$
 \hat{b}(\hat{\delta w}) = \hat{b}(\hat{\delta w}\circ \underline{F}^{-1}(x,y))
 $$
 
-
-
 $$
 \mathbf{K^e} = \int_{\Omega} [B]^T [D_b][B]
 $$
 
+-->
 
-
-
------------------------------
-Strong form: 
-    Find a function which satisfies an equation at each point in the considered domain
-Weak form:  
-    Find a function, for which a scalar valued equation holds for any test function
-
-
-Why the names strong form and weak form?
-Strong form: 
-    Requirements on u
-    - fulfill the differential equation point wise (strongly) for each x ∈ [0, l] I two times differentiable
-Weak form: 
-    Requirements on u
-    - differential equation fulfilled in an integral sense
-    - one time differentiable (Fish and Belytschko 2007, p. 49)
- -->

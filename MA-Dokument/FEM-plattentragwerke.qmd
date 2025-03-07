@@ -1,5 +1,8 @@
 # FEM für Plattentragwerke
 
+Anknüpfend an Kapitel ... erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
+
 {{< include vorbereitung-FEM.qmd >}}
+
 {{< include assemblierung-steifigkeitsmatrix.qmd >}}
 

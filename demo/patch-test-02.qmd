@@ -51,24 +51,24 @@ for i = [1,4,7,10,13,16,19,22]
 end
 
 # Randmomente um die y-Achse
-r[dofs2[2]]  = a * a/2 * 1e2
-r[dofs2[5]]  = a * a * 1e2
-r[dofs2[8]]  = a * a/2 * 1e2
+r[dofs2[2]]  = -a * a/2 
+r[dofs2[5]]  = -a * a 
+r[dofs2[8]]  = -a * a/2
 r[dofs2[11]] = 0   
 r[dofs2[14]] = 0
-r[dofs2[17]] = a * a/2 * 1e2
-r[dofs2[20]] = a * a * 1e2
-r[dofs2[23]] = a * a/2 * 1e2
+r[dofs2[17]] = a * a/2 
+r[dofs2[20]] = a * a
+r[dofs2[23]] = a * a/2 
 
 # Randmomente um die x-Achse 
-r[dofs2[3]]  = -b * b/2 * 1e2
-r[dofs2[6]]  = 0
-r[dofs2[9]]  = -b * b/2 * 1e2 
-r[dofs2[12]] = -b * b * 1e2
-r[dofs2[15]] = -b * b * 1e2
-r[dofs2[18]] = -b * b/2 * 1e2
+r[dofs2[3]]  = b * b/2  # = 10
+r[dofs2[6]]  = 0            # = 20
+r[dofs2[9]]  = -b * b/2   # = 10
+r[dofs2[12]] = b * b 
+r[dofs2[15]] = -b * b
+r[dofs2[18]] = b * b/2   # = 10
 r[dofs2[21]] = 0
-r[dofs2[24]] = -b * b/2 * 1e2
+r[dofs2[24]] = -b * b/2
 
 w = K \ r
 ```
@@ -104,17 +104,17 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatch02, :mx, "Biegemoment mx", (-12, 12),nodal = true, a3d=false)
+plotrBTP(mPatch02, :mx, "Biegemoment mx", (-0.13, 0.06),nodal = true, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatch02, :my, "Biegemoment my", (-13, 13),nodal = true, a3d=false)
+plotrBTP(mPatch02, :my, "Biegemoment my", (-0.16, 0.05),nodal = true, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(mPatch02, :mxy, "Biegemoment mxy", (-4 , 4),nodal=true, a3d=false)
+plotrBTP(mPatch02, :mxy, "Biegemoment mxy", (-0.1 , 0.1),nodal=true, a3d=true)
 ```
 
 M(x,y) = D_b * B(x,y) * Un 

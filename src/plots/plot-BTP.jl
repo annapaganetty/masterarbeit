@@ -40,24 +40,25 @@ function makeweBTP(wHat)
     H4 = lagrangeelement(V)
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)[1:3:end]  
+        println(wHat[idxs] .* H4)
         return sum(wHat[idxs] .* H4)
     end
 end
 
-# Verdrehung theta x
-function makeThetaxBTP(wHat)
+# Verdrehung theta x = w,y = w nach y abgeleitet = -beta_y
+function makeThetaxBTP(wHat) # = -beta_y
+    return face -> begin
+        idxs = idxDOFs(nodeindices(face), 3)
+        Hy = btpHy(face)
+        return -sum(wHat[idxs] .* Hy)
+    end
+end
+# Verdrehung theta y = -w,x = w nach x abgeleitet = beta_x
+function makeThetayBTP(wHat) # = -beta_x
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
         Hx = btpHx(face)
         return sum(wHat[idxs] .* Hx)
-    end
-end
-# Verdrehung theta y
-function makeThetayBTP(wHat)
-    return face -> begin
-        idxs = idxDOFs(nodeindices(face), 3)
-        Hy = btpHy(face)
-        return sum(wHat[idxs] .* Hy)
     end
 end
 
