@@ -35,7 +35,7 @@ Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung de
 nf = 3
 mPatch02.data[:kefunc] = plateKe(p3)
 mPatch02.data[:refunc] = plateRe(p3.q)
-K,r = assembleKr(mPatch,nf)
+K,r = assembleKr(mPatch02,nf)
 # applyDirichletBCs!(mPatch.groups[:boundarynodes][1:3], K, r, bcs)
 
 dofs1 = idxDOFs(mPatch02.groups[:boundarynodes],3)[1:3:end]
@@ -116,18 +116,3 @@ plotrBTP(mPatch02, :my, "Biegemoment my", (-0.16, 0.05),nodal = true, a3d=true)
 ```{julia}
 plotrBTP(mPatch02, :mxy, "Biegemoment mxy", (-0.1 , 0.1),nodal=true, a3d=true)
 ```
-
-M(x,y) = D_b * B(x,y) * Un 
-
-        1   nu  0   
-D *     nu  1   0           * B(x,y)    * Un
-        0   0   (1-nu)/2
-
-
-        3 x 3               3 x 12      12 x 1 
-
-D B(x,y)[1] + D nu B(x,y)[2]
-D nu B(x,y)[1] + D B(x,y)[2]    * Un
-D (1-nu)/2               
-
-        3 x 12                  12 x 1

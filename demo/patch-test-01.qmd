@@ -39,6 +39,7 @@ mPatch.data[:kefunc] = plateKe(p3)
 mPatch.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatch,nf)
 applyDirichletBCs!(mPatch.groups[:boundarynodes], K, r, bcs)
+dofs2 = idxDOFs(mPatch.groups[:boundarynodes],3)
 
 # Randmomente um die y-Achse
 r[dofs2[2]]  = -a * a/2 
@@ -61,7 +62,6 @@ r[dofs2[21]] = 0
 r[dofs2[24]] = -b * b/2
 
 w = K \ r
-round.(w,digits=5)
 ```
 
 ```{julia}
