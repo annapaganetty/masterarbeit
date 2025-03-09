@@ -24,7 +24,7 @@ Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in 
 ![formaler Ablauf](00-pics/Ablauf-FEM.png){#fig-Ablauf-FEM width=40%} 
 
 
-Der Ablauf der computergestützten numerischen Berechnung wird in dem Ablaufschema @fig-fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = \sum \varphi_i \hat{w}_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden (Schritt (4), @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a(w,\delta w) = b(\delta w)$, gelöst werden. Die Formfunkionen $\varphi_i$ werden in den Kapiteln ... bis ... für unterschiedliche Elementtypen hergeleitet.
+Der Ablauf der computergestützten numerischen Berechnung wird in dem Ablaufschema @fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = \sum \varphi_i \hat{w}_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden (Schritt (4), @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a(w,\delta w) = b(\delta w)$, gelöst werden. Die Formfunkionen $\varphi_i$ werden in den Kapiteln ... bis ... für unterschiedliche Elementtypen hergeleitet.
 
 ![Ablauf der Finite Elemente Berechnung](00-pics/Ablauf-FEM-Berechnung.png){#fig-Ablauf-FEM-Berechnung width=120%} 
 

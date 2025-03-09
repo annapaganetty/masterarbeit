@@ -1,3 +1,9 @@
+---
+title: Untitled
+format:
+  masterarbeit-doc-typst: default
+---
+
 {{< include titelblatt.qmd >}}
 {{< pagebreak >}}
 

@@ -34,11 +34,14 @@ Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung de
 ```{julia}
 nf = 3
 bcs = [true, false, false]
+bcs1 = [false, false, false]
 e = element(mPatch, 2)
 mPatch.data[:kefunc] = plateKe(p3)
 mPatch.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatch,nf)
-applyDirichletBCs!(mPatch.groups[:boundarynodes], K, r, bcs)
+applyDirichletBCs!(mPatch.groups[:boundarynodes][1:3], K, r, bcs)
+applyDirichletBCs!(mPatch.groups[:boundarynodes][6:8], K, r, bcs)
+applyDirichletBCs!(mPatch.groups[:boundarynodes][4:5], K, r, bcs1)
 dofs2 = idxDOFs(mPatch.groups[:boundarynodes],3)
 
 # Randmomente um die y-Achse
@@ -52,14 +55,23 @@ r[dofs2[20]] = a * a
 r[dofs2[23]] = a * a/2 
 
 # Randmomente um die x-Achse 
-r[dofs2[3]]  = b * b/2  # = 10
-r[dofs2[6]]  = 0            # = 20
-r[dofs2[9]]  = -b * b/2   # = 10
-r[dofs2[12]] = b * b 
-r[dofs2[15]] = -b * b
-r[dofs2[18]] = b * b/2   # = 10
+# r[dofs2[3]]  = b * b/2  # = 10
+# r[dofs2[6]]  = 0            # = 20
+# r[dofs2[9]]  = -b * b/2   # = 10
+# r[dofs2[12]] = b * b 
+# r[dofs2[15]] = -b * b
+# r[dofs2[18]] = b * b/2   # = 10
+# r[dofs2[21]] = 0
+# r[dofs2[24]] = -b * b/2
+
+r[dofs2[3]]  = 0
+r[dofs2[6]]  = 0
+r[dofs2[9]]  = 0
+r[dofs2[12]] = 0
+r[dofs2[15]] = 0
+r[dofs2[18]] = 0
 r[dofs2[21]] = 0
-r[dofs2[24]] = -b * b/2
+r[dofs2[24]] = 0
 
 w = K \ r
 ```
@@ -95,7 +107,7 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatch, :mx, "Biegemoment mx", (-10, 10),nodal = false, a3d=true)
+plotrBTP(mPatch, :mx, "Biegemoment mx", (-10, 10),nodal = true, a3d=true)
 ```
 
 ### My

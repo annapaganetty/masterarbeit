@@ -1,0 +1,15 @@
+title: Masterarbeit-doc
+author: annapaganetty
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    typst:
+      template-partials:
+        - typst-template.typ
+        - typst-show.typ
+      lang: de
+      font: "New Computer Modern"
+      font-size: 11pt
+      code-line-numbers: true
+      number-sections: true

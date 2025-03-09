@@ -1,6 +1,6 @@
 ## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-Steifigkeitsmatrix}
 
-### BFS-Rechteckelement
+### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 
 Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
 
@@ -128,7 +128,7 @@ $$
 
 
 
-### DKQ Element
+### DKQ Element {#sec-Steifigkeitsmatrix-DKQ}
 
 Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
 
@@ -303,10 +303,9 @@ $$
 \end{bmatrix}.
 $$ {#eq-B-Matrix-DQT}
 
-Die Elementsteifigkeitsmatrizen entspricht der in @eq-elementsteifigkeitsmatrix.
+Die Formulierung der Elementsteifigkeitsmatrizen stimmt mit der Formulierung für das BFS-Element aus @eq-elementsteifigkeitsmatrix überein.
 
-
-### Parametrisierung DKQ
+### Parametrisierung DKQ {#sec-Parametrisierung}
 
 Die in dem vorrangehenden Kapitel hergelteitet Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $\xi$ - und $\eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten  $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements 
 $$
@@ -322,93 +321,12 @@ wie in @fig-parametrisierung dargestellt.
 
 ![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=100%}
 
-Bei der Betrachtung eines zweidimensionalen Elements gibt es vier Möglichkeiten der Skalierung bzw. Verschiebung. Wie in @fig-skalierung-refelement beschrieben können die Koordinaten $\xi$, $\eta$ und die Kombination beider Koordinaten skaliert werden. Zudem kann das gesamte Element durch eine Konstante verschoben werden. Durch das Zusammensetzen der eben genannten Parameter, können die Koordinaten des verzerrten Elements durch 
+
 $$
-\begin{align}
-F^e_x(\xi,\eta)= x(\xi,\eta) = a_1 + a_2\xi +a_3\eta + a_4\xi\eta \\
-F^e_y(\xi,\eta)= y(\xi,\eta) = a_5 + a_6\xi +a_7\eta + a_8\xi\eta
-\end{align}
-$${#eq-skalierung-x-y}
-
-beschrieben werden. Die Faktoren $a_2$ und $a_6$ skalieren $\xi$, $a_3$ und $a_7$ skalieren $\eta$, $a_4$ und $a_8$ skalieren die Kombination von $\xi$ und $\eta$ und $a_1$ und $a_5$ verschieben das Element. Die physikalischen Koordinaten können somit als Funktionen von $\xi$ und $\eta$ ausgedrückt werden. Die beschriebenen Ansatzfunktionen von $x$ und $y$ (@eq-skalierung-x-y) entsprechen denselben Ansatzfunktionen des Bilinearen Elements (@eq-ansatzfunktion-u).
-
-
-N_1(\xi,\eta) &= \frac{1}{4} (\xi\eta - \xi - \eta + 1) \\
-N_2(\xi,\eta) &= \frac{1}{4} (-\xi\eta+ \xi - \eta + 1) \\
-N_3(\xi,\eta) &= \frac{1}{4} (\xi\eta + \xi + \eta + 1) \\
-N_4(\xi,\eta) &= \frac{1}{4} (-\xi\eta- \xi + \eta + 1). \\
-
-![Skalierung Referenzelement](00-pics/Skalierung-Referenzelement.png){#fig-skalierung-refelement width=70%}
-
-Um die Spannung (@eq-spannungen), welche essentielle bei der Berechnung der Elementsteifigkeitsmatrizen in Kapitel... sind, zu berechnen müssen die Ableitungen  
-$$
-\frac{\partial u}{\partial x}, \qquad
-\frac{\partial u}{\partial y}, \qquad
-\frac{\partial v}{\partial x} \qquad \text{und} \qquad
-\frac{\partial v}{\partial y}
+ phi_I(x) = N_i(F^-1(x))
 $$
 
-berechnet werden. Aufgrund der Tatsache, dass $u$ und $v$ Funktionen von $\xi$ und $\eta$ sind, müssen zunächst die Koordinaten $\xi$ und $\eta$ als Funktionen von $x$ und $y$ formuliert werden. Dadurch können die Ableitungen der horizontalen Verschiebungen durch Anwendung der Kettenregel mit
-$$
-\begin{align}
-\frac{\partial u(\xi,\eta)}{\partial x}
-= \frac{\partial \xi(x,y)}{\partial x} \frac{\partial u(\xi,\eta)}{\partial \xi}
-+\frac{\partial \eta(x,y)}{\partial x} \frac{\partial u(\xi,\eta)}{\partial \eta} \\
-\frac{\partial u(\xi,\eta)}{\partial y}
-= \frac{\partial \xi(x,y)}{\partial y} \frac{\partial u(\xi,\eta)}{\partial \xi}
-+\frac{\partial \eta(x,y)}{\partial y} \frac{\partial u(\xi,\eta)}{\partial \eta} \\
-\frac{\partial v(\xi,\eta)}{\partial x}
-= \frac{\partial \xi(x,y)}{\partial x} \frac{\partial v(\xi,\eta)}{\partial \xi}
-+\frac{\partial \eta(x,y)}{\partial x} \frac{\partial v(\xi,\eta)}{\partial \eta} \\
-\frac{\partial v(\xi,\eta)}{\partial y}
-= \frac{\partial \xi(x,y)}{\partial y} \frac{\partial v(\xi,\eta)}{\partial \xi}
-+\frac{\partial \eta(x,y)}{\partial y} \frac{\partial v(\xi,\eta)}{\partial \eta} \\
-\end{align}
-$$
-
-beschrieben werden.
-Zusammengesfasst zu einem Matrix-Vektor-Produkt ergibt sich für die Ableitungen von $u$
-$$
-\left[ \begin{array}{center}
-\frac{\partial u(\xi,\eta)}{\partial x}\\ 
-\frac{\partial u(\xi,\eta)}{\partial y}\\ 
-\end{array}\right]
-= 
-\underbrace{\left[ \begin{array}{center}
-\frac{\partial \xi(x,y)}{\partial x} &
-\frac{\partial \eta(x,y)}{\partial x}  \\
-\frac{\partial \xi(x,y)}{\partial y} &
-\frac{\partial \eta(x,y)}{\partial y}
-\end{array}\right]}_{\mathbf{J}_{F^-1}}
-\left[ \begin{array}{center}
-\frac{\partial u(\xi,\eta)}{\partial \xi}\\ 
-\frac{\partial u(\xi,\eta)}{\partial \eta}\\ 
-\end{array}\right]
-$${#eq-ableitungen-u}
-
-und für die Ableitungen von $v$ 
-$$
-\left[ \begin{array}{center}
-\frac{\partial v(\xi,\eta)}{\partial x}\\ 
-\frac{\partial v(\xi,\eta)}{\partial y}\\ 
-\end{array}\right]
-= 
-\underbrace{\left[ \begin{array}{center}
-\frac{\partial \xi(x,y)}{\partial x} &
-\frac{\partial \eta(x,y)}{\partial x}  \\
-\frac{\partial \xi(x,y)}{\partial y} &
-\frac{\partial \eta(x,y)}{\partial y}
-\end{array}\right]}_{\mathbf{J}_{F^-1}}
-\left[ \begin{array}{center}
-\frac{\partial v(\xi,\eta)}{\partial \xi}\\ 
-\frac{\partial v(\xi,\eta)}{\partial \eta}\\ 
-\end{array}\right]
-$${#eq-ableitungen-v}
-
-
-<!-- Warum sind das die gleichen Funktionen ???  -->
-
-Durch die in @eq-skalierung-x-y beschriebenen Ansatzfunktionen ergeben sich die physikalischen Koordinaten auf dem Element $\Omega$ , für einen beliebigen Punkt $(\xi,\eta)$ auf dem Referenzelement, zu 
+Sei $(\xi,\eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
 
 $$
 \begin{align}
@@ -428,12 +346,13 @@ F_{y}(\xi,\eta) \\
 \sum_{i=1}^n N_i(\xi,\eta) \cdot y_i \\
 \end{array}\right]
 \end{align}
-$$ {#eq-F}
+$$ {#eq-black-scholes-01}
 
-wobei, $N_i$ die Formfunktionen des Bilinearen Referenzelements sind. Um die Umrechnung in die andere Richtung, von den physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ durchzuführen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
+die physikalischen Koordinaten auf dem Element $\Omega$ beschrieben. 
+Die vier linearen Formfunktionen entsprechenen den in Kapitel ... besprochenen Funktionen des bilinearen Elements, dargestellt in  @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Um die physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ umzurechnen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
 $$
 \begin{align}
-\underline{F}^{-1}(x,y) =  
+\mathbf{{F}^{-1}}(x,y) =  
 \left[ \begin{array}{center} 
 \xi(x,y) \\
 \eta(x,y) \\
@@ -444,59 +363,144 @@ F_{x}^{-1}(x,y) \\
 F_{y}^{-1}(x,y) \\
 \end{array}\right]
 \end{align}
-$$ {#eq-Umkehrfunktion-F}
+$$ {#eq-f-1}
 
-notwendig. Die aus @eq-ableitungen-u und @eq-ableitungen-v abgeleitete Matrix
+notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien N_i die Formfunktionen definiert auf dem Referenzelement, so sind
+
+$$
+\begin{align}
+&\varphi_I(x,y)  = N_i(\xi(x,y),\eta(x,y)), \\
+\end{align}
+$$ {#eq-phi-I}
+
+die Formfunktionen defniert auf dem physikalischen Element, wobei $i$ und $I$ je nach Elementansatz variieren. Zur Berechnung der Elementsteifigkeitsmatrix, werden die Ableitungen
+
+$$
+\begin{align}
+\varphi_{I,_x}(x,y) = 
+\left[ \begin{array}{center}    
+F_{x,_x}^{-1}(x,y) &
+F_{y,_x}^{-1}(x,y)
+\end{array}\right]
+\left[ \begin{array}{center} 
+N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+\end{array}\right] 
+\end{align}
+$$ {#eq-phi-I-Ableitung-x}
+$$
+\begin{align}
+\varphi_{I,_y}(x,y) = 
+\left[ \begin{array}{center}    
+F_{x,_y}^{-1}(x,y) &
+F_{y,_y}^{-1}(x,y)
+\end{array}\right]
+\left[ \begin{array}{center} 
+N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+\end{array}\right] 
+\end{align}
+$$ {#eq-phi-I-Ableitung-y}
+
+benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt
+$$ 
+\left[ \begin{array}{center} 
+\varphi_{I,_1}(x,y) \\
+\varphi_{I,_2}(x,y)
+\end{array}\right]
+= 
+\underbrace{\left[ \begin{array}{center} 
+\xi_{,_x}(x,y) & \eta_{,_x}(x,y) \\
+\xi_{,_y}(x,y) & \eta_{,_y}(x,y) 
+\end{array}\right]}_{\mathbf{J}_{F^-1}}
+\left[ \begin{array}{center} 
+N_{i,_x}(\xi(x,y),\eta(x,y)) \\
+N_{i,_y}(\xi(x,y),\eta(x,y))
+\end{array}\right].
+$$ {#eq-Ableitung-phi-I-gesamt}
+
+zusammengefasst werden. Der Ausdruck
+$$
+\nabla \varphi_I = \mathbf{J}_{F^{-1}} \cdot \nabla N_i
+$$ {#eq-Ableitung-phi-I-Nabla}
+
+ergibt sich durch eine weitere Vereinfachung mit Hilfe des Nabla-Operators.
+
+Die Jacobi-Matrix der inversen Funktionen $F_x^{-1}$ und $F_y^{-1}$
 $$ 
 \mathbf{J}_{F^{-1}}(x,y) = 
 \left[ \begin{array}{center} 
-\xi_{,_1}(x,y) & \eta_{,_1}(x,y) \\
-\xi_{,_2}(x,y) & \eta_{,_2}(x,y) 
+\xi_{,_x}(x,y) & \eta_{,_x}(x,y) \\
+\xi_{,_y}(x,y) & \eta_{,_y}(x,y) 
 \end{array}\right]
 =
 \left[ \begin{array}{center} 
 \frac{\partial F_{x}^{-1}(x,y)}{\partial x} & \frac{\partial F_{y}^{-1}(x,y)}{\partial x} \\
 \frac{\partial F_{x}^{-1}(x,y)}{\partial y} & \frac{\partial F_{y}^{-1}(x,y)}{\partial y} 
 \end{array}\right]
-$$ {#eq-inverse-Jacobi-Matrix}
+$$ {#eq-JF-1}
 
-wird in der Literatur Jacobi-Matrix der inversen Funktionen $F_x^{-1}$ und $F_y^{-1}$ bezeichnet und entspricht nach dem _Inverse function theorem_ der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$. Somit gilt
+fasst die Ableitung von $F_x^{-1}$ und $F_y^{-1}$ nach $x$ und nach $y$ in einer Matrix zusammen. Für die Funktionen $F_x$ und $F_y$ ist die entsprechende Ableitungsmatrix 
 
 $$
-\mathbf{J}_{F^{-1}}(x,y) =
-(\mathbf{J}_{F})^{-1}(\xi,\eta) = 
+\begin{align}
+\mathbf{J}_F 
+&=
 \left[ \begin{array}{center} 
-x_{,_1}(\xi,\eta) & y_{,_1}(\xi,\eta) \\
-x_{,_2}(\xi,\eta) & y_{,_2}(\xi,\eta) 
-\end{array}\right]^{-1}
+x_{,_{\xi}}(\xi,\eta) & y_{,_{\xi}}(\xi,\eta) \\
+x_{,_{\eta}}(\xi,\eta) & y_{,_{\eta}}(\xi,\eta) 
+\end{array}\right]
 =
 \left[ \begin{array}{center} 
 \frac{\partial F_{x}(\xi,\eta)}{\partial \xi} & \frac{\partial F_{y}(\xi,\eta)}{\partial \xi} \\
 \frac{\partial F_{x}(\xi,\eta)}{\partial \eta} & \frac{\partial F_{y}(\xi,\eta)}{\partial \eta} 
-\end{array}\right]^{-1},
-$$ {#eq-inverse-normal-Jacobi-Matrix}
-
-wobei $\mathbf{J}_{F}$ die Bezeichnung der Jacobi-Matrix ist. Die Einträge der Transformationsmatrix ergeben sich aus der Definition von $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ in @eq-F, sodass
-$$
-\mathbf{J}_{F} =
+\end{array}\right] \\
+&= 
 \left[ \begin{array}{center} 
 \sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \xi} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \xi} \cdot y_i^e \\
 \sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \eta} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \eta} \cdot y_i^e
 \end{array}\right] 
-=
+% =
+% \left[ \begin{array}{center} 
+% \frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi} \\
+% \frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}
+% \end{array}\right]
+% \left[ \begin{array}{center} 
+% x_1^e & y_1^e \\
+% x_2^e & y_2^e \\
+% x_3^e & y_3^e \\
+% x_4^e & y_4^e 
+% \end{array}\right]
+\end{align}
+$$ {#eq-JF}
+
+$N_i$ mit $i = 1,2,3,4$ bezeichnet in diesem Fall die vier linearen Formfunktionen des bilinearen Elementansatzes, welche für die Parametrisierung notwendig sind. Sei die Jacobi-Matrix vereinfacht ausgedrückt 
+
+$$
+\mathbf{J}_F =
 \left[ \begin{array}{center} 
-\frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi} \\
-\frac{N_1}{\partial \eta}  & \frac{N_2}{\partial \eta}  & \frac{N_3}{\partial \eta}  & \frac{N_4}{\partial \eta}
-\end{array}\right]
-\left[ \begin{array}{center} 
-x_1^e & y_1^e \\
-x_2^e & y_2^e \\
-x_3^e & y_3^e \\
-x_4^e & y_4^e 
+J_{11} & J_{12} \\
+J_{21} & J_{22}
 \end{array}\right]
 $$
 
-Es ergeben sich, aus den Ableitungen der bilinearen Formfunktionen $N_i$ und den Koordinaten der Elementknoten, die Komponenten der Jacobi-Matrix
+und die inverse Jacobi-Matrix 
+
+$$
+\mathbf{J}_F^{-1} = \frac{1}{det(\mathbf{J})}
+\left[ \begin{array}{center} 
+J_{22} & -J_{12} \\
+-J_{21} & J_{11}
+\end{array}\right]
+=
+\left[ \begin{array}{center} 
+j_{11} & j_{12} \\
+j_{21} & j_{22}
+\end{array}\right]
+$$
+
+so sind die Komponenten der Jacobi-Matrix 
+
 $$
 \begin{align}
 J_{11}  &= \frac{1}{4} \cdot (-x_1^e + x_2^e + x_3^e - x_4^e + \eta (x_1^e - x_2^e + x_3^e - x_4^e)) \\
@@ -510,25 +514,56 @@ und die Komponenten der inversen Transformationsmatrix
 $$ 
 \begin{align}
 j_{11} &= \frac{1}{det(\mathbf{J})} \cdot J_{22}, \quad &j_{12} = \frac{1}{det(\mathbf{J})} \cdot J_{12}, \\
-j_{21} &= \frac{1}{det(\mathbf{J})} \cdot J_{21}, \quad &j_{22} = \frac{1}{det(\mathbf{J})} \cdot J_{11} \\
+j_{21} &= \frac{1}{det(\mathbf{J})} \cdot J_{21}, \quad &j_{22} = \frac{1}{det(\mathbf{J})} \cdot J_{11}. \\
 \end{align}
 $$ 
 
 mit der Determinanten 
 $$
-det(\mathbf{J}) =   \frac{1}{8} \cdot (y_{42}^e x_{31}^e - y_{31}^e x_{42}^e) +
-                    \frac{\xi}{8} \cdot (y_{34}^e x_{21}^e - y_{21}^e x_{34}^e) +
-                    \frac{\eta}{8} \cdot (y_{41}^e x_{32}^e - y_{32}^e x_{41}^e)
+det(\mathbf{J}) = J_{11} J_{22} - J_{21} J_{12}  
 $$
 
+Da, entsprechend dem _inverse function theorem_, die Jacobi-Matrix der inversen Funktionen $F_x^{-1}$ und $F_y^{-1}$ gleich der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$ ist, 
 
+$$
+\mathbf{J}_{F^{-1}} = (\mathbf{J}_F)^{-1},
+$$ {#eq-inverse-function-theorem}
 
+ergibt sich die Parametrisierung der Formfunktionen aus @eq-Ableitung-phi-I-gesamt zu 
 
+$$ 
+\left[ \begin{array}{center} 
+\varphi_{I,_1}(x,y) \\
+\varphi_{I,_2}(x,y)
+\end{array}\right]
+= 
+\left[ \begin{array}{center} 
+j_{11} & j_{12} \\
+j_{21} & j_{22} 
+\end{array}\right]
+\left[ \begin{array}{center} 
+N_{i,_x}(\xi(x,y),\eta(x,y)) \\
+N_{i,_y}(\xi(x,y),\eta(x,y))
+\end{array}\right].
+$$
+
+Bezogen auf das DKQ-Element aus @sec-Steifigkeitsmatrix-DKQ ist die Parametrisierte B-Matrix
+
+$$
+\mathbf{B_b} = 
+\left[ \begin{array}{center}
+j_{11} H_{i,_\xi}^x + j_{12} H_{i,_\eta}^x \\
+j_{21} H_{i,_\xi}^y + j_{22} H_{i,_\eta}^y \\
+j_{11} H_{i,_\xi}^y + j_{12} H_{i,_\eta}^y +
+j_{21} H_{i,_\xi}^x + j_{22} H_{i,_\eta}^x & 
+\end{array}\right]
+$$
+
+und die dementsprechende Formulierung für die Elementsteifigkeitsmatrizen bezogen auf das Referenzelement
 
 $$ 
 \begin{align}
 \mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
-&= \int_{\Omega^e} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e \quad d\Omega \\
 &= \int_{-1}^{1} \int_{-1}^{1} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e det[J] \quad d\xi \eta
 \end{align}
 $$ {#eq-elementsteifigkeitsmatrix_DKQ}
