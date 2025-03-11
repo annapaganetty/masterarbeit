@@ -1,4 +1,4 @@
-## Zielsetzung und Gliederung der Arbeit {#sec-zielsetzung-gliederung}
+## Gliederung der Arbeit {#sec-gliederung}
 
 
 Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA, sowie die Anwendung auf Beispiele zur Testung, sind in Kapitel 5 dokumentiert.

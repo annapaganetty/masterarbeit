@@ -1,4 +1,4 @@
-```{=typst}
+
 #place(top + center,
   dx: 30%,
   figure(
@@ -26,4 +26,25 @@
   *1.Prüfer*: Prof. Dr.-Ing. Matthias Baitsch\
   *2.Prüfer*: Prof. Dr.-Ing. Abdullah Alsahly
   ])
-```
+
+#pagebreak()
+#block(above: 0em, below: 2em)
+#v(100pt, weak: true)
+#text(25pt, weight: 600)[
+  Eidesstattliche Erklärung
+]
+#v(60pt, weak: true)
+
+Hiermit versichere ich, die vorliegende Arbeit selbstständig verfasst und keine anderen als die von mir angegebenen Quellen und Hilfsmittel benutzt zu haben. Alle Stellen, die wörtlich oder sinngemäß aus veröffentlichen Quellen stammen, habe ich gekennzeichnet. Die Arbeit hat noch bei keiner anderen Prüfung in gleicher oder ähnlicher Form vorgelegen.\
+Bochum, den xx. März 2025\
+Anna Paganetty\
+
+#pagebreak()
+#block(above: 0em, below: 2em)
+#v(100pt, weak: true)
+#text(25pt, weight: 600)[
+  Danksagung
+]
+#v(60pt, weak: true)
+
+bla bla bla

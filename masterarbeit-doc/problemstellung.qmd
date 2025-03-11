@@ -1,7 +1,10 @@
 ## Problemstellung {#sec-problemstellung}
 
-Nichtsdestotrotz sollten Ingenieure immer im Hinterkopf behalten, dass alle gemachten Angaben, wie Geometrie und Materialeigenschaften das Modell beeinflussen. Je genauer die Eingaben, desto genau sind die Ergebnisse.
 
-@sec-zielsetzung-gliederung
 
-Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
+Ist die Verträglichkeit der Rotationen bei benachbarten Rechteckelementen am gemeinsamen Knoten gegeben, sodass bei der Darstellung der Rotationen keine Knicke vorhanden sind, so wird bei dem Elementansatz von einer sogenannten $C^1$-Kontinuität gesprochen. Diese Kontinuität erfüllt der kubische Ansatz des Bogner-Fox-Schmitt Elements. Für die Berechnung allgemeiner Vierecke ist dieser Ansatz jedoch unbrauchbar, da der zusätzliche Freiheitsgrad $\theta_{\xi\eta}$ störend wirkt. 
+
+Ziel dieser Arbeit ist die Herleitung einer ausgewählten Formulierung für allgemeine Vierecke, sowie die Implementierung in der Programmierumgebung JULIA zur Verifikation der Umsetzung an ausgewählten Beispielen. Dabei 
+
+Das grundlegende Verständnis der Grundlagen der Finite Element Methode und etablierter Elementansätze sind von großer Wichtigkeit. Die Erläuterung numerischer Methoden für die Kirchhoffsche Plattentheorie ist in, vor allem in der deutschsprachigen Literatur, bisher sehr lückenhaft. Daher stellt die Aufarbeitung theoretischer Grundlagen, die zur Formulierung von FEM für Kirchhoffplatten notwending sind ein weiteres Ziel dar. Dies beinhaltet sowohl mechanischen Zusammenhänge, als auch mathematische Verfahren.
+

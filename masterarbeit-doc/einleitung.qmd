@@ -2,4 +2,4 @@
 
 {{< include motivation.qmd >}}
 {{< include problemstellung.qmd >}}
-{{< include zielsetzung-gliederung.qmd >}}
+{{< include gliederung.qmd >}}

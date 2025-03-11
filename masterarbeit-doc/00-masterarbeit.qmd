@@ -1,14 +1,8 @@
 ---
-title: Untitled
+title: Einleitung
 format:
   masterarbeit-doc-typst: default
 ---
-
-{{< include titelblatt.qmd >}}
-{{< pagebreak >}}
-
-{{< include eidesstattliche-erklaerung.qmd >}}
-{{< pagebreak >}}
 
 <!-- Kapitel 1 -->
 {{< include einleitung.qmd >}}
