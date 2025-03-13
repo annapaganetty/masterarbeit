@@ -1,0 +1,122 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+# Patch Test - einseitig
+
+```{julia}
+a = 20 
+b = 10 
+```
+
+Parameter Platte 
+```{julia}
+p3 = @var Params()
+p3.lx = 2*a # = 40
+p3.ly = 2*b # = 20 
+p3.q = 0
+p3.ν = 0
+p3.h = 1
+p3.E = 1000;
+```
+
+## Plot der Plattenelemente
+```{julia}
+WGLMakie.activate!()
+mPatchY = makePTMesh01(p3)
+plotmesh(mPatchY;title="Patch Test")
+```
+
+## Verformung 
+
+Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
+
+```{julia}
+nf = 3
+bcs = [true, false, false]
+bcs1 = [false, false, false]
+e = element(mPatchY, 2)
+mPatchY.data[:kefunc] = plateKe(p3)
+mPatchY.data[:refunc] = plateRe(p3.q)
+K,r = assembleKr(mPatchY,nf)
+applyDirichletBCs!(mPatchY.groups[:boundarynodes][1:3], K, r, bcs)
+applyDirichletBCs!(mPatchY.groups[:boundarynodes][6:8], K, r, bcs)
+applyDirichletBCs!(mPatchY.groups[:boundarynodes][4:5], K, r, bcs1)
+dofs2 = idxDOFs(mPatchY.groups[:boundarynodes],3)
+
+# Randmomente um die y-Achse
+r[dofs2[2]]  = a * a/2 * 10
+r[dofs2[5]]  = a * a  * 10
+r[dofs2[8]]  = a * a/2  * 10
+r[dofs2[11]] = 0   
+r[dofs2[14]] = 0
+r[dofs2[17]] = -a * a/2 * 10
+r[dofs2[20]] = -a * a * 10
+r[dofs2[23]] = -a * a/2 * 10
+
+# Randmomente um die x-Achse 
+r[dofs2[3]]  = 0
+r[dofs2[6]]  = 0
+r[dofs2[9]]  = 0
+r[dofs2[12]] = 0
+r[dofs2[15]] = 0
+r[dofs2[18]] = 0
+r[dofs2[21]] = 0
+r[dofs2[24]] = 0
+
+w = K \ r
+thetaX = w[2:3:end]
+thetaY = w[3:3:end] # an jeder stelle ungefähr 0
+```
+
+```{julia}
+plotwBTP(mPatchY, w; title="Verformung")
+```
+
+## Verdrehung ThetaX
+```{julia}
+plotThetaxBTP(mPatchY, w; title="Verdrehung θx")
+```
+
+## Verdrehung ThetaY
+```{julia}
+plotThetayBTP(mPatchY, w; title="Verdrehung θy")
+```
+
+## Schnittgrößen Plotten 
+
+```{julia}
+mPatchY.data[:post] = postprocessor(p3, w)
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=:redblue,
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=true,
+    featureedgelinewidth=2.5
+)
+```
+
+### Mx
+```{julia}
+plotrBTP(mPatchY, :mx, "Biegemoment mx", (-0.1, 0.1),nodal = true, a3d=true)
+```
+
+### My
+```{julia}
+plotrBTP(mPatchY, :my, "Biegemoment my", (-100, -99),nodal = false, a3d=true)
+```
+
+### Mxy
+```{julia}
+plotrBTP(mPatchY, :mxy, "Biegemoment mxy", (-1,1),nodal = true, a3d=true)
+```
+
+```{julia}
+plotrBTP(mPatchY, :qx, "Querkraft qx", (-1,1),nodal = false, a3d=true)
+```
+
+```{julia}
+plotrBTP(mPatchY, :qy, "Querkraft qy", (-1,1),nodal = true, a3d=true)
+```
