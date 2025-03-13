@@ -1,21 +1,20 @@
-## formale Definition finite Elemente {#sec-def-finites-element}
+## formale Definition eines finiten Elements{#sec-def-finites-element}
 
-Das in Kap. @sec-gleichgewicht definierte Randwertproblem lässt sich nach Ableitung in die schwache Form (@sec-schwache-form) als Bilinear- und Linearform durch
+Das in @sec-gleichgewicht definierte Randwertproblem lässt sich nach Ableitung in die schwache Form (@sec-schwache-form) als Bilinear- und Linearform durch
 $$
 a(w,\delta w) = b(\delta w)
 $$
 
-ausdrücken. Die Lösung diese Problem erfolgt durch die Unterteilung des Problemgebiets in sogenannte _finite Elemente_. In @sec-finite-elemente wurde bereits auf den Unterschied bei der Definition finiter Elemente hingewiesen.
+ausdrücken. Die Lösung diese Problem erfolgt durch die Unterteilung des Problemgebiets in sogenannte _finite Elemente_. Diese bilden die Grundlage für die Anwendung der Finite-Elemente-Methode in der numerischen Analyse.
 
-
-In der Mathematik (Braess) 
+Je nach naturwissenschaftlichen Kontext wird die Bezeichnung _Finites Element_ unterschiedlich verwendet. In ingenieurwissenschaftlichen Disziplinen wird der Begriff vorrangig für die physikalischen Elemente, also die geometrischen Teilgebiete genutzt. In der Mathematik hingegen wird sich größtenteils auf die Definition nach Ciarlet bezogen, welche sich auch im Kontext dieser Arbeit als dienlich erweißt.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-_Definition_ (Finites Element): Ein finites Element wird durch das Tripel $(\mathcal{K}, P_K ,\sum)$ definiert. Hierbei sei 
+_Definition_ (Finites Element): Ein finites Element wird durch das Tripel $(K, \mathcal{P_K} ,\sum)$ definiert. Hierbei sei 
 
 $$
 \begin{align}
-&(i) &&{K} \text{eine Teilmenge und somit ein Teilgebiet des Berechnungsgebiets} \Omega \\
+&(i) &&{K} \subseteq \mathbb{R}^n \text{eine Teilmenge und somit ein Teilgebiet des Berechnungsgebiets} \Omega \\
 & &&\text{(das} \mathbf{\text{finite Element}} \text{),} \\
 &(ii) &&\mathcal{P} \text{ ein endlich dimensionaler Raum von Funktionen definiert auf }{K} \\
 & &&\text{(die} \mathbf{\text{Basisfunktionen}} \text{) und } \\
@@ -24,3 +23,13 @@ $$
 $$
 
 :::
+
+Auch die Interpretation des Begriffes _Freiheitsgrad_ variiert stark, je nach spezifischen naturwissenschaftlichem Kontext. Während sich in der Strukturmechanik die Freiheitsgrade auf die möglichen Bewegungen (Translation und Rotation) eines Körpers oder eines Systems beziehen, werden Freiheitsgrade im mathematischen Sinn als lineare Funktionale (nach @sec-funktionale) definiert. 
+
+Es ergibt sich dadurch die kompakte Beschreibung einer _nodalen Basis_ finiter Elemente durch die Basisfunktionen $\{ \varphi_1,\varphi_1,\cdots, \varphi_k\}$ von $\mathcal{P}$ und die Menge der linearen Abbildung $\sum = \{d_1, d_2, \cdots, d_k\}$ mit
+
+$$
+d_i(\varphi_j) = \delta_{ij}. 
+$$ {#eq-nodale-Basis}
+
+Schlussendlich beschreibt ein Freiheitsgrad im Ingenieurswesen einen Eintrag $\hat{w}_i$ in dem Verschiebungsvektor $\mathbf{\hat{w}}$, dessen Wert sich aus der Anwendung von Linearkombinationen ergibt.

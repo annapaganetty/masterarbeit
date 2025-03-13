@@ -1,0 +1,45 @@
+## Plattenelementtypen in aktueller Finite-Element-Software {#sec-kommerzielle-Software}
+\
+
+Zu den bekanntesten Finite Elemente Softwares gehören ADINA und ANSYS, welche, neben der Lösung von statischen und dynamischen Aufgabenstellungen der linearen und nichtlinearen Strukturmechanik, primär in der Strömungsmechanik, und bei der Lösung multiphysikalischer Probleme eingesetzt werden. Diese beiden Programme gelten als Vertreter der  General-Purpose Software, wohingegen InfoCAD, RFEM, SAP2000, SOFiSTiK, iTWO structure fem / TRIMAS und MircoFE speziell für die Tragwerksplanung entwickelte Programme sind. Die numerische Berechnung von Plattentragwerken durch die Finite ELemente Analyse basiert in allen Fällen entweder auf der Reissner-Mindlin Theorie oder der Kirchhoffplattentheorie. Neben der Wahl der Plattentheorie ist auch der Elementansatz von wesentlicher Bedeutung und variiert je nach kommerziellen Programm. Auf die Software von InfoCAD, RFEM und SAP2000 wird nachfolgend näher eingegangen.
+
+
+|*Software* |*Elementtyp Platten*|
+|:--------|:--------------|
+|_ADINA_| DKT-Element (Kirchhoffsche Plattentheorie) \
+              3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \
+              -> gemische Interpolation tensorieller Komponenten (?) \
+              4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie) \
+              -> gemische Interpolation tensorieller Komponenten (?) \
+              Elemente höherer Ordnung|
+|_ANSYS_|  schubweiche Dreieck-Plattenelemente \
+                schubweiche Viereck-Plattenelemente|
+|_InfoCad_| DKT-Element (Kirchhoffsche Plattentheorie) \
+                DKQ-Element (Kirchhoffsche Plattentheorie) \ alternativ auch Elemente mit gemischter Interpolation nach Reissner-Mindlin Plattentheorie |
+|_RFEM_| 3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \
+              4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie)|
+|_SAP2000_| DKT-Element (Kirchhoffsche Plattentheorie)\
+                DKQ-Element (Kirchhoffsche Plattentheorie)\
+                3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \
+                4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie)|
+|_SOFiSTiK_|schubweiches 4-Knoten-Viereck-Plattenelement|
+|_iTWO structure fem / TRIMAS_ | 4-Knoten-Viereck-Schalenelement \
+9-Knoten-Viereck-Schalenelement \
+3-Knoten-Dreieck-Schalenelement \
+6-Knoten-Dreieck-Schalenelement |
+|_MicroFe_ | Kirchhoff/Mindlin Elementansätze für dicke und dünne Platten und Faltwerke (mbAEC, Produktflyer MicroFe) |
+
+: Finite-Elemente-Software und deren Elementtypen {#tbl-FEM-Software}
+
+__InfoCAD__
+
+InfoCAD bietet die Möglichkeit, sich zwischen „discrete Kirchhoff theory“ (DKT) - Elementen und „Mindlin-Reissner“ (MR) - Elemente zu entscheiden. Laut Benutzerhandbuch erfüllen alle Elementansätzt den Patch-Test. Bei der berechnung nach Kirchhoff werden nachdem die Verzerrungs-Verschiebungs-Beziehungen für die dicke Platte formuliert wurden, die Kirchhoff'schen Bedingungen für die dünne Platte an diskreten Punkten der Elementberandung eingeführt. "Dadurch können auch bei diesen Elementen die Unbekannten des Verformungsansatzes durch die Eckknotenverformungen ausgedrückt werden. Der Vorteil gegenüber einem reinen Verschiebungsansatz bei Plattenelementen
+zeigt sich in einem wesentlich verbesserten Konvergenzverhalten."^[siehe Benutzerhandbuch InfoCAD].
+
+__RFEM__
+
+Auch bei RFEM ist die Wahl zwischen beiden Plattentheorien möglich. Empfohlen wird die Nutzung der Kirchhofftheorie für die Berechnung dünnerer Platten wie Stahlbleche. Dicke Platten und Schalen des Massivbaus sollten auf Grundlage der Reissner-Mindlin Theorie berechnet werden. Eine genaue Beschreibung der verwendeten Plattenelemente erfolgt in dem Handbuch von RFEM 6 nicht. Lediglich die Viereckigen Schalenelemente, basierend auf der Reissner-Mindlin Theorie werden vorgestellt. "Basierend aufeiner gemischten Interpolation der transversalen Verschiebungen, Querschnittsdrehungen und transversalen Schubverzerrungen werden die von Bathe und Dvorkin [3] vorgestellten MITC-Elemente (Mixed Interpolationof Tensorial Components) verwendet: MITC3+ für Dreiecke, MITC4 für Vierecke."^[siehe Benutzerhandbuch RFEM]
+
+__SAP2000__
+
+Bei SAP2000 handelt es sich um eine amerikansiche Software die entwickelt und vertrieben wird über Computers and Structures Inc. (CSi), Walnut Creek, CA, USA. Neben den US-Amerikanischen Normen ist auch der Eurocode in dem Programm hinterlegt und ermöglicht die Nutzung in Deutschland. Sowohl für die Reissner-Mindlin Theorie, als auch für die Kirchhoffsche Plattentheorie enthält SAP2000 eine 3-Knoten-Dreieckelement und ein 4-Knoten-Viereckelement.

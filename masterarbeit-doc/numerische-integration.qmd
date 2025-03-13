@@ -5,7 +5,7 @@ Bei der Berechnung von Finite Elemente Modellen, spielen die numerische Integrat
 
 ### Gauß-Integration {#sec-gauss-integration}
 
-Die _Gauß-Quadratur_ geht auf den deutschen Mathematiker Carl-Friedrich GAUß (1777-1855) zurück. Wie auch bei der Newton-Cotes-Formel, beruht der Ansatz von GAUß auf der Idee, die zu integrierende Funktionen durch eine Polynomfunktion zu approximieren und diese anschließend exakt zu integrieren. Die Polynomfunktion wird durch eine gewichtete Summe mit den Gewichten $\hat{w}_i$ und den Funktionswerten $y(x_i)$ der ausgangsfunktion an den Stützstellen $x_i$ mit $i = 1...n$ angenähert. Bei der Newton-Cotes-Formel sind die Stelle $x_i$ gleichmäßig über das Integrationsgebiet $[a,b]$ verteilt und Polynomfunktionen vom Grad $n-1$ können exakt integriert werden (siehe @fig-numerische-integration). GAUß stellte fest, dass durch eine optimalere Wahl der Stützstellen die exakte Lösung für die Integration eines Polynoms $f(x)$ mit dem Grad kleiner gleich $2n-1$ möglich ist.
+Die _Gauß-Quadratur_ geht auf den deutschen Mathematiker Carl-Friedrich GAUß (1777-1855) zurück. Wie auch bei der Newton-Cotes-Formel, beruht der Ansatz von GAUß auf der Idee, die zu integrierende Funktionen durch eine Polynomfunktion zu approximieren und diese anschließend exakt zu integrieren. Die Polynomfunktion wird durch eine gewichtete Summe mit den Gewichten $\hat{w}_i$ und den Funktionswerten $y(x_i)$ der Ausgangsfunktion an den Stützstellen $x_i$ mit $i = 1...n$ angenähert. Bei der Newton-Cotes-Formel sind die Stelle $x_i$ gleichmäßig über das Integrationsgebiet $[a,b]$ verteilt und Polynomfunktionen vom Grad $n-1$ können exakt integriert werden (siehe @fig-numerische-integration). GAUß stellte fest, dass durch eine optimalere Wahl der Stützstellen die exakte Lösung für die Integration eines Polynoms $f(x)$ mit dem Grad kleiner gleich $2n-1$ möglich ist.
 
 ![Approximation eines Integrals mittels eines Polynoms, Quelle: BAITSCH](00-pics/numerische-Integration.png){#fig-numerische-integration fig-env="figure*" width=100%}
 
@@ -53,7 +53,7 @@ ausgedrückt. @eq-position-stützstelle ergibt sich aus der Abbildung des physik
 
 ### Integration in Referenzkoordinaten {#sec-integration-Referenz}
 
-Ähnlich wie die bei der Gauß-Quadratur genutzten Abbildung $\underline{F}^{-1}$ des physikalischen Integrationsintervalls auf die sogenannte Elterndomäne in @sec-gauss-integration ist auch bezüglich der Koordinaten die Abbildung der physikalischen Koordinaten auf Referenzkoordinaten notwendig (siehe @fig-parametrisierung). Diese Parametrisierung wird in Kapitel... hergeleitet und ist besonders wichtig für die Lösung allgemeiner Vierecke.
+Ähnlich wie, die bei der Gauß-Quadratur genutzten Abbildung  des physikalischen Integrationsintervalls auf die sogenannte Elterndomäne in @sec-gauss-integration, ist auch bezüglich der Koordinaten die Abbildung der physikalischen Koordinaten auf Referenzkoordinaten notwendig (siehe @fig-parametrisierung). Diese Parametrisierung wird in Kapitel @sec-Parametrisierung hergeleitet und ist besonders wichtig für die Lösung allgemeiner Vierecke.
 
 Allgemein ausgedrückt wird für die Funktionen $V:\Omega \to \mathbb{R}^2$ zu der Bilinearform $a:V \times V \to \mathbb{R}^2$ eine "Referenz"-Bilinearform $\hat{a}: \hat{V} \times \hat{V}  \to \mathbb{R}^2$ mit den Funktionen $\hat{V}:\hat{\Omega} \to \mathbb{R}^2$ bestimmt, sodass
 $$

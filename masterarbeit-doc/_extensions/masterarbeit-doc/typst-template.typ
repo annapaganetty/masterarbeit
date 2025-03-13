@@ -5,10 +5,10 @@
 #let normal-size = 12pt
 #let middle-size = 16pt
 #let large-size = 25pt
-
+#set text(lang:"DE")
 #let masterarbeit-doc(
   title: none,
-  lang:"de",
+  lang:none,
   font:none,
   font-size:none,
   paper-size: "a4",
@@ -16,11 +16,12 @@
   region: "DE",
   body,
 ) = {
+  set text(lang: "de")
   // Schriftart und Sprache
   set text(weight: "light", 
           size: 11pt,
           font: font,
-          lang: lang,
+          lang: "DE",
           region: region)
   // Seitengröße und -ränder
   set page(
@@ -103,6 +104,11 @@
   set enum(indent: 24pt, body-indent: 5pt)
   show link: set text(font: "New Computer Modern Mono")
 
+//  if abstract != none { 
+//    block(inset: 2em)[ 
+//    #text()[Abbildung] #h(1em) #abstract 
+//    ] 
+//  }
   // Gleichungen 
   show math.equation: set block(below: 15pt, above: 15pt)
   show math.equation: set text(weight: 400)

@@ -7,4 +7,5 @@ Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung
 
 {{< include einfuehrung_platten.qmd  >}}
 {{< include kirchhoffsche-plattentheorie.qmd  >}}
+{{< include definition-finite-elemente.qmd  >}}
 {{< include funktionale.qmd   >}}

@@ -73,7 +73,7 @@ $$
 \end{bmatrix}.
 $$
 
-wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt.
+<!-- wobei $n_n$ die Anzahl der Elementknoten und folglich auch die Anzahl der Formfunktionen angibt. -->
 Der Momentenvektor kann dementsprechend durch 
 
 $$
@@ -94,7 +94,7 @@ $$
 \mathbf{D_b} = D \begin{bmatrix} 1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & \frac{1-\nu}{2} \end{bmatrix}
 $$
 
-beschrieben werden, mit D ensprechend @eq-plattensteifigkeit.
+beschrieben werden, mit der isotropen Plattensteifigkeit $D$ (s. @eq-plattensteifigkeit).
 Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu 
 $$ 
 \begin{align}
@@ -115,8 +115,9 @@ $$
 = \int_{\Omega^e} \mathbf{B}_b^T \mathbf{D_b} \mathbf{B}_b d\Omega
 $$ {#eq-elementsteifigkeitsmatrix}
 
-ausgedrückt. 
+ausgedrückt.
 
+<!-- 
 ----------
 
 $$
@@ -124,9 +125,8 @@ $$
 a(w,\delta w) = \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
 \rightsquigarrow \mathbf{k_{ij}} = a(\varphi_j, \varphi_i) = \int_{\Omega} D (\varphi_{j_{,xx}} \varphi_{i_{,xx}} + 2 \varphi_{j_{,xy}} \varphi_{i_{,xy}} + \varphi_{j_{,yy}} \varphi_{i_{,yy}} ) 
 \end{align}
-$$
-
-
+$$ 
+-->
 
 ### DKQ Element {#sec-Steifigkeitsmatrix-DKQ}
 
@@ -136,14 +136,14 @@ Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleic
 
 Dieses sogenannte DKQ (_discrete Kirchhoff quadrilateral_) Element basiert auf den folgenden Annahmen: 
 
-1. Die Verdrehungen $\beta_x$ um die $y$-Achse und $\beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination @eq-linearkombination-platte zu verstehen.
+1. Die Verdrehungen $\beta_x$ um die $y$-Achse und $\beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination aus @eq-linearkombination-platte zu verstehen.
 $$
 \begin{align}
 &\beta_x &\quad= - w,_x &\quad= \theta_y &\quad= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x} \\
 &\beta_y &\quad= - w,_y &\quad= - \theta_x &\quad= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x} \\
 \end{align}
 $$ {#eq-betaX-betaY}
-Als Formfunktionen $\varphi_i(x,y)$ dienen die Funktionen des in @sec-finite-elemente vorgestellten Serendipity-Elements abhängig von den Variablen $\xi$ und $\eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $\hat{w}_i$ mit $i = 1,...,8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
+Als Formfunktionen $\varphi_i(x,y)$ dienen die Funktionen des in @sec-finite-elemente vorgestellten Serendipity-Elements, abhängig von den Variablen $\xi$ und $\eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $\hat{w}_i$ mit $i = 1,...,8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
 
 2. Entsprechend der Kirchhoff Theorie sind die Verdrehungen an den 
 a) Eckknoten $i$
@@ -180,7 +180,7 @@ w,_{sk} = w'(0) = \frac{-3}{l_{ij}} (w_i - w_j) - \frac{1}{4}(w,_{si}+w,_{sj})
 $$ {#eq-verdrehungen-beta-x-Formel}
 wobei $k = 5,6,7,8$ die Mittelknoten der Elementkanten $ij = 12,23,34,41$ sind. $l_{ij}$ ist die Länge der Seiten $ij$.
 
-4. $\beta_n$ ist die Verdrehung um die $s$-Achse und wird entlang der Elementkanten durch eine lineare Funktion ausgedrückt.
+4. $\beta_n$ ist die Verdrehung um die $s$-Achse und wird entlang der Elementkanten durch eine lineare Funktion 
 $$
 w'(s) = ax+b
 $$
@@ -190,7 +190,7 @@ $$
 w'(s_i) = w,_{ni}   &&\qquad w'(s_j) = w,_{nj}
 \end{align}
 $$
-ausgedrückt. Es ergibt sich somit für 
+ausgedrückt. Es ergibt sich somit
 $$
 w,_n_k = w'(0) = -\frac{1}{2}(w,_{ni}+w,_{nj})
 $$
@@ -217,7 +217,7 @@ Nach geometrischer Umrechnung der Verdrehung an den Mittelknoten, von $w,_s_k$ u
 $$
 \begin{align}
 &w,_x_k = -cos(\gamma_k) \cdot w,_n_k + sin(\gamma_k) \cdot w,_s_k  \qquad \qquad \text{und}\\
-&w,_y_k = -sin(\gamma_k) \cdot w,_n_k - cos(\gamma_k) \cdot w,_s_k \qquad \qquad \qquad \text{mit}\gamma_k = \gamma_{ij} \\
+&w,_y_k = -sin(\gamma_k) \cdot w,_n_k - cos(\gamma_k) \cdot w,_s_k \qquad \qquad \text{mit}\gamma_k = \gamma_{ij} \\
 \end{align}
 $$
 
@@ -320,11 +320,6 @@ $$
 wie in @fig-parametrisierung dargestellt.
 
 ![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=100%}
-
-
-$$
- phi_I(x) = N_i(F^-1(x))
-$$
 
 Sei $(\xi,\eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
 
