@@ -73,26 +73,27 @@ r[dofs2[24]] = b * b/2 * 10
 w = K \ r
 thetaX = w[2:3:end]
 thetaY = w[3:3:end] # an jeder stelle ungefähr 0
+w
 ```
 
 ```{julia}
-plotwBTP(mPatch, w; title="Verformung")
+plotwBTP(mPatchX, w; title="Verformung")
 ```
 
 ## Verdrehung ThetaX
 ```{julia}
-plotThetaxBTP(mPatch, w; title="Verdrehung θx")
+plotThetaxBTP(mPatchX, w; title="Verdrehung θx")
 ```
 
 ## Verdrehung ThetaY
 ```{julia}
-plotThetayBTP(mPatch, w; title="Verdrehung θy")
+plotThetayBTP(mPatchX, w; title="Verdrehung θy")
 ```
 
 ## Schnittgrößen Plotten 
 
 ```{julia}
-mPatch.data[:post] = postprocessor(p3, w)
+mPatchX.data[:post] = postprocessor(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
@@ -106,23 +107,23 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatch, :mx, "Biegemoment mx", (-1, 1),nodal = false, a3d=true)
+plotrBTP(mPatchX, :mx, "Biegemoment mx", (-1, 1),nodal = false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatch, :my, "Biegemoment my", (-1, 1),nodal = true, a3d=true)
+plotrBTP(mPatchX, :my, "Biegemoment my", (-1, 1),nodal = true, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(mPatch, :mxy, "Biegemoment mxy", (-1,1),nodal = true, a3d=true)
+plotrBTP(mPatchX, :mxy, "Biegemoment mxy", (-1,1),nodal = true, a3d=true)
 ```
 
 ```{julia}
-plotrBTP(mPatch, :qx, "Querkraft qx", (-1,1),nodal = false, a3d=true)
+plotrBTP(mPatchX, :qx, "Querkraft qx", (-1,1),nodal = false, a3d=true)
 ```
 
 ```{julia}
-plotrBTP(mPatch, :qy, "Querkraft qy", (-1,1),nodal = true, a3d=true)
+plotrBTP(mPatchX, :qy, "Querkraft qy", (-1,1),nodal = true, a3d=true)
 ```

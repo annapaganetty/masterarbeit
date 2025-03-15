@@ -33,9 +33,9 @@ function postprocessor(params, wHat)
         name == :w && return we
 
         # Derivatives
-        wxx = ∂x(βx)
-        wyy = ∂y(βy)
-        wxy = ∂y(βx) + ∂x(βy)
+        wxx = -∂x(βx)
+        wyy = -∂y(βy)
+        wxy = -∂y(βx) - ∂x(βy)
         Δw = wxx + wyy
 
         # Return

@@ -39,7 +39,7 @@ mPatchOG.data[:kefunc] = plateKe(p3)
 mPatchOG.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatchOG,nf)
 
-applyDirichletBCs!(mPatchOG.groups[:boundarynodes][1:3], K, r, bcs1)
+applyDirichletBCs!(mPatchOG.groups[:boundarynodes], K, r, bcs1)
 
 dofs2 = idxDOFs(mPatchOG.groups[:boundarynodes],3)
 
@@ -47,24 +47,25 @@ dofs2 = idxDOFs(mPatchOG.groups[:boundarynodes],3)
 # for i = [1,4,7]
 #     r[dofs2[i]] = 0
 # end
-r[dofs2[10]] = 2
+# r[dofs2[10]] = 2
 
 # Randmomente um die y-Achse
-r[dofs2[2]]  = a 
-r[dofs2[5]]  = a
-r[dofs2[8]]  = -a
-r[dofs2[11]] = -a
+r[dofs2[2]]  = 0 
+r[dofs2[5]]  = 0
+r[dofs2[8]]  = 0
+r[dofs2[11]] = 0
 # Randmomente um die x-Achse 
-r[dofs2[3]]  = -b
-r[dofs2[6]]  = b
-r[dofs2[9]]  = -b
-r[dofs2[12]] = b
+r[dofs2[3]]  = -b*100
+r[dofs2[6]]  = b*100
+r[dofs2[9]]  = -b*100
+r[dofs2[12]] = b*100
 
 w = K \ r
 
 thetaX = w[2:3:end]
 # thetaY = w[3:3:end]
 w[1:3:end]
+w
 ```
 
 ```{julia}
@@ -98,12 +99,12 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatchOG, :mx, "Biegemoment mx", (-0.02, 0.02),nodal = true, a3d=true)
+plotrBTP(mPatchOG, :mx, "Biegemoment mx", (-1, 1),nodal = false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatchOG, :my, "Biegemoment my", (-0.03, 0.02),nodal = true, a3d=true)
+plotrBTP(mPatchOG, :my, "Biegemoment my", (-0.03, 0.02),nodal = false, a3d=true)
 ```
 
 ### Mxy

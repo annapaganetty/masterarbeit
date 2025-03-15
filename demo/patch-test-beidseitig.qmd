@@ -23,10 +23,13 @@ p3.E = 1000;
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-mPatch02 = makePTMesh02(p3)
-plotmesh(mPatch02;title="Patch Test")
+mPatch = makePTMesh01(p3)
+plotmesh(mPatch;title="Patch Test")
 ```
 
+6   7   8
+4       5   
+1   2   3
 ## Verformung 
 
 Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
@@ -34,12 +37,15 @@ Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung de
 ```{julia}
 nf = 3
 bcs = [true, false, false]
-mPatch02.data[:kefunc] = plateKe(p3)
-mPatch02.data[:refunc] = plateRe(p3.q)
-K,r = assembleKr(mPatch02,nf)
+bcs1 = [false, false, false]
+e = element(mPatch, 2)
+mPatch.data[:kefunc] = plateKe(p3)
+mPatch.data[:refunc] = plateRe(p3.q)
+K,r = assembleKr(mPatch,nf)
 
-applyDirichletBCs!(mPatch02.groups[:boundarynodes], K, r, bcs)
-dofs2 = idxDOFs(mPatch02.groups[:boundarynodes],3)
+applyDirichletBCs!(mPatch.groups[:boundarynodes], K, r, bcs)
+
+dofs2 = idxDOFs(mPatch.groups[:boundarynodes],3)
 
 # Randmomente um die y-Achse
 r[dofs2[2]]  = a * a/2 * 10
@@ -62,26 +68,28 @@ r[dofs2[21]] = 0
 r[dofs2[24]] = b * b/2 * 10
 
 w = K \ r
+thetaX = w[2:3:end]
+thetaY = w[3:3:end] # an jeder stelle ungefähr 0
 ```
 
 ```{julia}
-plotwBTP(mPatch02, w; title="Verformung")
+plotwBTP(mPatch, w; title="Verformung")
 ```
 
 ## Verdrehung ThetaX
 ```{julia}
-plotThetaxBTP(mPatch02, w; title="Verdrehung θx")
+plotThetaxBTP(mPatch, w; title="Verdrehung θx")
 ```
 
 ## Verdrehung ThetaY
 ```{julia}
-plotThetayBTP(mPatch02, w; title="Verdrehung θy")
+plotThetayBTP(mPatch, w; title="Verdrehung θy")
 ```
 
 ## Schnittgrößen Plotten 
 
 ```{julia}
-mPatch02.data[:post] = postprocessor(p3, w)
+mPatch.data[:post] = postprocessor(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
@@ -95,15 +103,23 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatch02, :mx, "Biegemoment mx", (-0.13, 0.06),nodal = true, a3d=true)
+plotrBTP(mPatch, :mx, "Biegemoment mx", (-1, 1),nodal = true, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatch02, :my, "Biegemoment my", (-0.16, 0.05),nodal = true, a3d=true)
+plotrBTP(mPatch, :my, "Biegemoment my", (-1, 1),nodal = false, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(mPatch02, :mxy, "Biegemoment mxy", (-0.1 , 0.1),nodal=true, a3d=true)
+plotrBTP(mPatch, :mxy, "Biegemoment mxy", (-1,1),nodal = false, a3d=true)
+```
+
+```{julia}
+plotrBTP(mPatch, :qx, "Querkraft qx", (-1,1),nodal = false, a3d=true)
+```
+
+```{julia}
+plotrBTP(mPatch, :qy, "Querkraft qy", (-1,1),nodal = false, a3d=true)
 ```
