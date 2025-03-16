@@ -75,10 +75,10 @@ function printH(Hx,Hy)
     ly = size(Hy,1)
 
     for i = 1:lx
-        println("Hx[", i, "] = ", Hx[i])
+        println("Hx[", i, "] = ", simplify(Hx[i]))
     end
     for i = 1:ly
-        println("Hy[", i, "] = ", Hy[i])
+        println("Hy[", i, "] = ", simplify(Hy[i]))
     end
 end
 
