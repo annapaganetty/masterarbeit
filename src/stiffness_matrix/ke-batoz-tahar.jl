@@ -12,11 +12,14 @@ function plateKe(p)
     function keFunc(e)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
         Ke = zeros(12,12)
+        # Jacobimatrix des betrachteten Elements (muss noch transponiert werden s. Zeile 28 und 29 J') 
         jF = jacobian(parametrization(geometry(e)))
         
         Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
         Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
-        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx))
+        # 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
+        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+        # 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
         ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
@@ -57,16 +60,16 @@ function plateRe(q)
     function reFunc(e)
         a,b = ab(e)
         re = zeros(12)
-        re[1]=(1//4)*a*b
+        re[1]=(1/4)*a*b
         re[2]= 0
         re[3]= 0
-        re[4]=(1//4)*a*b
+        re[4]=(1/4)*a*b
         re[5]= 0
         re[6]= 0
-        re[7]=(1//4)*a*b
+        re[7]=(1/4)*a*b
         re[8]= 0
         re[9]= 0
-        re[10]=(1//4)*a*b
+        re[10]=(1/4)*a*b
         re[11]= 0
         re[12]= 0
         return re*q

@@ -1,3 +1,9 @@
+1. Hx und Hy Funktionen überprüfen 
+2. Reihenfolge der Serendipity Funktionen überprüfen
+3. Berechnen der Geometrie Größen überprüfen 
+
+
+
 ```{julia}
 include("../src/setup.jl")
 ```

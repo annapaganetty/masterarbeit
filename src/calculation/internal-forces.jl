@@ -33,9 +33,9 @@ function postprocessor(params, wHat)
         name == :w && return we
 
         # Derivatives
-        wxx = -∂x(βx)
-        wyy = -∂y(βy)
-        wxy = -∂y(βx) - ∂x(βy)
+        wxx = ∂x(βx)
+        wyy = ∂y(βy)
+        wxy = ∂y(βx) + ∂x(βy)
         Δw = wxx + wyy
 
         # Return
@@ -47,9 +47,9 @@ function postprocessor(params, wHat)
         name == :Δw && return Δw
 
         # Section forces (Altenbach et al. p176)
-        mx = -1e-3 * D * (wxx + ν * wyy)
-        my = -1e-3 * D * (ν * wxx + wyy)
-        mxy = -1e-3 * D * (1 - ν) * wxy
+        mx = D * (wxx + ν * wyy)
+        my = D * (ν * wxx + wyy)
+        mxy = D * (1 - ν) * wxy
         qx = -1e-3 * D * ∂x(Δw)
         qy = -1e-3 * D * ∂y(Δw)
 
