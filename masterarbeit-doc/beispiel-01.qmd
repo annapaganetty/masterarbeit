@@ -1,0 +1,78 @@
+## Beispiel 1: allseitig eingespannte Platte 
+
+Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
+
+::: {#fig-Beispiel-01-BFS  layout-ncol=2}
+
+![quadratische Platte | 8m x 8m mit 400 Elementen](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
+
+allseitig eingespannte quadratische Platte
+:::
+
+Für die Berechnung der $8m \times 8m$ großen Platte werden die in @tbl-Eingabedaten angegebenen Eingangsparameter zugrunde gelegt.
+
+|                   |                           |
+|:------------------|:--------------------------|
+|Plattendicke       | $d = 0.2 \text{ m}$        |
+|Elastizitätsmodul  | $E = 31.000 \text{ N/mm}^2$|
+|Flächenlast        | $p = 5 \text{ kN}$         |
+|                   | $\nu = 0.0$               |
+
+: Daten zum Beispiel "allseitig eingespannte Platte" {#tbl-Eingabedaten}
+
+Aus den Czerny-Tafeln (Tafel 2.2.6.1, "Starre Einspannung der vier Ränder") ergeben sich folgende Werte:
+
+$$
+\begin{align}
+&m_{x_{erm}} &&= - \frac{p \cdot l_x^2}{19.4} &&= -16494.85 &&\text{Nm}^2 \\
+&m_{x_{m}} &&=  \frac{p \cdot l_x^2}{56.8} &&= 5633.80 &&\text{Nm}^2 \\
+&m_{y_{erm}} &&= - \frac{p \cdot l_x^2}{19.4} &&= -16494.85 &&\text{Nm}^2 \\
+&m_{y_{max}} &&=  \frac{p \cdot l_x^2}{56.8} &&= 5633.80 &&\text{Nm}^2 \\
+&q_{x_{erm}} &&= \pm \frac{p \cdot l_x}{2.24} &&= \pm 17857.14 &&\text{Nm} \\
+&q_{y_{erm}} &&= \pm \frac{p \cdot l_x}{2.24} &&= \pm 17857.14 &&\text{Nm} \\
+&w_{max} &&= \frac{p \cdot l_x^4}{E \cdot d^3} \cdot 0.0152 &&= 0.001255 &&\text{m} \\
+\end{align}
+$${#eq-werte-czerny-tafeln}
+
+
+Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS dargestellt . 
+
+
+### Berechnung nach Bogner Fox Schmitt
+
+Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung 5.12 dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
+
+::: {#fig-Biegemomente-BFS  layout-ncol=2}
+
+![$m_x$ [kNm]](00-pics/Beispiel-01-BFS-mx.png){#fig-BFS-mx width=80%}
+
+![$m_x$ geglättet [kNm]](00-pics/Beispiel-01-BFS-mx-glatt.png){#fig-BFS-mx-Glatt width=80%}
+
+![$m_y$ [kNm]](00-pics/Beispiel-01-BFS-my.png){#fig-BFS-my width=80%}
+
+![$m_y$ geglättet [kNm]](00-pics/Beispiel-01-BFS-my-glatt.png){#fig-BFS-my-Glatt width=80%}
+
+![$m_{xy}$ [kNm]](00-pics/Beispiel-01-BFS-mxy.png){#fig-BFS-mxy width=80%}
+
+![$m_{xy}$ geglättet [kNm]](00-pics/Beispiel-01-BFS-mxy-glatt.png){#fig-BFS-mxy-Glatt width=80%}
+
+
+Biegemomente Platte Bogner Fox Schmitt
+:::
+
+::: {#fig-Querkräfte-BFS  layout-ncol=2}
+
+![qx](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx width=80%}
+
+![qx geglättet](00-pics/Beispiel-01-BFS-qx-glatt.png){#fig-BFS-qx-Glatt width=80%}
+
+![qy](00-pics/Beispiel-01-BFS-qy.png){#fig-BFS-qy width=80%}
+
+![qy geglättet](00-pics/Beispiel-01-BFS-qy-glatt.png){#fig-BFS-qy-Glatt width=80%}
+
+Querkräfte Platte Bogner Fox Schmitt
+:::
+
+### Berechnung nach Batoz und Tahar
+
+

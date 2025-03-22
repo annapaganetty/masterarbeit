@@ -1,0 +1,132 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+
+## Plot der Plattenelemente
+```{julia}
+using CairoMakie
+xElem = 20
+mQuadBFS = makequadratcicMesh(p1, xElem)
+figBFS = plotmesh(mQuadBFS;title="quadratische Platte | 8m x 8m | 400 Elemente")
+# save("Beispiel-01-BFS.png",figBFS)
+```
+
+```{julia}
+w = plate(mQuadBFS, p1, "kirchhoff_conforming")
+w_fe = maximum(w[1:4:end])
+```
+
+vergleich mit czerny tafeln
+
+```{julia}
+w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
+100 * abs(w_fe - w_czerny) / w_czerny
+```
+
+## Plot Verformung
+
+```{julia}
+include("../src/setup.jl")
+WGLMakie.activate!
+plotw(mQuadBFS, w;conforming = true,title="Verformung")
+```
+
+
+```{julia}
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=(:redblue,1.0),
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=false,
+    featureedgelinewidth=2.5,
+    transparency = false
+)
+
+figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = false, a3d=true)
+save("Beispiel-01-BFS-mx.png",figBFSmx)
+```
+
+
+```{julia}
+figBFSmy= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = false, a3d=true)
+```
+
+```{julia}
+figBFSmxy= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4, 4),nodal = false, a3d=true)
+```
+
+```{julia}
+figBFSqx= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
+```
+
+```{julia}
+figBFSqy= plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
+```
+
+Geglättete Ergebnisse 
+```{julia}
+figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
+```
+
+
+```{julia}
+figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
+```
+
+```{julia}
+figBFSmxyGlatt= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4, 4),nodal = true, a3d=true)
+```
+
+```{julia}
+figBFSqxGlatt= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
+```
+
+```{julia}
+figBFSqyGlatt=plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+```
+
+
+```{julia}
+save("Beispiel-01-BFS-mx.png",figBFSmx)
+save("Beispiel-01-BFS-my.png",figBFSmy)
+save("Beispiel-01-BFS-mxy.png",figBFSmxy)
+save("Beispiel-01-BFS-qx.png",figBFSqx)
+save("Beispiel-01-BFS-qy.png",figBFSqy)
+
+save("Beispiel-01-BFS-mx-glatt.png",figBFSmxGlatt)
+save("Beispiel-01-BFS-my-glatt.png",figBFSmyGlatt)
+save("Beispiel-01-BFS-mxy-glatt.png",figBFSmxyGlatt)
+save("Beispiel-01-BFS-qx-glatt.png",figBFSqxGlatt)
+save("Beispiel-01-BFS-qy-glatt.png",figBFSqyGlatt)
+```
+
+# Konvergenz Plot
+
+```{julia}
+nn = [];
+ww = [];
+for i = 2:2:30
+    xElement = i
+    mNew = makequadratcicMesh(p1, xElement)
+    wkonv = plate(mNew, p1, "kirchhoff_conforming")
+    push!(nn, 4 * nnodes(mNew))
+    push!(ww, maximum(abs.(wkonv[1:4:end])))
+end
+ww
+```
+
+
+```{julia}
+using CairoMakie
+fig = Figure()
+Axis(fig[1, 1],title= "Konvergenz", xlabel="Anzahl Freiheitsgrade", ylabel="Maximale Verschiebung in mm")
+scatterlines!(nn, 1000*ww)
+fig
+```
+
+```{julia}
+save("Konvergenzplot_BFS.png",fig)
+```

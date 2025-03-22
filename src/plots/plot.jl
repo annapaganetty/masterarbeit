@@ -16,13 +16,9 @@ function mkfig3d(
         aspect=:data,
         title=title,
         viewmode=:stretch,
-        perspectiveness=0.5,
+        perspectiveness=0.2,
         limits=(nothing, nothing, nothing),
-        protrusions=0,
-        titlefont = "calibri",
-        xlabelfont = "calibri",
-        ylabelfont = "calibri",
-        zlabelfont = "calibri")
+        protrusions=0)
     hidedecorations!(ax)
     hidespines!(ax)
     return fig
@@ -40,7 +36,8 @@ function plotmesh(m;title)
     featureedgelinewidth=0.2,
     color=5,
     colorrange=Makie.automatic,
-    colormap=Makie.theme(:colormap)
+    colormap=Makie.theme(:colormap),
+    transparency = false
     )
     return fig
 end
@@ -71,11 +68,12 @@ end
 # Plot der Verformung
 function plotw(
     m, wHat;conforming = true,
-    zs=150,
+    zs=2,
     w=250, h=200, title="",
-    edgesvisible=false, nodesvisible=false, edgelinewidth=0.2,
-    featureedgelinewidth = 0.5,
-    mesh=5,
+    facesvisible = false,
+    edgesvisible=false, nodesvisible=false, edgelinewidth=9,
+    featureedgelinewidth = 3,
+    mesh=1,
     colorrange=Makie.automatic,
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
@@ -83,13 +81,14 @@ function plotw(
     fig = mkfig3d(title=title)
     mplot!(
         m, makewe(wHat,conforming = conforming),
-        faceplotzscale=zs,
+        faceplotzscale= zs / maximum(wHat),
         faceplotmesh=mesh,
+        facesvisible = facesvisible,
         edgesvisible=edgesvisible, 
         edgelinewidth=edgelinewidth,
         nodesvisible=nodesvisible,
         featureedgelinewidth=featureedgelinewidth,
-        color=5,
+        color=3,
         colorrange=colorrange,
         colormap=colormap,
         limits = limits
@@ -111,52 +110,45 @@ end
 # end
 #____________________________________________________________
 
-# function plotr(m, result, title, cr, npoints = 15; nodal = false, a3d)
-# 	# if false
-# 		fig = Figure(size = (1200, 800))
-# 		if a3d == true
-# 			ax = Axis3(fig[1, 1])
-# 			zscale = 1
-            
-# 		else
-# 			ax = Axis(fig[1, 1], aspect = DataAspect())
-# 			zscale = 0
-#             println("klappt")
-# 		end
+function plotr(m, result, title, cr, npoints = 15; nodal, a3d)
+    fig = Figure(size = (600, 600))
+    if a3d == true
+        ax = Axis3(fig[1, 1])
+        zscale = 1000
+    else
+        ax = Axis(fig[1, 1], aspect = DataAspect())
+        zscale = 0
+    end
 
-# 		warpnodes = nothing
+    warpnodes = nothing
 
-# 		if nodal == true
-# 			r = nodalresult(m, result)
-# 			if a3d
-# 				warpnodes = r
-# 			end
-# 		else
-# 			r = result
-#             println("klappt")
-# 		end
+    if nodal == true
+        r = nodalresult(m, result)
+        if a3d
+            warpnodes = r
+        end
+    else
+        r = result
+    end
 
-# 		p = mplot!(
-# 			m, r, edgesvisible = a3d,
-# 			nodewarp = warpnodes,
-# 			faceplotzscale = zscale, faceplotnpoints = npoints,
-# 			colorrange = cr,
-# 		)
+    p = mplot!(
+        m, r, edgesvisible = a3d,
+        nodewarp = warpnodes,
+        faceplotzscale = zscale, faceplotnpoints = npoints,
+        colorrange = cr,
+    )
 
-# 		if !a3d
-# 			mplot!(m, edgesvisible = false, facesvisible = false)
-# 		end
+    if !a3d
+        mplot!(m, edgesvisible = false, facesvisible = false)
+    end
 
-# 		Colorbar(fig[1, 2], p)
-# 		hidespines!(ax)
-# 		hidedecorations!(ax)
-# 		ax.title = maketitle(p, title)
+    Colorbar(fig[1, 2], p)
+    hidespines!(ax)
+    hidedecorations!(ax)
+    ax.title = maketitle(p, title)
 
-# 		return fig
-# 	# else
-# 	# 	return L"Zeitweise außer Betrieb"
-# 	# end
-# end
+    return fig
+end
 
 function valuerange(p)
 	values = p.plots[1].kw[:color]

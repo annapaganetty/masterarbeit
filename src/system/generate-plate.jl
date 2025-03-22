@@ -33,6 +33,11 @@ function plate(m, p, model::String)
     applyDirichletBCs!(m.groups[:boundarynodes], K, r, bcs)
     w = K \ r
 
-	m.data[:post] = postprocessor(p, w)
+    if model == "BTP"
+	    m.data[:post] = postprocessorBTP(p, w)
+    else
+        m.data[:post] = postprocessor(p, w)
+    end
+
     return w
 end

@@ -9,17 +9,29 @@ format:
 {{< pagebreak >}}
 
 <!-- Kapitel 2 -->
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundlagen der Finite Elemente Methode])))
+```
 {{< include grundlagen_FEM.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 3 -->
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: mechanische und mathematische Grundlagen])))
+```
 {{< include grundlagen_mech_math.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 4 -->
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: FEM für Plattentragwerke])))
+```
 {{< include FEM-plattentragwerke.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 5 -->
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA & Beispiele])))
+```
 {{< include umsetzung-julia-beispiele.qmd >}}
 {{< pagebreak >}}

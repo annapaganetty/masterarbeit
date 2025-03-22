@@ -13,6 +13,8 @@
   font-size:none,
   paper-size: "a4",
   toc: true,
+  lot: true,
+  lof: true,
   region: "DE",
   body,
 ) = {
@@ -28,26 +30,18 @@
     paper: paper-size,
     // Seitenränder
     margin:(top: 3.5cm, bottom: 4cm, left: 3cm, right: 2cm),
-
-    header-ascent: 10pt,
-    header: locate(loc => {
-      let i = counter(page).at(loc).first()
-      if i == 1 { return }
-      set text(size: script-size)
-      align(right, upper({ title }))
-      
-    }),
-    // page number on the footer
+    header-ascent: 30pt,
     footer-descent: 12pt,
-    footer: locate(loc => {
-      let i = counter(page).at(loc).first()
-      set text(size: script-size)
-      align(center, text(size: script-size, [#i]))
-    })
   )
+
  include "titelblatt.qmd"
  pagebreak()
-
+ set page(numbering: "i",
+          header: locate(loc => {
+          let i = counter(page).at(loc).first()
+          if i == 3 { return }
+          align(right, emph(text(size: 12pt)[Inhaltsverzeichnis]))}))
+ counter(page).update(3)
  if toc {
     show outline.entry.where(level: 1): it => {
       strong[
@@ -68,6 +62,33 @@
     );
     ]
   }
+  pagebreak()
+  // Abbildungsverzeichnis
+   if lof {
+    block(above: 0em, below: 2em)
+    [#v(100pt, weak: true)
+     #text(size: 30pt, weight: 600,"Abbildungsverzeichnis")
+     #v(60pt, weak: true)
+     #outline( 
+      title: none,
+      target: figure //.where(kind: image)
+    );
+    ]
+  }
+  pagebreak()
+  // Tabellenverzeichnis
+  if lot {
+    block(above: 0em, below: 2em)
+    [#v(100pt, weak: true)
+     #text(size: 30pt, weight: 600,"Tabellenverzeichnis")
+     #v(60pt, weak: true)
+     #outline( 
+      title: none,
+      target: figure.where(kind: table)
+    );
+    ]
+  }
+
   pagebreak()
   set heading(numbering: "1.1.1")
   // Einstellung für Überschriften
@@ -109,6 +130,24 @@
 //    #text()[Abbildung] #h(1em) #abstract 
 //    ] 
 //  }
+// set figure: it => box(
+
+
+
+  // Configure figure captions 
+  show figure.caption: it => box(
+    inset: (left: 1.5em, right: 1.5em, top: 0.5em, bottom: 0.5em),
+    if it.kind == table {
+      align(left)[*Tabelle~#it.counter.display()*#it.separator#it.body]}
+    else {
+      align(left)[*Abbildung~#it.counter.display()*#it.separator#it.body]
+    }
+    )
+  // show figure.where(kind: table).caption: it => box(
+  //   inset: (left: 1.5em, right: 1.5em, top: 0.5em, bottom: 0.5em),
+  //   align(left)[*Tabelle~#it.counter.display()*#it.separator#it.body]
+  //   )
+
   // Gleichungen 
   show math.equation: set block(below: 15pt, above: 15pt)
   show math.equation: set text(weight: 400)
@@ -121,6 +160,12 @@
   show par: set block(spacing: 1.5em)
 
   // Hauptteil des Dokuments
+   set page(numbering: "1",
+          header: locate(loc => {
+          let i = counter(page).at(loc).first()
+          if i == 5 { return }
+          align(right, emph(text(size: 12pt)[Kapitel 1: Einleitung]))}))
+  counter(page).update(1)
   v(29pt, weak: true)
   body
 }

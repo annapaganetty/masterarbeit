@@ -27,10 +27,9 @@ using LinearAlgebra
 
 activate!()
 set_theme!(theme_minimal())
-update_theme!(faceplotmesh=0.5)
-update_theme!(edgelinewidth=0.5)
-update_theme!(colormap=:aquamarine)
-
+update_theme!(faceplotmesh = 5)
+update_theme!(edgelinewidth = 2.5)
+update_theme!(colormap = (:aquamarine, 1.0))
 # H-Funktionen aus dem Batoz Tahar Paper
 include("h-functions/BTP-gen-H-functions.jl")
 include("h-functions/BTP-H-functions.jl")
