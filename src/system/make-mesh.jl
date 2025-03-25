@@ -21,7 +21,7 @@ function makequadrilateralMesh(p)
     return m
 end
 
-# Patch-Test-1
+# Patch-Test-1: 2 x 2 Elemente
 function makePTMesh01(p)
     coords = [  0.0 (1/2 * p.lx) p.lx 0.0  (1/2 * p.lx) p.lx 0.0  (1/2 * p.lx) p.lx;
                 0.0 0.0 0.0 (1/2 * p.ly) (1/2 * p.ly) (1/2 * p.ly) p.ly p.ly p.ly]
@@ -32,9 +32,31 @@ end
 
 # Patch-Test-2
 function makePTMesh02(p)
-    coords = [  0.0 (1/2 * p.lx) p.lx 0.0  (1/3 * p.lx) p.lx 0.0  (1/2 * p.lx) p.lx;
-                0.0 0.0 0.0 (1/2 * p.ly) (2/3 * p.ly) (1/2 * p.ly) p.ly p.ly p.ly]
-    elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
+    coords = [0.0 (1.3*1/2*p.lx) p.lx 0.0 (0.8*1/2*p.lx) p.lx 0.0 (1.1*1/2*p.lx) p.lx;
+        0.0 0.0 0.0 (1/2*p.ly) (1.3*1/2*p.ly) (1/2*p.ly) p.ly p.ly p.ly]
+    elts = [[1, 2, 5, 4], [2, 3, 6, 5], [4, 5, 8, 7], [5, 6, 9, 8]]
     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
     return m
-end
+ end
+ 
+ 
+ 
+#  Scheint nicht zu funktionieren (w[2:3:end] ist ungleich null)
+ 
+#  function makePTMesh01(p)
+#     coords = [0.0 (1.3*1/2*p.lx) p.lx 0.0 (0.8*1/2*p.lx) p.lx 0.0 (1.1*1/2*p.lx) p.lx;
+#         0.0 0.0 0.0 (1/2*p.ly) (1.3*1/2*p.ly) (1.15*1/2*p.ly) p.ly p.ly p.ly]
+#     elts = [[1, 2, 5, 4], [2, 3, 6, 5], [4, 5, 8, 7], [5, 6, 9, 8]]
+#     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
+#     return m
+#  end
+
+
+
+# function makePTMesh02(p)
+#     coords = [  0.0 (1/2 * p.lx) p.lx 0.0  (1/3 * p.lx) p.lx 0.0  (1/2 * p.lx) p.lx;
+#                 0.0 0.0 0.0 (1/2 * p.ly) (2/3 * p.ly) (1/2 * p.ly) p.ly p.ly p.ly]
+#     elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
+#     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
+#     return m
+# end

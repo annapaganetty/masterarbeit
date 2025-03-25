@@ -5,7 +5,8 @@ include("../src/setup.jl")
 
 ## Plot der Plattenelemente
 ```{julia}
-using CairoMakie
+# using CairoMakie
+WGLMakie.activate!()
 xElem = 20
 mQuadBFS = makequadratcicMesh(p1, xElem)
 figBFS = plotmesh(mQuadBFS;title="quadratische Platte | 8m x 8m | 400 Elemente")

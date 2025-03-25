@@ -79,7 +79,7 @@ function postprocessorBTP(params, wHat)
         h = params.h
         E = params.E
         ν = params.ν
-        D = E*h^3 / 12*(1-ν^2) 
+        D = (E*h^3) / (12*(1-ν^2))
 
         # Element displacement function
             # Indices
@@ -100,32 +100,56 @@ function postprocessorBTP(params, wHat)
         we = sum(wHat[idxsWe] .* lagrangeelement(V)) # N = functions of Lagrange Element
 
         # first Derivatives of w = beta 
-        βx = -sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
-        βy = -sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
+        βx = sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
+        βy = sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
+        wx =  -βx # Beta x = -wx
+        wy =  -βy # Beta y = -wy
+        println("βx  = ",(βx))
+        println("βy  = ",(βy))
 
         # Quick return
         name == :w && return we
 
         # Derivatives
-        wxx = ∂x(βx)
-        wyy = ∂y(βy)
-        wxy = ∂y(βx) + ∂x(βy)
+        βxx = ∂x(βx)
+        βyy = ∂y(βy)
+        βxy = ∂y(βx) + ∂x(βy)
+        
+        wxx = ∂x(wx)
+        wyy = ∂y(wy)
+        wxy = ∂y(wx) + ∂x(wy)
         Δw = wxx + wyy
 
         # Return
         name == :βx && return βx
-        name == :βx && return βx
+        name == :βy && return βy
+        name == :wx && return wx
+        name == :wy && return wy
         name == :wxx && return wxx
         name == :wyy && return wyy
         name == :wxy && return wxy
         name == :Δw && return Δw
 
         # Section forces (Altenbach et al. p176)
-        mx = D * (wxx + ν * wyy)
-        my = D * (ν * wxx + wyy)
-        mxy = D * (1 - ν) * wxy
+        # βxx =   Hx,x            * U
+        # βyy =   Hy,y            * U
+        # βxy =   (Hx,y + Hy,x)   * U
+        #         B               * U
+
+        # mx =    D * (Hx,x * U + ν * Hy,y * U) 
+        # my =    D * (ν * Hx,x * U + Hy,y * U)
+        # mxy =   D * ((Hx,y + Hy,x) * U)
+ 
+        mx = D * (βxx + ν * βyy)
+        my = D * (ν * βxx + βyy)
+        mxy = D * (1 - ν) * βxy
         qx = -1e-3 * D * ∂x(Δw)
         qy = -1e-3 * D * ∂y(Δw)
+
+        println("wxx  = ", wxx)
+        println("wyy  = ", wyy)
+        println("mx = ", mx)
+        println("my = ", my)
 
         # # From equilibrium
         # qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work

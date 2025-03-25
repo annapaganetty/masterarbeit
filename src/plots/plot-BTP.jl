@@ -40,7 +40,7 @@ function makeweBTP(wHat)
     H4 = lagrangeelement(V)
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)[1:3:end]  
-        println(wHat[idxs] .* H4)
+        # println(wHat[idxs] .* H4)
         return sum(wHat[idxs] .* H4)
     end
 end

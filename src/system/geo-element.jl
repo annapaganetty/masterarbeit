@@ -37,7 +37,7 @@ function geoH(e)
     return l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈
 end
 
-# const ∇N = [∂x(N[1]) ∂x(N[2]) ∂x(N[3]) ∂x(N[4]); ∂y(N[1]) ∂y(N[2]) ∂y(N[3]) ∂y(N[4])]
+∇N = [∂x(N[1]) ∂x(N[2]) ∂x(N[3]) ∂x(N[4]); ∂y(N[1]) ∂y(N[2]) ∂y(N[3]) ∂y(N[4])]
 # Jacobi-Matrix für 2D Elemente
 function jacobianMatrix(e)
     xy = coordElement(e)

@@ -12,12 +12,12 @@ b = 10
 Parameter Platte 
 ```{julia}
 p3 = @var Params()
-p3.lx = 2*a # = 40
-p3.ly = 2*b # = 20 
+p3.lx = 2*a # = 40 #[m]
+p3.ly = 2*b # = 20 #[m]
 p3.q = 0
 p3.ν = 0
-p3.h = 1
-p3.E = 1000;
+p3.h = 1 #[m]
+p3.E = 1000; # [N/mm^2] [MN/m^2]
 ```
 
 ## Plot der Plattenelemente
@@ -31,43 +31,48 @@ plotmesh(mPatchY;title="Patch Test")
 
 Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
 
+Unterer Rand und oberer Rand sind festgehalten in z-Richtung 
+am oberen und unteren Rand wirken Momente = Momente um die x-Achse = a
+Momente um die x-Achse = Verdrehung um die x-Achse = θx = w,y = beta y
+
+        βx,x                        Hx,x
+x =     βy,y            = B U_n =   Hy,y        U_n
+        βx,y + βy,x                 Hx,y + Hy,x
+
+                                    3 x 12      12 x 1 = 3 x 1
+
 ```{julia}
 nf = 3
-bcs = [true, false, false]
+bcs = [true, false, true]
 bcs1 = [false, false, false]
-e = element(mPatchY, 2)
+
 mPatchY.data[:kefunc] = plateKe(p3)
 mPatchY.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatchY,nf)
+
+# Randmomente um die x-Achse
+dofs2 = idxDOFs(mPatchY.groups[:boundarynodes],3)
+r[dofs2[2]]  = 1 * a/2 #* 1e-1
+r[dofs2[5]]  = 1 * a  #* 1e-1  
+r[dofs2[8]]  = 1 * a/2 #* 1e-1  
+r[dofs2[11]] = 1 * 0   
+r[dofs2[14]] = 1 * 0
+r[dofs2[17]] = 1 * -a/2 #* 1e-1
+r[dofs2[20]] = 1 * -a #* 1e-1
+r[dofs2[23]] = 1 * -a/2 #* 1e-1
+
 applyDirichletBCs!(mPatchY.groups[:boundarynodes][1:3], K, r, bcs)
 applyDirichletBCs!(mPatchY.groups[:boundarynodes][6:8], K, r, bcs)
 applyDirichletBCs!(mPatchY.groups[:boundarynodes][4:5], K, r, bcs1)
-dofs2 = idxDOFs(mPatchY.groups[:boundarynodes],3)
-
-# Randmomente um die y-Achse
-r[dofs2[2]]  = a * a/2 * 10
-r[dofs2[5]]  = a * a  * 10
-r[dofs2[8]]  = a * a/2  * 10
-r[dofs2[11]] = 0   
-r[dofs2[14]] = 0
-r[dofs2[17]] = -a * a/2 * 10
-r[dofs2[20]] = -a * a * 10
-r[dofs2[23]] = -a * a/2 * 10
-
-# Randmomente um die x-Achse 
-r[dofs2[3]]  = 0
-r[dofs2[6]]  = 0
-r[dofs2[9]]  = 0
-r[dofs2[12]] = 0
-r[dofs2[15]] = 0
-r[dofs2[18]] = 0
-r[dofs2[21]] = 0
-r[dofs2[24]] = 0
 
 w = K \ r
 thetaX = w[2:3:end]
 thetaY = w[3:3:end] # an jeder stelle ungefähr 0
 ```
+
+6   7   8
+4       5   
+1   2   3
 
 ```{julia}
 plotwBTP(mPatchY, w; title="Verformung")
@@ -86,7 +91,7 @@ plotThetayBTP(mPatchY, w; title="Verdrehung θy")
 ## Schnittgrößen Plotten 
 
 ```{julia}
-mPatchY.data[:post] = postprocessor(p3, w)
+mPatchY.data[:post] = postprocessorBTP(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
@@ -100,7 +105,7 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatchY, :mx, "Biegemoment mx", (-0.1, 0.1),nodal = true, a3d=true)
+plotrBTP(mPatchY, :mx, "Biegemoment mx", (-5, 5),nodal = true, a3d=true)
 ```
 
 ### My
@@ -120,3 +125,5 @@ plotrBTP(mPatchY, :qx, "Querkraft qx", (-1,1),nodal = false, a3d=true)
 ```{julia}
 plotrBTP(mPatchY, :qy, "Querkraft qy", (-1,1),nodal = true, a3d=true)
 ```
+
+
