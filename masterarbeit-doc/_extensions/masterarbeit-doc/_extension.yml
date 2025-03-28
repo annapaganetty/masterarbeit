@@ -6,7 +6,6 @@ lang: de
 contributes:
   formats:
     typst:
-      fig-title: Abbildung
       crossref:
         fig-title: Abbildung     # (default is "Figure")
         tbl-title: Tabelle     # (default is "Table")
@@ -14,7 +13,6 @@ contributes:
       template-partials:
         - typst-template.typ
         - typst-show.typ
-      # lang: de
       font: "New Computer Modern"
       font-size: 11pt
       lot: true
@@ -23,6 +21,3 @@ contributes:
       number-sections: true
       keep-typ: true
       keep-md: true
-      # ensurePdfRegexMatches:
-      #   - ["Tabelle"]
-      #   - ['Figure']

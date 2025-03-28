@@ -1,19 +1,15 @@
 ## Motivation {#sec-motivation}
 
-Wird die Finite Elemente Methode, ohne ausreichende Kenntnisse über die Berechnungsmethode, als "Black-Box"- Methode, angewandt, sind häufig Fehler die Konsequenz (s. Vortrag auf der 4. FEM-Tagung der TU Darmstadt im Jahr 1996). R.D. Cook, D.S. Malkus und M.E. Plesha warnen bereits in dem Jahr 1988 davor, dass den Ergebnissen der FE-Berechnung nur dann getraut werden kann, wenn der Anwender über konkretes Wissen, bezüglich des internen Berechnungsablaufs des Programms, verfügt und Kenntnis über die physikalischen Grundlagen hat.
+Wird die Finite Elemente Methode (FEM), ohne ausreichende Kenntnisse über die Berechnungsmethode, als "Black-Box"- Methode, angewandt, sind häufig Fehler die Konsequenz (s. Vortrag auf der 4. FEM-Tagung der TU Darmstadt im Jahr 1996). R.D. Cook, D.S. Malkus und M.E. Plesha warnen bereits in dem Jahr 1988 davor, dass den Ergebnissen der FE-Berechnung nur dann getraut werden kann, wenn der Anwender über konkretes Wissen, bezüglich des internen Berechnungsablaufs des Programms, verfügt und Kenntnis über die physikalischen Grundlagen hat.
 
 _"Their results cannot be trusted if users have no knowledge of their internal workings and little understanding of the physical theories on which they are based."_ - Cook et al.
 
-Trotzdem die Finite Elemente Methode eine, im Ingenieurwesen bereits lange etablierte, digitale Berechnungsmethode, die bei der Berechnung von Tragwerken kaum noch wegzudenken ist, sind die ensprechenden Verfahren in der Ingenieursliteratur nur unzureichend erläutert. 
+Die Finite-Elemente-Methode (FEM) hat sich als eine der leistungsfähigsten und vielseitigsten Techniken zur Analyse komplexer ingenieurtechnischer Probleme etabliert. Trotz der weit verbreiteten Anwendung der FEM in der Ingenieurpraxis ist die Literatur zu den spezifischen Verfahren und Methoden zur Anwendung der Kirchhoff-Plattentheorie oft unzureichend. Ein Mangel an klaren und umfassenden Erklärungen zu den notwendigen mathematischen und mechanischen Grundlagen kann die Entwicklung effizienter und präziser FEM-Modelle behindern. Aber auch der Anwender sollte ausreichende Kentnisse haben, über die komplexen Berechnungsvorgänge im Hintergrund eines FEM-Programms und den Ergebnissen nicht blind vertrauen. 
 
-Die zwei wesentlichen Ideen der FE-Methode sind die Approximation einer Lösung durch Kombination von vordefinierten Funktionen und die stückweise Definition der Funktionen auf sogenannten Elementen. Grundlage dessen bilden, je nach (kommerziellen) Programm, die Reissner-Mindlin Theorie und die Kirchhoffsche Plattentheorie, wobei Letztere die Basis dieser Ausarbeitung ist. Neben der gewählten Plattentheorie, sind auch der gewählte Elementansatz und die damit einhergehende Kontinuität an den Rändern der Elemente, von großem Interesse.
+![Offshore Bohrplatform Sleipner A](00-pics/sleipner-A-platform.png){#fig-sleipner-A fig-env="figure*" width=45%}
 
+Der Schadenfall an der Bohrplattform Sleipner A (@fig-sleipner-A) zeigt, dass auch Fehler mit schwerwiegenden Folgen gemacht werden können. Direkt nach dem Unfall ernannte der Besitzer der Plattform, die Firma Statoil, eine Ermittlungsgruppe. Es zeigte sich, dass bei der fehlerhaften Umsetzung der Finite Elemente Berechnung in einen Bewehrungsplan die Ursache für den Untergang lag.^[https://www-users.cse.umn.edu/~arnold/disasters/sleipner.html]
 
------------------------------
+Für das Verständnis der FE-Methode ist es essentiell die Grundideen zu verinnerlichen. Die wesentlichen zwei Aspekte der Methode sind die Approximation einer Lösung durch Kombination von vordefinierten Funktionen und die stückweise Definition der Funktionen auf sogenannten Elementen. Die Kirchhoff-Plattentheorie stellt dabei, neben der Reissner-Mindlin Theorie, eine fundamentale Grundlage dar, um das Verhalten von dünnen Platten zu analysieren. Die vorliegende Masterarbeit zielt darauf ab, die theoretischen Grundlagen zur Formulierung von FEM-Methoden für Kirchhoff-Platten systematisch aufzubereitet und in der Programmiersprache JULIA zu implementieren. 
 
-Der kubische Ansatz des Bogner-Fox-Schmitt-Elements, erfüllt die gefordertete $C^1$-Kontinuität. Bei benachbarten Rechteckelementen ist die Verträglichkeit der Rotationen ($\theta_\xi$,$\theta_\eta$ und $\theta_{\xi\eta}$) am gemeinsamen Knoten gegeben, sodass bei der Darstellung der Rotationen keine Knicke vorhanden sind. Für die Berechnung allgemeiner Vierecke ist dieser Ansatz jedoch unbrauchbar, da der zusätzliche Freiheitsgrad $\theta_{\xi\eta}$ störend wirkt.  
-
-Die detaillierte Formulierung für DKQ (_discrete kirchhoff quadrilateral_) Elemente ist vorteilhaft für die Diskretisierung zweidimensionale Strukturen beliebiger Form.
-
-
-Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
+Nicht zuletzt wird durch die Implementierung in JULIA ein modernes und leistungsfähiges Werkzeug genutzt, sondern auch die Möglichkeit geschaffen, die Ergebnisse offen zugänglich zu machen und zur Weiterentwicklung der FEM-Methoden beizutragen.

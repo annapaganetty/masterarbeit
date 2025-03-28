@@ -71,7 +71,7 @@
      #v(60pt, weak: true)
      #outline( 
       title: none,
-      target: figure //.where(kind: image)
+      target: figure.where(kind: "quarto-float-fig")
     );
     ]
   }
@@ -84,7 +84,7 @@
      #v(60pt, weak: true)
      #outline( 
       title: none,
-      target: figure.where(kind: table)
+      target: figure.where(kind: "quarto-float-tbl")
     );
     ]
   }
@@ -101,7 +101,7 @@
     if it.numbering != 0{
     if it.numbering != none {
     set text(size:22pt, weight: 60)
-    [ #v(15pt, weak: true)
+    [ #v(80pt, weak: true)
       Kapitel
       #counter(heading).display(it.numbering)
       #v(50pt, weak: true)]
@@ -137,16 +137,19 @@
   // Configure figure captions 
   show figure.caption: it => box(
     inset: (left: 1.5em, right: 1.5em, top: 0.5em, bottom: 0.5em),
-    if it.kind == table {
+    if it.kind == "quarto-float-tbl" {
       align(left)[*Tabelle~#it.counter.display()*#it.separator#it.body]}
-    else {
+    else if it.kind == "quarto-float-fig"{
       align(left)[*Abbildung~#it.counter.display()*#it.separator#it.body]
     }
     )
-  // show figure.where(kind: table).caption: it => box(
-  //   inset: (left: 1.5em, right: 1.5em, top: 0.5em, bottom: 0.5em),
-  //   align(left)[*Tabelle~#it.counter.display()*#it.separator#it.body]
-  //   )
+
+  // show figure.supplement: it => (
+  //   if it.kind == "quarto-float-tbl" {
+  //     [*Tabelle*]}
+  //   else if it.kind == "quarto-float-fig"{
+  //     [*Abbildung*]
+  // })
 
   // Gleichungen 
   show math.equation: set block(below: 15pt, above: 15pt)

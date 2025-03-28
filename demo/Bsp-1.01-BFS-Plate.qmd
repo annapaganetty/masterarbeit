@@ -6,7 +6,7 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 ```{julia}
 # using CairoMakie
-WGLMakie.activate!()
+
 xElem = 20
 mQuadBFS = makequadratcicMesh(p1, xElem)
 figBFS = plotmesh(mQuadBFS;title="quadratische Platte | 8m x 8m | 400 Elemente")
@@ -28,8 +28,8 @@ w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 ## Plot Verformung
 
 ```{julia}
-include("../src/setup.jl")
-WGLMakie.activate!
+# include("../src/setup.jl")
+# WGLMakie.activate!
 plotw(mQuadBFS, w;conforming = true,title="Verformung")
 ```
 
@@ -47,7 +47,7 @@ update_theme!(
 )
 
 figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = false, a3d=true)
-save("Beispiel-01-BFS-mx.png",figBFSmx)
+# save("Beispiel-01-BFS-mx.png",figBFSmx)
 ```
 
 

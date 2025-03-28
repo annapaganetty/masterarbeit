@@ -1,0 +1,70 @@
+# Festlegungen für die Programmierung der Masterarbeit
+
+- rechteckige Platten mit...
+    ... quadratischen Elementen
+    ... rechteckigen Elementen
+    ... allgemein Viereckigen Elementen
+
+
+## quadratische Elemente
+
+    - BFS (Bogner-Fox-Schmit) - Elemente
+        = hermite, conforming = true
+        = 4 Knoten & 4 DOFs pro Knoten      = 16 Freiheitsgrade
+    - name?
+        = hermite, conforming = false
+        = 4 Knoten & 3 DOFs pro Knoten      = 12 Freiheitsgrade
+
+## rechteckige Elemente
+
+    -> wie quadratische Elemente
+
+## allgemeine Viereckige Elemente
+
+    - DKQ - Elemente (Batoz und Tahar)
+        = serendipity(?)
+        = 8 Knoten & 3 DOFs pro Eckknoten und & ... DOFs pro Mittelknoten
+
+
+
+
+Einleitung
+    Motivation
+    Problemstellung
+    Gliederung
+
+Theoretische Grundlagen
+    Einführung in die Finite-Elemente-Methode (FEM)     einfuehrung_FEM.qmd
+    Plattentragwerke                
+        Einführung Plattentragwerke                     einfuehrung_platten.qmd
+        DGL Platten nach Kirchhoff                      kirchhoffsche-plattentheorie.qmd
+    Einführungsbeispiel                                 einfuehrungsbeispiel.qmd
+        Differentialgleichungen und Randbedingungen
+        starke Form & schwache Form
+        Approximation durch Linearkombination
+        numerische Lösung
+
+
+        
+    Mathematische Grundlagen
+        Differentialgleichungen und Randbedingungen
+        Diskretisierung und Elementtypen
+        Implementierung in Julia
+
+Einführung in die Programmiersprache Julia
+    Vorteile von Julia für numerische Berechnungen
+        Aufbau der FEM-Software
+    Struktur der Software und verwendete Bibliotheken
+        Implementierung der Plattenelemente
+        Beispielanwendungen
+    Anwendungsbeispiele und Simulationen
+        Validierung der Ergebnisse
+        Ergebnisse und Diskussion
+
+Darstellung der Ergebnisse
+    Vergleich mit analytischen Lösungen oder anderen Softwarelösungen
+    Diskussion der Ergebnisse und deren Relevanz
+    Fazit und Ausblick
+
+Zusammenfassung der wichtigsten Erkenntnisse
+    Ausblick auf zukünftige Entwicklungen und mögliche Erweiterungen

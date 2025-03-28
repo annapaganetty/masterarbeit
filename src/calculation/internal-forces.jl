@@ -94,7 +94,16 @@ function postprocessorBTP(params, wHat)
         # βx = - sum(bMatrix(face)[2,:] .* wHat[idxs]) # Beta x = -wx
         # βy = - sum(bMatrix(face)[3,:] .* wHat[idxs]) # Beta y = -wy
     #------------------------------------------------------------------------
-        
+
+        j11,j12,j21,j22,d = jacobianMatrixInv(e)
+        # Hxξ = ∂x.(Hx)
+        # Hxη = ∂y.(Hx)
+        # Hyξ = ∂x.(Hy)
+        # Hyη = ∂y.(Hy)  
+        # Hxx = j11 * Hxξ + j12 * Hxη
+        # Hxy = j21 * Hxξ + j22 * Hxη
+        # Hyy = j11 * Hyξ + j12 * Hyy
+        # Hyx = j21 * Hxξ + j22 * Hxy
         # this works 
         V = [ -1 1 1 -1; -1 -1 1 1]
         we = sum(wHat[idxsWe] .* lagrangeelement(V)) # N = functions of Lagrange Element
@@ -104,15 +113,32 @@ function postprocessorBTP(params, wHat)
         βy = sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
         wx =  -βx # Beta x = -wx
         wy =  -βy # Beta y = -wy
-        println("βx  = ",(βx))
-        println("βy  = ",(βy))
 
         # Quick return
         name == :w && return we
 
+        jF = jacobian(parametrization(geometry(e)))
+        Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
+        Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
+        # 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
+        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+        # 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
+        ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+        Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
+        
+        function m(x,y)
+            # Jacobi matrix ausgewertet an der Stelle (x,y)
+            J = jF(x,y)
+            ∇ₓN = (inv(J') * ∇ξN(x,y))
+            ∇yN = (inv(J') * ∇ηN(x,y)) 
+            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+            return  Db * B * det(J)
+        end
+
+        Moment = m()
         # Derivatives
-        βxx = ∂x(βx)
-        βyy = ∂y(βy)
+        βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
+        βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
         βxy = ∂y(βx) + ∂x(βy)
         
         wxx = ∂x(wx)
@@ -131,32 +157,24 @@ function postprocessorBTP(params, wHat)
         name == :Δw && return Δw
 
         # Section forces (Altenbach et al. p176)
-        # βxx =   Hx,x            * U
-        # βyy =   Hy,y            * U
-        # βxy =   (Hx,y + Hy,x)   * U
-        #         B               * U
 
-        # mx =    D * (Hx,x * U + ν * Hy,y * U) 
-        # my =    D * (ν * Hx,x * U + Hy,y * U)
-        # mxy =   D * ((Hx,y + Hy,x) * U)
- 
+        mx = 1 # D * sum(((j11 * Hxx + j12 * Hxy) + ν * (j21 * Hyx + j22 * Hyy)) .* wHat[idxs])
+        # my = 1e-3 * D * (ν * (j11 * Hxx + j12 * Hxy) + (j21 * Hyx + j22 * Hyy)) .* wHat[idxs]
+        # mxy = 1e-3 * D * (1 - ν)/2 * ((j11 * Hyx + j12 * Hyy) + (j21 * Hxx + j22 * Hxy)).* wHat[idxs]
+        
         mx = D * (βxx + ν * βyy)
         my = D * (ν * βxx + βyy)
-        mxy = D * (1 - ν) * βxy
-        qx = -1e-3 * D * ∂x(Δw)
-        qy = -1e-3 * D * ∂y(Δw)
+        mxy = D * (1 - ν)/2 * βxy
 
-        println("wxx  = ", wxx)
-        println("wyy  = ", wyy)
-        println("mx = ", mx)
-        println("my = ", my)
+        qx = -D * ∂x(Δw)
+        qy = -D * ∂y(Δw)
 
         # # From equilibrium
         # qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work
         # qye = ∂X(mxy) + ∂Y(my)
 
         # Return
-        name == :mx && return mx
+        name == :mx && return mx1
         name == :my && return my
         name == :mxy && return mxy
         name == :qx && return qx

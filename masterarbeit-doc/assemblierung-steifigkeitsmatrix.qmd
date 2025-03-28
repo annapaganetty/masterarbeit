@@ -360,7 +360,7 @@ F_{y}^{-1}(x,y) \\
 \end{align}
 $$ {#eq-f-1}
 
-notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien N_i die Formfunktionen definiert auf dem Referenzelement, so sind
+notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien $N_i(\xi,\eta)$ die Formfunktionen definiert auf dem Referenzelement, so sind
 
 $$
 \begin{align}
@@ -378,8 +378,8 @@ F_{x,_x}^{-1}(x,y) &
 F_{y,_x}^{-1}(x,y)
 \end{array}\right]
 \left[ \begin{array}{center} 
-N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
-N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+N_{i,_\xi}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_\eta}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right] 
 \end{align}
 $$ {#eq-phi-I-Ableitung-x}
@@ -391,8 +391,8 @@ F_{x,_y}^{-1}(x,y) &
 F_{y,_y}^{-1}(x,y)
 \end{array}\right]
 \left[ \begin{array}{center} 
-N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
-N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+N_{i,_\xi}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_\eta}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right] 
 \end{align}
 $$ {#eq-phi-I-Ableitung-y}
@@ -400,8 +400,8 @@ $$ {#eq-phi-I-Ableitung-y}
 benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt
 $$ 
 \left[ \begin{array}{center} 
-\varphi_{I,_1}(x,y) \\
-\varphi_{I,_2}(x,y)
+\varphi_{I,_x}(x,y) \\
+\varphi_{I,_y}(x,y)
 \end{array}\right]
 = 
 \underbrace{\left[ \begin{array}{center} 
@@ -409,8 +409,8 @@ $$
 \xi_{,_y}(x,y) & \eta_{,_y}(x,y) 
 \end{array}\right]}_{\mathbf{J}_{F^-1}}
 \left[ \begin{array}{center} 
-N_{i,_x}(\xi(x,y),\eta(x,y)) \\
-N_{i,_y}(\xi(x,y),\eta(x,y))
+N_{i,_\xi}(\xi(x,y),\eta(x,y)) \\
+N_{i,_\eta}(\xi(x,y),\eta(x,y))
 \end{array}\right].
 $$ {#eq-Ableitung-phi-I-gesamt}
 

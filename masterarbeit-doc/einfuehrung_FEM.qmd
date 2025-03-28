@@ -1,38 +1,9 @@
 ## Einführung in die Finite Elemente Methode (FEM) {#sec-einfuehrung-FEM}
 
-In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt 
-```{=typst}
-@tbl-elementansaetze
-```
-. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
+In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt @tbl-elementansaetze. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
 
 @tbl-elementansaetze
 
-<!-- 
-::: {#tbl-elementansaetze} -->
-
-```{=typst}
-#figure(
-  table(
-    columns: 4,
-    align: (left, left, center, center),
-    [*Elementansatz*], [*Polynome*], [*Elementknoten*], [*Stetigkeit*],
-    [linear], [$mat(1,xi,eta)$], [$4$], [$C^0$],
-    [quadratisch], [$mat(1,xi,eta,xi^2,xi eta,eta^2)$], [$4$], [$C^0$],
-    [LAGRANGE], [], [], [],
-    [bilinear], [$mat(1 ,xi , eta, xi eta)$], [$4$], [$C^0$],
-    [quadratisch vollständig], [$mat(1,xi,eta,xi^2,xi eta, eta^2, xi^2 eta, xi eta^2, xi^2 eta^2)$], [$9$], [$C^0$],
-    [quadratisch unvollständig (Serendipity)], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2)$], [$8$], [$C^0$],
-    [HERMITE], [], [], [],
-    [kubisch vollständig], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [$C^1$],
-    [kubisch unvollständig], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [semi-$C^1$],
-  ),
-  caption: [Elementansätze in der FEM],
-)<tbl-elementansaetze>
-```
-<!-- ::: -->
-
-<!-- 
 |__Elementansatz__|__Polynome__ |__Elementknoten__|__Stetigkeit__ |
 |:--------|:--------------|:-----------:|:---------:|
 | linear      |$\left[\begin{array}{center}1&\xi&\eta\end{array}\right]$ | $4$ |$C^0$ |
@@ -45,11 +16,11 @@ In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwen
 | kubisch vollständig |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$ |$C^1$ |
 | kubisch unvollständig   |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |semi-$C^1$ |
 
-:Elementansätze in der FEM {#tbl-irgendwas} -->
+: Elementansätze in der FEM {#tbl-elementansaetze}
 
 Bereits in den frühen 1940er Jahren lässt sich die erste Anwendung der Finite Elemente Analyse verzeichnen. 1941 nutzte A. HRENNIKOF zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. COURAND ein Paper publiziert (1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. TURNER et al. hat 1959 in dem JOURNAL OF THE AERONAUTICAL SCIENCES eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. CLOUGH publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung _Finite Elemente_ nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz  u.v.a.
 
-Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Preprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
+Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM[Abb.] der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Preprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
 
 ![formaler Ablauf](00-pics/Ablauf-FEM.png){#fig-Ablauf-FEM width=40%} 
 

@@ -37,13 +37,37 @@ function geoH(e)
     return l₁₂,l₂₃,l₃₄,l₄₁,S₅,S₆,S₇,S₈,C₅,C₆,C₇,C₈
 end
 
-∇N = [∂x(N[1]) ∂x(N[2]) ∂x(N[3]) ∂x(N[4]); ∂y(N[1]) ∂y(N[2]) ∂y(N[3]) ∂y(N[4])]
-# Jacobi-Matrix für 2D Elemente
-function jacobianMatrix(e)
+# # ∇N = [∂x(N[1]) ∂x(N[2]) ∂x(N[3]) ∂x(N[4]); ∂y(N[1]) ∂y(N[2]) ∂y(N[3]) ∂y(N[4])]
+# # Jacobi-Matrix für 2D Elemente
+# function jacobianMatrix(e)
+#     xy = coordElement(e)
+#     J = ∇N * xy
+#     return J
+# end
+
+# Einträge der inversen Jacobi Matrix eines Elements
+function jacobianMatrixInv(e)
+    @variables x₁, x₂;
+
     xy = coordElement(e)
-    J = ∇N * xy
-    return J
+
+    J11 = (0.25(xy[1,1] + xy[3,1]) - 0.25(xy[2,1] + xy[4,1]))x₂ -0.25(xy[1,1] + xy[4,1]) + 0.25(xy[2,1] + xy[3,1])
+    J12 = (0.25(xy[1,2] + xy[3,2]) - 0.25(xy[2,2] + xy[4,2]))x₂ -0.25(xy[1,2] + xy[4,2]) + 0.25(xy[2,2] + xy[3,2])
+    J21 = (0.25(xy[1,1] + xy[3,1]) - 0.25(xy[2,1] + xy[4,1]))x₁ -0.25(xy[1,1] + xy[2,1]) + 0.25(xy[3,1] + xy[4,1])
+    J22 = (0.25(xy[1,2] + xy[3,2]) - 0.25(xy[2,2] + xy[4,2]))x₁ -0.25(xy[1,2] + xy[2,2]) + 0.25(xy[3,2] + xy[4,2])
+    
+#--------------------------------------------------------------------------
+#               Determinante und Komponenten der inversen Jacobi-Matrix
+#--------------------------------------------------------------------------
+
+    d = J11 * J22 - J21 * J12
+    j11 = J22/d
+    j12 = -J12/d
+    j21 = -J21/d
+    j22 = J11/d
+    return j11, j12, j21, j22, d 
 end
+
 
 # gibt Koordinaten eines Elementes zurück
 function coordElement(e)

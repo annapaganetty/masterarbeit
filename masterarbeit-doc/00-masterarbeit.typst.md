@@ -11,41 +11,41 @@ format:
 
 ## Motivation {#sec-motivation}
 
-Wird die Finite Elemente Methode, ohne ausreichende Kenntnisse über die Berechnungsmethode, als "Black-Box"- Methode, angewandt, sind häufig Fehler die Konsequenz (s. Vortrag auf der 4. FEM-Tagung der TU Darmstadt im Jahr 1996). R.D. Cook, D.S. Malkus und M.E. Plesha warnen bereits in dem Jahr 1988 davor, dass den Ergebnissen der FE-Berechnung nur dann getraut werden kann, wenn der Anwender über konkretes Wissen, bezüglich des internen Berechnungsablaufs des Programms, verfügt und Kenntnis über die physikalischen Grundlagen hat.
+Wird die Finite Elemente Methode (FEM), ohne ausreichende Kenntnisse über die Berechnungsmethode, als "Black-Box"- Methode, angewandt, sind häufig Fehler die Konsequenz (s. Vortrag auf der 4. FEM-Tagung der TU Darmstadt im Jahr 1996). R.D. Cook, D.S. Malkus und M.E. Plesha warnen bereits in dem Jahr 1988 davor, dass den Ergebnissen der FE-Berechnung nur dann getraut werden kann, wenn der Anwender über konkretes Wissen, bezüglich des internen Berechnungsablaufs des Programms, verfügt und Kenntnis über die physikalischen Grundlagen hat.
 
 _"Their results cannot be trusted if users have no knowledge of their internal workings and little understanding of the physical theories on which they are based."_ - Cook et al.
 
-Trotzdem die Finite Elemente Methode eine, im Ingenieurwesen bereits lange etablierte, digitale Berechnungsmethode, die bei der Berechnung von Tragwerken kaum noch wegzudenken ist, sind die ensprechenden Verfahren in der Ingenieursliteratur nur unzureichend erläutert. 
+Die Finite-Elemente-Methode (FEM) hat sich als eine der leistungsfähigsten und vielseitigsten Techniken zur Analyse komplexer ingenieurtechnischer Probleme etabliert. Trotz der weit verbreiteten Anwendung der FEM in der Ingenieurpraxis ist die Literatur zu den spezifischen Verfahren und Methoden zur Anwendung der Kirchhoff-Plattentheorie oft unzureichend. Ein Mangel an klaren und umfassenden Erklärungen zu den notwendigen mathematischen und mechanischen Grundlagen kann die Entwicklung effizienter und präziser FEM-Modelle behindern. Aber auch der Anwender sollte ausreichende Kentnisse haben, über die komplexen Berechnungsvorgänge im Hintergrund eines FEM-Programms und den Ergebnissen nicht blind vertrauen. 
 
-Die zwei wesentlichen Ideen der FE-Methode sind die Approximation einer Lösung durch Kombination von vordefinierten Funktionen und die stückweise Definition der Funktionen auf sogenannten Elementen. Grundlage dessen bilden, je nach (kommerziellen) Programm, die Reissner-Mindlin Theorie und die Kirchhoffsche Plattentheorie, wobei Letztere die Basis dieser Ausarbeitung ist. Neben der gewählten Plattentheorie, sind auch der gewählte Elementansatz und die damit einhergehende Kontinuität an den Rändern der Elemente, von großem Interesse.
+![Offshore Bohrplatform Sleipner A](00-pics/sleipner-A-platform.png){#fig-sleipner-A fig-env="figure*" width=45%}
 
+Der Schadenfall an der Bohrplattform Sleipner A (@fig-sleipner-A) zeigt, dass auch Fehler mit schwerwiegenden Folgen gemacht werden können. Direkt nach dem Unfall ernannte der Besitzer der Plattform, die Firma Statoil, eine Ermittlungsgruppe. Es zeigte sich, dass bei der fehlerhaften Umsetzung der Finite Elemente Berechnung in einen Bewehrungsplan die Ursache für den Untergang lag.^[https://www-users.cse.umn.edu/~arnold/disasters/sleipner.html]
 
------------------------------
+Für das Verständnis der FE-Methode ist es essentiell die Grundideen zu verinnerlichen. Die wesentlichen zwei Aspekte der Methode sind die Approximation einer Lösung durch Kombination von vordefinierten Funktionen und die stückweise Definition der Funktionen auf sogenannten Elementen. Die Kirchhoff-Plattentheorie stellt dabei, neben der Reissner-Mindlin Theorie, eine fundamentale Grundlage dar, um das Verhalten von dünnen Platten zu analysieren. Die vorliegende Masterarbeit zielt darauf ab, die theoretischen Grundlagen zur Formulierung von FEM-Methoden für Kirchhoff-Platten systematisch aufzubereitet und in der Programmiersprache JULIA zu implementieren. 
 
-Der kubische Ansatz des Bogner-Fox-Schmitt-Elements, erfüllt die gefordertete $C^1$-Kontinuität. Bei benachbarten Rechteckelementen ist die Verträglichkeit der Rotationen ($\theta_\xi$,$\theta_\eta$ und $\theta_{\xi\eta}$) am gemeinsamen Knoten gegeben, sodass bei der Darstellung der Rotationen keine Knicke vorhanden sind. Für die Berechnung allgemeiner Vierecke ist dieser Ansatz jedoch unbrauchbar, da der zusätzliche Freiheitsgrad $\theta_{\xi\eta}$ störend wirkt.  
-
-Die detaillierte Formulierung für DKQ (_discrete kirchhoff quadrilateral_) Elemente ist vorteilhaft für die Diskretisierung zweidimensionale Strukturen beliebiger Form.
-
-
-Although the finite element methode can make a good engineer better, it can make a poor engineer more dangerous. - Cook et al.
+Nicht zuletzt wird durch die Implementierung in JULIA ein modernes und leistungsfähiges Werkzeug genutzt, sondern auch die Möglichkeit geschaffen, die Ergebnisse offen zugänglich zu machen und zur Weiterentwicklung der FEM-Methoden beizutragen.
 
 
 ## Problemstellung {#sec-problemstellung}
 
+Die Analyse von Plattentragwerken ist eine zentrale Aufgabe im Bauingenieurwesen, da sie in einer Vielzahl von Konstruktionen eine wesentliche Rolle spielen. Die Ingenieursliteratur zur Implementierung der FEM für Kirchhoff-Platten beschränkt sich oft auf rechteckige Elemente und ist auch hier teilweise lückenhaft. Für die Berechnung komplexer Strukturen ist die Formulierung für allgemeine Vierecke jedoch von wesentlicher Bedeutung.
 
+Die Verträglichkeit der Rotation von benachbarten Elemente stellt bei der Finite Elemente Analyse eine besondere Herausforderung dar. Ist die Verträglichkeit bei benachbarten Rechteckelementen am gemeinsamen Knoten gegeben, sodass bei der Darstellung der Rotationen keine Knicke vorhanden sind, so wird bei dem Elementansatz von einer sogenannten $C^1$-Kontinuität gesprochen. Diese Kontinuität erfüllt der kubische Ansatz des Bogner-Fox-Schmitt Elements. Für die Berechnung allgemeiner Vierecke ist dieser Ansatz jedoch unbrauchbar, da der zusätzliche Freiheitsgrad $\theta_{\xi\eta}$ störend wirkt. 
 
-Ist die Verträglichkeit der Rotationen bei benachbarten Rechteckelementen am gemeinsamen Knoten gegeben, sodass bei der Darstellung der Rotationen keine Knicke vorhanden sind, so wird bei dem Elementansatz von einer sogenannten $C^1$-Kontinuität gesprochen. Diese Kontinuität erfüllt der kubische Ansatz des Bogner-Fox-Schmitt Elements. Für die Berechnung allgemeiner Vierecke ist dieser Ansatz jedoch unbrauchbar, da der zusätzliche Freiheitsgrad $\theta_{\xi\eta}$ störend wirkt. 
+Ziel dieser Arbeit ist die Herleitung einer ausgewählten Formulierung für allgemeine Vierecke, sowie die Implementierung in der Programmierumgebung JULIA. An ausgewählten Anwendungsbeispielen wird die Umsetzung verifiziert und dadurch eine offene und nachvollziehbare Lösung für die Anwendung der Kirchhoff-Plattentheorie geschaffen.
 
-Ziel dieser Arbeit ist die Herleitung einer ausgewählten Formulierung für allgemeine Vierecke, sowie die Implementierung in der Programmierumgebung JULIA zur Verifikation der Umsetzung an ausgewählten Beispielen. Dabei 
-
-Das grundlegende Verständnis der Grundlagen der Finite Element Methode und etablierter Elementansätze sind von großer Wichtigkeit. Die Erläuterung numerischer Methoden für die Kirchhoffsche Plattentheorie ist in, vor allem in der deutschsprachigen Literatur, bisher sehr lückenhaft. Daher stellt die Aufarbeitung theoretischer Grundlagen, die zur Formulierung von FEM für Kirchhoffplatten notwending sind ein weiteres Ziel dar. Dies beinhaltet sowohl mechanischen Zusammenhänge, als auch mathematische Verfahren.
-
+Zudem ist das grundlegende Verständnis der Finite Element Methode und etablierter Elementansätze von großer Wichtigkeit. Die Erläuterung numerischer Methoden für die Kirchhoffsche Plattentheorie ist, vor allem in der deutschsprachigen Literatur, bisher sehr lückenhaft. Daher stellt die Aufarbeitung theoretischer Grundlagen, die zur Formulierung der FEM für Kirchhoffplatten notwending sind ein weiteres Ziel dar. Dies beinhaltet sowohl mechanischen Zusammenhänge, als auch mathematische Verfahren.
 
 
 ## Gliederung der Arbeit {#sec-gliederung}
 
+Die Grundlagen der Finite Elemente Methode sind in [Kapitel @sec-Grundlagen-FEM] dargestellt. Dabei werden zunächst diverse Elementansätze für finite Elemente erläutert und deren Kontinuität dargestellt. Weiterhin werden die mathematischen Werkzeuge zur Anwendung der FEM beschrieben und in @sec-einfuehrungsbeispiel auf das Einführungsbeispiel angewandt.
 
-Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA, sowie die Anwendung auf Beispiele zur Testung, sind in Kapitel 5 dokumentiert.
+Die zur Analyse notwendigen Differentialgleichungen einer Platte nach Kirchhoff werden in @sec-mech-math-grundlagen hergeleitet.  Weiterhin sind die mathematisch relevanten Grundlagen für die aus der DGL entstehenden Funktionale sowie die Cialet’sche Definition eines finiten Elements in @sec-mech-math-grundlagen aufgeführt.
+
+Für die Analyse von Plattentragwerken wird dann in @sec-fem-plattentragwerke zunächst die allgemeines schwache Form des Problems hergeleitet um danach die globale Steifigkeitsmatrix sowohl für das Rechteckelement nach Bogner Fox und Schmitt als auch für das allgemeine DKQ Element zu berechnen.
+
+Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA, sowie die Anwendung auf Beispiele zur Testung, sind in @sec-Umsetzung-Julia-Beispiele dokumentiert.
 
 
 
@@ -68,47 +68,14 @@ Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULI
 
 Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung. 
 
-Nach einer kurzen Einführung in die FEM im Bauwesen, beschäftigt sich @sec-finite-elemente mit den unterschiedlichen Finite Elemente Ansätzen und der Kontinuität der dafür genutzten Formfunktionen. Nach Erläuterung der mathematischen Werkzeuge in @sec-numerische-integration , auf die im Zuge der FEM zurückgegriffen wird, wird das Vorgehen anhand eines Einführungsbeispiels in @sec-einfuehrungsbeispiel demonstriert.
+Nach einer kurzen Einführung in die FEM im Bauwesen, beschäftigt sich @sec-finite-elemente mit den unterschiedlichen Finite Elemente Ansätzen und der Kontinuität der dafür genutzten Formfunktionen. Nach Erläuterung der mathematischen Werkzeuge in @sec-numerische-integration, auf die im Zuge der FEM zurückgegriffen wird, wird das Vorgehen anhand eines Einführungsbeispiels in @sec-einfuehrungsbeispiel demonstriert.
 
 ## Einführung in die Finite Elemente Methode (FEM) {#sec-einfuehrung-FEM}
 
-In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt 
-
-```{=typst}
-@tbl-elementansaetze
-```
-
-. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
+In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt @tbl-elementansaetze. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
 
 @tbl-elementansaetze
 
-<!-- 
-::: {#tbl-elementansaetze} -->
-
-
-```{=typst}
-#figure(
-  table(
-    columns: 4,
-    align: (left, left, center, center),
-    [*Elementansatz*], [*Polynome*], [*Elementknoten*], [*Stetigkeit*],
-    [linear], [$mat(1,xi,eta)$], [$4$], [$C^0$],
-    [quadratisch], [$mat(1,xi,eta,xi^2,xi eta,eta^2)$], [$4$], [$C^0$],
-    [LAGRANGE], [], [], [],
-    [bilinear], [$mat(1 ,xi , eta, xi eta)$], [$4$], [$C^0$],
-    [quadratisch vollständig], [$mat(1,xi,eta,xi^2,xi eta, eta^2, xi^2 eta, xi eta^2, xi^2 eta^2)$], [$9$], [$C^0$],
-    [quadratisch unvollständig (Serendipity)], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2)$], [$8$], [$C^0$],
-    [HERMITE], [], [], [],
-    [kubisch vollständig], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [$C^1$],
-    [kubisch unvollständig], [$mat(1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [semi-$C^1$],
-  ),
-  caption: [Elementansätze in der FEM],
-)<tbl-elementansaetze>
-```
-
-<!-- ::: -->
-
-<!-- 
 |__Elementansatz__|__Polynome__ |__Elementknoten__|__Stetigkeit__ |
 |:--------|:--------------|:-----------:|:---------:|
 | linear      |$\left[\begin{array}{center}1&\xi&\eta\end{array}\right]$ | $4$ |$C^0$ |
@@ -121,11 +88,11 @@ In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwen
 | kubisch vollständig |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$ |$C^1$ |
 | kubisch unvollständig   |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |semi-$C^1$ |
 
-:Elementansätze in der FEM {#tbl-irgendwas} -->
+: Elementansätze in der FEM {#tbl-elementansaetze}
 
 Bereits in den frühen 1940er Jahren lässt sich die erste Anwendung der Finite Elemente Analyse verzeichnen. 1941 nutzte A. HRENNIKOF zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. COURAND ein Paper publiziert (1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. TURNER et al. hat 1959 in dem JOURNAL OF THE AERONAUTICAL SCIENCES eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. CLOUGH publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung _Finite Elemente_ nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz  u.v.a.
 
-Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Preprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
+Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM[Abb.] der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Preprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
 
 ![formaler Ablauf](00-pics/Ablauf-FEM.png){#fig-Ablauf-FEM width=40%} 
 
@@ -1144,7 +1111,7 @@ Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von ei
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: FEM für Plattentragwerke])))
 ```
 
-# FEM für Plattentragwerke
+# FEM für Plattentragwerke {#sec-fem-plattentragwerke}
 
 Anknüpfend an Kapitel ... erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
 
@@ -1960,7 +1927,7 @@ F_{y}^{-1}(x,y) \\
 \end{align}
 $$ {#eq-f-1}
 
-notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien N_i die Formfunktionen definiert auf dem Referenzelement, so sind
+notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien $N_i(\xi,\eta)$ die Formfunktionen definiert auf dem Referenzelement, so sind
 
 $$
 \begin{align}
@@ -1978,8 +1945,8 @@ F_{x,_x}^{-1}(x,y) &
 F_{y,_x}^{-1}(x,y)
 \end{array}\right]
 \left[ \begin{array}{center} 
-N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
-N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+N_{i,_\xi}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_\eta}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right] 
 \end{align}
 $$ {#eq-phi-I-Ableitung-x}
@@ -1991,8 +1958,8 @@ F_{x,_y}^{-1}(x,y) &
 F_{y,_y}^{-1}(x,y)
 \end{array}\right]
 \left[ \begin{array}{center} 
-N_{i,_x}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
-N_{i,_y}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
+N_{i,_\xi}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y)) \\
+N_{i,_\eta}(F_{x}^{-1}(x,y),F_{y}^{-1}(x,y))
 \end{array}\right] 
 \end{align}
 $$ {#eq-phi-I-Ableitung-y}
@@ -2009,8 +1976,8 @@ $$
 \xi_{,_y}(x,y) & \eta_{,_y}(x,y) 
 \end{array}\right]}_{\mathbf{J}_{F^-1}}
 \left[ \begin{array}{center} 
-N_{i,_x}(\xi(x,y),\eta(x,y)) \\
-N_{i,_y}(\xi(x,y),\eta(x,y))
+N_{i,_\xi}(\xi(x,y),\eta(x,y)) \\
+N_{i,_\eta}(\xi(x,y),\eta(x,y))
 \end{array}\right].
 $$ {#eq-Ableitung-phi-I-gesamt}
 
