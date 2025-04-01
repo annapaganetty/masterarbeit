@@ -7,44 +7,16 @@ include("../src/setup.jl")
 xElem = 20
 mQuadBT = makequadratcicMesh(p1, xElem)
 figBT = plotmesh(mQuadBT;title="quadratische Platte | 8m x 8m | 400 Elemente")
-# save("Beispiel-01-BFS.png",figBFS)
 ```
 
 ```{julia}
-e = element(mQuadBT,1)
-h = p1.h
-E = p1.E
-ν = p1.ν
-D = (E*h^3) / (12*(1-ν^2))
-jF = jacobian(parametrization(geometry(e)))
-Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
-Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
-# 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
-∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx))
-# 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
-∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
-Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
-function m(x,y)
-    # Jacobi matrix ausgewertet an der Stelle (x,y)
-    J = jF(x,y)
-    ∇ₓN = (inv(J') * ∇ξN(x,y))
-    ∇yN = (inv(J') * ∇ηN(x,y)) 
-    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-    return  Db * B * det(J)
-end
-m(2,3)[1]
-```
-
-```{julia}
-   V = [ -1 1 1 -1; -1 -1 1 1]
-    Ns = serendipityelement(V)
-    typeof(Ns[1])
-```
-
-```{julia}
+# Berechnung des Verschiebungsvektors
 w = plate(mQuadBT, p1, "BTP")
-w_fe = maximum(w[1:4:end])
+# maximale Verschiebung in vertikaler Richtung
+w_fe = maximum(w[1:3:end])
+# Vergleichswert der Czerny Tafeln
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
+# prozentuale Abweichung
 100 * abs(w_fe - w_czerny) / w_czerny
 ```
 
@@ -53,6 +25,7 @@ w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 ```{julia}
 plotwBTP(mQuadBT, w;title="Verformung")
 ```
+
 
 ```{julia}
 set_theme!(theme_minimal())
@@ -63,17 +36,19 @@ update_theme!(
     faceplotnpoints=15,
     edgesvisible=false,
     featureedgelinewidth=2.5,
-    transparency = false
 )   
-figBTmx = plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17, 17),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTmy= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17, 17),nodal = false, a3d=true)
+figBTmx = plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTmxy= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4, 4),nodal = false, a3d=true)
+figBTmy= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
+```
+
+```{julia}
+figBTmxy= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
 ```
 
 ```{julia}
@@ -86,16 +61,16 @@ figBTqy= plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d
 
 Geglättete Ergebnisse 
 ```{julia}
-figBTmxGlatt= plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
+figBTmxGlatt= plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
 ```
 
 
 ```{julia}
-figBTmyGlatt= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
+figBTmyGlatt= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
 ```
 
 ```{julia}
-figBTmxyGlatt= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4, 4),nodal = true, a3d=true)
+figBTmxyGlatt= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
 ```
 
 ```{julia}
@@ -108,17 +83,18 @@ figBTqyGlatt=plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, 
 
 
 ```{julia}
+using CairoMakie
 save("Beispiel-01-BT-mx.png",figBTmx)
 save("Beispiel-01-BT-my.png",figBTmy)
 save("Beispiel-01-BT-mxy.png",figBTmxy)
-save("Beispiel-01-BT-qx.png",figBTqx)
-save("Beispiel-01-BT-qy.png",figBTqy)
+# save("Beispiel-01-BT-qx.png",figBTqx)
+# save("Beispiel-01-BT-qy.png",figBTqy)
 
 save("Beispiel-01-BT-mx-glatt.png",figBTmxGlatt)
 save("Beispiel-01-BT-my-glatt.png",figBTmyGlatt)
 save("Beispiel-01-BT-mxy-glatt.png",figBTmxyGlatt)
-save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
-save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
+# save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
+# save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
 ```
 
 # Konvergenz Plot
