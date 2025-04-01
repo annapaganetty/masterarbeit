@@ -1166,7 +1166,7 @@ numbering: "1",
 
 Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein.
 
-Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
+Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
 
 == DGL einer Platte nach Kirchhoff
 <sec-kirchhoffschen-plattentheorie>
@@ -1840,7 +1840,7 @@ die Formfunktionen defniert auf dem physikalischen Element, wobei $i$ und $I$ je
 
 #math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_x) (x , y) = mat(delim: "[", F_(x ,_x)^(- 1) (x , y), F_(y ,_x)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-x> #math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_y) (x , y) = mat(delim: "[", F_(x ,_y)^(- 1) (x , y), F_(y ,_y)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-y>
 
-benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt #math.equation(block: true, numbering: "(1)", [ $ mat(delim: "[", phi_(I ,_1) (x , y); phi_(I ,_2) (x , y)) = underbrace(mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)), bold(J)_(F^(-) 1)) mat(delim: "[", N_(i ,_xi) (xi (x , y) , eta (x , y)); N_(i ,_eta) (xi (x , y) , eta (x , y))) . $ ])<eq-Ableitung-phi-I-gesamt>
+benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt #math.equation(block: true, numbering: "(1)", [ $ mat(delim: "[", phi_(I ,_x) (x , y); phi_(I ,_y) (x , y)) = underbrace(mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)), bold(J)_(F^(-) 1)) mat(delim: "[", N_(i ,_xi) (xi (x , y) , eta (x , y)); N_(i ,_eta) (xi (x , y) , eta (x , y))) . $ ])<eq-Ableitung-phi-I-gesamt>
 
 zusammengefasst werden. Der Ausdruck #math.equation(block: true, numbering: "(1)", [ $ nabla phi_I = bold(J)_(F^(- 1)) dot.op nabla N_i $ ])<eq-Ableitung-phi-I-Nabla>
 
@@ -2617,6 +2617,123 @@ supplement: "Figure",
 
 === Berechnung nach Batoz und Tahar
 <berechnung-nach-batoz-und-tahar>
+#figure([
+#block[
+#grid(columns: 2, gutter: 2em,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-mx.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_x$ \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-mx>
+
+
+]
+,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-mx-glatt.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_x$ geglättet \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-mx-Glatt>
+
+
+]
+,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-my.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_y$ \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-my>
+
+
+]
+,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-my-glatt.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_y$ geglättet \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-my-Glatt>
+
+
+]
+,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-mxy.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_(x y)$ \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-mxy>
+
+
+]
+,
+  [
+#figure([
+#box(width: 80%,image("00-pics/Beispiel-01-BT-mxy-glatt.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_(x y)$ geglättet \[kNm\]
+]), 
+kind: "quarto-subfloat-fig", 
+supplement: "", 
+numbering: "(a)", 
+)
+<fig-BFS-mxy-Glatt>
+
+
+]
+)
+]
+], caption: figure.caption(
+position: bottom, 
+[
+Biegemomente Platte Batoz & Tahar
+]), 
+kind: "quarto-float-fig", 
+supplement: "Figure", 
+)
+<fig-Biegemomente-BTP>
+
+
 #pagebreak()
 
 

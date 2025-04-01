@@ -76,3 +76,20 @@ Querkräfte Platte Bogner Fox Schmitt
 ### Berechnung nach Batoz und Tahar
 
 
+::: {#fig-Biegemomente-BTP  layout-ncol=2}
+
+![$m_x$ [kNm]](00-pics/Beispiel-01-BT-mx.png){#fig-BFS-mx width=80%}
+
+![$m_x$ geglättet [kNm]](00-pics/Beispiel-01-BT-mx-glatt.png){#fig-BFS-mx-Glatt width=80%}
+
+![$m_y$ [kNm]](00-pics/Beispiel-01-BT-my.png){#fig-BFS-my width=80%}
+
+![$m_y$ geglättet [kNm]](00-pics/Beispiel-01-BT-my-glatt.png){#fig-BFS-my-Glatt width=80%}
+
+![$m_{xy}$ [kNm]](00-pics/Beispiel-01-BT-mxy.png){#fig-BFS-mxy width=80%}
+
+![$m_{xy}$ geglättet [kNm]](00-pics/Beispiel-01-BT-mxy-glatt.png){#fig-BFS-mxy-Glatt width=80%}
+
+
+Biegemomente Platte Batoz & Tahar
+:::

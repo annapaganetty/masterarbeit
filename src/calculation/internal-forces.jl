@@ -86,60 +86,58 @@ function postprocessorBTP(params, wHat)
         idxs = idxDOFs(nodeindices(face), 3)
         idxsWe = idxs[1:3:end]  
 
-    #------------------------------------------------------------------------
-    # TODO figure out why this does not work
-        # displ = bMatrix(face) * wHat[idxs]
-
-        # we =   sum(bMatrix(face)[1,:] .* wHat[idxs]) # Ni = functions of Lagrange Element
-        # βx = - sum(bMatrix(face)[2,:] .* wHat[idxs]) # Beta x = -wx
-        # βy = - sum(bMatrix(face)[3,:] .* wHat[idxs]) # Beta y = -wy
-    #------------------------------------------------------------------------
-
-        j11,j12,j21,j22,d = jacobianMatrixInv(e)
-        # Hxξ = ∂x.(Hx)
-        # Hxη = ∂y.(Hx)
-        # Hyξ = ∂x.(Hy)
-        # Hyη = ∂y.(Hy)  
-        # Hxx = j11 * Hxξ + j12 * Hxη
-        # Hxy = j21 * Hxξ + j22 * Hxη
-        # Hyy = j11 * Hyξ + j12 * Hyy
-        # Hyx = j21 * Hxξ + j22 * Hxy
         # this works 
         V = [ -1 1 1 -1; -1 -1 1 1]
-        we = sum(wHat[idxsWe] .* lagrangeelement(V)) # N = functions of Lagrange Element
+        we = sum(wHat[idxsWe] .* lagrangeelement(V))
 
-        # first Derivatives of w = beta 
-        βx = sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
-        βy = sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
+        # first Derivatives of w = -beta 
+        βx = sum(btpHx(face) .* wHat[idxs]) 
+        βy = sum(btpHy(face) .* wHat[idxs]) 
         wx =  -βx # Beta x = -wx
         wy =  -βy # Beta y = -wy
 
         # Quick return
         name == :w && return we
 
-        jF = jacobian(parametrization(geometry(e)))
-        Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
-        Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
-        # 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
+        jF = jacobian(parametrization(geometry(face)))
+        Hx = MappingFromComponents(btpHx(face)...) 
+        Hy = MappingFromComponents(btpHy(face)...) 
         ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
-        # 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
         ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
         Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
         
-        function m(x,y)
-            # Jacobi matrix ausgewertet an der Stelle (x,y)
-            J = jF(x,y)
-            ∇ₓN = (inv(J') * ∇ξN(x,y))
-            ∇yN = (inv(J') * ∇ηN(x,y)) 
-            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-            return  Db * B * det(J)
+        function moment(name)
+            if name == :mxfunc
+                x -> begin
+                    J = jF(x)
+                    ∇ₓN = (inv(J') * ∇ξN(x))
+                    ∇yN = (inv(J') * ∇ηN(x)) 
+                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+                return (Db * B)[1] * wHat[idxs]
+                end
+            elseif name == :myfunc
+                x -> begin
+                    J = jF(x)
+                    ∇ₓN = (inv(J') * ∇ξN(x))
+                    ∇yN = (inv(J') * ∇ηN(x)) 
+                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+                return (Db * B)[2] * wHat[idxs]
+                end
+            elseif name == :mxyfunc
+                x -> begin
+                    J = jF(x)
+                    ∇ₓN = (inv(J') * ∇ξN(x))
+                    ∇yN = (inv(J') * ∇ηN(x)) 
+                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+                return (Db * B)[3] * wHat[idxs]
+                end
+            end
         end
 
-        Moment = m()
         # Derivatives
-        βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
-        βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
-        βxy = ∂y(βx) + ∂x(βy)
+        # βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
+        # βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
+        # βxy = ∂y(βx) + ∂x(βy)
         
         wxx = ∂x(wx)
         wyy = ∂y(wy)
@@ -156,27 +154,19 @@ function postprocessorBTP(params, wHat)
         name == :wxy && return wxy
         name == :Δw && return Δw
 
-        # Section forces (Altenbach et al. p176)
+        # Moments Gl. 17 Batoz & Tahar
+        name == :mx && return moment(:mxfunc)
+        name == :my && return moment(:myfunc)
+        name == :mxy && return moment(:mxyfunc)
 
-        mx = 1 # D * sum(((j11 * Hxx + j12 * Hxy) + ν * (j21 * Hyx + j22 * Hyy)) .* wHat[idxs])
-        # my = 1e-3 * D * (ν * (j11 * Hxx + j12 * Hxy) + (j21 * Hyx + j22 * Hyy)) .* wHat[idxs]
-        # mxy = 1e-3 * D * (1 - ν)/2 * ((j11 * Hyx + j12 * Hyy) + (j21 * Hxx + j22 * Hxy)).* wHat[idxs]
-        
-        mx = D * (βxx + ν * βyy)
-        my = D * (ν * βxx + βyy)
-        mxy = D * (1 - ν)/2 * βxy
-
+        # Figure out why these are false
         qx = -D * ∂x(Δw)
         qy = -D * ∂y(Δw)
 
-        # # From equilibrium
-        # qxe = ∂X(mx) + ∂Y(mxy) # TODO figure out why this does not work
-        # qye = ∂X(mxy) + ∂Y(my)
-
         # Return
-        name == :mx && return mx1
-        name == :my && return my
-        name == :mxy && return mxy
+        name == :mx && return moments(:mx)
+        name == :my && return moments(:my)
+        name == :mxy && return moments(:mxy)
         name == :qx && return qx
         name == :qy && return qy
         # Unknown label

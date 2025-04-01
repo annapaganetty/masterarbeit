@@ -1,55 +1,60 @@
-# Festlegungen für die Programmierung der Masterarbeit
-
-- rechteckige Platten mit...
-    ... quadratischen Elementen
-    ... rechteckigen Elementen
-    ... allgemein Viereckigen Elementen
-
-
-## quadratische Elemente
-
-    - BFS (Bogner-Fox-Schmit) - Elemente
-        = hermite, conforming = true
-        = 4 Knoten & 4 DOFs pro Knoten      = 16 Freiheitsgrade
-    - name?
-        = hermite, conforming = false
-        = 4 Knoten & 3 DOFs pro Knoten      = 12 Freiheitsgrade
-
-## rechteckige Elemente
-
-    -> wie quadratische Elemente
-
-## allgemeine Viereckige Elemente
-
-    - DKQ - Elemente (Batoz und Tahar)
-        = serendipity(?)
-        = 8 Knoten & 3 DOFs pro Eckknoten und & ... DOFs pro Mittelknoten
 
 
 
+**Einleitung**
+    Motivation                                          motivation.qmd
+    Problemstellung                                     problemstellung.qmd
+    Gliederung                                          gliederung.qmd
 
-Einleitung
-    Motivation
-    Problemstellung
-    Gliederung
-
-Theoretische Grundlagen
+**Grundlagen der Finite Elemente Lösung**
     Einführung in die Finite-Elemente-Methode (FEM)     einfuehrung_FEM.qmd
-    Plattentragwerke                
-        Einführung Plattentragwerke                     einfuehrung_platten.qmd
-        DGL Platten nach Kirchhoff                      kirchhoffsche-plattentheorie.qmd
     Einführungsbeispiel                                 einfuehrungsbeispiel.qmd
         Differentialgleichungen und Randbedingungen
         starke Form & schwache Form
         Approximation durch Linearkombination
-        numerische Lösung
+        numerische Lösung    
+    
+**mechanische und mathematische Grundlagen**   
+    Plattentragwerke                
+        Grundidee / Einführung Plattentragwerke         einfuehrung_platten.qmd
+        DGL Platten nach Kirchhoff                      kirchhoffsche-plattentheorie.qmd
+    (mathematische Verfahren ) -> als überkapitel
+    Konstruktion C^1 stetiger Basisfunktionen
+        Kontinuität                               
+        Methoden zur Konstruktion der Basisfunktionen (Hermite-Polynome etc.)
+        Beispiele und Visualisierungen der Basisfunktionen
+    Eigenschaften verwendete Funktionale                funktionale.qmd
+    numerische Integration                              numerische-integration.qmd
 
 
-        
-    Mathematische Grundlagen
-        Differentialgleichungen und Randbedingungen
-        Diskretisierung und Elementtypen
-        Implementierung in Julia
+
+**FEM für Plattentragwerken** / **Näherungslösung von Platten mit FE**
+    Vorbereitung
+        Herleitung schwache Form
+        Approximation von Funktionen
+        Numerische Lösung
+    Assemblierung der globalen Steifigkeitsmatrix
+        BFS-Element
+        allgemeines Viereckelement
+        Parametrisierung DKQ
+
+**Umsetzung in Julia und Beispiele**
+    Einführung in Julia für FEM
+    Implementierung der Formulierung für rechteckige Elemente
+        Code-Struktur und wichtige Funktionen
+    Implementierung für allgemeine Vierecke
+        Herausforderungen und Lösungen
+    Anwendungsbeispiele
+        Beschreibung der Beispiele
+        Vergleich der Ergebnisse mit kommerziellen FEM-Programmen
+
+
+
+
+
+
+
+
 
 Einführung in die Programmiersprache Julia
     Vorteile von Julia für numerische Berechnungen

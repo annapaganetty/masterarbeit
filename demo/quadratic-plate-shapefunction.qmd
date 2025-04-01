@@ -13,7 +13,6 @@ m1 = makequadratcicMesh(p1, xElem)
 plotmesh(m1;title="quadratische Platte")
 ```
 
-
 ## Verformung 
 
 Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
@@ -23,10 +22,10 @@ w = plate(m1, p1, "BTP")
 ```
 
 ```{julia}
-NN = 4 * nnodes(m1)
+NN = 3 * nnodes(m1)
 nb = collect(m1.groups[:boundarynodes])
 ni = [i for i in 1:nnodes(m1) if i ∉ nb]
-adofs = idxDOFs(ni, 4)
+adofs = idxDOFs(ni, 3)
 NNa = length(adofs)
 ```
 
@@ -65,7 +64,7 @@ for i = 1:4
         ax = Axis3(fig2[1,i], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.5, limits=(nothing, nothing, nothing), protrusions=0)
         hidedecorations!(ax)
         hidespines!(ax)
-        mplot!(m1, makeweBTP(ei(NN2, adofs[n1[i]])),
+        mplot!(m1, makeweBTP(ei(NN, adofs[n1[i]])),
             faceplotzscale = 2,
             faceplotmesh = 5,
             edgesvisible = false, 
@@ -78,7 +77,7 @@ for i = 1:4
             limits = (nothing, nothing, nothing))
 end
 fig2
-save("Basisfunktionen_Bilinear.png",fig2)
+# save("Basisfunktionen_Bilinear.png",fig2)
 ```
 
 
@@ -140,7 +139,7 @@ for i = 1:4
     end
 end
 fig
-save("Basisfunktionen_Hermite.png",fig)
+# save("Basisfunktionen_Hermite.png",fig)
 ```
 
 

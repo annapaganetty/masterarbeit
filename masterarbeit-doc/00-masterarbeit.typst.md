@@ -742,7 +742,7 @@ Die Zustandsgrößen, d.h. die Verschiebungsgrößen sowie die äußeren Kraftgr
 
 Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein. 
 
-Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
+Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
 
 
 ## DGL einer Platte nach Kirchhoff{#sec-kirchhoffschen-plattentheorie}
@@ -1967,8 +1967,8 @@ $$ {#eq-phi-I-Ableitung-y}
 benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt
 $$ 
 \left[ \begin{array}{center} 
-\varphi_{I,_1}(x,y) \\
-\varphi_{I,_2}(x,y)
+\varphi_{I,_x}(x,y) \\
+\varphi_{I,_y}(x,y)
 \end{array}\right]
 = 
 \underbrace{\left[ \begin{array}{center} 
@@ -2590,6 +2590,23 @@ Querkräfte Platte Bogner Fox Schmitt
 ### Berechnung nach Batoz und Tahar
 
 
+::: {#fig-Biegemomente-BTP  layout-ncol=2}
+
+![$m_x$ [kNm]](00-pics/Beispiel-01-BT-mx.png){#fig-BFS-mx width=80%}
+
+![$m_x$ geglättet [kNm]](00-pics/Beispiel-01-BT-mx-glatt.png){#fig-BFS-mx-Glatt width=80%}
+
+![$m_y$ [kNm]](00-pics/Beispiel-01-BT-my.png){#fig-BFS-my width=80%}
+
+![$m_y$ geglättet [kNm]](00-pics/Beispiel-01-BT-my-glatt.png){#fig-BFS-my-Glatt width=80%}
+
+![$m_{xy}$ [kNm]](00-pics/Beispiel-01-BT-mxy.png){#fig-BFS-mxy width=80%}
+
+![$m_{xy}$ geglättet [kNm]](00-pics/Beispiel-01-BT-mxy-glatt.png){#fig-BFS-mxy-Glatt width=80%}
+
+
+Biegemomente Platte Batoz & Tahar
+:::
 
 
 
