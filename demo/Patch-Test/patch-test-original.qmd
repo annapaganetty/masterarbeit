@@ -1,5 +1,5 @@
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 ```
 
 # Patch Test
@@ -33,21 +33,17 @@ Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung de
 
 ```{julia}
 nf = 3
-bcs1 = [true, false, false]
+bcs1 = [true, false,false]
 bcs2 = [false, false, false]
 mPatchOG.data[:kefunc] = plateKe(p3)
 mPatchOG.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatchOG,nf)
 
-applyDirichletBCs!(mPatchOG.groups[:boundarynodes][1:3], K, r, bcs1)
+applyDirichletBCs!(mPatchOG.groups[:boundarynodes][1:4], K, r, bcs1)
 
 dofs2 = idxDOFs(mPatchOG.groups[:boundarynodes],3)
 
-# Verschiebungen an Eckknoten = 0
-# for i = [1,4,7]
-#     r[dofs2[i]] = 0
-# end
-r[dofs2[10]] = 2
+# r[dofs2[10]] = 2
 
 # Randmomente um die y-Achse
 r[dofs2[2]]  = a 
@@ -84,7 +80,7 @@ plotThetayBTP(mPatchOG, w; title="Verdrehung θy")
 ## Schnittgrößen Plotten 
 
 ```{julia}
-mPatchOG.data[:post] = postprocessor(p3, w)
+mPatchOG.data[:post] = postprocessorBTP(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
@@ -98,12 +94,12 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatchOG, :mx, "Biegemoment mx", (-0.02, 0.02),nodal = false, a3d=true)
+plotrBTP(mPatchOG, :mx, "Biegemoment mx", (-0.02, 0.02),nodal = true, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatchOG, :my, "Biegemoment my", (-0.03, 0.02),nodal = false, a3d=true)
+plotrBTP(mPatchOG, :my, "Biegemoment my", (-0.03, 0.02),nodal = true, a3d=true)
 ```
 
 ### Mxy

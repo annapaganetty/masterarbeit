@@ -1,5 +1,5 @@
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 ```
 
 # Patch Test - einseitig
@@ -105,17 +105,17 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatchY, :mx, "Biegemoment mx", (-5, 5),nodal = true, a3d=true)
+plotrBTP(mPatchY, :mx, "Biegemoment mx", (-5, 5),nodal = false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatchY, :my, "Biegemoment my", (-100, -99),nodal = false, a3d=true)
+plotrBTP(mPatchY, :my, "Biegemoment my", (-1, 1),nodal = false, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(mPatchY, :mxy, "Biegemoment mxy", (-1,1),nodal = true, a3d=true)
+plotrBTP(mPatchY, :mxy, "Biegemoment mxy", (-1,1),nodal = false, a3d=true)
 ```
 
 ```{julia}

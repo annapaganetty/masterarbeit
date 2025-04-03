@@ -1,5 +1,5 @@
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 ```
 
 # Patch Test - einseitig
@@ -64,9 +64,6 @@ thetaX = w[2:3:end] # an jeder stelle ungefähr 0
 thetaY = w[3:3:end] 
 ```
 
-6   7   8
-4       5   
-1   2   3
 
 ```{julia}
 plotwBTP(mPatchX, w; title="Verformung")

@@ -95,3 +95,7 @@ function bMatrix(e)
     return H
     # return ∂x(Hy[1]), ∂x(Hy[2]), ∂x(Hy[3]), ∂x(Hy[4]), ∂x(Hy[5]), ∂x(Hy[6]), ∂x(Hy[7]), ∂x(Hy[8]), ∂x(Hy[9]), ∂x(Hy[10]), ∂x(Hy[11]), ∂x(Hy[12]),∂y(Hy[1]), ∂y(Hy[2]), ∂y(Hy[3]), ∂y(Hy[4]), ∂y(Hy[5]), ∂y(Hy[6]), ∂y(Hy[7]), ∂y(Hy[8]), ∂y(Hy[9]), ∂y(Hy[10]), ∂y(Hy[11]), ∂y(Hy[12])
 end
+
+
+
+

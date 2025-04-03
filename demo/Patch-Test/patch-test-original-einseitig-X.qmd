@@ -1,5 +1,5 @@
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 ```
 
 # Patch Test
@@ -55,17 +55,16 @@ r[dofs2[5]]  = 0
 r[dofs2[8]]  = 0
 r[dofs2[11]] = 0
 # Randmomente um die x-Achse 
-r[dofs2[3]]  = -b*100
-r[dofs2[6]]  = b*100
-r[dofs2[9]]  = -b*100
-r[dofs2[12]] = b*100
+r[dofs2[3]]  = -b
+r[dofs2[6]]  = b
+r[dofs2[9]]  = -b
+r[dofs2[12]] = b
 
 w = K \ r
 
 thetaX = w[2:3:end]
 # thetaY = w[3:3:end]
 w[1:3:end]
-w
 ```
 
 ```{julia}
@@ -85,7 +84,7 @@ plotThetayBTP(mPatchOG, w; title="Verdrehung θy")
 ## Schnittgrößen Plotten 
 
 ```{julia}
-mPatchOG.data[:post] = postprocessor(p3, w)
+mPatchOG.data[:post] = postprocessorBTP(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
