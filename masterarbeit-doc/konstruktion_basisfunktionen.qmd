@@ -1,4 +1,4 @@
-## Basis Funktionen der finiten Elemente {#sec-finite-elemente .numbered} 
+## Basis Funktionen der finiten Elemente {#sec-basis-funktionen} 
 
 Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In dieser Arbeit werden quadratische Elemente im zweidimensionalen, ebenen, Fall betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind^[vgl. Braess, S. 57, Fußnote].
 Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente Raums am wichtigsten sind.
@@ -59,32 +59,9 @@ $$
 
 in den Eckknoten. Die Nummerierung der Knoten mit $i = 1,2,3,4$ ist in @fig-BFS-element dargestellt. Die Freiheitsgrade $\theta_{\xi i}$ und $\theta_{\eta i}$ entsprechen der Ableitung von $w_i$ nach $\xi$ bzw. $\eta$ an dem Knoten $i$. Durch den zusätzlichen Freiheitsgrad $\theta_{\xi \eta i}$, also die Ableitung zweiten Grades von $w_i$ nach $\xi$ und $\eta$, wird die geforderte _smoothness_ des Elementes erreicht.
 
-Die Formfunktionen des BFS Elements können für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden. Seien die kubischen Polynome 
-$$
-\begin{align}
-H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
-H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
-H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
-H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
-\end{align}
-$$ {#eq-Hermite-Funktionen}
+Die Formfunktionen des BFS Elements können für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden.
 
-auf dem eindimensionalen Referenzelement, mit dem Interval $Î := [-1,1]$ definiert, so werden die Bedingungen
-$$
-\begin{align}
-H_1(-1) &= 1, \quad &H_1(1) = 0, \quad &H_1'(-1) = 0, \quad &H_1'(1) = 0 \\
-H_2(-1) &= 0, \quad &H_2(1) = 1, \quad &H_2'(-1) = 0, \quad &H_2'(1) = 0 \\
-H_3(-1) &= 0, \quad &H_3(1) = 0, \quad &H_3'(-1) = 1, \quad &H_3'(1) = 0 \\
-H_4(-1) &= 0, \quad &H_4(1) = 0, \quad &H_4'(-1) = 0, \quad &H_4'(1) = 1, \\
-\end{align}
-$$ {#eq-Bedingungen-Hermite}
-
-erfüllt. 
-
-![Hermite Funktionen](00-pics/Hermite-Polynome.png){#fig-Hermite-Funktionen width=60%}
-
-Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. @fig-Hermite-Funktionen zeigt die kubischen Polynome aus @eq-Hermite-Funktionen und veransschaulicht die in @eq-Bedingungen-Hermite genannten Bedingungen.
-Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome berechnet,wodurch sich 16 Funktionen ergeben. Die Ansatzfunktion der Verschiebung $w(x,y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen
+Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome (siehe @sec-ke-biegelbalken) berechnet,wodurch sich 16 Funktionen ergeben. Die Ansatzfunktion der Verschiebung $w(x,y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen
 $$
 1,x,y,x^2,xy,y^2,x^3,x^2y,xy^2,y^3,x^3y,x^2y^2,xy^3,x^3y^2,x^2y^3,x^3y^3
 $$

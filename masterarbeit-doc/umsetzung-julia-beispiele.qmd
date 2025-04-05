@@ -1,9 +1,0 @@
-# Umsetzung in JULIA & Beispiele {#sec-Umsetzung-Julia-Beispiele}
-
-Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt.
-
-{{< include julia.qmd >}}
-{{< include FEM-programme.qmd >}}
-{{< include programmstruktur.qmd >}}
-{{< include programmteile.qmd >}}
-{{< include beispiel-01.qmd >}}

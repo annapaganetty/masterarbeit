@@ -61,14 +61,399 @@ Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULI
 
 
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundlagen der Finite Elemente Methode])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundidee der Finite Elemente Methode])))
 ```
 
-# Grundlagen der Finite Elemente Methode {#sec-Grundlagen-FEM}
+# Grundidee der Finite Elemente Methode {#sec-Grundlagen-FEM}
 
 Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung. 
 
-Nach einer kurzen Einführung in die FEM im Bauwesen, beschäftigt sich @sec-finite-elemente mit den unterschiedlichen Finite Elemente Ansätzen und der Kontinuität der dafür genutzten Formfunktionen. Nach Erläuterung der mathematischen Werkzeuge in @sec-numerische-integration, auf die im Zuge der FEM zurückgegriffen wird, wird das Vorgehen anhand eines Einführungsbeispiels in @sec-einfuehrungsbeispiel demonstriert.
+Nachdem in @sec-einfuehrungsbeispiel, anhand eines Einführungsbeispiel, der Ablauf der Finite Elemente Analyse demonstriert wird, gibt @sec-einfuehrung-FEM einen allgemeineren Überblick über die FEM. Für die numerische Lösung zweidimensionaler Problem ist die Konstruktion von Basisfunktionen notwendig. Das mathematische Vorgehen, sowie die Forderungen nach bestimmten Kontinuitätsbedingungen werden in @sec-basis-funktionen vorgestellt. Abschließend wird in @sec-assemblierung-steifigkeitsmatrix sowohl für das $C^1$-stetige Rechteckelement, als auch für allgemeine Vierecke die globale Steifigkeitsmatrix hergeleitet.
+
+
+## Einführungsbeispiel: Biegebalken {#sec-einfuehrungsbeispiel}
+
+Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist siehe (@fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems geredet, welche die Grundlage für die Finite Elemente Analyse bildet.
+
+![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=75%}
+
+### Kinematische Gleichungen
+
+Die nachfolgend beschriebenen Zusammenhänge beruhen auf den beiden Bernoulli-Hypothesen. Die erste Hypothese besagt, dass der Querschnitt des Balkens im unverformten und im verformten Zustand eben ist und sich nicht verwölbt (_Ebenbleiben des Querschnitts_). Zudem wird davon ausgegangen, dass die Querschnittsfläche im verformten Zustand senkrecht zur neutralen Achse bleibt (_Senkrechtbleiben des Querschnitts_).
+
+Die Durchbiegung des verformten Balken wird durch $w(x)$ beschrieben. Die Ableitung $w'(x)$ gibt die Neigung der neutralen Achse an und entspricht somit dem Verdrehwinkel der Achse an der Stelle $x$. Es ergibt sich, entsprechend der Annahmen nach Bernoulli, der Zusammenhang 
+$$
+\theta = -w'(x) \quad.
+$${#eq-verdrehwinkel}
+
+Die horizontale Verschiebung des Punktes P, in Abhängigkeit der Balkenhöhenkoordinate $y$ und der Ableitung der Verformung, wird durch
+$$
+u(x, y) = −y · w′(x) 
+$${#eq-horizontale-verschiebung-balken}
+
+beschrieben. 
+
+![verformter Balken](00-pics/Verformter-Balken.png){width=60%}
+
+Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
+$$
+I_z =\int_A y^2 dA 
+$${#eq-flaechentraegheitsmoment-balken}
+
+das Schnittmoment 
+$$
+M_z = -E I \cdot w''(x) \quad.
+$${#eq-schnittmoment-balken}
+
+### Gleichgewichtsbeziehungen
+
+Bei der Betrachtung des Gleichgewichts an einem finiten Element der Größe $\Delta x$, ergeben sich die Gleichgewichtsbedingungen
+$$
+\begin{align}
+&\sum V: \quad V(x+\Delta x)-V(x)+q_z \cdot \Delta x &=0 \\
+&\sum M: \quad M(x+\Delta x)-M(x)-q_z \cdot \frac{\Delta x^2}{2} - V(x+\Delta x) \cdot \Delta x &=0.
+\end{align}
+$${#eq-gleichgewichtsbeziehungen-balken}
+
+Nach Division der Beziehungen mit $\Delta x$ und Berechnung des Grenzwertes mittels $\lim_{\Delta x \to 0}$, folgen durch Anwendung des Differentialquotienten die Zusammenhänge
+$$
+\begin{align}
+V'(x) &= -q_z(x) \\
+M'(x) &= V(x) \\
+M''(x) &= -q_z(x) 
+\end{align}
+$$ {#eq-zusammenhaenge-aus-GG}
+
+![Schnittgrößen am Bernoulli Balken](00-pics/Schnittgroessen-balken.png){width=75%}
+
+### Starke Form zur schwachen Form {#sec-Balken-stark-schwache-Form}
+Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form_ des Problems wie folgt formulieren:
+\
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Randwertproblem D (Balken)* 
+\
+\
+Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$ welche die Differentialgleichung 
+\
+\
+$$
+E I \cdot w^{iv}(x)= -q_z(x) 
+$${#eq-randwertproblem-balken}
+
+und die Randbedingungen
+\
+\
+$$
+\begin{align}
+&w(0) = w_0 \quad \quad &oder \quad \quad &V_0= -E I \cdot w'''(0) = A_z \\
+&w(L)= w_1 \quad \quad &oder \quad \quad &V_1= -E I \cdot w'''(L) = B_z \\
+&w'(0) = \varphi_0 \quad \quad &oder \quad \quad &M_0= -E I \cdot w''(0) = 0 \\
+&w'(L)= \varphi_1 \quad \quad &oder \quad \quad &M_1= -E I \cdot w''(L) = 0
+\end{align}
+$$
+
+erfüllt.
+
+:::
+
+Um die Idee der FEM umzusetzen, ist es notwendig das Problem in der sogenannten _schwache Form_ zu formulieren. Hierzu muss die Differentialgleichung aus @eq-randwertproblem-balken mit der Testfunktion $\delta w :[0,L] \to \mathbb{R}$ multipliziert werden und das Ergebnis dann auf beiden Seiten integriert werden, sodass daraus   
+$$
+EI \cdot \int^L_0 w^{iv}(x) \cdot \delta w(x) dx = \int^L_0 -q_z(x) \cdot \delta w(x) dx. 
+$$ {#eq-basis-fe-loesung}
+
+folgt. Nach zweifacher partieller Integration der linken Seite von @eq-basis-fe-loesung ergibt sich das Variationsproblem, bzw. die schwache Form, für den Biegebalken.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Variationsproblem V (Biegebalken)* 
+\
+\
+Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$, sodass 
+$$
+\begin{align}
+EI \cdot \int^L_0 w''(x) \cdot \delta w''(x) dx  =\\
+-q_{z} \cdot \int^L_0 \delta w(x) dx +V_1 \cdot \delta w(L)-V_0 \cdot \delta w(0)-M_1 \cdot \delta w'(L)+M_0 \cdot \delta w'(0) 
+\end{align}
+$$ {#eq-variationsproblem-balken}
+
+für (fast) jede beliebige Testfunktionen $\delta w$.
+
+:::
+
+
+Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen, welche auch für andere physikalische Probleme die Basis darstellt. Die linke Seite der @eq-variationsproblem-balken wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert, wobei $V$ die Menge von Funktionen darstellt. Auf die Eigenschaften der verwendeten Funktionale wird im Zuge der Anwendung der FEM im zweidimensionalen Raum noch näher eingegangen.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes Variationsproblem (Balken)* 
+\
+\
+Gesucht ist die Funktion $w \in V$, sodass 
+$$
+a(w, \delta w)= b(\delta w)  \quad \forall \quad \delta w \in V
+$${#eq-abstraktes-variationsproblem-balken}
+
+:::
+
+Weiter kann das Abstrakte Variationsproblem des Balken auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Die Näherungslösung von $w_h$ wird durch 
+$$
+w_h(x) = \varphi_1(x) \cdot \hat{w}_1 +  \varphi_2(x) \cdot \hat{w}_2 + ... + \varphi_N(x) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x) \cdot \hat{w}_i
+$${#eq-linearkombination}
+
+mit 
+$$
+\begin{align}
+&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
+&V_h \subset V
+\end{align}
+$${#eq-subspace}
+
+ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet. Das ursprüngliche _Abstrakte Variationsproblem_ bei dem eine Funktion $w \in V$ gesucht wird, wird ersetzt, durch das Suchen nach den reele Zahlen $\hat{w}_i$.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes, diskretes Variationsproblem (Balken)* 
+\
+\
+Gesucht ist eine Funktion $w_h \in V_h$, sodass 
+$$
+a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
+$${#eq-abstraktes-diskretes-variationsproblem-balken}
+
+:::
+
+Zur numerischen Lösung des abstrakten, diskreten Variationsproblems werden 
+
+$$
+\delta w_h = \sum_{i=1}^N \varphi_i \cdot \delta \hat{w}_i 
+\quad \quad \text{und} \quad \quad
+w_h = \sum_{j=1}^N \varphi_j \cdot \hat{w}_j 
+$$
+
+in @eq-abstraktes-diskretes-variationsproblem-balken eingesetzt. Es ergibt sich das Gleichungssystem 
+$$
+\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad j = 1,...,N,
+$${#eq-weißnochnicht02}
+
+wobei $N$ die Anzahl der Gleichungen angibt. Das lineare Gleichungssystem wird weitgehend in der Literatur durch 
+$$
+\mathbf{K} \boldsymbol{\hat{w}} = \boldsymbol{r}.
+$${#eq-gleichungssystem-balken}
+
+mit
+$$
+\begin{align}
+&\mathbf{K} &&= K_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\boldsymbol{r} &&= r_i    &&= b(\varphi_i)
+\end{align}
+$$
+
+beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet und $\boldsymbol{r}$ als Lastvektor. Der Verschiebungsvektor __$\hat{w}$__ ist unbekannt und wird durch die Lösung des Gleichungssystems approximiert.
+
+### Assemblierung Steifigkeitsmatrix Biegebalken (#sec-ke-biegelbalken)
+
+Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
+
+![Balkenelement](00-pics/Balkenelemente.png){width=100%}
+
+Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $\Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade eines Euler-Bernoulli-Balkenelements ergeben sich somit zu 
+$$
+\hat{w}_e =
+\left[ \begin{array}{center} 
+w_1 \\
+\theta_1 \\
+w_2 \\
+\theta_2 \\
+\end{array}\right],
+$${#eq-verschiebungsvektor}
+
+mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, sind in @fig-Hermite-Funktionen dargestellt. 
+
+![Hermite Funktionen](00-pics/Hermite-Polynome.png){#fig-Hermite-Funktionen width=60%}
+
+Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
+
+$$
+\begin{align}
+H_1(-1) &= 1, \quad &H_1(1) = 0, \quad &H_1'(-1) = 0, \quad &H_1'(1) = 0 \\
+H_2(-1) &= 0, \quad &H_2(1) = 1, \quad &H_2'(-1) = 0, \quad &H_2'(1) = 0 \\
+H_3(-1) &= 0, \quad &H_3(1) = 0, \quad &H_3'(-1) = 1, \quad &H_3'(1) = 0 \\
+H_4(-1) &= 0, \quad &H_4(1) = 0, \quad &H_4'(-1) = 0, \quad &H_4'(1) = 1, \\
+\end{align}
+$$ {#eq-Bedingungen-Hermite}
+
+Die kubischen Polynome 
+$$
+\begin{align}
+H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
+H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
+H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
+H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
+\end{align}
+$$ {#eq-Hermite-Funktionen}
+
+erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
+$$ 
+\begin{align}
+&H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\
+&H_2(x) = x - 2 \cdot \frac{x^2}{l_e} + \frac{x^3}{l_e^2} \\
+&H_3(x) = 3 \cdot \frac{x^2}{l_e^2} - 2\cdot \frac{x^3}{l_e^3} \\
+&H_4(x) = - \frac{x^2}{l_e} + \frac{x^3}{l_e^2}. 
+\end{align}
+$${#eq-hermite-Elementlaenge}
+
+Für ein Element mit den Knoten $x_j$ und $x_{j+1}$ gelten die Eigenschaften des _Kronecker-Deltas_ für die Formfunktionen $H_i$, beschrieben durch
+$$
+\varphi_i(x_j) = \delta_{ij} =
+\begin{cases} 
+1\quad & \text{für $\quad i = j$}  \\
+0\quad & \text{für $\quad i \neq j$}
+\end{cases}
+$${#eq-konecker-delta-01}
+
+und
+$$
+\varphi_i'(x_j) = \delta_{ij} =
+\begin{cases} 
+1\quad & \text{für $\quad i = j$}  \\
+0\quad & \text{für $\quad i \neq j$}.
+\end{cases}
+$${#eq-konecker-delta-02}
+
+Die Länge des physikalischen Elements $\Omega_e$ ergibt sich aus der Differenz zweier Knotenkoordinaten
+$$
+l_e = x_{j+1} - x_j.
+$$
+
+Für die Berechnung der Steifigkeitsmatrix $\mathbf{K}$ wird der Umrechnungsfaktor 
+$$
+F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
+$${#eq-umrechnungsfaktor}
+
+benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet (siehe @fig-Basisfunktionen). Diese Funktion entspricht der Funktion $H_1$ der Hermite-Polynome
+Mithilfe des Umrechnungsfaktors wird
+$$
+\begin{flalign*}
+\varphi_3(x) = H_1(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
+\end{flalign*}
+$$
+
+definiert. Analog dazu können $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf dem Element $\Omega_2$ werden zudem die Formfunktion
+$$
+\begin{flalign*}
+\varphi_4(x) = \alpha \cdot H_2(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
+\end{flalign*}
+$$
+
+und dessen Ableitung 
+$$
+\varphi_4'(x) = \alpha \cdot H_2(F_2^{-1}) \cdot F_2^{-1}'(x) \qquad \forall \qquad x \in \Omega_2
+$$
+
+definiert. Durch das Einsetzen von @eq-umrechnungsfaktor in die Ableitung und die in @eq-konecker-delta-02 beschriebenen Eigenschaften der Formfunktionen, ergibt sich in allgemeiner Form 
+$$
+\alpha = \frac{l_e}{2}.
+$$
+
+
+Die Elementsteifigkeitsmatrix und der Elementlastvektor ergeben sich, mittels Anwendung der Kettenregel zur Berechnung der Ableitung der Formfunktionen $H_i$, zu
+$$
+\begin{align}
+\mathbf{K_{ij}^e}   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx
+                    &&= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  &&\int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx \\
+\mathbf{r^e}    &= q_z \cdot \int_{\Omega_e} \varphi_i(x) dx 
+                &&= a_i^e \cdot q_z \cdot &&\int_{x_e}^{x_{e+1}} H_i(F_e^{-1}(x)) dx 
+\end{align}
+$${#eq-K-und-r-balken}
+
+mit
+$$
+a_i^e = 
+\begin{cases}
+1 & \text{für $\quad i = $2,4,6,...} \\
+\frac{l_e}{2} & \text{für $\quad i = $1,3,5,... ,} 
+\end{cases}
+$$
+
+
+Sowohl die finale Elementsteifigkeitsmatrix, als auch der finale Elementlastvektor, bezogen auf das Referenzelement, ergeben sich durch die Vereinbarung aus @eq-umrechnungsfaktor mit $\xi = F_e^{-1}(x)$ und Substitution des Differenzialoperators
+$$
+\frac{d\xi}{d x} = F_e^{-1}'(x) = \frac{2}{l_e} \qquad\to\qquad dx = \frac{l_e}{2} d\xi 
+$$
+
+zu 
+$$
+\begin{align}
+\mathbf{K_{ij}^e} &= a_i^e \cdot a_j^e \cdot \frac{8 E I}{l_e^3} \cdot \int_{-1}^1 H_i ''(\xi) \cdot H_j '' (\xi) d \xi \\
+\text{und} 
+\mathbf{r^e} &= q_z \cdot \frac{l e}{2} \cdot a_i \int_{-1}^1 N_i(\xi) d\xi .
+\end{align}
+$${#eq-lastvektor-final-balken}
+
+![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=100%}
+
+Für eine Element der Länge $l_e$ und konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
+$$
+\mathbf{K_{i j}^e} = 
+\frac{E I}{l_e^3}\cdot
+\left[ \begin{array}{center} 
+12    & 6l_e   & -12   & 6l_e   \\
+6l_e  & 4l_e^2 & -6l_e & 2l_e^2 \\
+-12   & -6l_e  & 12    & -6l_e  \\
+6l_e  & 2l_e^2 & -6l_e & 4l_e^2 \\
+\end{array}\right].
+$${#eq-Kij-balken}
+
+Bei einem Balkenelement, konstant belastet durch die Streckenlast $q_z$, wird der Lastvektor eines Elements durch 
+$$
+\mathbf{r^e}
+ = 
+\frac{q_z l_e}{2}\cdot
+\left[ \begin{array}{center} 
+1 \\
+\frac{l_e}{6} \\
+1 \\
+-\frac{l_e}{6} \\
+\end{array}\right].
+$${#eq-re-balken}
+
+beschrieben.
+
+Die Lösung des Gleichungssystems @eq-gleichungssystem-balken gibt die Durchbiegung und die Verdrehung des Balkens an jedem Knoten an. Für einen Einfeldträger mit gelenkigen Auflagern an beiden Seiten und den folgenden Parametern
+
+::: {.block stroke="0.5pt + black" inset="8pt"}
+
+$$
+\begin{align}
+&\qquad\qquad\qquad\qquad L= 20 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad E = 35.000 \cdot 10^6 &\quad \text{N/m}^2\qquad\qquad\qquad\qquad \\
+&\qquad\qquad\qquad\qquad b = 0.3 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad I_y = 5.4 \cdot 10^{-3} &\quad \text{m}^4\qquad\qquad\qquad\qquad \\
+&\qquad\qquad\qquad\qquad h = 0.6 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad q_z = -10 \cdot 10^3 &\quad \text{N/m}\qquad\qquad\qquad\qquad \\
+\end{align}
+$$
+
+:::
+
+ist in @fig-Durchbiegung-Balken die Durchbiegung mittels FEA für $N_e = 2,4,8,16,32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers 
+$$
+\begin{align}
+&w(x) = \frac{1+\xi \overline{\xi}}{24EI} \xi \overline{\xi} q_z L^4 \\
+\end{align}
+$${#eq-Durchbiegung-exakt-balken}
+
+mit den Konstanten
+$$
+\begin{align}
+&\xi = \frac{x}{L} \\
+&\overline{\xi} = \frac{L-x}{L}
+\end{align}
+$$
+
+und konstanter Streckenlast in demselben Diagramm zu sehen.
+
+![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=100%}
+
 
 ## Einführung in die Finite Elemente Methode (FEM) {#sec-einfuehrung-FEM}
 
@@ -103,7 +488,7 @@ Der Ablauf der computergestützten numerischen Berechnung wird in dem Ablaufsche
 Die, auf dem physikalischen Problem basierenden, Grundgleichungen und Randbedingungen beschreiben die starke Form (Schritt (1), @fig-Ablauf-FEM-Berechnung), die in den meisten Fällen eine partielle Differentialgleichungen ist. Zwischen der Approximierten Lösung und der exakten Lösung entsteht der sogenannte Diskretisierungsfehler, d.h der Unterschied zwischen dem Designmodell und dem Analysemodell. Dieser Fehler kann durch die Feinheit des Finite Elemente Netzes größtenteils eingedämmt werden, wohingegen Fehler bei der Modellbildung und Ergebnisinterpretation alleine bei der Anwendung der Finite-Element-Methode geschehen.Auf diese Aspekte wird hier nicht weiterführend eingegangen sondern auf den Artikel [...] von WERKLE verwiesen.
 
 
-## Basis Funktionen der finiten Elemente {#sec-finite-elemente .numbered} 
+## Basis Funktionen der finiten Elemente {#sec-basis-funktionen} 
 
 Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In dieser Arbeit werden quadratische Elemente im zweidimensionalen, ebenen, Fall betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind^[vgl. Braess, S. 57, Fußnote].
 Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente Raums am wichtigsten sind.
@@ -164,32 +549,9 @@ $$
 
 in den Eckknoten. Die Nummerierung der Knoten mit $i = 1,2,3,4$ ist in @fig-BFS-element dargestellt. Die Freiheitsgrade $\theta_{\xi i}$ und $\theta_{\eta i}$ entsprechen der Ableitung von $w_i$ nach $\xi$ bzw. $\eta$ an dem Knoten $i$. Durch den zusätzlichen Freiheitsgrad $\theta_{\xi \eta i}$, also die Ableitung zweiten Grades von $w_i$ nach $\xi$ und $\eta$, wird die geforderte _smoothness_ des Elementes erreicht.
 
-Die Formfunktionen des BFS Elements können für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden. Seien die kubischen Polynome 
-$$
-\begin{align}
-H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
-H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
-H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
-H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
-\end{align}
-$$ {#eq-Hermite-Funktionen}
+Die Formfunktionen des BFS Elements können für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden.
 
-auf dem eindimensionalen Referenzelement, mit dem Interval $Î := [-1,1]$ definiert, so werden die Bedingungen
-$$
-\begin{align}
-H_1(-1) &= 1, \quad &H_1(1) = 0, \quad &H_1'(-1) = 0, \quad &H_1'(1) = 0 \\
-H_2(-1) &= 0, \quad &H_2(1) = 1, \quad &H_2'(-1) = 0, \quad &H_2'(1) = 0 \\
-H_3(-1) &= 0, \quad &H_3(1) = 0, \quad &H_3'(-1) = 1, \quad &H_3'(1) = 0 \\
-H_4(-1) &= 0, \quad &H_4(1) = 0, \quad &H_4'(-1) = 0, \quad &H_4'(1) = 1, \\
-\end{align}
-$$ {#eq-Bedingungen-Hermite}
-
-erfüllt. 
-
-![Hermite Funktionen](00-pics/Hermite-Polynome.png){#fig-Hermite-Funktionen width=60%}
-
-Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. @fig-Hermite-Funktionen zeigt die kubischen Polynome aus @eq-Hermite-Funktionen und veransschaulicht die in @eq-Bedingungen-Hermite genannten Bedingungen.
-Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome berechnet,wodurch sich 16 Funktionen ergeben. Die Ansatzfunktion der Verschiebung $w(x,y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen
+Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome (siehe @sec-ke-biegelbalken) berechnet,wodurch sich 16 Funktionen ergeben. Die Ansatzfunktion der Verschiebung $w(x,y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen
 $$
 1,x,y,x^2,xy,y^2,x^3,x^2y,xy^2,y^3,x^3y,x^2y^2,xy^3,x^3y^2,x^2y^3,x^3y^3
 $$
@@ -283,1289 +645,7 @@ Basisfunktionen unterschiedlicher Elementansätze angewandt auf $8m \times 8m$ P
 ![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=75%}
 
 
-## Numerische Integration {#sec-numerische-integration}
-
-Bei der Berechnung von Finite Elemente Modellen, spielen die numerische Integrationsverfahren eine elementare Rolle. Die Diffenrentialgleichung der schwachen Form des Problems kann, bedingt durch die Menge der auszuwertenden Integrale, nur schwer geschlossen integriert werden. Die _Gauß-Integration_ wird als besonders effizient bezeichnet. Sie gehört, sowie auch die Newton-Cotes-Formeln (Trapezregel, Simpsonregel etc.), zu der ersten Klasse von Integrationsverfahren.
- <!-- welche auf dem Ansatz beruhen, die zu integrierende Funktion durch ein Polynom zu approximieren und darauffolgend das Polynom exakt zu integrieren.   -->
-
-### Gauß-Integration {#sec-gauss-integration}
-
-Die _Gauß-Quadratur_ geht auf den deutschen Mathematiker Carl-Friedrich GAUß (1777-1855) zurück. Wie auch bei der Newton-Cotes-Formel, beruht der Ansatz von GAUß auf der Idee, die zu integrierende Funktionen durch eine Polynomfunktion zu approximieren und diese anschließend exakt zu integrieren. Die Polynomfunktion wird durch eine gewichtete Summe mit den Gewichten $\hat{w}_i$ und den Funktionswerten $y(x_i)$ der Ausgangsfunktion an den Stützstellen $x_i$ mit $i = 1...n$ angenähert. Bei der Newton-Cotes-Formel sind die Stelle $x_i$ gleichmäßig über das Integrationsgebiet $[a,b]$ verteilt und Polynomfunktionen vom Grad $n-1$ können exakt integriert werden (siehe @fig-numerische-integration). GAUß stellte fest, dass durch eine optimalere Wahl der Stützstellen die exakte Lösung für die Integration eines Polynoms $f(x)$ mit dem Grad kleiner gleich $2n-1$ möglich ist.
-
-![Approximation eines Integrals mittels eines Polynoms, Quelle: BAITSCH](00-pics/numerische-Integration.png){#fig-numerische-integration fig-env="figure*" width=100%}
-
-\
-Das gesuchte Integral des Polynoms $f(x)$ für beliebige Grenzen $[a,b]$
-$$ 
-I = \int_a^b f(x)dx
-$${#eq-Integral}
-
-wird durch die Näherung
-$$
-I_n = \frac{b-a}{2} \sum_{i=1}^n \hat{w}_i \cdot f(x_i)
-$${#eq-Näherung-Integral}
-
-mit der Position der Stützstellen
-$$
-x_i = \frac{a+b}{2} + \frac{b-a}{2} \hat{x}_i
-$${#eq-position-stützstelle}
-
-<!-- 
-n-te Legendre Polynom hat den Grad n 
-$$
-P_n(x) = \sum_{k=0}^{[n/2]} (-1)^k \frac{(2n-2k)!}{(n-k)!(n-2k)!k!2^n} x^{n-2k}
-$${#eq-legendre-polynome}
-
-$$
-[\frac{n}{2}] = 
-\cases
-\frac{n}{2} \qquad n \text{gerade}
-\frac{n-1}{2} \qquad n \text{ungerade}
-$${#eq-gauss-klammer}
-
-mit den Nullstellen  -->
-
-ausgedrückt. @eq-position-stützstelle ergibt sich aus der Abbildung des physikalischen Integrationsintervalls $[a,b]$ auf die Grenzen $a = −1$ bis $b = 1$. Exemplarische sind in @tbl-gauss-integrationspunkte die Integrationsgewichte $\hat{w}_i$ sowie die Stützstellen $\hat{x}_i$ für das Integrationsintervall $[-1,1]$ aufgelistet. Diese Werte sind unäbhängig von der zu integrierenden Funktion, was den praktischen Vorteil hat, dass sie nur einmal berechnet werden müssen. Mit den dargestellten Integrationsgewichte und -stellen für $n=1...3$ Stützstellen lassen sich Polynome vom Grad m exakt integrieren.
-
-
-|$n$ | $m$ | $\hat{x}_i$ | $\hat{w}_i$ |
-|:--:|:---:|:-----------:|:-----------:|
-| $1$| $1$ | $1$         | $1$         |
-| $2$| $3$ | $\qquad-\sqrt{\frac{1}{3}}\qquad\qquad\sqrt{\frac{1}{3}}\qquad$ | $\qquad 1\qquad\qquad 1\qquad$ |
-| $3$| $5$ | $\qquad-\sqrt{\frac{3}{5}}\qquad\qquad 0\qquad\qquad\sqrt{\frac{3}{5}}\qquad$ | $\qquad\frac{5}{9}\qquad\qquad\frac{8}{9}\qquad\qquad\frac{5}{9}\qquad$ |
-
-: Gauß-Integrationspunkte und Integrationsgewichte für n Stützstellen. {#tbl-gauss-integrationspunkte}
-
-### Integration in Referenzkoordinaten {#sec-integration-Referenz}
-
-Ähnlich wie, die bei der Gauß-Quadratur genutzten Abbildung  des physikalischen Integrationsintervalls auf die sogenannte Elterndomäne in @sec-gauss-integration, ist auch bezüglich der Koordinaten die Abbildung der physikalischen Koordinaten auf Referenzkoordinaten notwendig (siehe @fig-parametrisierung). Diese Parametrisierung wird in Kapitel @sec-Parametrisierung hergeleitet und ist besonders wichtig für die Lösung allgemeiner Vierecke.
-
-Allgemein ausgedrückt wird für die Funktionen $V:\Omega \to \mathbb{R}^2$ zu der Bilinearform $a:V \times V \to \mathbb{R}^2$ eine "Referenz"-Bilinearform $\hat{a}: \hat{V} \times \hat{V}  \to \mathbb{R}^2$ mit den Funktionen $\hat{V}:\hat{\Omega} \to \mathbb{R}^2$ bestimmt, sodass
-$$
-\hat{a}(\hat{w}, \hat{\delta w}) = \hat{a}(\hat{w} \circ \underline{F}^{-1}, \hat{\delta w}\circ \underline{F}^{-1}).
-$$
-
-Analog dazu wird zu der Linearform $b:V \to \mathbb{R}^2$ die "Referenz"-Linearform $\hat{b}: \hat{V} \to \mathbb{R}^2$ bestimmt, sodass
-$$
-\hat{b}(\hat{\delta w}) = \hat{b}(\hat{\delta w}\circ \underline{F}^{-1}).
-$$
-
-
-## Einführungsbeispiel Biegebalken {#sec-einfuehrungsbeispiel}
-
-Als Einführungsbeispiel dient ein 1D Biegebalken, an beiden Seiten gelenkig gelagert (siehe @fig-Einfuehrungsbeispiel).
-
-![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=80%}
-
-_Kinematische Gleichungen:_
-
-Die nachfolgend beschriebenen Zusammenhänge beruhen auf den beiden Bernoulli-Hypothesen. Die erste Hypothese besagt, dass der Querschnitt des Balkens im unverformten und im verformten Zustand eben ist und sich nicht verwölbt (_Ebenbleiben des Querschnitts_). Zudem wird davon ausgegangen, dass die Querschnittsfläche im verformten Zustand senkrecht zur neutralen Achse bleibt (_Senkrechtbleiben des Querschnitts_).
-
-Die Durchbiegung des verformten Balken wird durch $w(x)$ beschrieben. Die Ableitung $w'(x)$ gibt die Neigung der neutralen Achse an und entspricht somit dem Verdrehwinkel der Achse an der Stelle $x$. Es ergibt sich, entsprechend der Annahmen nach Bernoulli, der Zusammenhang 
-$$
-\theta = -w'(x) \quad.
-$${#eq-verdrehwinkel}
-
-Die horizontale Verschiebung des Punktes P, in Abhängigkeit der Balkenhöhenkoordinate $y$ und der Ableitung der Verformung, wird durch
-$$
-u(x, y) = −y · w′(x) 
-$${#eq-horizontale-verschiebung-balken}
-
-beschrieben. 
-
-![verformter Balken](00-pics/Verformter-Balken.png){width=70%}
-
-Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
-$$
-I_z =\int_A y^2 dA 
-$${#eq-flaechentraegheitsmoment-balken}
-
-das Schnittmoment 
-$$
-M_z = -E I \cdot w''(x) \quad.
-$${#eq-schnittmoment-balken}
-
-_Gleichgewichtsbeziehungen:_
-
-Bei der Betrachtung des Gleichgewichts an einem finiten Element der Größe $\Delta x$, ergeben sich die Gleichgewichtsbedingungen
-$$
-\begin{align}
-&\sum V: \quad V(x+\Delta x)-V(x)+q_z \cdot \Delta x &=0 \\
-&\sum M: \quad M(x+\Delta x)-M(x)-q_z \cdot \frac{\Delta x^2}{2} - V(x+\Delta x) \cdot \Delta x &=0.
-\end{align}
-$${#eq-gleichgewichtsbeziehungen-balken}
-
-![Schnittgrößen am Bernoulli Balken](00-pics/Schnittgroessen-balken.png){width=100%}
-
-Nach Division der Beziehungen mit $\Delta x$ und Berechnung des Grenzwertes mittels $\lim_{\Delta x \to 0}$, folgen durch Anwendung des Differentialquotienten die Zusammenhänge
-$$
-\begin{align}
-V'(x) &= -q_z(x) \\
-M'(x) &= V(x) \\
-M''(x) &= -q_z(x) 
-\end{align}
-$$ {#eq-zusammenhaenge-aus-GG}
-
-### Starke Form zur schwachen Form {#sec-Balken-stark-schwache-Form}
-Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form des Problems_ wie folgt formulieren:
-\
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Randwertproblem D (Balken)* 
-\
-\
-Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$ welche die Differentialgleichung 
-\
-\
-$$
-E I \cdot w^{iv}(x)= -q_z(x) 
-$${#eq-randwertproblem-balken}
-
-und die Randbedingungen
-\
-\
-$$
-\begin{align}
-&w(0) = w_0 \quad \quad &oder \quad \quad &V_0= -E I \cdot w'''(0) = A_z \\
-&w(L)= w_1 \quad \quad &oder \quad \quad &V_1= -E I \cdot w'''(L) = B_z \\
-&w'(0) = \varphi_0 \quad \quad &oder \quad \quad &M_0= -E I \cdot w''(0) = 0 \\
-&w'(L)= \varphi_1 \quad \quad &oder \quad \quad &M_1= -E I \cdot w''(L) = 0
-\end{align}
-$$
-
-erfüllt.
-
-:::
-
-Die Basis für eine Finite Elemente Lösung bildet die _schwache Form des Problems_
-\
-Durch Mulitplikation der DGL mit der Testfunktion $\delta w :[0,L] \to \mathbb{R}$  und Integration beider Seiten folgt
-$$
-EI \cdot \int^L_0 w^{iv}(x) \cdot \delta w(x) dx = \int^L_0 -q_z(x) \cdot \delta w(x) dx. 
-$$ {#eq-basis-fe-loesung}
-
-Nach zweifacher partieller Integration der linken Seite von @eq-basis-fe-loesung ergibt sich das Variationsproblem für den Biegebalken.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Variationsproblem V (Balken)* 
-\
-\
-Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$, sodass 
-$$
-\begin{align}
-EI \cdot \int^L_0 w''(x) \cdot \delta w''(x) dx  =\\
--q_{z} \cdot \int^L_0 \delta w(x) dx +V_1 \cdot \delta w(L)-V_0 \cdot \delta w(0)-M_1 \cdot \delta w'(L)+M_0 \cdot \delta w'(0) 
-\end{align}
-$$ {#eq-variationsproblem-balken}
-
-für (fast) jede beliebige Testfunktionen $\delta w$.
-
-:::
-
-Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen, welche auch für viele andere Probleme die Basis darstellt. Die linke Seite der @eq-variationsproblem-balken wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Abstraktes Variationsproblem (Balken)* 
-\
-\
-Gesucht ist die Funktion $w \in V$, sodass 
-$$
-a(w, \delta w)= b(\delta w)  \quad \forall \quad \delta w \in V
-$${#eq-abstraktes-variationsproblem-balken}
-
-:::
-
-Weiter kann das Abstrakte Variationsproblem des Balken auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Die Näherungslösung von $w_h$ wird durch 
-$$
-w_h(x) = \varphi_1(x) \cdot \hat{w}_1 +  \varphi_2(x) \cdot \hat{w}_2 + ... + \varphi_N(x) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x) \cdot \hat{w}_i
-$${#eq-linearkombination}
-
-mit 
-$$
-\begin{align}
-&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
-&V_h \subset V
-\end{align}
-$${#eq-subspace}
-
-ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Abstraktes, diskretes Variationsproblem (Balken)* 
-\
-\
-Gesucht ist eine Funktion $w_h \in V_h$, sodass 
-$$
-a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
-$${#eq-abstraktes-diskretes-variationsproblem-balken}
-
-:::
-
-Zur numerischen Lösung des abstrakten, diskreten Variationsproblems werden 
-
-$$
-\delta w_h = \sum_{i=1}^N \varphi_i \cdot \delta \hat{w}_i 
-\quad \quad \text{und} \quad \quad
-w_h = \sum_{j=1}^N \varphi_j \cdot \hat{w}_j 
-$$
-
-in @eq-abstraktes-diskretes-variationsproblem-balken eingesetzt. Es ergibt sich das Gleichungssystem 
-$$
-\sum_{j=1}^N a(\varphi_j, \varphi_i) \cdot \hat{w}_j  = b(\varphi_i), \quad \text{mit} \quad j = 1,...,N,
-$${#eq-weißnochnicht02}
-
-wobei $N$ die Anzahl der Gleichungen angibt. Das lineare Gleichungssystem wird weitgehend in der Literatur durch 
-$$
-\mathbf{K} \boldsymbol{\hat{w}} = \boldsymbol{r}.
-$${#eq-gleichungssystem-balken}
-
-mit
-$$
-\begin{align}
-&\mathbf{K} &&= K_{ij} &&= a(\varphi_j, \varphi_i) \\
-&\boldsymbol{r} &&= r_i    &&= b(\varphi_i)
-\end{align}
-$$
-
-beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet und $\boldsymbol{r}$ als Lastvektor. Der Verschiebungsvektor __$\hat{w}$__ ist unbekannt und wird durch die Lösung des Gleichungssystems approximiert.
-Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
-
-![Balkenelement](00-pics/Balkenelemente.png){width=100%}
-
-Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $\Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade eines Euler-Bernoulli-Balkenelements ergeben sich somit zu 
-$$
-\hat{w}_e =
-\left[ \begin{array}{center} 
-w_1 \\
-\theta_1 \\
-w_2 \\
-\theta_2 \\
-\end{array}\right],
-$${#eq-verschiebungsvektor}
-
-mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, werden in @sec-FE-Lagrange @fig-Hermite-Funktionen dargestellt und @eq-Hermite-Funktionen beschrieben. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
-$$ 
-\begin{align}
-&H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\
-&H_2(x) = x - 2 \cdot \frac{x^2}{l_e} + \frac{x^3}{l_e^2} \\
-&H_3(x) = 3 \cdot \frac{x^2}{l_e^2} - 2\cdot \frac{x^3}{l_e^3} \\
-&H_4(x) = - \frac{x^2}{l_e} + \frac{x^3}{l_e^2}. 
-\end{align}
-$${#eq-hermite-Elementlaenge}
-
-Bezogen auf ein Element mit den Knoten $x_j$ und $x_{j+1}$ gelten die Eigenschaften des _Kronecker-Deltas_ für die Formfunktionen $H_i$ beschrieben durch
-$$
-\varphi_i(x_j) = \delta_{ij} =
-\begin{cases} 
-1\quad & \text{für $\quad i = j$}  \\
-0\quad & \text{für $\quad i \neq j$}
-\end{cases}
-$${#eq-konecker-delta-01}
-
-und
-$$
-\varphi_i'(x_j) = \delta_{ij} =
-\begin{cases} 
-1\quad & \text{für $\quad i = j$}  \\
-0\quad & \text{für $\quad i \neq j$}.
-\end{cases}
-$${#eq-konecker-delta-02}
-
-Die Länge des physikalischen Elements $\Omega_e$ ergibt sich aus der Differenz zweier Knotenkoordinaten
-$$
-l_e = x_{j+1} - x_j.
-$$
-
-Für die Berechnung der Steifigkeitsmatrix $\mathbf{K}$ wird der Umrechnungsfaktor 
-$$
-F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
-$${#eq-umrechnungsfaktor}
-
-benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet.
-Mithilfe des Umrechnungsfaktors wird
-$$
-\begin{flalign*}
-\varphi_3(x) = H_1(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
-\end{flalign*}
-$$
-
-definiert. Analog dazu kann $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf demselben Element ($\Omega_2$) wird 
-$$
-\begin{flalign*}
-\varphi_4(x) = \alpha \cdot H_2(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
-\end{flalign*}
-$$
-
-und die Ableitung 
-$$
-\varphi_4'(x) = \alpha \cdot H_2(F_2^{-1}) \cdot F_2^{-1}'(x) \qquad \forall \qquad x \in \Omega_2
-$$
-
-definiert. Durch das Einsetzen von @eq-umrechnungsfaktor in die Ableitung und die in @eq-konecker-delta-02 beschriebenen Eigenschaften der Formfunktionen ergibt sich in allgemeiner Form 
-$$
-\alpha = \frac{l_e}{2}
-$$
-
-
-Die Elementsteifigkeitsmatrix und der Elementlastvektor ergeben sich, mittels Anwendung der Kettenregel zur Berechnung der Ableitung der Formfunktionen $H_i$, zu
-$$
-\begin{align}
-\mathbf{K_{ij}^e}   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx
-                    &&= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  &&\int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx \\
-\mathbf{r^e}    &= q_z \cdot \int_{\Omega_e} \varphi_i(x) dx 
-                &&= a_i \cdot q_z \cdot &&\int_{x_e}^{x_{e+1}} H_i(F_e^{-1}(x)) dx 
-\end{align}
-$${#eq-K-und-r-balken}
-
-mit
-$$
-a_i^e = 
-\begin{cases}
-1 & \text{für $\quad i = $2,4,6,...} \\
-\frac{l_e}{2} & \text{für $\quad i = $1,3,5,... ,} 
-\end{cases}
-$$
-
-siehe @fig-Basisfunktionen.
-Sowohl die finale Elementsteifigkeitsmatrix, als auch der finale Elementlastvektor, bezogen auf das Referenzelement, ergeben sich durch die Vereinbarung aus @eq-umrechnungsfaktor mit $\xi = F_e^{-1}(x)$ und Substitution des Differenzialoperators
-$$
-\frac{d\xi}{d x} = F_e^{-1}'(x) = \frac{2}{l_e} \qquad\to\qquad dx = \frac{l_e}{2} d\xi 
-$$
-
-zu 
-$$
-\begin{align}
-\mathbf{K_{ij}^e} &= a_i^e \cdot a_j^e \cdot \frac{8 E I}{l_e^3} \cdot \int_{-1}^1 H_i ''(\xi) \cdot H_j '' (\xi) d \xi \\
-\text{und} 
-\mathbf{r^e} &= q_z \cdot \frac{l e}{2} \cdot a_i \int_{-1}^1 N_i(\xi) d\xi .
-\end{align}
-$${#eq-lastvektor-final-balken}
-
-![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=100%}
-
-Für eine Element der Länge $l_e$ und Konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
-$$
-\mathbf{K_{i j}^e} = 
-\frac{E I}{l_e^3}\cdot
-\left[ \begin{array}{center} 
-12    & 6l_e   & -12   & 6l_e   \\
-6l_e  & 4l_e^2 & -6l_e & 2l_e^2 \\
--12   & -6l_e  & 12    & -6l_e  \\
-6l_e  & 2l_e^2 & -6l_e & 4l_e^2 \\
-\end{array}\right].
-$${#eq-Kij-balken}
-
-Bei einem Balkenelement, konstant belastet durch die Streckenlast $q_z$, wird der Lastvektor eines Elements durch 
-$$
-\mathbf{r^e}
- = 
-\frac{q_z l_e}{2}\cdot
-\left[ \begin{array}{center} 
-1 \\
-\frac{l_e}{6} \\
-1 \\
--\frac{l_e}{6} \\
-\end{array}\right].
-$${#eq-re-balken}
-
-beschrieben.
-
-Die Lösung des Gleichungssystems @eq-gleichungssystem-balken gibt die Durchbiegung und die Verdrehung des Balkens an jedem Knoten an. Für einen Einfeldträger mit gelenkigen Auflagern an beiden Seiten und den folgenden Parametern
-
-::: {.block stroke="0.5pt + black" inset="8pt"}
-
-$$
-\begin{align}
-&\qquad\qquad\qquad\qquad L= 20 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad E = 35.000 \cdot 10^6 &\quad \text{N/m}^2\qquad\qquad\qquad\qquad \\
-&\qquad\qquad\qquad\qquad b = 0.3 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad I_y = 5.4 \cdot 10^{-3} &\quad \text{m}^4\qquad\qquad\qquad\qquad \\
-&\qquad\qquad\qquad\qquad h = 0.6 &&\quad \text{m} &&\qquad\qquad\qquad\qquad\qquad q_z = -10 \cdot 10^3 &\quad \text{N/m}\qquad\qquad\qquad\qquad \\
-\end{align}
-$$
-
-:::
-
-ist in @fig-Durchbiegung-Balken die Durchbiegung mittels FEA für $N_e = 2,4,8,16,32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers 
-$$
-\begin{align}
-&w(x) = \frac{1+\xi \overline{\xi}}{24EI} \xi \overline{\xi} q_z L^4 \\
-\end{align}
-$${#eq-Durchbiegung-exakt-balken}
-
-mit den Konstanten
-$$
-\begin{align}
-&\xi = \frac{x}{L} \\
-&\overline{\xi} = \frac{L-x}{L}
-\end{align}
-$$
-
-und konstanter Streckenlast in demselben Diagramm zu sehen.
-
-![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=100%}
-
-
-
-
-
-
-{{< pagebreak >}}
-
-
-
-
-
-<!-- Kapitel 3 -->
-
-
-```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: mechanische und mathematische Grundlagen])))
-```
-
-# Mechanische und mathematische Grundlagen{#sec-mech-math-grundlagen}
-
-Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Verschiebungsfeld (@sec-kinematik), Verzerrungsfeld (@sec-verzerrung) und  Gleichgewichtsbeziehungen (@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz (@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung. 
-
-Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente. Dessen formale Definition erfolgt in @sec-def-finites-element. Weiter werden in @sec-funktionale die für die Lösung verwendeten Funktionale kurz erläutert.
-
-
-## Einführung Plattentragwerke {#sec-einfuehrung-plattentragwerke}
-
-Tragwerke wie Wohnhäuser, Brücken, Lagerhallen und weitere, werden in Tragwerksstrukturen wie Balken, Platten und Scheiben unterteilt. Selten besteht ein Tragwerk aus nur einem Element. Überlicherweise besteht es aus einer Zusammenstellung mehrerer Elemente, welche sich gegenseitig beeinflussen. Ziel der Modellierung des Tragwerkes ist es, ein möglichst realitätsnahes Abbild zu schaffen, um somit die Tragfähigkeit beurteilen zu können. Plattentragwerke sind ein wesentlicher Teil bei der Modellierung von Tragwerksstrukturen.
-
-Die Zustandsgrößen, d.h. die Verschiebungsgrößen sowie die äußeren Kraftgrößen, bechreiben das mechanische Verhalten eines Tragwerks und werden zur Formulierung der Grundgleichungen, d.h. den kinematischen Gleichungen, Gleichgewichtsbeziehungen und der Einführung eines Materialgesetzes, benötigt.
-
-![Zustandsgrößen und Grrundgleichungen der Platte](00-pics/Grundgleichungen.png){#fig-zg-und-gg width=90%}
-
-Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein. 
-
-Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
-
-
-## DGL einer Platte nach Kirchhoff{#sec-kirchhoffschen-plattentheorie}
-
-Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
-Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
-\
-- eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Achse. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch 
-$$ 
-w = w(x,y) 
-$$ {#eq-verformung-w}
-
-beschrieben.
-
-- der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken. 
-
-![Verformung einer Platte nach Kirchhoff](00-pics/Kirchhoff.png){width=90%}
-
-![Verformung einer Platte nach Reissner-Mindlin](00-pics/Reissner-Mindlin.png){width=90%}
-
-Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Modell der schubweichen Platte nicht unerwähnt bleiben. Letzteres wird in der Fachliteratur vielfach als Reissner-Mindlin-Platte aufgeführt. Den wesentlichen Unterschied stellt die Normalenhypothese dar. Die Hypothese vom Ebenebleiben des Querschnitts bleibt bei der schubweichen Platte bestehen, wohingegen die Normalenhypothese fallengelassen wird. Infolgedessen sind die Biegewinkel $\theta$ nicht mehr abhängig von der Durchbiegung und stellen unabhängige Freiheitsgrade dar. Eine weitere Folge sind transversale Schubverzerrungen, welche bei der Kirchhoff-Platte vernachlässigt werden.
-\
-
-### kinematische Gleichungen (Verschiebungsfeld) {#sec-kinematik}
-
-Zur Formulierung der kinematischen Gleichungen werden die partiellen Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$ berechnet, welche die Neigung der neutralen Ebene angeben. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an dem Punkt $P(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an dem Punkt $P(x,y)$ um die x-Achse oder y-Achse. In Abhängigkeit der Verdrehwinkel
-
-$$ 
-\theta_x (x,y) = arctan(-\frac{\partial w(x,y)}{\partial y}) 
-$$ {#eq-black-scholes-02}
-
-und
-$$ 
-\theta_y (x,y) = arctan(-\frac{\partial w(x,y)}{\partial x}) 
-$$ {#eq-black-scholes-03}
-
-werden die horizontalen Verschiebungen des Punktes P
-$$ 
-u(x,y,z)=sin(\theta_x (x,y)) \cdot z
-$$ {#eq-black-scholes-04}
-
-und
-$$ 
-v(x,y,z)=sin(\theta_y (x,y)) \cdot z
-$$ {#eq-black-scholes-05}
-
-berechnet. 
-Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergeben sich die Zusammenhänge
-$$ 
-u(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial x} 
-$$ {#eq-verschiebung-u}
-$$ 
-v(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial y}. 
-$$ {#eq-verschiebung-v}
-
-Die Gesetztmäßigkeiten nach @eq-verformung-w, @eq-verschiebung-u und @eq-verschiebung-v werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet.
-
-![Verdrehung und Verschiebung eines Punktes nach Kirchhoff](00-pics/Verschiebung.png){#fig-horizontale-Verschiebung width=100%}
-
-### Materialgesetz {#sec-materialgesetz}
-
-Die bisher betrachteten kinematischen Gleichungen sind unabhäging von materialspezifischen Eigenschaften. Um das mechanische Verhalten der Platte vollständig zu beschreiben, besteht die Notwendigkeit der Einführung eines Materialgesetztes. Bei der Betrachtung von linear-elastischem Materialverhalten, also einem linearen Zusammenhang zwischen Spannungen und Verzerrungen, kann das Material durch das _verallgemeinerte Hooksche Gesetz_ mit
-
-\
-
-$$
-\sigma = E \cdot \epsilon
-$$ {#eq-black-scholes-08}
-
-und
-$$
-\tau = G \cdot \gamma
-$$ {#eq-black-scholes-09}
-
-dargestellt werden. Die Normalspannung $\sigma$ und die Schubspannung $\tau$ werden durch das Elastizitätsmodul $E$ bzw. das Schubmodul $G$ und die Dehung $\epsilon$ bzw. die Schubverzerrung $\gamma$ ausgedrückt. Diese Gesetzmäßigkeiten gelten für  Materialien, dessen Verhalten richtungsunabhängig ist (isotropes Verhalten).
-
-### Verzerrungsfeld {#sec-verzerrung}
-
-Aus dem Verschiebungsfeld nach Kirchhoff lässt sich das Verzerrungsfeld herleiten. Die Dehnungen 
-
-$$ 
-\begin{align} 
-\epsilon_{xx} &= \frac{\partial u}{\partial x}= -z \cdot \frac{\partial^2 w}{\partial x^2} \\
-\epsilon_{yy} &=\frac{\partial v}{\partial y}= -z \cdot \frac{\partial^2 w}{\partial y^2} \\
-\end{align}
-$$ {#eq-dehnungen}
-
-beschreiben die Längenänderung der Platte in $x$- bzw. $y$-Richtung. Entsprechend der Kirchhoffschen Plattentheorie verschwindet die Dehnung $\epsilon_{zz}$ auf Grund der Annahme der gleichbleibenen Plattendicke $h$. Die Schubverzerrung 
-$$ 
-\begin{align} 
-\gamma_{xy} &= \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} =-2z \cdot \frac{\partial^2 w}{\partial x \partial y}, \\ 
-\end{align}
-$$ {#eq-schubverzerrung-gleitung}
-
-oder auch Gleitung, beschreibt eine Winkeländerung. Konsistent mit den in @eq-verschiebung-u und @eq-verschiebung-v getroffenen Annahmen, als Folge des Ebenbleibens der Querschnitte, ergeben sich die Schubverzerrungen
-$$ 
-\begin{align} 
-\gamma_{xz} &= \frac{\partial u}{\partial z} - \frac{\partial w}{\partial x} = \frac{\partial w}{\partial x}- \frac{\partial w}{\partial x} =0\\ 
-\gamma_{yz} &= \frac{\partial v}{\partial z} - \frac{\partial w}{\partial y} = \frac{\partial w}{\partial y} - \frac{\partial w}{\partial y} =0.\\ 
-\end{align}
-$$ {#eq-schubverzerrung}
-
-Durch die Definition der Krümmungen mit
-$$ 
-\begin{align}  
-\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \\
-\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \\
-\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y} \\ 
-\end{align}
-$$ {#eq-kruemmung}
-
-kann das Verzerrungsfeld nach der Kirchhoffschen Plattentheorie 
-als Vektor-Matrix-Produkt mit
-$$
-\left[ \begin{array}{center}
-\epsilon_{xx} \\ 
-\epsilon_{yy} \\ 
-\gamma_{xy} 
-\end{array}\right]
-=
-z \kappa 
-= 
-z 
-\left[ \begin{array}{center}
-\kappa_{xx} \\ 
-\kappa_{yy} \\ 
-\kappa_{xy} 
-\end{array}\right]
-= 
--z 
-\left[ \begin{array}{center}
-\frac{\partial^2 w}{\partial x^2} \\
-\frac{\partial^2 w}{\partial y^2} \\
--2 \frac{\partial^2 w}{\partial x \partial y} 
-\end{array}\right]
-$$ {#eq-black-scholes}
-
-beschrieben werden. Bei der isotropen Platte mit linear-elastischem Materialverhalten lässt sich das Spannungsfeld aus dem oben beschriebenem Verzerrungsfeld herleiten. Die Spannungen
-$$
-\begin{align}
-\sigma_{xx} &= \frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy}) \\
-\sigma_{yy} &= \frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx} + \epsilon_{yy}) \\
-\tau_{xy}   &= \frac{E}{2 \cdot (1+\nu)}  \cdot \gamma_{xy}\ 
-\end{align}
-$$ {#eq-spannungen}
-
-sind linear veränderlich über die Plattendicken $h$. 
-
-__TODO:__ auf Widersprüche der Kirchhoff Plattentheorie eingehen 
-
-\
-
-### Schnittgrößen {#sec-schnittgrößen}
-
-Resultierend aus den Spannungskomponenten $\sigma_{xx}$,$\sigma_{yy}$ und $\tau_{xy}$ ergeben sich die Biegemomente $m_{xx}$ und $m_{yy}$ und das Drillmoment $m_{xy}$, definiert als Moment pro Längeneinheit. Die Momente lassen sich durch Integration der Spannungen über die Höhe der Platte und Multiplikation mit dem Hebelarm $z$ zu
-$$
-\begin{align}
-m_{xx} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy})}_{\sigma_{x x}} \cdot dz \\
-m_{yy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx}+ \epsilon_{yy})}_{\sigma_{y y}} \cdot dz \\
-m_{xy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{2 \cdot (1+\nu)} \cdot \gamma_{xy}}_{\tau_{xy}} \cdot dz \\
-\end{align}
-$$ {#eq-black-scholes}
-
-berechnen. Die isotrope Plattensteifigkeit 
-$$
-D = \frac{E \cdot h^3}{12 \cdot (1-\nu^2)}
-$$ {#eq-plattensteifigkeit}
-
-und die in @eq-kruemmung definierten Krümmungen $\kappa$ erlauben eine vereinfachte Darstellung der Momente
-$$
-\begin{align}
-m_{xx} &= D \cdot (\kappa_{xx} + \nu \cdot \kappa_{yy}) &&= D \cdot (\frac{\partial^2 w}{\partial x^2} + \nu \cdot \frac{\partial^2 w}{\partial y^2}) \\
-m_{yy} &= D \cdot (\nu \cdot \kappa_{xx} + \kappa_{yy}) &&= D \cdot (\nu \cdot \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}) \\
-m_{xy} &= D \cdot \frac{1-\nu}{2} \cdot \kappa_{xy} &&= D \cdot \frac{1-\nu}{2} \cdot (-2 \frac{\partial^2 w}{\partial x \partial y}).
-\end{align}
-$$ {#eq-black-scholes}
-
-![Normalspannungen und resultierende Biegemomente](00-pics/Biegemoment.png){width=100%}
-
-![eben Schubspannungen und resultierende Drillmomente](00-pics/Drillmomente.png){width=100%}
-
-Um die Querkräfte zu berechnen werden im Normalfall die transversalen Schubspannungen über die Plattendicke $h$ integriert. Bei der Kirchhoffschen Plattentheorie ist dies nicht möglich, da, wie in @eq-schubverzerrung dargestellt, die Schubverzerrungen und somit die Schubspannungen gemäß der getroffenen Annahmen verschwinden. Die Querkräfte ergeben sich allein aus den Gleichgewichtsbedingungen (s. Kapitel Gleichgewichtsbeziehungen) und lassen sich aus der dritten Ableitung der Verschiebung $w$ zu
-$$
-\begin{align}
-q_{xx} &= D \cdot (\frac{\partial^3 w}{\partial x^3} + \nu \cdot \frac{\partial^3 w}{\partial y^3}) \\
-q_{yy} &= D \cdot (\nu \cdot \frac{\partial^3 w}{\partial x^3} + \frac{\partial^3 w}{\partial y^3}) \\
-\end{align} 
-$$ {#eq-black-scholes}
-
-berechnen.
-
-![transversale Schubspannungen und resultierende Querkräfte](00-pics/Querkraft.png){width=100%}
-
-### Gleichgewichtsbeziehungen & Plattengleichung {#sec-gleichgewicht}
-
-Betrachtet wird zunächst ein Schnittelement einer Platte mit den Abmessungen $\Delta x$ und $\Delta y$, welches durch eine senkrecht zur Mittelebene angreifende Flächenlast $p(x,y)$ belastet wird. In @fig-schnittgroessen sind die Schnittgrößen welche am positiven sowie am negativen Schnittufer des Elements angreifen dargestellt. Die Definitionen der Schnittgrößen sind in @tbl-schnittgroessen abgebildet.
-
-|        | Schnittufer $+$      |                 | Schnittufer $-$                                                       |
-|--------|----------------------|-----------------|-----------------------------------------------------------------------|
-|$M_x$   |$m_{xx}\cdot \Delta y$|$M_{x+\Delta x}$ |$(m_{xx} + \frac{\partial m_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
-|$M_y$   |$m_{yy}\cdot \Delta x$|$M_{y+\Delta y}$ |$(m_{yy} + \frac{\partial m_{yy}}{\partial y} \cdot \Delta y) \Delta x$| 
-|$M_{xy}$|$m_{xy}\cdot \Delta y$|$M_{xy+\Delta x}$|$(m_{xy} + \frac{\partial m_{xy}}{\partial x} \cdot \Delta x) \Delta y$| 
-|$M_{yx}$|$m_{yx}\cdot \Delta x$|$M_{yx+\Delta y}$|$(m_{yx} + \frac{\partial m_{yx}}{\partial y} \cdot \Delta y) \Delta x$| 
-|$Q_x$   |$q_{xx}\cdot \Delta y$|$Q_{x+\Delta x}$ |$(q_{xx} + \frac{\partial q_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
-|$Q_y$   |$q_{yy}\cdot \Delta x$|$Q_{y+\Delta y}$ |$(q_{yy} + \frac{\partial q_{yy}}{\partial y} \cdot \Delta y) \Delta x$| 
-
-: Schnittgrößen {#tbl-schnittgroessen}
-
-\
-\
-\
-\
-Bei der Grenzbetrachtung $\Delta x \to 0$ und $\Delta y \to 0$ ergeben sich die Gleichgewichtsbeziehungen
-$$     
-\begin{align}
-\frac{\partial Q_{xx}}{\partial x} + \frac{\partial Q_{yy}}{\partial y} + q &= 0 \\
-\frac{\partial M_{xx}}{\partial x} + \frac{\partial M_{xy}}{\partial y} - Q_{xx} &= 0 \\
-\frac{\partial M_{yy}}{\partial y} + \frac{\partial M_{xy}}{\partial y} - Q_{yy} &= 0. \\
-\end{align}
-$$ {#eq-gleichgewichtsbeziehungen}
-
-
-Durch das Einsetzen der in Gleichungen 18 definierten Momente $m_{xx}$, $m_{yy}$ und $m_{xy}$ in die Gleichgewichtsbeziehungen, sowie das Ersetzen der Ausdrücke $Q_{xx}$ und $Q_{yy}$ in der ersten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen) durch die Momentenausdrücke der zweiten und dritten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen),erhält man die Differentialgleichung aus @eq-randwertproblem. Dieses Randwertproblem wird auch als schwache Form des Problems bezeichnet.
-
-![Schnittgrößen](00-pics/Schnittgroessen.png){#fig-schnittgroessen width=100%}
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Randwertproblem (D)* \
-
-Gesucht ist die Funktion $w:[\quad] \to \mathbb{R}^2$ welche die Differentialgleichung
-$$
- D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
-$${#eq-randwertproblem}
-
-und die Randbedingungen
-
-__TODO:__ Randbedingungen
-
-erfüllt.
-\
-
-:::
-
-Das Randwertproblem wird als Divergenz des Gradienten von $w$ wie folgt ausgedrückt:
-$$
-D \cdot \Delta \Delta w(x,y) = q 
-$$ {#eq-black-scholes}
-
-
-## formale Definition eines finiten Elements{#sec-def-finites-element}
-
-Das in @sec-gleichgewicht definierte Randwertproblem lässt sich nach Ableitung in die schwache Form (@sec-schwache-form) als Bilinear- und Linearform durch
-$$
-a(w,\delta w) = b(\delta w)
-$$
-
-ausdrücken. Die Lösung diese Problem erfolgt durch die Unterteilung des Problemgebiets in sogenannte _finite Elemente_. Diese bilden die Grundlage für die Anwendung der Finite-Elemente-Methode in der numerischen Analyse.
-
-Je nach naturwissenschaftlichen Kontext wird die Bezeichnung _Finites Element_ unterschiedlich verwendet. In ingenieurwissenschaftlichen Disziplinen wird der Begriff vorrangig für die physikalischen Elemente, also die geometrischen Teilgebiete genutzt. In der Mathematik hingegen wird sich größtenteils auf die Definition nach Ciarlet bezogen, welche sich auch im Kontext dieser Arbeit als dienlich erweißt.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-_Definition_ (Finites Element): Ein finites Element wird durch das Tripel $(K, \mathcal{P_K} ,\sum)$ definiert. Hierbei sei 
-
-$$
-\begin{align}
-&(i) &&{K} \subseteq \mathbb{R}^n \text{eine Teilmenge und somit ein Teilgebiet des Berechnungsgebiets} \Omega \\
-& &&\text{(das} \mathbf{\text{finite Element}} \text{),} \\
-&(ii) &&\mathcal{P} \text{ ein endlich dimensionaler Raum von Funktionen definiert auf }{K} \\
-& &&\text{(die} \mathbf{\text{Basisfunktionen}} \text{) und } \\
-&(iii) &&\sum \text{eine Menge von linearen Abbildungen auf} \mathcal{P}  \text{(die} \mathbf{\text{Freiheitsgrade}} \text{)}
-\end{align}
-$$
-
-:::
-
-Auch die Interpretation des Begriffes _Freiheitsgrad_ variiert stark, je nach spezifischen naturwissenschaftlichem Kontext. Während sich in der Strukturmechanik die Freiheitsgrade auf die möglichen Bewegungen (Translation und Rotation) eines Körpers oder eines Systems beziehen, werden Freiheitsgrade im mathematischen Sinn als lineare Funktionale (nach @sec-funktionale) definiert. 
-
-Es ergibt sich dadurch die kompakte Beschreibung einer _nodalen Basis_ finiter Elemente durch die Basisfunktionen $\{ \varphi_1,\varphi_1,\cdots, \varphi_k\}$ von $\mathcal{P}$ und die Menge der linearen Abbildung $\sum = \{d_1, d_2, \cdots, d_k\}$ mit
-
-$$
-d_i(\varphi_j) = \delta_{ij}. 
-$$ {#eq-nodale-Basis}
-
-Schlussendlich beschreibt ein Freiheitsgrad im Ingenieurswesen einen Eintrag $\hat{w}_i$ in dem Verschiebungsvektor $\mathbf{\hat{w}}$, dessen Wert sich aus der Anwendung von Linearkombinationen ergibt.
-
-
-## verwendete Funktionale {#sec-funktionale}
-
-Für die Definition des Variationsproblems in Kapitel xxx werden die Linear- und die Bilinearform genutzt. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $\mathbb{K}$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-_Definition_ (Funktional): Sei $V$ ein $\mathbb{K}$-Vektorraum mit $\mathbb{K} \in \{ \mathbb{R},\mathbb{C} \}$. Ein Funktional $T$ ist eine Abbildung $T:V \to \mathbb{K}$.
-:::
-
-Sowohl die Linearform, als auch die Bilinearform, sind, wie der Name erkennen lässt, lineare Funktionale. Als Vektorraum $V$ wird die Menge von Funktionen die $V$ abbilden genannt. Die folgenden Rechenoperationen können auf die Funktionen
-
-$\quad \quad \quad f,g: \mathbb{R}^n \to \mathbb{R}$
-
-angewandt werden:
-$$
-\begin{align}
-&\text{Addition zweier Funktionen:} &&\quad h = f+g &&\quad \quad \text{definiert} \quad \quad h(x)=f(x)+g(x) \\
-&\text{Multiplikation mit einer Zahl:} &&\quad h = \alpha \cdot f &&\quad \quad \text{definiert} \quad \quad h(x)=\alpha \cdot f(x) \quad , \quad \alpha \in \mathbb{R} \\
-\end{align}
-$$
-
-Die Linearform $b(\delta w)$ des abstrakten Variationsproblems (Kap. xxx) beschreibt eine Abbildung von dem Vektorraum $V \to \mathbb{R}$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
-
-$$
-\begin{align*}
-b(u+v) = b(u) + b(v) &&\quad \quad \quad \text{(Additivität)}
-\end{align*}
-$${#eq-eig-linearform-01}
-
-$$
-\begin{flalign}
-& b(\alpha \cdot u) = \alpha \cdot b(u) &&\quad \quad \quad \text{(Homogenität)}
-\end{flalign}
-$${#eq-eig-linearform-02}
-
-Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
-$$
-a(u+v,w) = a(u,w) + a(v,w) \quad ,
-$${#eq-eig-bilinearform-01}
-
-$$
-a(\alpha \cdot u,v) = \alpha \cdot a(u,v) \quad ,
-$${#eq-eig-bilinearform-02}
-
-$$
-a(u,v+w) = a(u,v) + a(u,w) \quad ,
-$${#eq-eig-bilinearform-03}
-
-und
-$$
-a(u,\alpha \cdot v) = \alpha \cdot a(u,v) \quad .
-$${#eq-eig-bilinearform-04}
-
-Weiterführend ist die Bilinearform _positiv definit_ für
-$$
-a(u,u) \ge 0 \quad \forall \quad u \in V
-$$
-
-und _symmetrisch_ für 
-$$
-a(u,v) = a(v,u) \quad .
-$$
-
-Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von einem Skalarprodukt gesprochen. Dies ist im Fall der Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems gegeben.
-
-
-
-
-
-{{< pagebreak >}}
-
-
-
-
-
-<!-- Kapitel 4 -->
-
-
-```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: FEM für Plattentragwerke])))
-```
-
-# FEM für Plattentragwerke {#sec-fem-plattentragwerke}
-
-Anknüpfend an Kapitel ... erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
-
-## Vorbereitung {#sec-vorbereitung}
-
-### Herleitung der schwachen Form {#sec-schwache-form}
-
-Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der Differentialgleichung der Kirchhoffplatte, ausgedrückt durch den Laplace-Operator,
-
-$$
-D \cdot \Delta \Delta w = q 
-$$ {#eq-diffgl-laplace}
-
-<!-- 
-$$
-\Delta w = \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}
-$$ {#eq-diffgl-laplace} 
--->
-
-ergibt sich nach Multiplikation mit der Testfunktion $\delta w : \Omega \to \mathbb{R}$
-
-$$
-D \cdot  (w_{,xxxx} \cdot \delta w 
-+ 2 \cdot w_{,xxyy} \cdot \delta w 
-+ \cdot w_{,yyyy}\cdot \delta w)
-=  q \cdot \delta w .
-$$ {#eq-diffgl-testfunk}
-
-Nach der Integration beider Seiten über die Fläche $\Omega$ und durch Anwendung der Summenregel für Integrale folgt
-$$
-D \cdot [ \underbrace{\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} w_{,yyyy}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
-$$ {#eq-diffgl-testfunk-integral}
-
-Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Ranterme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
-
-$$
-\begin{flalign}
-&\text{den 1. Summanden} \\
-\\
-&\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega
-&&=
-- \int_{\Omega} \delta w_{,xx} \cdot w_{,xx} \quad d \Omega \\
-\\
-\\
-&\text{den 2. Summanden} \\
-\\
-&\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega
-&&= \int_{\Omega} 2 \cdot \delta w_{,xy} \cdot w_{,xy} \quad d \Omega \\
-\\
-\\
-&\text{und den 3. Summanden} \\
-\\
-&\int_{\Omega} w_{,yyyy} \cdot \delta w \quad d \Omega
-&&=
-- \int_{\Omega} \delta w_{,yy} \cdot w_{,yy} \quad d \Omega
-\end{flalign}
-$$
-
-
-Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-*Variationsproblem (V)* \
-
-Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass 
-\
-\
-$$
-\begin{align}
-\int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
-= \int_{\Omega} q \cdot \delta w \quad d \Omega
-\end{align}
-$$ {#eq-variationsproblem}
-
-\
-<!-- 
-__Eigentlich RICHTIG__
-$$
-\begin{align}
-\int_{\Omega}  D (1+\nu) \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega) \\ 
-= \int_{\Omega} q \cdot \delta w \quad d \Omega
-\end{align}
-$$ {#eq-variationsproblem-2}
- -->
-für jede (fast) beliebige Testfunktion $\delta w:\Omega \to \mathbb{R}$.
-
-:::
-
-<!-- 
-Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen. Die linke Seite der @eq-variationsproblem wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Abstraktes Variationsproblem* 
-\
-\
-Gesucht ist die Funktion $w \in V$, sodass 
-$$
-a(w, \delta w)= b(\delta w)
-$${#eq-abstraktes-variationsproblem}
-
-für alle Testfunktionen $\delta w \in V$
-
-:::
-
-Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt.  
--->
-
-Im Fall der Kirchhoffplatte ist die Bilinearform 
-
-$$ 
-\begin{align}
-&a(w, \delta w) &&= \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
-\end{align}
-$$ {#eq-bilinearform}
-
-und die Linearform
-
-$$ 
-b(\delta w) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
-$$ {#eq-linearform}
-
-
-### Approximation von Funktionen {#sec-approximation-funktionen}
-
-Die zwei wesentlichen Ideen der FEM-Lösung:
-
-1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
-2. Funktionen stückweise definieren auf sogenannten Elementen
-
-werden nachfolgend näher erläutert.
-Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
-$$
-\begin{align}
-&w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i 
-\end{align}
-$${#eq-linearkombination-platte}
-
-approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $\Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $\varphi_1, \varphi_2,...,\varphi_N$ ist der endlich dimensionale Vektorraum 
-
-$$
-\begin{align}
-&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
-% &V_h \subset V
-\end{align}
-$${#eq-subspace}
-
-wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $\varphi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-*Abstraktes, diskretes Variationsproblem* 
-\
-\
-Gesucht ist eine Funktion $w_h \in V_h$, sodass 
-$$
-a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
-$${#eq-abstraktes-diskretes-variationsproblem}
-
-:::
-
-Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $\Omega$, in diesem Fall die Platte, wird in die Elemente $\Omega_e, e = 1,...,N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann (siehe @sec-finite-elemente). Die Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $\hat{w}_i \in \mathbb{R}$ werden Freiheitsgrade bzw. im englischen _degrees of freedom_ (abgekürzt DOF) bezeichnet.
-
-### numerische Lösung {#sec-numerische-loesung}
-
-Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
-wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
-
-$$
-\delta w_h = \sum_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i
-$$
-
-eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die in @sec-funktionale besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze 
-
-::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-
-$$
-\begin{align}
-a(w_h, \delta w_h) &= b(\delta w_h) \qquad &&\forall \delta w_h \in V_h \\
-a(w_h, \Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i)&= b(\Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i) \quad &&\forall \quad \delta w_h \in V_h \\
-a(w_h, \varphi_i)&= b(\varphi_i) \qquad &&i = 1,...,N
-\end{align}
-$${#eq-03}
-
-:::
-
-äquivalent sind. Im zweiten Schritt wird 
-
-$$
-w_h = \sum_{j = 1}^N \varphi_j \cdot \hat{w}_j
-$$
-
-in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben, 
-
-$$
-\sum_{j = 1}^N \underbrace{a(\varphi_j, \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
-$$
-
-ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
-
-$$
-\mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r}.
-$${#eq-lin-gleichungssystem}
-
-mit
-$$
-\begin{align}
-&\mathbf{K} &&= k_{ij} &&= a(\varphi_j, \varphi_i) \\
-&\boldsymbol{r} &&= r_i    &&= b(\varphi_i) \quad \text{mit} \quad i,j = 1,...,N,
-\end{align}
-$$
-
-$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
-
-
-|                     | Gesamtsystem         | Element|
-|:--------------------|:--------------------:|:-----------:|
-| Bilinearform (Variationsproblem) | $a(w, \delta w)$ | $a(w^e, \delta w^e)$ | 
-| Steifigkeitsmatrix  | $\mathbf{K}$         |$\mathbf{k_{ij}^e}$|
-| Bilinearform (Steifigkeitsmatrix) | $a(\varphi_j, \varphi_i)$ | $a(\varphi^e_j, \varphi^e_i)$|
-| Lastvektor          | $\mathbf{r}$         |$\mathbf{r^e}$|
-| Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
-
-: Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise. {#tbl-Variablen}
-
-<!-- 
-### Parametrisierung (Jacobi-Matrix)
-
-Analog zu Kapitel ... erfolgt die Abbildung der physikalischen Koordinaten $(x,y) \in [(x_1,y_1),(x_2,y_2),(x_3,y_3),(x_4,y_4)]$, auf die Referenzkoordinaten $(\xi,\eta) \text{ mit} -1 \le \xi,\eta \le 1$, durch Bestimmung der Bilinearform $\hat{a}$ und  der Linearform $\hat{b}$. Für die Platte ergibt sich somit aus dem Variationsproblem (@eq-variationsproblem) die Gleichung 
-$$
-\hat{a}(\hat{w}, \hat{\delta w}) = \hat{b}(\hat{\delta w})
-$${#eq-diffgl-referenzkoordinaten}
-
-Es ergeben sich die Bilinearform 
-$$ 
-\begin{align}
-&\hat{a}(\hat{w}, \hat{\delta w})  
-= D \int_{\Omega}
-&&\hat{w}_{,xx}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xx}(\underline{F}^{-1}(x,y)) \\
-&\qquad &&+ 2 \hat{w}_{,xy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xy}(\underline{F}^{-1}(x,y)) \\
-\\
-&\qquad &&+ \hat{w}_{,yy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,yy}(\underline{F}^{-1}(x,y)) 
-\quad d \Omega \\
-\end{align} 
-$$ {#eq-ahat}
-
-und die Linearform 
-$$ 
-\begin{align}
-&\hat{b}(\hat{\delta w})  
-= \int_{\Omega} q \cdot \delta w(\underline{F}^{-1}(x,y)) \quad d \Omega
-\end{align} 
-$$ {#eq-bhat}
-
-Für die Parametrisierung werden die Variablen $\beta^x$ und $\beta^y$ als Rotation der Normalen, bezogen auf die unverformte Plattenebene, innerhalb der $x-z$-Ebene bzw. der $y-z$-Ebene mit 
-$$
-\beta^x(x,y) = \theta_y (x,y) = - \frac{\partial w(x,y)}{\partial x}
-\qquad  \text{und} \qquad 
-\beta^y(x,y) = \theta_x (x,y) = - \frac{\partial w(x,y)}{\partial y}
-$$
-
-eingeführt. Mittels der Substitution von 
-$$
-\underline{F}^{-1}(x,y) = 
-\begin{cases} 
-F_x^{-1}(x,y)\quad & \to \quad \xi(x,y) \\
-F_y^{-1}(x,y)\quad & \to \quad \eta(x,y)
-\end{cases}
-$$
-
-und der Darstellung der Bilinearform als Matrix-Vektor Produkt resultiert
-$$
-\hat{a}(\hat{w}, \hat{\delta w})  
-= D \int_{-1}^1 \int_{-1}^1 [\beta]^T [\delta \beta] \quad d\xi d\eta
-$$
-
-mit den Vektoren 
-$$
-\underline{\beta} = 
-\left[ \begin{array}{center} 
-\beta^x_{,x} \\
-\beta^y_{,y}\\
-\beta^x_{,y}+\beta^y_{,x}
-\end{array}\right] 
-\qquad \qquad \text{und} \qquad \qquad
-\underline{\delta\beta} = 
-\left[ \begin{array}{center} 
-\delta\beta^x_{,x} \\
-\delta\beta^y_{,y}\\
-\delta\beta^x_{,y}+\delta\beta^y_{,x}
-\end{array}\right] .
-$$
-
-
-Entsprechend der Herleitung der Transformationsmatrix in Kapitel ... ergeben sich die Vektoren zu 
-
-$$ 
-\begin{align}
-\underline{\beta} &= 
-\left[ \begin{array}{center} 
-j_{11} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{12} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
-j_{21} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{22} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
-j_{11} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
-j_{12} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
-j_{21} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{22} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y}
-\end{array}\right] \\
-\underline{\delta\beta} &= 
-\left[ \begin{array}{center} 
-j_{11} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{12} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
-j_{21} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{22} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
-j_{11} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
-j_{12} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
-j_{21} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
-j_{22} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y}
-\end{array}\right] 
-\end{align}
-$$ {#eq-Beta}
-
-mit den Komponenten der inversen Transformationsmatrix definiert
-$$
-\begin{align}
-j_{11} &= \frac{\partial F_x^{-1}(x,y)}{\partial x} \qquad
-j_{12} &= \frac{\partial F_y^{-1}(x,y)}{\partial x} \\
-j_{21} &= \frac{\partial F_x^{-1}(x,y)}{\partial y} \qquad
-j_{22} &= \frac{\partial F_y^{-1}(x,y)}{\partial y} \\
-\end{align}
-$$
-
------------------------------------------
-
-$$
-K u = r
-$$
-
-$$
-u^e = 
-\left[ \begin{array}{center} 
-w_1 \\
-\theta_{x1} \\
-\theta_{y1} \\
-w_2 \\
-\theta_{x2} \\
-\theta_{y2} \\
-w_3 \\
-\theta_{x3} \\
-\theta_{y3} \\
-w_4 \\
-\theta_{x4} \\
-\theta_{y4}
-\end{array}\right] 
-=
-\left[ \begin{array}{center} 
-w_1 \\
-\frac{\partial w_1}{\partial y} \\
--\frac{\partial w_1}{\partial x} \\
-w_2 \\
-\frac{\partial w_2}{\partial y} \\
--\frac{\partial w_2}{\partial x} \\
-w_3 \\
-\frac{\partial w_3}{\partial y} \\
--\frac{\partial w_3}{\partial x} \\
-w_4 \\
-\frac{\partial w_4}{\partial y} \\
--\frac{\partial w_4}{\partial x}
-\end{array}\right] 
-$$
-
-
-$$
-\begin{align}
-w_{,xx} &= \beta_{,x} &&= H^x_{,x} U_n \\
-w_{,yy} &= \beta_{,y} &&= H^y_{,y} U_n \\
-w_{,xy} &= \beta_{,x} + \beta_{,y} &&= (H^x_{,y} + H^y_{,x}) U_n \\
-\end{align}
-$$
-
-$$ 
-\begin{align}
-K^e &= \int_{\Omega} [B]^T [D_b][B] d \Omega \\
-&= 
-\left[ \begin{array}{center} 
-\frac{\partial H^x}{\partial x} \\
-\frac{\partial H^y}{\partial y} \\
-\frac{\partial H^x}{\partial y}+\frac{\partial H^y}{\partial x}
-\end{array}\right]
-\end{align}
-$$ {#eq-bilinearform-ahat}
-
-$$ 
-a(w, \delta w) = \int_{\Omega} D 
-\left[ \begin{array}{center} 
-w_{,xx} &
-w_{,yy} &
-2w_{,xy}
-\end{array}\right]
-\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
-\left[ \begin{array}{center} 
-\delta w_{,xx} \\
-\delta w_{,yy} \\
-2\delta w_{,xy}
-\end{array}\right]
-d \Omega 
-$$
-
-
-$$ 
-\begin{align}
-\hat{a}(\hat{w}, \hat{\delta w})  
-&= \int_{\Omega}  D
-\left[ \begin{array}{center} 
-w_{,xx}(\underline{F}^{-1}(x,y)) &
-w_{,yy}(\underline{F}^{-1}(x,y)) &
-w_{,xy}(\underline{F}^{-1}(x,y))
-\end{array}\right]
-\left[ \begin{array}{center} 
-\delta w_{,xx}(\underline{F}^{-1}(x,y)) \\
-\delta w_{,yy}(\underline{F}^{-1}(x,y)) \\
-2 \delta w_{,xy}(\underline{F}^{-1}(x,y))
-\end{array}\right]
-d \Omega \\
-\end{align} 
-$$ {#eq-black-scholes-04}
-
-
---------------------------------------------
-Bilinearform $a:V \times V \to \mathbb{R}$
-zur "Referenz"-Bilinearform $\hat{a}: \hat{V} \times \hat{V}  \to \mathbb{R}$
-
-$$
-\hat{a}(\hat{w}, \hat{\delta w}) = \hat{a}(\hat{w} \circ \underline{F}^{-1}(x,y), \hat{\delta w}\circ \underline{F}^{-1}(x,y))
-$$
-
-Linearform $b:V \to \mathbb{R}$
-zur "Referenz"-Linearform $\hat{b}: \hat{V} \to \mathbb{R}$
-
-$$
-\hat{b}(\hat{\delta w}) = \hat{b}(\hat{\delta w}\circ \underline{F}^{-1}(x,y))
-$$
-
-$$
-\mathbf{K^e} = \int_{\Omega} [B]^T [D_b][B]
-$$
-
--->
-
-
-
-
-## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-Steifigkeitsmatrix}
+## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
 
 ### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 
@@ -2141,14 +1221,767 @@ $$ {#eq-elementsteifigkeitsmatrix_DKQ}
 
 
 
+<!-- Kapitel 3 -->
+
+
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: Kirchhoffsche Plattentheorie])))
+```
+
+# Kirchhoffsche Plattentheorie {#sec-mech-math-grundlagen}
+
+Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Verschiebungsfeld (@sec-kinematik), Verzerrungsfeld (@sec-verzerrung) und  Gleichgewichtsbeziehungen (@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz (@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung. 
+
+Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente.
+
+
+## Einführung Plattentragwerke {#sec-einfuehrung-plattentragwerke}
+
+Tragwerke wie Wohnhäuser, Brücken, Lagerhallen und weitere, werden in Tragwerksstrukturen wie Balken, Platten und Scheiben unterteilt. Selten besteht ein Tragwerk aus nur einem Element. Überlicherweise besteht es aus einer Zusammenstellung mehrerer Elemente, welche sich gegenseitig beeinflussen. Ziel der Modellierung des Tragwerkes ist es, ein möglichst realitätsnahes Abbild zu schaffen, um somit die Tragfähigkeit beurteilen zu können. Plattentragwerke sind ein wesentlicher Teil bei der Modellierung von Tragwerksstrukturen.
+
+Die Zustandsgrößen, d.h. die Verschiebungsgrößen sowie die äußeren Kraftgrößen, bechreiben das mechanische Verhalten eines Tragwerks und werden zur Formulierung der Grundgleichungen, d.h. den kinematischen Gleichungen, Gleichgewichtsbeziehungen und der Einführung eines Materialgesetzes, benötigt.
+
+![Zustandsgrößen und Grrundgleichungen der Platte](00-pics/Grundgleichungen.png){#fig-zg-und-gg width=90%}
+
+Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein. 
+
+Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
+
+
+## DGL einer Platte nach Kirchhoff{#sec-kirchhoffschen-plattentheorie}
+
+Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
+Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
+\
+- eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Achse. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch 
+$$ 
+w = w(x,y) 
+$$ {#eq-verformung-w}
+
+beschrieben.
+
+- der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken. 
+
+![Verformung einer Platte nach Kirchhoff](00-pics/Kirchhoff.png){width=90%}
+
+![Verformung einer Platte nach Reissner-Mindlin](00-pics/Reissner-Mindlin.png){width=90%}
+
+Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Modell der schubweichen Platte nicht unerwähnt bleiben. Letzteres wird in der Fachliteratur vielfach als Reissner-Mindlin-Platte aufgeführt. Den wesentlichen Unterschied stellt die Normalenhypothese dar. Die Hypothese vom Ebenebleiben des Querschnitts bleibt bei der schubweichen Platte bestehen, wohingegen die Normalenhypothese fallengelassen wird. Infolgedessen sind die Biegewinkel $\theta$ nicht mehr abhängig von der Durchbiegung und stellen unabhängige Freiheitsgrade dar. Eine weitere Folge sind transversale Schubverzerrungen, welche bei der Kirchhoff-Platte vernachlässigt werden.
+\
+
+### kinematische Gleichungen (Verschiebungsfeld) {#sec-kinematik}
+
+Zur Formulierung der kinematischen Gleichungen werden die partiellen Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$ berechnet, welche die Neigung der neutralen Ebene angeben. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an dem Punkt $P(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an dem Punkt $P(x,y)$ um die x-Achse oder y-Achse. In Abhängigkeit der Verdrehwinkel
+
+$$ 
+\theta_x (x,y) = arctan(-\frac{\partial w(x,y)}{\partial y}) 
+$$ {#eq-black-scholes-02}
+
+und
+$$ 
+\theta_y (x,y) = arctan(-\frac{\partial w(x,y)}{\partial x}) 
+$$ {#eq-black-scholes-03}
+
+werden die horizontalen Verschiebungen des Punktes P
+$$ 
+u(x,y,z)=sin(\theta_x (x,y)) \cdot z
+$$ {#eq-black-scholes-04}
+
+und
+$$ 
+v(x,y,z)=sin(\theta_y (x,y)) \cdot z
+$$ {#eq-black-scholes-05}
+
+berechnet. 
+Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergeben sich die Zusammenhänge
+$$ 
+u(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial x} 
+$$ {#eq-verschiebung-u}
+$$ 
+v(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial y}. 
+$$ {#eq-verschiebung-v}
+
+Die Gesetztmäßigkeiten nach @eq-verformung-w, @eq-verschiebung-u und @eq-verschiebung-v werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet.
+
+![Verdrehung und Verschiebung eines Punktes nach Kirchhoff](00-pics/Verschiebung.png){#fig-horizontale-Verschiebung width=100%}
+
+### Materialgesetz {#sec-materialgesetz}
+
+Die bisher betrachteten kinematischen Gleichungen sind unabhäging von materialspezifischen Eigenschaften. Um das mechanische Verhalten der Platte vollständig zu beschreiben, besteht die Notwendigkeit der Einführung eines Materialgesetztes. Bei der Betrachtung von linear-elastischem Materialverhalten, also einem linearen Zusammenhang zwischen Spannungen und Verzerrungen, kann das Material durch das _verallgemeinerte Hooksche Gesetz_ mit
+
+\
+
+$$
+\sigma = E \cdot \epsilon
+$$ {#eq-black-scholes-08}
+
+und
+$$
+\tau = G \cdot \gamma
+$$ {#eq-black-scholes-09}
+
+dargestellt werden. Die Normalspannung $\sigma$ und die Schubspannung $\tau$ werden durch das Elastizitätsmodul $E$ bzw. das Schubmodul $G$ und die Dehung $\epsilon$ bzw. die Schubverzerrung $\gamma$ ausgedrückt. Diese Gesetzmäßigkeiten gelten für  Materialien, dessen Verhalten richtungsunabhängig ist (isotropes Verhalten).
+
+### Verzerrungsfeld {#sec-verzerrung}
+
+Aus dem Verschiebungsfeld nach Kirchhoff lässt sich das Verzerrungsfeld herleiten. Die Dehnungen 
+
+$$ 
+\begin{align} 
+\epsilon_{xx} &= \frac{\partial u}{\partial x}= -z \cdot \frac{\partial^2 w}{\partial x^2} \\
+\epsilon_{yy} &=\frac{\partial v}{\partial y}= -z \cdot \frac{\partial^2 w}{\partial y^2} \\
+\end{align}
+$$ {#eq-dehnungen}
+
+beschreiben die Längenänderung der Platte in $x$- bzw. $y$-Richtung. Entsprechend der Kirchhoffschen Plattentheorie verschwindet die Dehnung $\epsilon_{zz}$ auf Grund der Annahme der gleichbleibenen Plattendicke $h$. Die Schubverzerrung 
+$$ 
+\begin{align} 
+\gamma_{xy} &= \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} =-2z \cdot \frac{\partial^2 w}{\partial x \partial y}, \\ 
+\end{align}
+$$ {#eq-schubverzerrung-gleitung}
+
+oder auch Gleitung, beschreibt eine Winkeländerung. Konsistent mit den in @eq-verschiebung-u und @eq-verschiebung-v getroffenen Annahmen, als Folge des Ebenbleibens der Querschnitte, ergeben sich die Schubverzerrungen
+$$ 
+\begin{align} 
+\gamma_{xz} &= \frac{\partial u}{\partial z} - \frac{\partial w}{\partial x} = \frac{\partial w}{\partial x}- \frac{\partial w}{\partial x} =0\\ 
+\gamma_{yz} &= \frac{\partial v}{\partial z} - \frac{\partial w}{\partial y} = \frac{\partial w}{\partial y} - \frac{\partial w}{\partial y} =0.\\ 
+\end{align}
+$$ {#eq-schubverzerrung}
+
+Durch die Definition der Krümmungen mit
+$$ 
+\begin{align}  
+\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \\
+\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \\
+\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y} \\ 
+\end{align}
+$$ {#eq-kruemmung}
+
+kann das Verzerrungsfeld nach der Kirchhoffschen Plattentheorie 
+als Vektor-Matrix-Produkt mit
+$$
+\left[ \begin{array}{center}
+\epsilon_{xx} \\ 
+\epsilon_{yy} \\ 
+\gamma_{xy} 
+\end{array}\right]
+=
+z \kappa 
+= 
+z 
+\left[ \begin{array}{center}
+\kappa_{xx} \\ 
+\kappa_{yy} \\ 
+\kappa_{xy} 
+\end{array}\right]
+= 
+-z 
+\left[ \begin{array}{center}
+\frac{\partial^2 w}{\partial x^2} \\
+\frac{\partial^2 w}{\partial y^2} \\
+-2 \frac{\partial^2 w}{\partial x \partial y} 
+\end{array}\right]
+$$ {#eq-black-scholes}
+
+beschrieben werden. Bei der isotropen Platte mit linear-elastischem Materialverhalten lässt sich das Spannungsfeld aus dem oben beschriebenem Verzerrungsfeld herleiten. Die Spannungen
+$$
+\begin{align}
+\sigma_{xx} &= \frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy}) \\
+\sigma_{yy} &= \frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx} + \epsilon_{yy}) \\
+\tau_{xy}   &= \frac{E}{2 \cdot (1+\nu)}  \cdot \gamma_{xy}\ 
+\end{align}
+$$ {#eq-spannungen}
+
+sind linear veränderlich über die Plattendicken $h$. 
+
+__TODO:__ auf Widersprüche der Kirchhoff Plattentheorie eingehen 
+
+\
+
+### Schnittgrößen {#sec-schnittgrößen}
+
+Resultierend aus den Spannungskomponenten $\sigma_{xx}$,$\sigma_{yy}$ und $\tau_{xy}$ ergeben sich die Biegemomente $m_{xx}$ und $m_{yy}$ und das Drillmoment $m_{xy}$, definiert als Moment pro Längeneinheit. Die Momente lassen sich durch Integration der Spannungen über die Höhe der Platte und Multiplikation mit dem Hebelarm $z$ zu
+$$
+\begin{align}
+m_{xx} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\epsilon_{xx} + \nu \cdot \epsilon_{yy})}_{\sigma_{x x}} \cdot dz \\
+m_{yy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{1-\nu^2} \cdot (\nu \cdot \epsilon_{xx}+ \epsilon_{yy})}_{\sigma_{y y}} \cdot dz \\
+m_{xy} &= \int_{-h/2}^{h/2} z \cdot \underbrace{\frac{E}{2 \cdot (1+\nu)} \cdot \gamma_{xy}}_{\tau_{xy}} \cdot dz \\
+\end{align}
+$$ {#eq-black-scholes}
+
+berechnen. Die isotrope Plattensteifigkeit 
+$$
+D = \frac{E \cdot h^3}{12 \cdot (1-\nu^2)}
+$$ {#eq-plattensteifigkeit}
+
+und die in @eq-kruemmung definierten Krümmungen $\kappa$ erlauben eine vereinfachte Darstellung der Momente
+$$
+\begin{align}
+m_{xx} &= D \cdot (\kappa_{xx} + \nu \cdot \kappa_{yy}) &&= D \cdot (\frac{\partial^2 w}{\partial x^2} + \nu \cdot \frac{\partial^2 w}{\partial y^2}) \\
+m_{yy} &= D \cdot (\nu \cdot \kappa_{xx} + \kappa_{yy}) &&= D \cdot (\nu \cdot \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}) \\
+m_{xy} &= D \cdot \frac{1-\nu}{2} \cdot \kappa_{xy} &&= D \cdot \frac{1-\nu}{2} \cdot (-2 \frac{\partial^2 w}{\partial x \partial y}).
+\end{align}
+$$ {#eq-black-scholes}
+
+![Normalspannungen und resultierende Biegemomente](00-pics/Biegemoment.png){width=100%}
+
+![eben Schubspannungen und resultierende Drillmomente](00-pics/Drillmomente.png){width=100%}
+
+Um die Querkräfte zu berechnen werden im Normalfall die transversalen Schubspannungen über die Plattendicke $h$ integriert. Bei der Kirchhoffschen Plattentheorie ist dies nicht möglich, da, wie in @eq-schubverzerrung dargestellt, die Schubverzerrungen und somit die Schubspannungen gemäß der getroffenen Annahmen verschwinden. Die Querkräfte ergeben sich allein aus den Gleichgewichtsbedingungen (s. Kapitel Gleichgewichtsbeziehungen) und lassen sich aus der dritten Ableitung der Verschiebung $w$ zu
+$$
+\begin{align}
+q_{xx} &= D \cdot (\frac{\partial^3 w}{\partial x^3} + \nu \cdot \frac{\partial^3 w}{\partial y^3}) \\
+q_{yy} &= D \cdot (\nu \cdot \frac{\partial^3 w}{\partial x^3} + \frac{\partial^3 w}{\partial y^3}) \\
+\end{align} 
+$$ {#eq-black-scholes}
+
+berechnen.
+
+![transversale Schubspannungen und resultierende Querkräfte](00-pics/Querkraft.png){width=100%}
+
+### Gleichgewichtsbeziehungen & Plattengleichung {#sec-gleichgewicht}
+
+Betrachtet wird zunächst ein Schnittelement einer Platte mit den Abmessungen $\Delta x$ und $\Delta y$, welches durch eine senkrecht zur Mittelebene angreifende Flächenlast $p(x,y)$ belastet wird. In @fig-schnittgroessen sind die Schnittgrößen welche am positiven sowie am negativen Schnittufer des Elements angreifen dargestellt. Die Definitionen der Schnittgrößen sind in @tbl-schnittgroessen abgebildet.
+
+|        | Schnittufer $+$      |                 | Schnittufer $-$                                                       |
+|--------|----------------------|-----------------|-----------------------------------------------------------------------|
+|$M_x$   |$m_{xx}\cdot \Delta y$|$M_{x+\Delta x}$ |$(m_{xx} + \frac{\partial m_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
+|$M_y$   |$m_{yy}\cdot \Delta x$|$M_{y+\Delta y}$ |$(m_{yy} + \frac{\partial m_{yy}}{\partial y} \cdot \Delta y) \Delta x$| 
+|$M_{xy}$|$m_{xy}\cdot \Delta y$|$M_{xy+\Delta x}$|$(m_{xy} + \frac{\partial m_{xy}}{\partial x} \cdot \Delta x) \Delta y$| 
+|$M_{yx}$|$m_{yx}\cdot \Delta x$|$M_{yx+\Delta y}$|$(m_{yx} + \frac{\partial m_{yx}}{\partial y} \cdot \Delta y) \Delta x$| 
+|$Q_x$   |$q_{xx}\cdot \Delta y$|$Q_{x+\Delta x}$ |$(q_{xx} + \frac{\partial q_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
+|$Q_y$   |$q_{yy}\cdot \Delta x$|$Q_{y+\Delta y}$ |$(q_{yy} + \frac{\partial q_{yy}}{\partial y} \cdot \Delta y) \Delta x$| 
+
+: Schnittgrößen {#tbl-schnittgroessen}
+
+\
+\
+\
+\
+Bei der Grenzbetrachtung $\Delta x \to 0$ und $\Delta y \to 0$ ergeben sich die Gleichgewichtsbeziehungen
+$$     
+\begin{align}
+\frac{\partial Q_{xx}}{\partial x} + \frac{\partial Q_{yy}}{\partial y} + q &= 0 \\
+\frac{\partial M_{xx}}{\partial x} + \frac{\partial M_{xy}}{\partial y} - Q_{xx} &= 0 \\
+\frac{\partial M_{yy}}{\partial y} + \frac{\partial M_{xy}}{\partial y} - Q_{yy} &= 0. \\
+\end{align}
+$$ {#eq-gleichgewichtsbeziehungen}
+
+
+Durch das Einsetzen der in Gleichungen 18 definierten Momente $m_{xx}$, $m_{yy}$ und $m_{xy}$ in die Gleichgewichtsbeziehungen, sowie das Ersetzen der Ausdrücke $Q_{xx}$ und $Q_{yy}$ in der ersten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen) durch die Momentenausdrücke der zweiten und dritten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen),erhält man die Differentialgleichung aus @eq-randwertproblem. Dieses Randwertproblem wird auch als schwache Form des Problems bezeichnet.
+
+![Schnittgrößen](00-pics/Schnittgroessen.png){#fig-schnittgroessen width=100%}
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Randwertproblem (D)* \
+
+Gesucht ist die Funktion $w:[\quad] \to \mathbb{R}^2$ welche die Differentialgleichung
+$$
+ D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
+$${#eq-randwertproblem}
+
+und die Randbedingungen
+
+__TODO:__ Randbedingungen
+
+erfüllt.
+\
+
+:::
+
+Das Randwertproblem wird als Divergenz des Gradienten von $w$ wie folgt ausgedrückt:
+$$
+D \cdot \Delta \Delta w(x,y) = q 
+$$ {#eq-black-scholes}
+
+
+
+
+
+{{< pagebreak >}}
+
+
+
+
+
+<!-- Kapitel 4 -->
+
+
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: Finite Elemente für schubstarre Platten])))
+```
+
+# Finite Elemente für schubstarre Platten {#sec-fem-plattentragwerke}
+
+Anknüpfend an Kapitel ... erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
+
+## Vorbereitung {#sec-vorbereitung}
+
+### Herleitung der schwachen Form {#sec-schwache-form}
+
+Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der Differentialgleichung der Kirchhoffplatte, ausgedrückt durch den Laplace-Operator,
+
+$$
+D \cdot \Delta \Delta w = q 
+$$ {#eq-diffgl-laplace}
+
+<!-- 
+$$
+\Delta w = \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}
+$$ {#eq-diffgl-laplace} 
+-->
+
+ergibt sich nach Multiplikation mit der Testfunktion $\delta w : \Omega \to \mathbb{R}$
+
+$$
+D \cdot  (w_{,xxxx} \cdot \delta w 
++ 2 \cdot w_{,xxyy} \cdot \delta w 
++ \cdot w_{,yyyy}\cdot \delta w)
+=  q \cdot \delta w .
+$$ {#eq-diffgl-testfunk}
+
+Nach der Integration beider Seiten über die Fläche $\Omega$ und durch Anwendung der Summenregel für Integrale folgt
+$$
+D \cdot [ \underbrace{\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} w_{,yyyy}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
+$$ {#eq-diffgl-testfunk-integral}
+
+Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Ranterme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
+
+$$
+\begin{flalign}
+&\text{den 1. Summanden} \\
+\\
+&\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega
+&&=
+- \int_{\Omega} \delta w_{,xx} \cdot w_{,xx} \quad d \Omega \\
+\\
+\\
+&\text{den 2. Summanden} \\
+\\
+&\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega
+&&= \int_{\Omega} 2 \cdot \delta w_{,xy} \cdot w_{,xy} \quad d \Omega \\
+\\
+\\
+&\text{und den 3. Summanden} \\
+\\
+&\int_{\Omega} w_{,yyyy} \cdot \delta w \quad d \Omega
+&&=
+- \int_{\Omega} \delta w_{,yy} \cdot w_{,yy} \quad d \Omega
+\end{flalign}
+$$
+
+
+Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+*Variationsproblem (V)* \
+
+Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass 
+\
+\
+$$
+\begin{align}
+\int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
+= \int_{\Omega} q \cdot \delta w \quad d \Omega
+\end{align}
+$$ {#eq-variationsproblem}
+
+\
+<!-- 
+__Eigentlich RICHTIG__
+$$
+\begin{align}
+\int_{\Omega}  D (1+\nu) \cdot (\frac{\partial^2 w}{\partial x^2} \cdot \frac{\partial^2 \delta w}{\partial x^2} + 2 \cdot \frac{\partial w}{\partial x \partial y} \cdot \frac{\partial \delta w}{\partial x \partial y} + \frac{\partial^2 w}{\partial y^2} \cdot \frac{\partial^2 \delta w}{\partial y^2} \quad d \Omega) \\ 
+= \int_{\Omega} q \cdot \delta w \quad d \Omega
+\end{align}
+$$ {#eq-variationsproblem-2}
+ -->
+für jede (fast) beliebige Testfunktion $\delta w:\Omega \to \mathbb{R}$.
+
+:::
+
+<!-- 
+Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen. Die linke Seite der @eq-variationsproblem wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes Variationsproblem* 
+\
+\
+Gesucht ist die Funktion $w \in V$, sodass 
+$$
+a(w, \delta w)= b(\delta w)
+$${#eq-abstraktes-variationsproblem}
+
+für alle Testfunktionen $\delta w \in V$
+
+:::
+
+Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt.  
+-->
+
+Im Fall der Kirchhoffplatte ist die Bilinearform 
+
+$$ 
+\begin{align}
+&a(w, \delta w) &&= \int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega \\
+\end{align}
+$$ {#eq-bilinearform}
+
+und die Linearform
+
+$$ 
+b(\delta w) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
+$$ {#eq-linearform}
+
+
+### Approximation von Funktionen {#sec-approximation-funktionen}
+
+Die zwei wesentlichen Ideen der FEM-Lösung:
+
+1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
+2. Funktionen stückweise definieren auf sogenannten Elementen
+
+werden nachfolgend näher erläutert.
+Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
+$$
+\begin{align}
+&w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i 
+\end{align}
+$${#eq-linearkombination-platte}
+
+approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $\Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $\varphi_1, \varphi_2,...,\varphi_N$ ist der endlich dimensionale Vektorraum 
+
+$$
+\begin{align}
+&V_h = Lin(\varphi_1,\varphi_2,...,\varphi_N) = \{ \sum_{i=1}^N \varphi_i \cdot \hat{w}_i \vert \hat{w}_i \in \mathbb{R} \}, \\
+% &V_h \subset V
+\end{align}
+$${#eq-subspace}
+
+wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $\varphi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+*Abstraktes, diskretes Variationsproblem* 
+\
+\
+Gesucht ist eine Funktion $w_h \in V_h$, sodass 
+$$
+a(w_h, \delta w_h)= b(\delta w_h) \quad \forall \quad \delta w_h \in V_h
+$${#eq-abstraktes-diskretes-variationsproblem}
+
+:::
+
+Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $\Omega$, in diesem Fall die Platte, wird in die Elemente $\Omega_e, e = 1,...,N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann (siehe @sec-finite-elemente). Die Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $\hat{w}_i \in \mathbb{R}$ werden Freiheitsgrade bzw. im englischen _degrees of freedom_ (abgekürzt DOF) bezeichnet.
+
+### numerische Lösung {#sec-numerische-loesung}
+
+Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
+wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
+
+$$
+\delta w_h = \sum_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i
+$$
+
+eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die in @sec-funktionale besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze 
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+$$
+\begin{align}
+a(w_h, \delta w_h) &= b(\delta w_h) \qquad &&\forall \delta w_h \in V_h \\
+a(w_h, \Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i)&= b(\Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i) \quad &&\forall \quad \delta w_h \in V_h \\
+a(w_h, \varphi_i)&= b(\varphi_i) \qquad &&i = 1,...,N
+\end{align}
+$${#eq-03}
+
+:::
+
+äquivalent sind. Im zweiten Schritt wird 
+
+$$
+w_h = \sum_{j = 1}^N \varphi_j \cdot \hat{w}_j
+$$
+
+in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben, 
+
+$$
+\sum_{j = 1}^N \underbrace{a(\varphi_j, \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
+$$
+
+ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
+
+$$
+\mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r}.
+$${#eq-lin-gleichungssystem}
+
+mit
+$$
+\begin{align}
+&\mathbf{K} &&= k_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\boldsymbol{r} &&= r_i    &&= b(\varphi_i) \quad \text{mit} \quad i,j = 1,...,N,
+\end{align}
+$$
+
+$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+
+
+|                     | Gesamtsystem         | Element|
+|:--------------------|:--------------------:|:-----------:|
+| Bilinearform (Variationsproblem) | $a(w, \delta w)$ | $a(w^e, \delta w^e)$ | 
+| Steifigkeitsmatrix  | $\mathbf{K}$         |$\mathbf{k_{ij}^e}$|
+| Bilinearform (Steifigkeitsmatrix) | $a(\varphi_j, \varphi_i)$ | $a(\varphi^e_j, \varphi^e_i)$|
+| Lastvektor          | $\mathbf{r}$         |$\mathbf{r^e}$|
+| Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
+
+: Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise. {#tbl-Variablen}
+
+<!-- 
+### Parametrisierung (Jacobi-Matrix)
+
+Analog zu Kapitel ... erfolgt die Abbildung der physikalischen Koordinaten $(x,y) \in [(x_1,y_1),(x_2,y_2),(x_3,y_3),(x_4,y_4)]$, auf die Referenzkoordinaten $(\xi,\eta) \text{ mit} -1 \le \xi,\eta \le 1$, durch Bestimmung der Bilinearform $\hat{a}$ und  der Linearform $\hat{b}$. Für die Platte ergibt sich somit aus dem Variationsproblem (@eq-variationsproblem) die Gleichung 
+$$
+\hat{a}(\hat{w}, \hat{\delta w}) = \hat{b}(\hat{\delta w})
+$${#eq-diffgl-referenzkoordinaten}
+
+Es ergeben sich die Bilinearform 
+$$ 
+\begin{align}
+&\hat{a}(\hat{w}, \hat{\delta w})  
+= D \int_{\Omega}
+&&\hat{w}_{,xx}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xx}(\underline{F}^{-1}(x,y)) \\
+&\qquad &&+ 2 \hat{w}_{,xy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,xy}(\underline{F}^{-1}(x,y)) \\
+\\
+&\qquad &&+ \hat{w}_{,yy}(\underline{F}^{-1}(x,y)) \cdot \hat{\delta w}_{,yy}(\underline{F}^{-1}(x,y)) 
+\quad d \Omega \\
+\end{align} 
+$$ {#eq-ahat}
+
+und die Linearform 
+$$ 
+\begin{align}
+&\hat{b}(\hat{\delta w})  
+= \int_{\Omega} q \cdot \delta w(\underline{F}^{-1}(x,y)) \quad d \Omega
+\end{align} 
+$$ {#eq-bhat}
+
+Für die Parametrisierung werden die Variablen $\beta^x$ und $\beta^y$ als Rotation der Normalen, bezogen auf die unverformte Plattenebene, innerhalb der $x-z$-Ebene bzw. der $y-z$-Ebene mit 
+$$
+\beta^x(x,y) = \theta_y (x,y) = - \frac{\partial w(x,y)}{\partial x}
+\qquad  \text{und} \qquad 
+\beta^y(x,y) = \theta_x (x,y) = - \frac{\partial w(x,y)}{\partial y}
+$$
+
+eingeführt. Mittels der Substitution von 
+$$
+\underline{F}^{-1}(x,y) = 
+\begin{cases} 
+F_x^{-1}(x,y)\quad & \to \quad \xi(x,y) \\
+F_y^{-1}(x,y)\quad & \to \quad \eta(x,y)
+\end{cases}
+$$
+
+und der Darstellung der Bilinearform als Matrix-Vektor Produkt resultiert
+$$
+\hat{a}(\hat{w}, \hat{\delta w})  
+= D \int_{-1}^1 \int_{-1}^1 [\beta]^T [\delta \beta] \quad d\xi d\eta
+$$
+
+mit den Vektoren 
+$$
+\underline{\beta} = 
+\left[ \begin{array}{center} 
+\beta^x_{,x} \\
+\beta^y_{,y}\\
+\beta^x_{,y}+\beta^y_{,x}
+\end{array}\right] 
+\qquad \qquad \text{und} \qquad \qquad
+\underline{\delta\beta} = 
+\left[ \begin{array}{center} 
+\delta\beta^x_{,x} \\
+\delta\beta^y_{,y}\\
+\delta\beta^x_{,y}+\delta\beta^y_{,x}
+\end{array}\right] .
+$$
+
+
+Entsprechend der Herleitung der Transformationsmatrix in Kapitel ... ergeben sich die Vektoren zu 
+
+$$ 
+\begin{align}
+\underline{\beta} &= 
+\left[ \begin{array}{center} 
+j_{11} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{12} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{21} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{11} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
+j_{12} \frac{\partial \beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
+j_{21} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \beta^x(\xi(x,y),\eta(x,y))}{\partial y}
+\end{array}\right] \\
+\underline{\delta\beta} &= 
+\left[ \begin{array}{center} 
+j_{11} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{12} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{21} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} \\
+j_{11} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial x} + 
+j_{12} \frac{\partial \delta\beta^y(\xi(x,y),\eta(x,y))}{\partial y} + 
+j_{21} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial x} +
+j_{22} \frac{\partial \delta\beta^x(\xi(x,y),\eta(x,y))}{\partial y}
+\end{array}\right] 
+\end{align}
+$$ {#eq-Beta}
+
+mit den Komponenten der inversen Transformationsmatrix definiert
+$$
+\begin{align}
+j_{11} &= \frac{\partial F_x^{-1}(x,y)}{\partial x} \qquad
+j_{12} &= \frac{\partial F_y^{-1}(x,y)}{\partial x} \\
+j_{21} &= \frac{\partial F_x^{-1}(x,y)}{\partial y} \qquad
+j_{22} &= \frac{\partial F_y^{-1}(x,y)}{\partial y} \\
+\end{align}
+$$
+
+-----------------------------------------
+
+$$
+K u = r
+$$
+
+$$
+u^e = 
+\left[ \begin{array}{center} 
+w_1 \\
+\theta_{x1} \\
+\theta_{y1} \\
+w_2 \\
+\theta_{x2} \\
+\theta_{y2} \\
+w_3 \\
+\theta_{x3} \\
+\theta_{y3} \\
+w_4 \\
+\theta_{x4} \\
+\theta_{y4}
+\end{array}\right] 
+=
+\left[ \begin{array}{center} 
+w_1 \\
+\frac{\partial w_1}{\partial y} \\
+-\frac{\partial w_1}{\partial x} \\
+w_2 \\
+\frac{\partial w_2}{\partial y} \\
+-\frac{\partial w_2}{\partial x} \\
+w_3 \\
+\frac{\partial w_3}{\partial y} \\
+-\frac{\partial w_3}{\partial x} \\
+w_4 \\
+\frac{\partial w_4}{\partial y} \\
+-\frac{\partial w_4}{\partial x}
+\end{array}\right] 
+$$
+
+
+$$
+\begin{align}
+w_{,xx} &= \beta_{,x} &&= H^x_{,x} U_n \\
+w_{,yy} &= \beta_{,y} &&= H^y_{,y} U_n \\
+w_{,xy} &= \beta_{,x} + \beta_{,y} &&= (H^x_{,y} + H^y_{,x}) U_n \\
+\end{align}
+$$
+
+$$ 
+\begin{align}
+K^e &= \int_{\Omega} [B]^T [D_b][B] d \Omega \\
+&= 
+\left[ \begin{array}{center} 
+\frac{\partial H^x}{\partial x} \\
+\frac{\partial H^y}{\partial y} \\
+\frac{\partial H^x}{\partial y}+\frac{\partial H^y}{\partial x}
+\end{array}\right]
+\end{align}
+$$ {#eq-bilinearform-ahat}
+
+$$ 
+a(w, \delta w) = \int_{\Omega} D 
+\left[ \begin{array}{center} 
+w_{,xx} &
+w_{,yy} &
+2w_{,xy}
+\end{array}\right]
+\begin{bmatrix} D & D\nu & 0 \\ D\nu & D & 0 \\ 0 & 0 & D\frac{1-\nu}{2} \end{bmatrix}
+\left[ \begin{array}{center} 
+\delta w_{,xx} \\
+\delta w_{,yy} \\
+2\delta w_{,xy}
+\end{array}\right]
+d \Omega 
+$$
+
+
+$$ 
+\begin{align}
+\hat{a}(\hat{w}, \hat{\delta w})  
+&= \int_{\Omega}  D
+\left[ \begin{array}{center} 
+w_{,xx}(\underline{F}^{-1}(x,y)) &
+w_{,yy}(\underline{F}^{-1}(x,y)) &
+w_{,xy}(\underline{F}^{-1}(x,y))
+\end{array}\right]
+\left[ \begin{array}{center} 
+\delta w_{,xx}(\underline{F}^{-1}(x,y)) \\
+\delta w_{,yy}(\underline{F}^{-1}(x,y)) \\
+2 \delta w_{,xy}(\underline{F}^{-1}(x,y))
+\end{array}\right]
+d \Omega \\
+\end{align} 
+$$ {#eq-black-scholes-04}
+
+
+--------------------------------------------
+Bilinearform $a:V \times V \to \mathbb{R}$
+zur "Referenz"-Bilinearform $\hat{a}: \hat{V} \times \hat{V}  \to \mathbb{R}$
+
+$$
+\hat{a}(\hat{w}, \hat{\delta w}) = \hat{a}(\hat{w} \circ \underline{F}^{-1}(x,y), \hat{\delta w}\circ \underline{F}^{-1}(x,y))
+$$
+
+Linearform $b:V \to \mathbb{R}$
+zur "Referenz"-Linearform $\hat{b}: \hat{V} \to \mathbb{R}$
+
+$$
+\hat{b}(\hat{\delta w}) = \hat{b}(\hat{\delta w}\circ \underline{F}^{-1}(x,y))
+$$
+
+$$
+\mathbf{K^e} = \int_{\Omega} [B]^T [D_b][B]
+$$
+
+-->
+
+
+
+
+
+
+{{< pagebreak >}}
+
+
+
+
+
 <!-- Kapitel 5 -->
 
 
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA & Beispiele])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA])))
 ```
 
-# Umsetzung in JULIA & Beispiele {#sec-Umsetzung-Julia-Beispiele}
+# Umsetzung in JULIA {#sec-Umsetzung-Julia}
 
 Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt.
 
@@ -2512,6 +2345,32 @@ end;
 ```
 
 
+
+**Umsetzung in JULIA**
+    Einführung in Julia für FEM
+    Implementierung der Formulierung für rechteckige Elemente
+        Code-Struktur und wichtige Funktionen
+    Implementierung für allgemeine Vierecke
+        Herausforderungen und Lösungen
+
+
+
+{{< pagebreak >}}
+
+
+
+
+
+
+<!-- Kapitel 6 -->
+
+
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 6: Anwendungsbeispiele])))
+```
+
+# Anwendungsbeispiele {#sec-anwendungsbeispiele}
+
 ## Beispiel 1: allseitig eingespannte Platte 
 
 Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
@@ -2613,4 +2472,77 @@ Biegemomente Platte Batoz & Tahar
 
 
 {{< pagebreak >}}
+
+
+
+
+
+
+
+muss noch eingefügt werden:
+    Eigenschaften verwendete Funktionale                funktionale.qmd (an der STelle wo es auftaucht)
+    numerische Integration                              numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
+## verwendete Funktionale {#sec-funktionale}
+
+Für die Definition des Variationsproblems in Kapitel xxx werden die Linear- und die Bilinearform genutzt. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $\mathbb{K}$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+_Definition_ (Funktional): Sei $V$ ein $\mathbb{K}$-Vektorraum mit $\mathbb{K} \in \{ \mathbb{R},\mathbb{C} \}$. Ein Funktional $T$ ist eine Abbildung $T:V \to \mathbb{K}$.
+:::
+
+Sowohl die Linearform, als auch die Bilinearform, sind, wie der Name erkennen lässt, lineare Funktionale. Als Vektorraum $V$ wird die Menge von Funktionen die $V$ abbilden genannt. Die folgenden Rechenoperationen können auf die Funktionen
+
+$\quad \quad \quad f,g: \mathbb{R}^n \to \mathbb{R}$
+
+angewandt werden:
+$$
+\begin{align}
+&\text{Addition zweier Funktionen:} &&\quad h = f+g &&\quad \quad \text{definiert} \quad \quad h(x)=f(x)+g(x) \\
+&\text{Multiplikation mit einer Zahl:} &&\quad h = \alpha \cdot f &&\quad \quad \text{definiert} \quad \quad h(x)=\alpha \cdot f(x) \quad , \quad \alpha \in \mathbb{R} \\
+\end{align}
+$$
+
+Die Linearform $b(\delta w)$ des abstrakten Variationsproblems (Kap. xxx) beschreibt eine Abbildung von dem Vektorraum $V \to \mathbb{R}$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
+
+$$
+\begin{align*}
+b(u+v) = b(u) + b(v) &&\quad \quad \quad \text{(Additivität)}
+\end{align*}
+$${#eq-eig-linearform-01}
+
+$$
+\begin{flalign}
+& b(\alpha \cdot u) = \alpha \cdot b(u) &&\quad \quad \quad \text{(Homogenität)}
+\end{flalign}
+$${#eq-eig-linearform-02}
+
+Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
+$$
+a(u+v,w) = a(u,w) + a(v,w) \quad ,
+$${#eq-eig-bilinearform-01}
+
+$$
+a(\alpha \cdot u,v) = \alpha \cdot a(u,v) \quad ,
+$${#eq-eig-bilinearform-02}
+
+$$
+a(u,v+w) = a(u,v) + a(u,w) \quad ,
+$${#eq-eig-bilinearform-03}
+
+und
+$$
+a(u,\alpha \cdot v) = \alpha \cdot a(u,v) \quad .
+$${#eq-eig-bilinearform-04}
+
+Weiterführend ist die Bilinearform _positiv definit_ für
+$$
+a(u,u) \ge 0 \quad \forall \quad u \in V
+$$
+
+und _symmetrisch_ für 
+$$
+a(u,v) = a(v,u) \quad .
+$$
+
+Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von einem Skalarprodukt gesprochen. Dies ist im Fall der Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems gegeben.
 

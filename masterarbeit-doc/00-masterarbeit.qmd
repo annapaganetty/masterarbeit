@@ -12,26 +12,41 @@ format:
 ```{=typst}
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundidee der Finite Elemente Methode])))
 ```
-{{< include grundlagen_FEM.qmd >}}
+{{< include grundidee_FEM.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 3 -->
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: mechanische und mathematische Grundlagen])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: Kirchhoffsche Plattentheorie])))
 ```
-{{< include grundlagen_mech_math.qmd >}}
+{{< include kirchhoffsche-plattentheorie.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 4 -->
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: FEM für Plattentragwerke])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: Finite Elemente für schubstarre Platten])))
 ```
-{{< include FEM-plattentragwerke.qmd >}}
+{{< include FEM-schubstarre-platten.qmd >}}
 {{< pagebreak >}}
 
 <!-- Kapitel 5 -->
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA & Beispiele])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA])))
 ```
-{{< include umsetzung-julia-beispiele.qmd >}}
+{{< include umsetzung-julia.qmd >}}
 {{< pagebreak >}}
+
+
+<!-- Kapitel 6 -->
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 6: Anwendungsbeispiele])))
+```
+{{< include anwendungsbeispiele.qmd >}}
+{{< pagebreak >}}
+
+
+
+muss noch eingefügt werden:
+    Eigenschaften verwendete Funktionale                funktionale.qmd (an der STelle wo es auftaucht)
+    numerische Integration                              numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
+{{< include funktionale.qmd   >}}

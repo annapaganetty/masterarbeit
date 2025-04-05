@@ -1,8 +1,5 @@
-# FEM für Plattentragwerke {#sec-fem-plattentragwerke}
+# Finite Elemente für schubstarre Platten {#sec-fem-plattentragwerke}
 
 Anknüpfend an Kapitel ... erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
 
 {{< include vorbereitung-FEM.qmd >}}
-
-{{< include assemblierung-steifigkeitsmatrix.qmd >}}
-

@@ -1,10 +1,10 @@
-## Einführungsbeispiel Biegebalken {#sec-einfuehrungsbeispiel}
+## Einführungsbeispiel: Biegebalken {#sec-einfuehrungsbeispiel}
 
-Als Einführungsbeispiel dient ein 1D Biegebalken, an beiden Seiten gelenkig gelagert (siehe @fig-Einfuehrungsbeispiel).
+Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist siehe (@fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems geredet, welche die Grundlage für die Finite Elemente Analyse bildet.
 
-![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=80%}
+![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=75%}
 
-_Kinematische Gleichungen:_
+### Kinematische Gleichungen
 
 Die nachfolgend beschriebenen Zusammenhänge beruhen auf den beiden Bernoulli-Hypothesen. Die erste Hypothese besagt, dass der Querschnitt des Balkens im unverformten und im verformten Zustand eben ist und sich nicht verwölbt (_Ebenbleiben des Querschnitts_). Zudem wird davon ausgegangen, dass die Querschnittsfläche im verformten Zustand senkrecht zur neutralen Achse bleibt (_Senkrechtbleiben des Querschnitts_).
 
@@ -20,7 +20,7 @@ $${#eq-horizontale-verschiebung-balken}
 
 beschrieben. 
 
-![verformter Balken](00-pics/Verformter-Balken.png){width=70%}
+![verformter Balken](00-pics/Verformter-Balken.png){width=60%}
 
 Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
 $$
@@ -32,7 +32,7 @@ $$
 M_z = -E I \cdot w''(x) \quad.
 $${#eq-schnittmoment-balken}
 
-_Gleichgewichtsbeziehungen:_
+### Gleichgewichtsbeziehungen
 
 Bei der Betrachtung des Gleichgewichts an einem finiten Element der Größe $\Delta x$, ergeben sich die Gleichgewichtsbedingungen
 $$
@@ -41,8 +41,6 @@ $$
 &\sum M: \quad M(x+\Delta x)-M(x)-q_z \cdot \frac{\Delta x^2}{2} - V(x+\Delta x) \cdot \Delta x &=0.
 \end{align}
 $${#eq-gleichgewichtsbeziehungen-balken}
-
-![Schnittgrößen am Bernoulli Balken](00-pics/Schnittgroessen-balken.png){width=100%}
 
 Nach Division der Beziehungen mit $\Delta x$ und Berechnung des Grenzwertes mittels $\lim_{\Delta x \to 0}$, folgen durch Anwendung des Differentialquotienten die Zusammenhänge
 $$
@@ -53,8 +51,10 @@ M''(x) &= -q_z(x)
 \end{align}
 $$ {#eq-zusammenhaenge-aus-GG}
 
+![Schnittgrößen am Bernoulli Balken](00-pics/Schnittgroessen-balken.png){width=75%}
+
 ### Starke Form zur schwachen Form {#sec-Balken-stark-schwache-Form}
-Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form des Problems_ wie folgt formulieren:
+Aus den @eq-schnittmoment-balken und @eq-zusammenhaenge-aus-GG lässt sich für das Stabelement der Länge $L$ die _starke Form_ des Problems wie folgt formulieren:
 \
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
@@ -85,18 +85,16 @@ erfüllt.
 
 :::
 
-Die Basis für eine Finite Elemente Lösung bildet die _schwache Form des Problems_
-\
-Durch Mulitplikation der DGL mit der Testfunktion $\delta w :[0,L] \to \mathbb{R}$  und Integration beider Seiten folgt
+Um die Idee der FEM umzusetzen, ist es notwendig das Problem in der sogenannten _schwache Form_ zu formulieren. Hierzu muss die Differentialgleichung aus @eq-randwertproblem-balken mit der Testfunktion $\delta w :[0,L] \to \mathbb{R}$ multipliziert werden und das Ergebnis dann auf beiden Seiten integriert werden, sodass daraus   
 $$
 EI \cdot \int^L_0 w^{iv}(x) \cdot \delta w(x) dx = \int^L_0 -q_z(x) \cdot \delta w(x) dx. 
 $$ {#eq-basis-fe-loesung}
 
-Nach zweifacher partieller Integration der linken Seite von @eq-basis-fe-loesung ergibt sich das Variationsproblem für den Biegebalken.
+folgt. Nach zweifacher partieller Integration der linken Seite von @eq-basis-fe-loesung ergibt sich das Variationsproblem, bzw. die schwache Form, für den Biegebalken.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
-*Variationsproblem V (Balken)* 
+*Variationsproblem V (Biegebalken)* 
 \
 \
 Gesucht ist die Funktion $w:[0,L] \to \mathbb{R}$, sodass 
@@ -111,7 +109,8 @@ für (fast) jede beliebige Testfunktionen $\delta w$.
 
 :::
 
-Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen, welche auch für viele andere Probleme die Basis darstellt. Die linke Seite der @eq-variationsproblem-balken wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert.
+
+Das Variationsproblem lässt sich mit Hilfe von Funktionalen in eine generelle Form bringen, welche auch für andere physikalische Probleme die Basis darstellt. Die linke Seite der @eq-variationsproblem-balken wird als Bilinearform $a:V \times V \to \mathbb{R}$ und die rechte Seite als Linearform $b:V \to \mathbb{R}$ definiert, wobei $V$ die Menge von Funktionen darstellt. Auf die Eigenschaften der verwendeten Funktionale wird im Zuge der Anwendung der FEM im zweidimensionalen Raum noch näher eingegangen.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -138,7 +137,7 @@ $$
 \end{align}
 $${#eq-subspace}
 
-ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+ausgedrückt. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet. Das ursprüngliche _Abstrakte Variationsproblem_ bei dem eine Funktion $w \in V$ gesucht wird, wird ersetzt, durch das Suchen nach den reele Zahlen $\hat{w}_i$.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -179,6 +178,9 @@ $$
 $$
 
 beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet und $\boldsymbol{r}$ als Lastvektor. Der Verschiebungsvektor __$\hat{w}$__ ist unbekannt und wird durch die Lösung des Gleichungssystems approximiert.
+
+### Assemblierung Steifigkeitsmatrix Biegebalken {#sec-ke-biegelbalken}
+
 Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
 
 ![Balkenelement](00-pics/Balkenelemente.png){width=100%}
@@ -194,7 +196,32 @@ w_2 \\
 \end{array}\right],
 $${#eq-verschiebungsvektor}
 
-mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, werden in @sec-FE-Lagrange @fig-Hermite-Funktionen dargestellt und @eq-Hermite-Funktionen beschrieben. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
+mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, sind in @fig-Hermite-Funktionen dargestellt. 
+
+![Hermite Funktionen](00-pics/Hermite-Polynome.png){#fig-Hermite-Funktionen width=60%}
+
+Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
+
+$$
+\begin{align}
+H_1(-1) &= 1, \quad &H_1(1) = 0, \quad &H_1'(-1) = 0, \quad &H_1'(1) = 0 \\
+H_2(-1) &= 0, \quad &H_2(1) = 1, \quad &H_2'(-1) = 0, \quad &H_2'(1) = 0 \\
+H_3(-1) &= 0, \quad &H_3(1) = 0, \quad &H_3'(-1) = 1, \quad &H_3'(1) = 0 \\
+H_4(-1) &= 0, \quad &H_4(1) = 0, \quad &H_4'(-1) = 0, \quad &H_4'(1) = 1, \\
+\end{align}
+$$ {#eq-Bedingungen-Hermite}
+
+Die kubischen Polynome 
+$$
+\begin{align}
+H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
+H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
+H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
+H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
+\end{align}
+$$ {#eq-Hermite-Funktionen}
+
+erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
 $$ 
 \begin{align}
 &H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\
@@ -204,7 +231,7 @@ $$
 \end{align}
 $${#eq-hermite-Elementlaenge}
 
-Bezogen auf ein Element mit den Knoten $x_j$ und $x_{j+1}$ gelten die Eigenschaften des _Kronecker-Deltas_ für die Formfunktionen $H_i$ beschrieben durch
+Für ein Element mit den Knoten $x_j$ und $x_{j+1}$ gelten die Eigenschaften des _Kronecker-Deltas_ für die Formfunktionen $H_i$, beschrieben durch
 $$
 \varphi_i(x_j) = \delta_{ij} =
 \begin{cases} 
@@ -232,7 +259,7 @@ $$
 F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
 $${#eq-umrechnungsfaktor}
 
-benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet.
+benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet (siehe @fig-Basisfunktionen). Diese Funktion entspricht der Funktion $H_1$ der Hermite-Polynome
 Mithilfe des Umrechnungsfaktors wird
 $$
 \begin{flalign*}
@@ -240,21 +267,21 @@ $$
 \end{flalign*}
 $$
 
-definiert. Analog dazu kann $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf demselben Element ($\Omega_2$) wird 
+definiert. Analog dazu können $\varphi_1$ zwischen den Knoten $x_1$ und $x_2$ (Element $\Omega_1$), $\varphi_5$ zwischen den Knoten $x_3$ und $x_4$ (Element $\Omega_3$), und alle weiteren _ungeraden_ Formfunktionen betrachtet werden. Auf dem Element $\Omega_2$ werden zudem die Formfunktion
 $$
 \begin{flalign*}
 \varphi_4(x) = \alpha \cdot H_2(F_2^{-1}) \qquad \forall \qquad x \in \Omega_2
 \end{flalign*}
 $$
 
-und die Ableitung 
+und dessen Ableitung 
 $$
 \varphi_4'(x) = \alpha \cdot H_2(F_2^{-1}) \cdot F_2^{-1}'(x) \qquad \forall \qquad x \in \Omega_2
 $$
 
-definiert. Durch das Einsetzen von @eq-umrechnungsfaktor in die Ableitung und die in @eq-konecker-delta-02 beschriebenen Eigenschaften der Formfunktionen ergibt sich in allgemeiner Form 
+definiert. Durch das Einsetzen von @eq-umrechnungsfaktor in die Ableitung und die in @eq-konecker-delta-02 beschriebenen Eigenschaften der Formfunktionen, ergibt sich in allgemeiner Form 
 $$
-\alpha = \frac{l_e}{2}
+\alpha = \frac{l_e}{2}.
 $$
 
 
@@ -264,7 +291,7 @@ $$
 \mathbf{K_{ij}^e}   &= E I \cdot \int_\Omega_e \varphi_i '' \cdot \varphi_j '' dx
                     &&= a_i^e \cdot a_j^e \cdot \frac{16EI}{l_e^4}  &&\int_{x_e}^{x_{e+1}} H_i (F_e^{-1}(x))'' \cdot H_j (F_e^{-1}(x))'' dx \\
 \mathbf{r^e}    &= q_z \cdot \int_{\Omega_e} \varphi_i(x) dx 
-                &&= a_i \cdot q_z \cdot &&\int_{x_e}^{x_{e+1}} H_i(F_e^{-1}(x)) dx 
+                &&= a_i^e \cdot q_z \cdot &&\int_{x_e}^{x_{e+1}} H_i(F_e^{-1}(x)) dx 
 \end{align}
 $${#eq-K-und-r-balken}
 
@@ -277,7 +304,7 @@ a_i^e =
 \end{cases}
 $$
 
-siehe @fig-Basisfunktionen.
+
 Sowohl die finale Elementsteifigkeitsmatrix, als auch der finale Elementlastvektor, bezogen auf das Referenzelement, ergeben sich durch die Vereinbarung aus @eq-umrechnungsfaktor mit $\xi = F_e^{-1}(x)$ und Substitution des Differenzialoperators
 $$
 \frac{d\xi}{d x} = F_e^{-1}'(x) = \frac{2}{l_e} \qquad\to\qquad dx = \frac{l_e}{2} d\xi 
@@ -294,7 +321,7 @@ $${#eq-lastvektor-final-balken}
 
 ![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=100%}
 
-Für eine Element der Länge $l_e$ und Konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
+Für eine Element der Länge $l_e$ und konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
 $$
 \mathbf{K_{i j}^e} = 
 \frac{E I}{l_e^3}\cdot

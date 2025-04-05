@@ -1,4 +1,4 @@
-## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-Steifigkeitsmatrix}
+## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
 
 ### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 
