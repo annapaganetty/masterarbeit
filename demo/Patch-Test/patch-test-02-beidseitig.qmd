@@ -4,27 +4,84 @@ include("../../src/setup.jl")
 
 # Patch Test
 
-```{julia}
-a = 20 
-b = 10 
-```
-
-Parameter Platte 
-```{julia}
-p3 = @var Params()
-p3.lx = 2*a # = 40
-p3.ly = 2*b # = 20 
-p3.q = 0
-p3.ν = 0
-p3.h = 1
-p3.E = 1000;
-```
-
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
 mPatch02Y = makePTMesh02(p3)
 plotmesh(mPatch02Y;title="Patch Test")
+e1 = element(mPatch02Y,1)
+plotH(btpHy(e1)[3:3:end])
+# plotH(btpHy(e1)[4:6])
+# plotH(btpHy(e1)[7:9])
+# plotH(btpHy(e1)[10:12])
+```
+
+```{julia}
+NN = 3 * nnodes(mPatch02Y) # Anzahl Freiheitsgrade gesamt
+nb = collect(mPatch02Y.groups[:boundarynodes]) # Randknoten
+ni = [i for i in 1:nnodes(mPatch02Y) if i ∉ nb] # Innenknoten
+adofs = idxDOFs(ni, 3) # Freiheitsgrade der Innenknoten
+NNa = length(adofs) # Anzahl Freiheitsgrade der Innenknoten
+ei(n, i) = [j == i ? 1 : 0 for j ∈ 1:n]
+ei(NN,adofs[1]) # 1 an 13ter Stelle
+ei(NN,adofs[2]) # 1 an 14ter Stelle
+ei(NN,adofs[3])[15] # 1 an 15ter Stelle
+```
+
+
+
+## Basisfunktionen Hx auf Patch Test Netz
+```{julia}
+GLMakie.activate!()
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=(:redblue,1.0),
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=false,
+    featureedgelinewidth=2.5,
+) 
+plotBasisfunc(mPatch02Y, makeThetaxBTP(ei(NN, adofs[2])); title="Verformung")
+```
+
+```{julia}
+plotBasisfunc(mPatch02Y, makeThetayBTP(ei(NN, adofs[3])); title="Verformung")
+```
+
+```{julia}
+fig = Figure(;size = (900,700),linewidth = 0.5,fontsize = 12,font="calibri",title="Hx Funktionen auf Patch Test Netz")
+for i = 1:3
+        ax = Axis3(fig[1,i], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.2, limits=(nothing, nothing, nothing), protrusions=1,elevation = 0.05)
+        hidedecorations!(ax)
+        hidespines!(ax)
+        mplot!(mPatch02Y, makeThetaxBTP(ei(NN, adofs[i])),
+            faceplotzscale = 5,
+            faceplotmesh = 5,
+            edgesvisible = false, 
+            edgelinewidth = 0.2,
+            nodesvisible = false,
+            featureedgelinewidth = 0.5,
+            color = 5,
+            colorrange = Makie.automatic,
+            colormap=Makie.theme(:colormap),
+            limits = (nothing, nothing, nothing))
+        ax = Axis3(fig[2,i], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.2, limits=(nothing, nothing, nothing), protrusions=1,elevation = 0.05)
+        hidedecorations!(ax)
+        hidespines!(ax)
+        mplot!(mPatch02Y, makeThetayBTP(ei(NN, adofs[i])),
+            faceplotzscale = 5,
+            faceplotmesh = 5,
+            edgesvisible = false, 
+            edgelinewidth = 0.2,
+            nodesvisible = false,
+            featureedgelinewidth = 0.5,
+            color = 5,
+            colorrange = Makie.automatic,
+            colormap=Makie.theme(:colormap),
+            limits = (nothing, nothing, nothing))
+end
+fig
 ```
 
 ## Verformung 

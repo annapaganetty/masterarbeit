@@ -1,52 +1,54 @@
 
+Kern der Arbeit ist die Formulierung nach Batoz und Tahar und implementierung dessen in JULIA
 
-
-**Einleitung**
+**1. Einleitung**
     Motivation                                          motivation.qmd
     Problemstellung                                     problemstellung.qmd
     Gliederung                                          gliederung.qmd
 
-**Grundlagen der Finite Elemente Lösung**
-    Einführung in die Finite-Elemente-Methode (FEM)     einfuehrung_FEM.qmd
-    Einführungsbeispiel                                 einfuehrungsbeispiel.qmd
+**2. Grundidee der Finite Elemente Methode** 
+    Einführungsbeispiel: FEM für Biegebalken            einfuehrungsbeispiel.qmd
         Differentialgleichungen und Randbedingungen
         starke Form & schwache Form
         Approximation durch Linearkombination
-        numerische Lösung    
-    
-**mechanische und mathematische Grundlagen**   
-    Plattentragwerke                
-        Grundidee / Einführung Plattentragwerke         einfuehrung_platten.qmd
-        DGL Platten nach Kirchhoff                      kirchhoffsche-plattentheorie.qmd
-    (mathematische Verfahren ) -> als überkapitel
-    Konstruktion C^1 stetiger Basisfunktionen
+        numerische Lösung 
+    Einführung in die Finite-Elemente-Methode (FEM)     einfuehrung_FEM.qmd
+    Konstruktion von Basisfunktionen
         Kontinuität                               
-        Methoden zur Konstruktion der Basisfunktionen (Hermite-Polynome etc.)
-        Beispiele und Visualisierungen der Basisfunktionen
-    Eigenschaften verwendete Funktionale                funktionale.qmd
-    numerische Integration                              numerische-integration.qmd
-
-
-
-**FEM für Plattentragwerken** / **Näherungslösung von Platten mit FE**
-    Vorbereitung
-        Herleitung schwache Form
-        Approximation von Funktionen
-        Numerische Lösung
+        Konstruktion der Basisfunktionen (Hermite-Polynome etc.)
+        Visualisierungen der Basisfunktionen
     Assemblierung der globalen Steifigkeitsmatrix
         BFS-Element
         allgemeines Viereckelement
         Parametrisierung DKQ
+   
 
-**Umsetzung in Julia und Beispiele**
+**3. Kirchhoffsche Plattentheorie** 
+    Plattentragwerke                
+        Grundidee / Einführung Plattentragwerke         einfuehrung_platten.qmd
+        DGL Kirchhoffplatten                            kirchhoffsche-plattentheorie.qmd
+
+    Eigenschaften verwendete Funktionale                funktionale.qmd (an der STelle wo es auftaucht)
+    numerische Integration                              numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
+
+**4. Finite Elemente für schubstarre Platten**
+    Vorbereitung
+        Herleitung schwache Form
+        Approximation von Funktionen
+        Numerische Lösung
+    
+
+**Umsetzung in JULIA**
     Einführung in Julia für FEM
     Implementierung der Formulierung für rechteckige Elemente
         Code-Struktur und wichtige Funktionen
     Implementierung für allgemeine Vierecke
         Herausforderungen und Lösungen
-    Anwendungsbeispiele
-        Beschreibung der Beispiele
-        Vergleich der Ergebnisse mit kommerziellen FEM-Programmen
+        
+
+**Anwendungsbeispiele**
+    Beschreibung der Beispiele
+    Vergleich der Ergebnisse mit kommerziellen FEM-Programmen
 
 
 
@@ -56,15 +58,10 @@
 
 
 
-Einführung in die Programmiersprache Julia
-    Vorteile von Julia für numerische Berechnungen
-        Aufbau der FEM-Software
-    Struktur der Software und verwendete Bibliotheken
-        Implementierung der Plattenelemente
-        Beispielanwendungen
-    Anwendungsbeispiele und Simulationen
-        Validierung der Ergebnisse
-        Ergebnisse und Diskussion
+
+
+
+
 
 Darstellung der Ergebnisse
     Vergleich mit analytischen Lösungen oder anderen Softwarelösungen

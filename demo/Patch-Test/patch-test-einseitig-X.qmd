@@ -4,23 +4,6 @@ include("../../src/setup.jl")
 
 # Patch Test - einseitig
 
-```{julia}
-a = 20 
-b = 10 
-```
-
-Parameter Platte 
-```{julia}
-p3 = @var Params()
-p3.lx = 2*a # = 40
-p3.ly = 2*b # = 20 
-p3.q = 0
-p3.ν = 0
-p3.h = 1
-p3.E = 1000;
-```
-
-
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()

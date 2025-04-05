@@ -4,22 +4,6 @@ include("../../src/setup.jl")
 
 # Patch Test - einseitig
 
-```{julia}
-a = 20 
-b = 10 
-```
-
-Parameter Platte 
-```{julia}
-p3 = @var Params()
-p3.lx = 2*a # = 40 #[m]
-p3.ly = 2*b # = 20 #[m]
-p3.q = 0
-p3.ν = 0
-p3.h = 1 #[m]
-p3.E = 1000; # [N/mm^2] [MN/m^2]
-```
-
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
@@ -29,18 +13,6 @@ plotmesh(mPatchY;title="Patch Test")
 
 ## Verformung 
 
-Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
-
-Unterer Rand und oberer Rand sind festgehalten in z-Richtung 
-am oberen und unteren Rand wirken Momente = Momente um die x-Achse = a
-Momente um die x-Achse = Verdrehung um die x-Achse = θx = w,y = beta y
-
-        βx,x                        Hx,x
-x =     βy,y            = B U_n =   Hy,y        U_n
-        βx,y + βy,x                 Hx,y + Hy,x
-
-                                    3 x 12      12 x 1 = 3 x 1
-
 ```{julia}
 nf = 3
 bcs = [true, false, true]
@@ -49,17 +21,17 @@ bcs1 = [false, false, false]
 mPatchY.data[:kefunc] = plateKe(p3)
 mPatchY.data[:refunc] = plateRe(p3.q)
 K,r = assembleKr(mPatchY,nf)
-
+display(p3.q)
 # Randmomente um die x-Achse
 dofs2 = idxDOFs(mPatchY.groups[:boundarynodes],3)
-r[dofs2[2]]  = 1 * a/2 #* 1e-1
-r[dofs2[5]]  = 1 * a  #* 1e-1  
-r[dofs2[8]]  = 1 * a/2 #* 1e-1  
+r[dofs2[2]]  = 1 * a/2 
+r[dofs2[5]]  = 1 * a  
+r[dofs2[8]]  = 1 * a/2 
 r[dofs2[11]] = 1 * 0   
 r[dofs2[14]] = 1 * 0
-r[dofs2[17]] = 1 * -a/2 #* 1e-1
-r[dofs2[20]] = 1 * -a #* 1e-1
-r[dofs2[23]] = 1 * -a/2 #* 1e-1
+r[dofs2[17]] = 1 * -a/2
+r[dofs2[20]] = 1 * -a
+r[dofs2[23]] = 1 * -a/2 
 
 applyDirichletBCs!(mPatchY.groups[:boundarynodes][1:3], K, r, bcs)
 applyDirichletBCs!(mPatchY.groups[:boundarynodes][6:8], K, r, bcs)
@@ -68,6 +40,7 @@ applyDirichletBCs!(mPatchY.groups[:boundarynodes][4:5], K, r, bcs1)
 w = K \ r
 thetaX = w[2:3:end]
 thetaY = w[3:3:end] # an jeder stelle ungefähr 0
+
 ```
 
 6   7   8

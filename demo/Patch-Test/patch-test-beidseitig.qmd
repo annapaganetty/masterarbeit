@@ -4,27 +4,16 @@ include("../../src/setup.jl")
 
 # Patch Test
 
-```{julia}
-a = 20 
-b = 10 
-```
-
-Parameter Platte 
-```{julia}
-p3 = @var Params()
-p3.lx = 2*a # = 40
-p3.ly = 2*b # = 20 
-p3.q = 0
-p3.ν = 0
-p3.h = 1
-p3.E = 1000;
-```
-
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
 mPatch = makePTMesh01(p3)
 plotmesh(mPatch;title="Patch Test")
+# e1 = element(mPatch,1)
+# plotH(btpHx(e1))
+# plotH(btpHy(e1)[4:6])
+# plotH(btpHy(e1)[7:9])
+# plotH(btpHy(e1)[10:12])
 ```
 
 6   7   8

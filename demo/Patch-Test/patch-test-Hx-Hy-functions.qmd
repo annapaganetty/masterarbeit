@@ -1,52 +1,44 @@
 ```{julia}
-include("../src/setup.jl")
+include("../../src/setup.jl")
 ```
 
 # Patch Test
 
-```{julia}
-a = 20 
-b = 10 
-```
-
-Parameter Platte 
-```{julia}
-p3 = @var Params()
-p3.lx = 2*a
-p3.ly = 2*b
-p3.q = 10
-p3.ν = 0
-p3.h = 1
-p3.E = 1000;
-```
-
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-mPatchOG = makequadrilateralMesh(p3)
-plotmesh(mPatchOG;title="Patch Test")
+mHxHy = makequadrilateralMesh(p3)
+w = plate(mHxHy, p3, "BTP")
+plotmesh(mHxHy;title="Patch Test")
 ```
 
 ```{julia}
-w = plate(mPatchOG, p3, "BTP")
-```
-
-```{julia}
-plotwBTP(mPatchOG, w; title="Verformung")
-```
-
-```{julia}
-NN = 3 * nnodes(mPatchOG)
-nb = collect(mPatchOG.groups[:boundarynodes])
-ni = [i for i in 1:nnodes(mPatchOG) if i ∉ nb]
-adofs = idxDOFs(ni, 3)
-NNa = length(adofs)
+NN = 3 * nnodes(mHxHy) # Anzahl Freiheitsgrade gesamt
+nb = collect(mHxHy.groups[:boundarynodes]) # Randknoten
+ni = [i for i in 1:nnodes(mHxHy) if i ∉ nb] # Innenknoten
+adofs = idxDOFs(ni, 3) # Freiheitsgrade der Innenknoten
+NNa = length(adofs) # Anzahl Freiheitsgrade der Innenknoten
 ei(n, i) = [j == i ? 1 : 0 for j ∈ 1:n]
+ei(NN, adofs[4])
 ```
 
 ## Basisfunktionen Hx auf Patch Test Netz
 ```{julia}
-plotBasisfunc(mPatchOG, makeThetaxBTP(ei(NN, adofs[9])); title="Verformung")
+GLMakie.activate!()
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=(:redblue,1.0),
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=false,
+    featureedgelinewidth=2.5,
+) 
+plotBasisfunc(mPatchOG, makeThetaxBTP(ei(NN, adofs[2])); title="Verformung")
+```
+
+```{julia}
+node(mPatchOG,1)
 ```
 
 

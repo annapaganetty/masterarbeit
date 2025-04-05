@@ -52,14 +52,10 @@ plotThetayBTP(m1, w; title="Verdrehung θy")
 
 ## Schnittgrößen Plotten 
 
-```{julia}
-post = m1.data[:post]
-```
-
 ### Mx
 
 ```{julia}
-plotrBTP(m1, :mx, "Biegemoment mx", (-0.001, 0.001), nodal=false, a3d=false)
+plotrBTP(m1, :mx, "Biegemoment mx", (-300, 300), nodal=false, a3d=true)
 ```
 
 ### My

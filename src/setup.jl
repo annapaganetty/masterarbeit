@@ -82,6 +82,16 @@ p2.ν = 0.2
 p2.h = 0.2
 p2.E = 31000e6;
 
+a = 20 
+b = 10 
+
+p3 = @var Params()
+p3.lx = 2*a #[m]
+p3.ly = 2*b #[m]
+p3.q = 0
+p3.ν = 0
+p3.h = 1 #[m]
+p3.E = 1000; # [N/mm^2] [MN/m^2]
 
 Base.setindex!(d::MMJMesh.Meshes.Data, x, s::Symbol) = setdata!(d.mesh, s, x)
 Base.getindex(d::MMJMesh.Meshes.Data, s::Symbol) = data(d.mesh, s)

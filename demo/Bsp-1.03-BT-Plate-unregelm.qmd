@@ -4,14 +4,18 @@ include("../src/setup.jl")
 
 ## Plot der Plattenelemente
 ```{julia}
-xElem = 20
-mQuadBT = makequadratcicMesh(p1, xElem)
-figBT = plotmesh(mQuadBT;title="quadratische Platte | 8m x 8m | 400 Elemente")
+using MMJMesh.Gmsh
+mQuadBTunr = Mesh("gmesh/plate-BT.msh")
+fig = plotmesh(mQuadBTunr; title="quadratische Platte | 8m x 8m | 400 unregelmäßige Elemente")
+```
+
+```{julia}
+element(mQuadBTunr,1)
 ```
 
 ```{julia}
 # Berechnung des Verschiebungsvektors
-w = plate(mQuadBT, p1, "BTP")
+w = plate(mQuadBTunr, p1, "BTP")
 # maximale Verschiebung in vertikaler Richtung
 w_fe = maximum(w[1:3:end])
 # Vergleichswert der Czerny Tafeln
@@ -24,7 +28,7 @@ w_fe
 ## Plot Verformung
 
 ```{julia}
-plotwBTP(mQuadBT, w;title="Verformung")
+plotwBTP(mQuadBTunr, w;title="Verformung")
 ```
 
 
@@ -41,45 +45,45 @@ update_theme!(
 ```
 
 ```{julia}
-figBTmx = plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
+figBTmx = plotrBTP(mQuadBTunr, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTmy= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
+figBTmy= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTmxy= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
+figBTmxy= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTqx= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
+figBTqx= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
 ```
 
 ```{julia}
-figBTqy= plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
+figBTqy= plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
 ```
 
 Geglättete Ergebnisse 
 ```{julia}
-figBTmxGlatt= plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
+figBTmxGlatt= plotrBTP(mQuadBTunr, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
 ```
 
 
 ```{julia}
-figBTmyGlatt= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
+figBTmyGlatt= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
 ```
 
 ```{julia}
-figBTmxyGlatt= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
+figBTmxyGlatt= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
 ```
 
 ```{julia}
-figBTqxGlatt= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
+figBTqxGlatt= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
 ```
 
 ```{julia}
-figBTqyGlatt=plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+figBTqyGlatt=plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
 ```
 
 

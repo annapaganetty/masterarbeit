@@ -10,7 +10,7 @@ format:
 
 <!-- Kapitel 2 -->
 ```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundlagen der Finite Elemente Methode])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundidee der Finite Elemente Methode])))
 ```
 {{< include grundlagen_FEM.qmd >}}
 {{< pagebreak >}}

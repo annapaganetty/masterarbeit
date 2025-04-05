@@ -57,8 +57,11 @@ end
 function makeThetayBTP(wHat) # = -beta_x
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
+        # println("nodeindices(face) = ",nodeindices(face))
+        # println("idxs = ",idxs)
+        # println("wHat[idxs] = ",wHat[idxs])
         Hx = btpHx(face)
-        return sum(wHat[idxs] .* Hx)
+        return -sum(wHat[idxs] .* Hx)
     end
 end
 
@@ -161,6 +164,7 @@ function plotBasisfunc(
     limits=(nothing, nothing, nothing)
 )
     fig = Figure(;size = (600,500),linewidth = 0.5,fontsize = 12,font="calibri")
+    # ax = Axis(fig[1,1])
     ax = Axis3(
         fig[1, 1],
         aspect=:data,
