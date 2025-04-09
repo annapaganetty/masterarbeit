@@ -17,18 +17,28 @@ Kern der Arbeit ist die Formulierung nach Batoz und Tahar und implementierung de
         Kontinuität                               
         Konstruktion der Basisfunktionen (Hermite-Polynome etc.)
         Visualisierungen der Basisfunktionen
+
+
+        (Lagrange-Interpolation
+            Erklärung der Lagrange-Polynome.
+            Beispiel zur Konstruktion von Lagrange-Basisfunktionen für ein einfaches Element.
+        Hermite-Interpolation
+            Beschreibung der Hermite-Basisfunktionen und deren Anwendung.
+        Serendipity-Elemente
+            Erläuterung der Serendipity-Basisfunktionen und deren Vorteile.)
+
+???
     Assemblierung der globalen Steifigkeitsmatrix
         BFS-Element
         allgemeines Viereckelement
         Parametrisierung DKQ
-   
+??? -> doch lieber später, da es sich auf DGL der Platte bezieht  
 
 **3. Kirchhoffsche Plattentheorie** 
     Plattentragwerke                
         Grundidee / Einführung Plattentragwerke         einfuehrung_platten.qmd
         DGL Kirchhoffplatten                            kirchhoffsche-plattentheorie.qmd
 
-    Eigenschaften verwendete Funktionale                funktionale.qmd (an der STelle wo es auftaucht)
     numerische Integration                              numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
 
 **4. Finite Elemente für schubstarre Platten**

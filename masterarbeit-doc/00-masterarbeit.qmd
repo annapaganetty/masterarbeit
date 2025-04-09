@@ -47,6 +47,5 @@ format:
 
 
 muss noch eingefügt werden:
-    Eigenschaften verwendete Funktionale                funktionale.qmd (an der STelle wo es auftaucht)
     numerische Integration                              numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
-{{< include funktionale.qmd   >}}
+

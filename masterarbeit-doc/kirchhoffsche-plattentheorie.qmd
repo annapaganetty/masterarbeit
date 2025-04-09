@@ -1,6 +1,6 @@
 # Kirchhoffsche Plattentheorie {#sec-mech-math-grundlagen}
 
-Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Verschiebungsfeld (@sec-kinematik), Verzerrungsfeld (@sec-verzerrung) und  Gleichgewichtsbeziehungen (@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz (@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung. 
+Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Bevor in @sec-fem-plattentragwerke die Finite Elemente Methode auf die schubstarren Platten angewandt wird, werden in diesem Kapitel die Grundgleichungen der Kirchhoffsche Platte erläutert. Verschiebungsfeld (@sec-kinematik), Verzerrungsfeld (@sec-verzerrung) und  Gleichgewichtsbeziehungen (@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz (@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung. 
 
 Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente.
 

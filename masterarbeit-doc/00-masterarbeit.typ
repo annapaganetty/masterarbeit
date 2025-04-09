@@ -386,7 +386,7 @@ Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULI
 <sec-Grundlagen-FEM>
 Die Finite Elemente Methode ist seit vielen Jahren ein fester Bestandteil, bei der Berechnung komplexer Strukturen im Bauingenieurwesen. Dabei wird ein physikalisches Problem als idealisiertes, möglichst realitätsnahes mathematisches Modell dargestellt und durch numerische Berechnungsverfahren näherungsweise gelöst. Nicht nur in der Baubranche findet dieses Verfahren seine Anwendung, auch in der Luft- und Raumfahrtechnik, Automobil-, Elektronik- und Schifffahrtsindurstrie gewinnt die FEM immer weiter an Bedeutung.
 
-Nachdem in @sec-einfuehrungsbeispiel, anhand eines Einführungsbeispiel, der Ablauf der Finite Elemente Analyse demonstriert wird, gibt @sec-einfuehrung-FEM einen allgemeineren Überblick über die FEM. Für die numerische Lösung zweidimensionaler Problem ist die Konstruktion von Basisfunktionen notwendig. Das mathematische Vorgehen, sowie die Forderungen nach bestimmten Kontinuitätsbedingungen werden in @sec-basis-funktionen vorgestellt. Abschließend wird in @sec-assemblierung-steifigkeitsmatrix sowohl für das $C^1$-stetige Rechteckelement, als auch für allgemeine Vierecke die globale Steifigkeitsmatrix hergeleitet.
+Nachdem in @sec-einfuehrungsbeispiel, anhand eines Einführungsbeispiel, der Ablauf der Finite Elemente Analyse demonstriert wird, gibt @sec-einfuehrung-FEM einen allgemeineren Überblick über die FEM. Für die numerische Lösung zweidimensionaler Problem ist die Konstruktion von Basisfunktionen notwendig. Das mathematische Vorgehen, sowie die Forderungen nach bestimmten Kontinuitätsbedingungen werden in @sec-basis-funktionen vorgestellt. Dem Ablaufschema entsprechend wird desweiteren das Vorgehen der Approximation von Funktionen in @sec-approximation-funktionen erläutert. Abschließend wird in @sec-numerische-loesung das lineare Gleichungssystem, welches den zentralen Punkt der FEM bildet, hergeleitet.
 
 == Einführungsbeispiel: Biegebalken
 <sec-einfuehrungsbeispiel>
@@ -542,8 +542,8 @@ mit $  & bold(K) &  & = K_(i j) &  & = a (phi_j , phi_i)\
 
 beschrieben. Hierbei wird $bold(K)$ als Gesamtsteifigkeitsmatrix bezeichnet und $bold(r)$ als Lastvektor. Der Verschiebungsvektor #strong[$hat(w)$] ist unbekannt und wird durch die Lösung des Gleichungssystems approximiert.
 
-=== Assemblierung Steifigkeitsmatrix Biegebalken \(\#sec-ke-biegelbalken)
-<assemblierung-steifigkeitsmatrix-biegebalken-sec-ke-biegelbalken>
+=== Assemblierung Steifigkeitsmatrix Biegebalken
+<sec-ke-biegelbalken>
 Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $Omega = [0 , l]$ in mehrere Elemente $Omega_e upright("mit") e = 1 , . . . , N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n upright("mit") n = 1 , . . . , N_n$ verbunden, so dass im einfachsten Fall $Omega_e = [x_e , x_(e + 1)]$ gilt.
 
 #figure([
@@ -678,9 +678,7 @@ numbering: "1",
 
 == Einführung in die Finite Elemente Methode \(FEM)
 <sec-einfuehrung-FEM>
-In der Baubranche findet die FEM bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansatze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt @tbl-elementansaetze. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
-
-@tbl-elementansaetze
+In der Baubranche findet die FEM vor Allem bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansätze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt @tbl-elementansaetze. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
 
 #figure([
 #figure(
@@ -742,7 +740,7 @@ numbering: "1",
 
 Bereits in den frühen 1940er Jahren lässt sich die erste Anwendung der Finite Elemente Analyse verzeichnen. 1941 nutzte A. HRENNIKOF zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. COURAND ein Paper publiziert \(1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. TURNER et al.~hat 1959 in dem JOURNAL OF THE AERONAUTICAL SCIENCES eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. CLOUGH publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung #emph[Finite Elemente] nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz u.v.a.
 
-Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Preprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
+Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Postprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
 
 #figure([
 #box(width: 40%,image("00-pics/Ablauf-FEM.png"))
@@ -758,10 +756,10 @@ numbering: "1",
 <fig-Ablauf-FEM>
 
 
-Der Ablauf der computergestützten numerischen Berechnung wird in dem Ablaufschema @fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = sum phi_i hat(w)_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden \(Schritt \(4), @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a (w , delta w) = b (delta w)$, gelöst werden. Die Formfunkionen $phi_i$ werden von @sec-FE-Lagrange bis @sec-FE-Hermite-konform für unterschiedliche Elementtypen hergeleitet.
+Der Ablauf der computergestützten numerischen Berechnung wurde bereits in @sec-einfuehrungsbeispiel anhand des Biegebalkens erläutert und wird in allgemeiner Form in dem Ablaufschema @fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = sum phi_i hat(w)_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden \(Schritt \(4), @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a (w , delta w) = b (delta w)$, gelöst werden. Die zweite Idee, auf der die FEM beruht, ist die Unterteilung des Gebiets in sogenannte Elemente, auf denen die Formfunkionen $phi_i$ definiert werden. Diese Basisfunktionen werden in @sec-FE-Lagrange bis @sec-FE-Hermite-konform für unterschiedliche Elementtypen hergeleitet.
 
 #figure([
-#box(width: 100%,image("00-pics/Ablauf-FEM-Berechnung.png"))
+#box(width: 95%,image("00-pics/Ablauf-FEM-Berechnung.png"))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -774,7 +772,7 @@ numbering: "1",
 <fig-Ablauf-FEM-Berechnung>
 
 
-Die, auf dem physikalischen Problem basierenden, Grundgleichungen und Randbedingungen beschreiben die starke Form \(Schritt \(1), @fig-Ablauf-FEM-Berechnung), die in den meisten Fällen eine partielle Differentialgleichungen ist. Zwischen der Approximierten Lösung und der exakten Lösung entsteht der sogenannte Diskretisierungsfehler, d.h der Unterschied zwischen dem Designmodell und dem Analysemodell. Dieser Fehler kann durch die Feinheit des Finite Elemente Netzes größtenteils eingedämmt werden, wohingegen Fehler bei der Modellbildung und Ergebnisinterpretation alleine bei der Anwendung der Finite-Element-Methode geschehen.Auf diese Aspekte wird hier nicht weiterführend eingegangen sondern auf den Artikel \[…\] von WERKLE verwiesen.
+Die, auf dem physikalischen Problem basierenden, Grundgleichungen und Randbedingungen beschreiben die starke Form \(Schritt \(1), @fig-Ablauf-FEM-Berechnung), die in den meisten Fällen eine partielle Differentialgleichungen ist. Zwischen der Approximierten Lösung und der exakten Lösung entsteht der sogenannte Diskretisierungsfehler, d.h der Unterschied zwischen dem Designmodell und dem Analysemodell. Dieser Fehler kann durch die Feinheit des Finite Elemente Netzes größtenteils eingedämmt werden, wohingegen Fehler bei der Modellbildung und Ergebnisinterpretation alleine bei der Anwendung der Finite-Element-Methode geschehen. Auf diese Aspekte wird hier nicht weiterführend eingegangen sondern auf den Artikel \[…\] von WERKLE verwiesen.
 
 == Basis Funktionen der finiten Elemente
 <sec-basis-funktionen>
@@ -786,27 +784,97 @@ Für die Lösung von Variationsproblemen wird das gegebene Gebiet $Omega$ in end
 
 + Stetigkeits- und Differenzierbarkeitseigenschaften: Es wird von $C^k$-Elementen gesprochen, wenn die $k upright("te")$ Ableitung der Basisfunktionen stetig ist und dementsprechend keine Knicke aufweist.
 
-Nachfolgend wird die Konstruktion vier verschiedener Basisfunktionen erläutert. Das bilineare Lagrange Element, das konforme und nicht konforme Hermite Rechteckelement und das Serendipityelement. Die Eckknoten der Elemente werden gegen den Uhrzeigersinn nummeriert \(@fig-Referenzelement). Bei Knoten auf den Seiten des Elements werden diese danach nummeriert.
+Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM vorrangig $C^(- 1)$-, $C^0$- und $C^1$-Funktionen von Bedeutung. Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 lt.eq j lt.eq n$ stetig in allen Punkten ist. Beispiele dieser sind in @fig-c-funktionen dargestellt.
 
 #figure([
-#box(width: 45%,image("00-pics/Referenzelement.png"))
+#figure(
+align(center)[#table(
+  columns: 4,
+  align: (col, row) => (center,center,center,left,).at(col),
+  inset: 6pt,
+  [Kontinuität], [Knicke], [Sprünge], [Kommentar],
+  [$C^(- 1)$],
+  [Ja],
+  [Ja],
+  [stückweise stetig],
+  [$C^0$],
+  [Ja],
+  [Nein],
+  [stückweise stetig differenzierbar],
+  [$C^1$],
+  [Nein],
+  [Nein],
+  [stetig differenzierbar],
+)]
+)
+
+], caption: figure.caption(
+separator: "", 
+position: bottom, 
+[
+]), 
+kind: "quarto-float-tbl", 
+supplement: "Table", 
+numbering: "1", 
+)
+<tbl-kontinuität>
+
+
+Die Ableitung einer $C^0$ Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^(- 1)$-Funktion, welche an den Knicken der $C^0$-Funktion einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^(n - 1)$ Funktion.
+
+#figure([
+#box(width: 75%,image("00-pics/Kontinuitaer.png"))
 ], caption: figure.caption(
 position: bottom, 
 [
-Referenzelement
+Beispiel von $C^(- 1)$-, $C^0$- und $C^1$-Funktionen
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Figure", 
 numbering: "1", 
 )
-<fig-Referenzelement>
+<fig-c-funktionen>
 
+
+Die Formfunktionen unterschiedlicher finite Elemente Ansätze, werden für die Lösung des Problems elementweise definiert. In @fig-kombi-basis-bilinear und @fig-kombi-basis-konf-hermite sind die Formfunktionen des bilinearen Elements und des konformen Hermite Elements auf einer $8 m times 8 m$ Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist erkennbar, dass es sich um $C^0$-Funktionen handelt, da #emph[Knicke] an den Elementkanten vorhanden sind.
+
+#figure([
+#box(width: 100%,image("00-pics/Basisfunktionen_Bilinear.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+bilineareBasisfunktionen angewandt auf $8 m times 8 m$ Platte mit 9 Elementen
+]), 
+kind: "quarto-float-fig", 
+supplement: "Figure", 
+numbering: "1", 
+)
+<fig-kombi-basis-bilinear>
+
+
+#figure([
+#box(width: 100%,image("00-pics/Basisfunktionen_Hermite.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+konforme Hermite Basisfunktionen angewandt auf $8 m times 8 m$ Platte mit 9 Elementen
+]), 
+kind: "quarto-float-fig", 
+supplement: "Figure", 
+numbering: "1", 
+)
+<fig-kombi-basis-konf-hermite>
+
+
+Nachfolgend wird die Konstruktion der Basisfunktionen des bilineare Lagrange Element, das konforme und nicht konforme Hermite Rechteckelement und das Serendipityelement erläutert. Die Definition der Formfunktionen erfolgt auf dem Referenzelement, dargestellt jeweils für die verschiedenen Elementansätze in @fig-bilineares-element, @fig-BFS-element und @fig-ref-serendipity. Das Referenzelement wird in dem $xi - eta -$ Koordinatesystem definiert mit den Eckknoten $(- 1 , - 1) , (1 , - 1) , (1 , 1) upright("und") (- 1 , 1)$.
 
 === Lagrange Elemente \(Bilineares Rechteckelement)
 <sec-FE-Lagrange>
-Das bilineare Element ist das simpelste unter den Viereckelementen. Zunächst wird ein Rechteckelement, dessen Kanten parallel zu den Koordinatenachsen laufen, betrachtet. Die Ansatzfunktion #math.equation(block: true, numbering: "(1)", [ $ u (x , y) = a + b x + c y + d x y $ ])<eq-ansatzfunktion-u>
+Das bilineare Element ist das simpelste unter den Viereckelementen. Es basiert auf einer Polynomfunktion 2. Grades mit den Polynomen
 
-ist ein Polynom 2. Grades, welches den bilinearen Term $x y$ aus der dritten Reihe des Pascalschen Dreiecks enthält. Das Monom $x y$ ist jedoch an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant ist. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken ermittelt werden. Das Ergebnis sind die Funktionen #math.equation(block: true, numbering: "(1)", [ $ N_1^e (x , y) & = 1 / A^e (x - x_2^e) (y - y_4^e) ,\
+#math.equation(block: true, numbering: "(1)", [ $ 1 , x , y , x y $ ])<eq-polynome-lagrange>
+
+wobei der bilineare Term $x y$ aus der dritten Reihe des Pascalschen Dreiecks enthalten ist \(siehe ). Sei das betrachtete Element, ein Rechteck dessen Kanten parallel zu den Koordinatenachsen verlauft, so ist das Monom $x y$ ist an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant sind. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken des Rechtecks eindeutig bestimmt werden. Das Ergebnis sind die Funktionen #math.equation(block: true, numbering: "(1)", [ $ N_1^e (x , y) & = 1 / A^e (x - x_2^e) (y - y_4^e) ,\
 N_2^e (x , y) & = - 1 / A^e (x - x_1^e) (y - y_4^e) ,\
 N_3^e (x , y) & = 1 / A^e (x - x_1^e) (y - y_1^e) ,\
 N_4^e (x , y) & = - 1 / A^e (x - x_2^e) (y - y_1^e)\
@@ -852,6 +920,12 @@ numbering: "1",
 
 === konformes Hermite Rechteckelement \(Bogner-Fox-Schmitt)
 <sec-FE-BFS>
+Das konforme Hermite-Rechteckelement, oder auch Bogner-Fox-Schmit \(BFS) Element genannt, bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden $ w_i , theta_(xi i) , theta_(eta i) quad u n d quad theta_(xi eta i) $
+
+in den Eckknoten. Die Nummerierung der Knoten mit $i = 1 , 2 , 3 , 4$ ist in @fig-BFS-element dargestellt. Die Freiheitsgrade $theta_(xi i)$ und $theta_(eta i)$ entsprechen der Ableitung von $w_i$ nach $xi$ bzw. $eta$ an dem Knoten $i$. Durch den zusätzlichen Freiheitsgrad $theta_(xi eta i)$, also die Ableitung zweiten Grades von $w_i$ nach $xi$ und $eta$, wird die geforderte $C^1$-Kontinuität des Elementes erreicht. Die Ansatzfunktion der Verschiebung $w (x , y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen $ 1 , x , y , x^2 , x y , y^2 , x^3 , x^2 y , x y^2 , y^3 , x^3 y , x^2 y^2 , x y^3 , x^3 y^2 , x^2 y^3 , x^3 y^3 $
+
+beschrieben. Die Parameter der Ansatzfunktion sind jeweils durch die Funktionswerte samt deren Ableitungen, ausgedrückt durch die Freiheitsgrade, an den 4 Ecken des Rechtecks eindeutig bestimmt. Die sich ergebenen Ansatzfunktionen können ebenso als Tensorprodukts der, in @sec-ke-biegelbalken beschriebenen, Hermite Polynome beschrieben werden.
+
 #figure([
 #box(width: 40%,image("00-pics/BFS-Element.png"))
 ], caption: figure.caption(
@@ -866,17 +940,9 @@ numbering: "1",
 <fig-BFS-element>
 
 
-Das Bogner-Fox-Schmit \(BFS) Element bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden $ w_i , theta_(xi i) , theta_(eta i) quad u n d quad theta_(xi eta i) $
+In @fig-Bogner-Fox-Schmitt-Formfunktionen sind die Formfunktionen #math.equation(block: true, numbering: "(1)", [ $ N_(i , j) (xi , eta) = H_i (xi) H_j (eta) , quad i , j = 1 , 2 , 3 , 4 $ ])<eq-BFS-Formfunktionen>
 
-in den Eckknoten. Die Nummerierung der Knoten mit $i = 1 , 2 , 3 , 4$ ist in @fig-BFS-element dargestellt. Die Freiheitsgrade $theta_(xi i)$ und $theta_(eta i)$ entsprechen der Ableitung von $w_i$ nach $xi$ bzw. $eta$ an dem Knoten $i$. Durch den zusätzlichen Freiheitsgrad $theta_(xi eta i)$, also die Ableitung zweiten Grades von $w_i$ nach $xi$ und $eta$, wird die geforderte #emph[smoothness] des Elementes erreicht.
-
-Die Formfunktionen des BFS Elements können für die Freiheitsgrade am ersten Knoten durch das Produkt der eindimensionalen kubischen Hermite-Polynome konstruiert werden.
-
-Für die Basisfunktionen des Bogner-Fox-Schmit Elementes wird das Tensorprodukt der beschriebenen Hermite Polynome \(siehe #strong[?\@sec-ke-biegelbalken];) berechnet,wodurch sich 16 Funktionen ergeben. Die Ansatzfunktion der Verschiebung $w (x , y)$ wird durch eine vollständige Polynomfunktion mit den Polynomen $ 1 , x , y , x^2 , x y , y^2 , x^3 , x^2 y , x y^2 , y^3 , x^3 y , x^2 y^2 , x y^3 , x^3 y^2 , x^2 y^3 , x^3 y^3 $
-
-beschrieben. In @fig-Bogner-Fox-Schmitt-Formfunktionen sind die Formfunktionen #math.equation(block: true, numbering: "(1)", [ $ N_(i , j) (xi , eta) = H_i (xi) H_j (eta) , quad i , j = 1 , 2 , 3 , 4 $ ])<eq-BFS-Formfunktionen>
-
-dargestellt.
+dargestellt. Für die ausformulierten Basisfunktionen wird auf \[Quelle:Def Element\] verwiesen. Für reine Rechtecke ist der Bogner-Fox-Schmitt Ansatz sehr sinnvoll, nicht aber für allgemeine Vierecke, da dort der zusätzliche Freiheitsgrad $theta_(xi eta i)$ an den vier Knoten störend wirkt.
 
 #figure([
 #box(width: 75%,image("00-pics/Bogner-Fox-Schmitt-Element.png"))
@@ -890,28 +956,6 @@ supplement: "Figure",
 numbering: "1", 
 )
 <fig-Bogner-Fox-Schmitt-Formfunktionen>
-
-
-=== nichtkonformes Hermite Rechteckelement
-<sec-FE-Hermite-nichtkonform>
-Das nichtkonforme Hermite Element hat je Knoten einen Verschiebungs- und zwei Verdrehungsfreiheitsgrade $ w_i , theta_(xi i) quad u n d quad theta_(eta i) . $
-
-Die Basis für die Ansatzfunktionen der Verschiebung $w (x , y)$ bildet eine unvollständige Polynomfunktion dritten Grades mit den den Polynomen $ 1 , x , y , x^2 , x y , y^2 , x^3 , x^2 y , x y^2 , y^3 , x^3 y , x y^3 quad . $
-
-Die Forderung nach $C^1$-Stetigkeit der Ansatzfunktionen an den Rändern benachbarter Elemente wird in diesem Fall nur von dem Verschiebungsansatz, nicht aber von den beiden Verdrehungen, erfüllt. @fig-Hermite-nichtkonform-Formfunktionen zeigt, die sich ergebenen Formfunktionen des nichtkonformen Elements.
-
-#figure([
-#box(width: 75%,image("00-pics/Hermite-unkonform-Formfunktionen.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-Formfunktionen des nicht konformen Hermite Elements auf dem Referenzelement
-]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
-numbering: "1", 
-)
-<fig-Hermite-nichtkonform-Formfunktionen>
 
 
 === Rechteckelement der Serendipity Klasse
@@ -959,351 +1003,152 @@ numbering: "1",
 <fig-Serendipity-Formfunktionen>
 
 
-=== Kontinuität
-<sec-kontinuität>
-Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 lt.eq j lt.eq n$ stetig in allen Punkten ist. Bei der FEM sind vorrangig $C^(- 1)$-, $C^0$- und $C^1$-Funktionen von bedeutung. Beispiele dieser sind in @fig-c-funktionen dargestellt. Die Ableitung einer $C^0$ Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^(- 1)$-Funktion, welche an den Knicken der $C^0$-Funktion einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^(n - 1)$ Funktion.
+== Approximation von Funktionen
+<sec-approximation-funktionen>
+Die zwei wesentlichen Ideen der FEM-Lösung:
 
-#figure([
-#figure(
-align(center)[#table(
-  columns: 4,
-  align: (col, row) => (center,center,center,left,).at(col),
-  inset: 6pt,
-  [Kontinuität], [Knicke], [Sprünge], [Kommentar],
-  [$C^(- 1)$],
-  [Ja],
-  [Ja],
-  [stückweise stetig],
-  [$C^0$],
-  [Ja],
-  [Nein],
-  [stückweise stetig differenzierbar],
-  [$C^1$],
-  [Nein],
-  [Nein],
-  [stetig differenzierbar],
-)]
-)
++ Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
++ Funktionen stückweise definieren auf sogenannten Elementen
 
-], caption: figure.caption(
-separator: "", 
-position: bottom, 
-[
-]), 
-kind: "quarto-float-tbl", 
-supplement: "Table", 
-numbering: "1", 
-)
-<tbl-kontinuität>
+werden nachfolgend näher erläutert. Die schubstarre Kichrhhoff-Platte bildet die Basis dieser Arbeit. Bei dieser Plattentheorie wird die Verformung durch $w$ beschrieben. Die Verdrehungen $theta_x$ und $theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $phi_1 , phi_2 , . . . , phi_N$ gewählt, sodass $w_h$ durch die Funktion #math.equation(block: true, numbering: "(1)", [ $  & w_h (x , y) = phi_1 (x , y) dot.op hat(w)_1 + phi_2 (x , y) dot.op hat(w)_2 + . . . + phi_N (x , y) dot.op hat(w)_N = sum_(i = 1)^N phi_i (x , y) dot.op hat(w)_i $ ])<eq-linearkombination-platte>
 
+approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $hat(w)_1 , hat(w)_2 , . . . , hat(w)_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $phi_1 , phi_2 , . . . , phi_N$ ist der endlich dimensionale Vektorraum
 
-Die Formfunktionen der oben beschriebenen, unterschiedlichen finite Elemente Ansätze, werden elementweise definiert. In @fig-bilinear[45127368-afa1-446a-820f-fc64c546b2c5%fig-kombi-basisfuntkionen] und @fig-konf-hermite[45127368-afa1-446a-820f-fc64c546b2c5%fig-kombi-basisfuntkionen] sind die Formfunktionen des
+#math.equation(block: true, numbering: "(1)", [ $  & V_h = L i n (phi_1 , phi_2 , . . . , phi_N) = { sum_(i = 1)^N phi_i dot.op hat(w)_i \| hat(w)_i in bb(R) } ,\
+ $ ])<eq-subspace>
 
-#block[
-#set enum(numbering: "a)", start: 1)
-+ bilinearen Elements
-
-+ konformen Hermite Elements
-]
-
-auf einer $8 m times 8 m$ Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist direkt erkennbar, dass es sich um $C^0$-Funktionen handelt, da #emph[Knicke] an den Elementkanten vorhanden sind.
-
-#figure([
-#block[
-#grid(columns: 1, gutter: 2em,
-  [
-#figure([
-#box(width: 100%,image("00-pics/Basisfunktionen_Bilinear.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-bilineare Basisfunktionen
-]), 
-kind: "quarto-subfloat-fig", 
-supplement: "", 
-numbering: "(a)", 
-)
-<fig-bilinear>
-
-
-]
-,
-  [
-#figure([
-#box(width: 100%,image("00-pics/Basisfunktionen_Hermite.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-konforme Hermite Basisfunktionen
-]), 
-kind: "quarto-subfloat-fig", 
-supplement: "", 
-numbering: "(a)", 
-)
-<fig-konf-hermite>
-
-
-]
-)
-]
-], caption: figure.caption(
-position: bottom, 
-[
-Basisfunktionen unterschiedlicher Elementansätze angewandt auf $8 m times 8 m$ Platte mit 9 Elementen
-]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
-)
-<fig-kombi-basisfuntkionen>
-
-
-#figure([
-#box(width: 75%,image("00-pics/Kontinuitaer.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-Beispiel von $C^(- 1)$-, $C^0$- und $C^1$-Funktionen
-]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
-numbering: "1", 
-)
-<fig-c-funktionen>
-
-
-== Assemblierung der globalen Steifigkeitsmatrix
-<sec-assemblierung-steifigkeitsmatrix>
-=== BFS-Rechteckelement
-<sec-Steifigkeitsmatrix-BFS>
-Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(hat(w)^e) = mat(delim: "[", w_1, theta_(x 1), theta_(y 1), theta_(x y 1), w_2, theta_(x 2), theta_(y 2), theta_(x y 2), w_3, theta_(x 3), theta_(y 3), theta_(x y 3), w_4, theta_(x 4), theta_(y 4), theta_(x y 4))^T $ ])<eq-knotenverschiebungsvekor-BFS>
-
-ist. Für die Herleitung der globalen Steifigkeitsmatrix mit dem Elementansatz des Bogner-Fox-Schmitt Rechteckelements wird das abstrakte, diskrete Variationsproblem, durch das Skalarprodukt von Momentenvektor
-
-$ bold(m) = mat(delim: "[", m_(x x); m_(y y); m_(x y)) #h(2em) #h(2em) upright("und Krümmungsvektor") #h(2em) #h(2em) bold(kappa) = mat(delim: "[", kappa_(x x); kappa_(y y); 2 kappa_(x y)) $
-
-ausgedrückt. Das Ergebnis ist die Formulierung #math.equation(block: true, numbering: "(1)", [ $ a (w , delta w) = integral_Omega bold(m) dot.op bold(kappa) d Omega = integral_Omega (m_(x x) kappa_(x x) + 2 m_(x y) kappa_(x y) + m_(y y) kappa_(y y)) d Omega . $ ])<eq-bilinearform-Skalarprodukt-m-kappa>
-
-für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $theta_(x h)$ und $theta_(y h)$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ \(@eq-linearkombination-platte) und den Knotenverschiebungsvektor $bold(hat(w)^e)$ \(#strong[?\@eq-knotenverschiebungsvekor];), die Formulierung des Krümmungsvektors für das Element $i$
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(kappa_i) = bold(B_b) bold(hat(w)^e) $ ])<eq-kruemmungsvekor-mit-B-Matrix>
-
-mit der B-Matrix $ bold(B_b) = mat(delim: "[", 0, frac(diff phi_1, diff x), 0, 0, 0, frac(diff phi_2, diff x), 0, 0, 0, frac(diff phi_3, diff x), 0, 0, dots.h.c, 0, frac(diff phi_16, diff x), 0, 0; 0, 0, frac(diff phi_1, diff y), 0, 0, 0, frac(diff phi_2, diff y), 0, 0, 0, frac(diff phi_3, diff y), 0, dots.h.c, 0, 0, frac(diff phi_16, diff y), 0; 0, frac(diff phi_1, diff y), frac(diff phi_1, diff x), 0, 0, frac(diff phi_2, diff y), frac(diff phi_2, diff x), 0, 0, frac(diff phi_3, diff y), frac(diff phi_3, diff x), 0, dots.h.c, 0, frac(diff phi_16, diff y), frac(diff phi_16, diff x), 0; #none) . $
-
-Der Momentenvektor kann dementsprechend durch
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(m_i) = bold(D_b) bold(kappa_i) = bold(D_b) bold(B_b) bold(hat(w)^e) $ ])<eq-momentenvekor-mit-B-Matrix>
-
-mit $ bold(D_b) = D mat(delim: "[", 1, nu, 0; nu, 1, 0; 0, 0, frac(1 - nu, 2)) $
-
-beschrieben werden, mit der isotropen Plattensteifigkeit $D$ \(s. @eq-plattensteifigkeit). Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu $ a (w^e , delta w^e) & = integral_Omega bold(B_b)^T bold(D_b) bold(B_b) bold(hat(w)^e) quad d Omega\
- $
-
-Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(k_(i j)^e) = a (phi_j^e , phi_i^e) = integral_(Omega^e) bold(B)_b^T bold(D_b) bold(B)_b d Omega $ ])<eq-elementsteifigkeitsmatrix>
-
-ausgedrückt.
-
-=== DKQ Element
-<sec-Steifigkeitsmatrix-DKQ>
-Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
-
-#figure([
-#box(width: 70%,image("00-pics/Geometrie-BTP.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-Geometrie des DKQ-Elements
-]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
-numbering: "1", 
-)
-<fig-geometrie-DKQ>
-
-
-Dieses sogenannte DKQ \(#emph[discrete Kirchhoff quadrilateral];) Element basiert auf den folgenden Annahmen:
-
-+ Die Verdrehungen $beta_x$ um die $y$-Achse und $beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination aus @eq-linearkombination-platte zu verstehen. #math.equation(block: true, numbering: "(1)", [ $  & beta_x & quad = - w ,_x & quad = theta_y & quad = frac(diff sum_(i = 1)^8 phi_i (x , y) dot.op hat(w)_i, diff x)\
-   & beta_y & quad = - w ,_y & quad = - theta_x & quad = frac(diff sum_(i = 1)^8 phi_i (x , y) dot.op hat(w)_i, diff x)\
-   $ ])<eq-betaX-betaY> Als Formfunktionen $phi_i (x , y)$ dienen die Funktionen des in #strong[?\@sec-finite-elemente] vorgestellten Serendipity-Elements, abhängig von den Variablen $xi$ und $eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $hat(w)_i$ mit $i = 1 , . . . , 8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
-
-+ Entsprechend der Kirchhoff Theorie sind die Verdrehungen an den
-
-#block[
-#set enum(numbering: "a)", start: 1)
-+ Eckknoten $i$ #math.equation(block: true, numbering: "(1)", [ $  & beta_(x_i) = - w ,_(x_i)\
-   & beta_(y_i) = - w ,_(y_i) #h(2em) upright("mit") i = 1 , 2 , 3 , 4 , $ ])<eq-verdrehungen-beta-i> \(Ableitungen der Verformung $w$ nach $x$ und nach $y$ an den Knoten $i$) und an den
-+ Mittelknoten $k$ #math.equation(block: true, numbering: "(1)", [ $  & beta_(s_k) = - w ,_(s_k)\
-   & beta_(n_k) = - w ,_(n_k) #h(2em) upright("mit") k = 5 , 6 , 7 , 8 , $ ])<eq-verdrehungen-beta-k> \(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. \(siehe Abb.)
-]
-
-#block[
-#set enum(numbering: "1.", start: 3)
-+ $beta_s$ ist die Verdrehung um die $n$-Achse. Nach BATOZ und TAHAR wird, zur Bestimmung von $beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form $ w (s) = a s^3 + b s^2 + c s + d $ mit den Randbedingungen $  & w (s_i) = w_i &  & #h(2em) w prime (s_i) = w ,_(s i)\
-   & w (s_j) = w_j &  & #h(2em) w prime (s_j) = w ,_(s j) $ gelöst. Für die Verdrehung um die n-Achse ergibt sich #math.equation(block: true, numbering: "(1)", [ $ w ,_(s k) = w prime (0) = frac(- 3, l_(i j)) (w_i - w_j) - 1 / 4 (w ,_(s i) + w ,_(s j)) $ ])<eq-verdrehungen-beta-x-Formel> wobei $k = 5 , 6 , 7 , 8$ die Mittelknoten der Elementkanten $i j = 12 , 23 , 34 , 41$ sind. $l_(i j)$ ist die Länge der Seiten $i j$.
-
-+ $beta_n$ ist die Verdrehung um die $s$-Achse und wird entlang der Elementkanten durch eine lineare Funktion $ w prime (s) = a x + b $ mit den Randbedingungen \
-  $ w prime (s_i) = w ,_(n i) &  & #h(2em) w prime (s_j) = w ,_(n j) $ ausgedrückt. Es ergibt sich somit $ w ,_(n_k) = w prime (0) = - 1 / 2 (w ,_(n i) + w ,_(n j)) $
-]
+wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $phi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird #emph[abstracktes, diskretes Variationsproblem] bezeichnet.
 
 #block(
 fill:luma(230),
 inset:8pt,
 radius:4pt,
 [
-Zusammengefasst sind die die Verdrehungen der Knoten \
-#math.equation(block: true, numbering: "(1)", [ $  & #h(2em) #h(2em) #h(2em) beta_(x_i) = - w ,_(x_i)\
- & #h(2em) #h(2em) #h(2em) beta_(y_i) = - w ,_(y_i) &  & upright("mit") i = 1 , 2 , 3 , 4\
- & #h(2em) #h(2em) #h(2em) beta_(s_k) = - w ,_(s_k) = frac(- 3, l_(i j)) (w_i - w_j) - 1 / 4 (w ,_(s i) + w ,_(s j))\
- & #h(2em) #h(2em) #h(2em) beta_(n_k) = - w ,_(n_k) = - 1 / 2 (w ,_(n i) + w ,_(n j)) &  & upright("mit") k = 5 , 6 , 7 , 8 $ ])<eq-verdrehungen-beta>
+#emph[Abstraktes, diskretes Variationsproblem] \
+\
+Gesucht ist eine Funktion $w_h in V_h$, sodass #math.equation(block: true, numbering: "(1)", [ $ a (w_h , delta w_h) = b (delta w_h) quad forall quad delta w_h in V_h $ ])<eq-abstraktes-diskretes-variationsproblem>
 
 ])
 
-Die Formeln für die die Verdrehungen an den Eckknoten um die $x$-Achse und die $y$-Achse und für die Verdrehung an den Mittelknoten um die $s$-Achse und die $n$-Achse sind vorhanden. Da bei isoparametrischen Elementen die Elementkanten nicht parallel zu den Koordinatenachsen verlaufen ist eine Umrechnung der Verdrehung der Mittelknoten, auf die Verdrehung um die $x$- und $y$-Achse notwendig.
+Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $Omega$, in diesem Fall die Platte, wird in die Elemente $Omega_e , e = 1 , . . . , N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann \(siehe @sec-basis-funktionen). Die Basisfunktionen $phi_1 , phi_2 , . . . , phi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $hat(w)_i in bb(R)$ werden Freiheitsgrade bzw. im englischen #emph[degrees of freedom] \(abgekürzt DOF) bezeichnet.
 
-Nach geometrischer Umrechnung der Verdrehung an den Mittelknoten, von $w ,_(s_k)$ und $w ,_(n_k)$ zu
+Für die Definition des Variationsproblems in @eq-abstraktes-diskretes-variationsproblem werden die Linear- und die Bilinearform genutzt. Um im weiteren Verlauf mit dem Variationsproblem weiterrechnen zu können wird kurz auf die Eigenschaften der genutzten Funktionale eingegangen. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $bb(K)$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
 
-$  & w ,_(x_k) = - c o s (gamma_k) dot.op w ,_(n_k) + s i n (gamma_k) dot.op w ,_(s_k) #h(2em) #h(2em) upright("und")\
- & w ,_(y_k) = - s i n (gamma_k) dot.op w ,_(n_k) - c o s (gamma_k) dot.op w ,_(s_k) #h(2em) #h(2em) upright("mit") gamma_k = gamma_(i j)\
+#block(
+fill:luma(230),
+inset:8pt,
+radius:4pt,
+[
+#emph[Definition] \(Funktional): Sei $V$ ein $bb(K)$-Vektorraum mit $bb(K) in { bb(R) , bb(C) }$. Ein Funktional $T$ ist eine Abbildung $T : V arrow.r bb(K)$.
+
+])
+
+Sowohl die Linearform, als auch die Bilinearform, sind, wie der Name erkennen lässt, lineare Funktionale. Als Vektorraum $V$ wird die Menge von Funktionen die $V$ abbilden genannt. Die folgenden Rechenoperationen können auf die Funktionen
+
+$quad quad quad f , g : bb(R)^n arrow.r bb(R)$
+
+angewandt werden: $  & upright("Addition zweier Funktionen:") &  & quad h = f + g &  & quad quad upright("definiert") quad quad h (x) = f (x) + g (x)\
+ & upright("Multiplikation mit einer Zahl:") &  & quad h = alpha dot.op f &  & quad quad upright("definiert") quad quad h (x) = alpha dot.op f (x) quad , quad alpha in bb(R)\
  $
 
-wird die Linearkombination aus @eq-betaX-betaY aufgeteilt in Eck- und Mittelknoten mit
+Die Linearform $b (delta w)$ des abstrakten Variationsproblems \(Einführungsbeispiel @eq-abstraktes-variationsproblem-balken, Kirchhoff-Platte @eq-linearform) beschreibt eine Abbildung von dem Vektorraum $V arrow.r bb(R)$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
 
-$  & beta_x = - sum_(i = 1)^4 phi_i (x , y) dot.op w ,_(x_i) - sum_(k = 5)^8 phi_i (x , y) dot.op w ,_(x_k)\
- & beta_y = - sum_(i = 1)^4 phi_i (x , y) dot.op w ,_(y_i) - sum_(k = 5)^8 phi_i (x , y) dot.op w ,_(y_k)\
- $
+#math.equation(block: true, numbering: "(1)", [ $ b (u + v) = b (u) + b (v) &  & quad quad quad upright("(Additivität)") $ ])<eq-eig-linearform-01>
 
-und Einsetzen der Vereinbarungen aus @eq-verdrehungen-beta berechnet. Es ergibt sich durch extrahieren des Knotenverschiebungsvektor
+#math.equation(block: true, numbering: "(1)", [ $  & b (alpha dot.op u) = alpha dot.op b (u) &  & quad quad quad upright("(Homogenität)") $ ])<eq-eig-linearform-02>
 
-#math.equation(block: true, numbering: "(1)", [ $ bold(hat(w)^e) = mat(delim: "[", w_1, theta_(x 1), theta_(y 1), w_2, theta_(x 2), theta_(y 2), w_3, theta_(x 3), theta_(y 3), w_4, theta_(x 4), theta_(y 4))^T $ ])<eq-knotenverschiebungsvekor-DKQ>
+Die Bilinearform $a (w , delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V times V arrow.r bb(R)$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu #math.equation(block: true, numbering: "(1)", [ $ a (u + v , w) = a (u , w) + a (v , w) quad , $ ])<eq-eig-bilinearform-01>
 
-die Formulierung $  & beta_x = mat(delim: "[", H_1^x, H_2^x, H_3^x, H_4^x, H_5^x, H_6^x, H_7^x, H_8^x, H_9^x, H_10^x, H_11^x, H_12^x) bold(hat(w)^e)\
- & beta_y = mat(delim: "[", H_1^y, H_2^y, H_3^y, H_4^y, H_5^y, H_6^y, H_7^y, H_8^y, H_9^y, H_10^y, H_11^y, H_12^y) bold(hat(w)^e) $
+#math.equation(block: true, numbering: "(1)", [ $ a (alpha dot.op u , v) = alpha dot.op a (u , v) quad , $ ])<eq-eig-bilinearform-02>
 
-mit
+#math.equation(block: true, numbering: "(1)", [ $ a (u , v + w) = a (u , v) + a (u , w) quad , $ ])<eq-eig-bilinearform-03>
 
-$ H_1^x & = 3 / 2 (phi_5 a_5 - phi_8 a_8) & #h(2em) #h(2em) H_1^y & = 3 / 2 (phi_5 d_5 - phi_8 d_8)\
-H_2^x & = phi_5 b_5 + phi_8 b_8 & #h(2em) #h(2em) H_2^y & = - phi_1 + phi_5 e_5 + phi_8 e_8\
-H_3^x & = phi_1 - phi_5 c_5 - phi_8 c_8 & #h(2em) #h(2em) H_3^y & = - phi_5 b_5 - phi_8 b_8\
-H_4^x & = 3 / 2 (phi_6 a_6 - phi_5 a_5) & #h(2em) #h(2em) H_4^y & = 3 / 2 (phi_6 d_6 - phi_5 d_5)\
-H_5^x & = phi_6 b_6 + phi_5 b_5 & #h(2em) #h(2em) H_5^y & = - phi_2 + phi_6 e_6 + phi_5 e_5\
-H_6^x & = phi_2 - phi_6 c_6 - phi_5 c_5 & #h(2em) #h(2em) H_6^y & = - phi_6 b_6 - phi_5 b_5\
-H_7^x & = 3 / 2 (phi_7 a_7 - phi_6 a_6) & #h(2em) #h(2em) H_7^y & = 3 / 2 (phi_7 d_7 - phi_6 d_6)\
-H_8^x & = phi_7 b_7 + phi_6 b_6 & #h(2em) #h(2em) H_8^y & = - phi_3 + phi_7 e_7 + phi_6 e_6\
-H_9^x & = phi_3 - phi_7 c_7 - phi_6 c_6 & #h(2em) #h(2em) H_9^y & = - phi_7 b_7 - phi_6 b_6\
-H_10^x & = 3 / 2 (phi_8 a_8 - phi_7 a_7) & #h(2em) #h(2em) H_10^y & = 3 / 2 (phi_8 d_8 - phi_7 d_7)\
-H_11^x & = phi_8 b_8 + phi_7 b_7 & #h(2em) #h(2em) H_11^y & = - phi_4 + phi_8 e_8 + phi_7 e_7\
-H_12^x & = phi_4 - phi_8 c_8 - phi_7 c_7 & #h(2em) #h(2em) H_12^y & = - phi_8 b_8 - phi_7 b_7 $
+und #math.equation(block: true, numbering: "(1)", [ $ a (u , alpha dot.op v) = alpha dot.op a (u , v) quad . $ ])<eq-eig-bilinearform-04>
 
-und
+Weiterführend ist die Bilinearform #emph[positiv definit] für $ a (u , u) gt.eq 0 quad forall quad u in V $
 
-$  & a_k = frac(- s i n (gamma_(i j)), l_(i j)) &  & #h(2em) #h(2em) d_k = frac(c o s (gamma_(i j)), l_(i j))\
- & b_k = - 3 / 4 c o s (gamma_(i j)) s i n (gamma_(i j))\
- & c_k = - 1 / 2 c o s (gamma_(i j))^2 - 1 / 4 s i n (gamma_(i j))^2 &  & #h(2em) #h(2em) e_k = - 1 / 2 s i n (gamma_(i j))^2 + 1 / 4 c o s (gamma_(i j))^2\
- $
+und #emph[symmetrisch] für $ a (u , v) = a (v , u) quad . $
 
-Ausgehen von der Formulierung aus @eq-bilinearform-Skalarprodukt-m-kappa und der Berechnung des Krümmungsvektors entsprechend @eq-kruemmungsvekor-mit-B-Matrix, ergibt sich die B-Matrix für das isoparametrische Element zu
+Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von einem Skalarprodukt gesprochen. Dies ist im Fall der Bilinearform $a (w , delta w)$ des abstrakten Variationsproblems gegeben.
 
-#math.equation(block: true, numbering: "(1)", [ $ bold(B_b) = mat(delim: "[", frac(diff H_1^x, diff x), frac(diff H_2^x, diff x), dots.h.c, frac(diff H_12^x, diff x); frac(diff H_1^y, diff y), frac(diff H_2^y, diff y), dots.h.c, frac(diff H_12^y, diff y); frac(diff H_1^x, diff y) + frac(diff H_1^y, diff x), frac(diff H_2^x, diff y) + frac(diff H_2^y, diff x), dots.h.c, frac(diff H_12^x, diff y) + frac(diff H_12^y, diff x); #none) . $ ])<eq-B-Matrix-DQT>
+== numerische Lösung
+<sec-numerische-loesung>
+Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $delta w_h$. Für die numerische Lösung des Problems wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
 
-Die Formulierung der Elementsteifigkeitsmatrizen stimmt mit der Formulierung für das BFS-Element aus @eq-elementsteifigkeitsmatrix überein.
+$ delta w_h = sum_(i = 1)^N phi_i dot.op delta hat(w)_i $
 
-=== Parametrisierung DKQ
-<sec-Parametrisierung>
-Die in dem vorrangehenden Kapitel hergelteitet Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $xi$ - und $eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten $xi$ und $eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements $ Omega_e := { (x , y) in bb(R)^2 } $
+eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die zuvor besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze
 
-auf das Referenzelement $ hat(Omega)_e := { (xi , eta) in bb(R)^2 \| - 1 lt.eq xi , eta lt.eq 1 } . $
+#block(
+fill:luma(230),
+inset:8pt,
+radius:4pt,
+[
+#math.equation(block: true, numbering: "(1)", [ $ a (w_h , delta w_h) & = b (delta w_h) #h(2em) &  & forall delta w_h in V_h\
+a (w_h , Sigma_(i = 1)^N phi_i dot.op delta hat(w)_i) & = b (Sigma_(i = 1)^N phi_i dot.op delta hat(w)_i) quad &  & forall quad delta w_h in V_h\
+a (w_h , phi_i) & = b (phi_i) #h(2em) &  & i = 1 , . . . , N $ ])<eq-03>
 
-wie in @fig-parametrisierung dargestellt.
+])
+
+äquivalent sind. Im zweiten Schritt wird
+
+$ w_h = sum_(j = 1)^N phi_j dot.op hat(w)_j $
+
+in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben,
+
+$ sum_(j = 1)^N underbrace(a (phi_j , phi_i), k_(i j)) dot.op hat(w)_j = underbrace(b (phi_i), r_i) $
+
+ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(K) bold(hat(w)) = bold(r) . $ ])<eq-lin-gleichungssystem>
+
+mit $  & bold(K) &  & = k_(i j) &  & = a (phi_j , phi_i)\
+ & bold(r) &  & = r_i &  & = b (phi_i) quad upright("mit") quad i , j = 1 , . . . , N , $
+
+$bold(K)$ bezeichnet die Gesamtsteifigkeitsmatrix, $bold(r)$ den Lastvektor und $bold(hat(w))$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform \(@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $bold(k_(i j)^e)$ für die Elementsteifigkeitsmatrix, $bold(r^e)$ für den Elementlastvektor und $bold(hat(w)^e)$ für den Knotenverschiebungsvektor \(siehe @tbl-Variablen).
 
 #figure([
-#box(width: 100%,image("00-pics/Parametrisierung.png"))
+#figure(
+align(center)[#table(
+  columns: 3,
+  align: (col, row) => (left,center,center,).at(col),
+  inset: 6pt,
+  [], [Gesamtsystem], [Element],
+  [Bilinearform \(Variationsproblem)],
+  [$a (w , delta w)$],
+  [$a (w^e , delta w^e)$],
+  [Steifigkeitsmatrix],
+  [$bold(K)$],
+  [$bold(k_(i j)^e)$],
+  [Bilinearform \(Steifigkeitsmatrix)],
+  [$a (phi_j , phi_i)$],
+  [$a (phi_j^e , phi_i^e)$],
+  [Lastvektor],
+  [$bold(r)$],
+  [$bold(r^e)$],
+  [Verschiebungsvektor],
+  [$bold(hat(w))$],
+  [$bold(hat(w)^e)$],
+)]
+)
+
 ], caption: figure.caption(
 position: bottom, 
 [
-Abbildung des Raums $hat(Omega)$ auf $Omega$
+Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise.
 ]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
+kind: "quarto-float-tbl", 
+supplement: "Table", 
 numbering: "1", 
 )
-<fig-parametrisierung>
+<tbl-Variablen>
 
-
-Sei $(xi , eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(F) (xi , eta) = mat(delim: "[", x (xi , eta); y (xi , eta); #none) = mat(delim: "[", F_x (xi , eta); F_y (xi , eta); #none) = mat(delim: "[", sum_(i = 1)^n N_i (xi , eta) dot.op x_i; sum_(i = 1)^n N_i (xi , eta) dot.op y_i; #none) $ ])<eq-black-scholes-01>
-
-die physikalischen Koordinaten auf dem Element $Omega$ beschrieben. Die vier linearen Formfunktionen entsprechenen den in Kapitel … besprochenen Funktionen des bilinearen Elements, dargestellt in @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Um die physikalischen Koordinaten $(x , y)$ zu den Referenzkoordinaten $(xi , eta)$ umzurechnen, ist das Umkehren der Funktionen $F_x (xi , eta)$ und $F_y (xi , eta)$ zu #math.equation(block: true, numbering: "(1)", [ $ bold(F^(- 1)) (x , y) = mat(delim: "[", xi (x , y); eta (x , y); #none) = mat(delim: "[", F_x^(- 1) (x , y); F_y^(- 1) (x , y); #none) $ ])<eq-f-1>
-
-notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien $N_i (xi , eta)$ die Formfunktionen definiert auf dem Referenzelement, so sind
-
-#math.equation(block: true, numbering: "(1)", [ $  & phi_I (x , y) = N_i (xi (x , y) , eta (x , y)) ,\
- $ ])<eq-phi-I>
-
-die Formfunktionen defniert auf dem physikalischen Element, wobei $i$ und $I$ je nach Elementansatz variieren. Zur Berechnung der Elementsteifigkeitsmatrix, werden die Ableitungen
-
-#math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_x) (x , y) = mat(delim: "[", F_(x ,_x)^(- 1) (x , y), F_(y ,_x)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-x> #math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_y) (x , y) = mat(delim: "[", F_(x ,_y)^(- 1) (x , y), F_(y ,_y)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-y>
-
-benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt #math.equation(block: true, numbering: "(1)", [ $ mat(delim: "[", phi_(I ,_x) (x , y); phi_(I ,_y) (x , y)) = underbrace(mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)), bold(J)_(F^(-) 1)) mat(delim: "[", N_(i ,_xi) (xi (x , y) , eta (x , y)); N_(i ,_eta) (xi (x , y) , eta (x , y))) . $ ])<eq-Ableitung-phi-I-gesamt>
-
-zusammengefasst werden. Der Ausdruck #math.equation(block: true, numbering: "(1)", [ $ nabla phi_I = bold(J)_(F^(- 1)) dot.op nabla N_i $ ])<eq-Ableitung-phi-I-Nabla>
-
-ergibt sich durch eine weitere Vereinfachung mit Hilfe des Nabla-Operators.
-
-Die Jacobi-Matrix der inversen Funktionen $F_x^(- 1)$ und $F_y^(- 1)$ #math.equation(block: true, numbering: "(1)", [ $ bold(J)_(F^(- 1)) (x , y) = mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)) = mat(delim: "[", frac(diff F_x^(- 1) (x , y), diff x), frac(diff F_y^(- 1) (x , y), diff x); frac(diff F_x^(- 1) (x , y), diff y), frac(diff F_y^(- 1) (x , y), diff y)) $ ])<eq-JF-1>
-
-fasst die Ableitung von $F_x^(- 1)$ und $F_y^(- 1)$ nach $x$ und nach $y$ in einer Matrix zusammen. Für die Funktionen $F_x$ und $F_y$ ist die entsprechende Ableitungsmatrix
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(J)_F & = mat(delim: "[", x_(,_xi) (xi , eta), y_(,_xi) (xi , eta); x_(,_eta) (xi , eta), y_(,_eta) (xi , eta)) = mat(delim: "[", frac(diff F_x (xi , eta), diff xi), frac(diff F_y (xi , eta), diff xi); frac(diff F_x (xi , eta), diff eta), frac(diff F_y (xi , eta), diff eta))\
- & = mat(delim: "[", sum_(i = 1)^4 frac(N_i (xi , eta), diff xi) dot.op x_i^e, sum_(i = 1)^4 frac(N_i (xi , eta), diff xi) dot.op y_i^e; sum_(i = 1)^4 frac(N_i (xi , eta), diff eta) dot.op x_i^e, sum_(i = 1)^4 frac(N_i (xi , eta), diff eta) dot.op y_i^e) $ ])<eq-JF>
-
-$N_i$ mit $i = 1 , 2 , 3 , 4$ bezeichnet in diesem Fall die vier linearen Formfunktionen des bilinearen Elementansatzes, welche für die Parametrisierung notwendig sind. Sei die Jacobi-Matrix vereinfacht ausgedrückt
-
-$ bold(J)_F = mat(delim: "[", J_11, J_12; J_21, J_22) $
-
-und die inverse Jacobi-Matrix
-
-$ bold(J)_F^(- 1) = frac(1, d e t (bold(J))) mat(delim: "[", J_22, - J_12; - J_21, J_11) = mat(delim: "[", j_11, j_12; j_21, j_22) $
-
-so sind die Komponenten der Jacobi-Matrix
-
-$ J_11 & = 1 / 4 dot.op (- x_1^e + x_2^e + x_3^e - x_4^e + eta (x_1^e - x_2^e + x_3^e - x_4^e))\
-J_12 & = 1 / 4 dot.op (- y_1^e + y_2^e + y_3^e - y_4^e + eta (y_1^e - y_2^e + y_3^e - y_4^e))\
-J_21 & = 1 / 4 dot.op (- x_1^e - x_2^e + x_3^e + x_4^e + xi (x_1^e - x_2^e + x_3^e - x_4^e))\
-J_22 & = 1 / 4 dot.op (- y_1^e - y_2^e + y_3^e + y_4^e + xi (y_1^e - y_2^e + y_3^e - y_4^e))\
- $
-
-und die Komponenten der inversen Transformationsmatrix $ j_11 & = frac(1, d e t (bold(J))) dot.op J_22 , quad & j_12 = frac(1, d e t (bold(J))) dot.op J_12 ,\
-j_21 & = frac(1, d e t (bold(J))) dot.op J_21 , quad & j_22 = frac(1, d e t (bold(J))) dot.op J_11 .\
- $
-
-mit der Determinanten $ d e t (bold(J)) = J_11 J_22 - J_21 J_12 $
-
-Da, entsprechend dem #emph[inverse function theorem];, die Jacobi-Matrix der inversen Funktionen $F_x^(- 1)$ und $F_y^(- 1)$ gleich der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$ ist,
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(J)_(F^(- 1)) = (bold(J)_F)^(- 1) , $ ])<eq-inverse-function-theorem>
-
-ergibt sich die Parametrisierung der Formfunktionen aus @eq-Ableitung-phi-I-gesamt zu
-
-$ mat(delim: "[", phi_(I ,_1) (x , y); phi_(I ,_2) (x , y)) = mat(delim: "[", j_11, j_12; j_21, j_22) mat(delim: "[", N_(i ,_x) (xi (x , y) , eta (x , y)); N_(i ,_y) (xi (x , y) , eta (x , y))) . $
-
-Bezogen auf das DKQ-Element aus @sec-Steifigkeitsmatrix-DKQ ist die Parametrisierte B-Matrix
-
-$ bold(B_b) = mat(delim: "[", j_11 H_(i ,_xi)^x + j_12 H_(i ,_eta)^x; j_21 H_(i ,_xi)^y + j_22 H_(i ,_eta)^y; j_11 H_(i ,_xi)^y + j_12 H_(i ,_eta)^y + j_21 H_(i ,_xi)^x + j_22 H_(i ,_eta)^x, ) $
-
-und die dementsprechende Formulierung für die Elementsteifigkeitsmatrizen bezogen auf das Referenzelement
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(k_(i j)^e) = a (phi_j^e , phi_i^e) & = integral_(- 1)^1 integral_(- 1)^1 bold(B)_e^T bold(D_b) bold(B)_e d e t [J] quad d xi eta $ ])<eq-elementsteifigkeitsmatrix_DKQ>
 
 #pagebreak()
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: Kirchhoffsche Plattentheorie])))
 = Kirchhoffsche Plattentheorie
 <sec-mech-math-grundlagen>
-Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Verschiebungsfeld \(@sec-kinematik), Verzerrungsfeld \(@sec-verzerrung) und Gleichgewichtsbeziehungen \(@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz \(@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung.
+Die Differentialgleichung des physikalischen Problems bildet den Ausgangspunkt der Finite Elemente Berechnung. Bevor in @sec-fem-plattentragwerke die Finite Elemente Methode auf die schubstarren Platten angewandt wird, werden in diesem Kapitel die Grundgleichungen der Kirchhoffsche Platte erläutert. Verschiebungsfeld \(@sec-kinematik), Verzerrungsfeld \(@sec-verzerrung) und Gleichgewichtsbeziehungen \(@sec-gleichgewicht) werden auf Grundlage der Kirchhoffschen Plattentheorie hergeleitet und bilden zusammen mit dem Materialgesetz \(@sec-materialgesetz) die Basis für die Formulierung der Differentialgleichung.
 
 Die Lösung der Differentialgleichung erfolgt gemäß @fig-Ablauf-FEM-Berechnung mittels Unterteilung des Problemgebiets in finite Elemente.
 
@@ -1318,7 +1163,7 @@ Die Zustandsgrößen, d.h. die Verschiebungsgrößen sowie die äußeren Kraftgr
 ], caption: figure.caption(
 position: bottom, 
 [
-Zustandsgrößen und Grrundgleichungen der Platte
+Zustandsgrößen und Grundgleichungen der Platte
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Figure", 
@@ -1329,9 +1174,9 @@ numbering: "1",
 
 Zur Berechnung der Tragwerksstrukturen werden zwei wesentliche Vereinfachungen getroffen. Zum Einen wird das Werkstoffverhalten als linear angenommen, entsprechend dem Hookschen Gesetz. Zum Anderen werden die Geometrien, je nach räumlicher Ausdehnung, als eindimensionales Linienelement oder als zweidimensionales Flächenelement definiert. Bei den Flächenelementen wird in Platten- und Scheibenelemente unterschieden. Diese in der Realität dreidimensionalen Strukturen,zeichnen sich dadurch aus, dass Länge und Breite der Struktur deutlich größer als die Dicke sind. Die Flächen werden somit auf die zwei maßgebenden Dimensionen reduziert. Flächenelemente können, in Form von Platten und Scheiben, eben, oder, in Form von Schalen, gekrümmt sein.
 
-Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Plattenmodell nach Kirchhoff und zum anderen das Plattenmodell nach Reissner und Mindlin. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
+Bei der Berechnung von Plattentragwerken in der Finite Elemente Analyse sind zwei Theorien von wesentlicher Bedeutung. Zum einen das Kirchhoffsche Plattenmodell und zum anderen das Reissner-Mindlin Plattenmodell. Die Unterschiede der beiden Modelle, sowie die Grundgleichungen für die Kirchhoffplatte werden im Folgenden definiert. Ziel ist es, die entsprechenden Differentialgleichungen der Kirchhoffplatte herzuleiten.
 
-== DGL einer Platte nach Kirchhoff
+== Differentialgleichung der Kirchhoff Platte
 <sec-kirchhoffschen-plattentheorie>
 Die Platte, als ebenes Flächentragwerk, zeichnet sich durch ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene. Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert \[1\]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus: \
 - eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Achse. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch #math.equation(block: true, numbering: "(1)", [ $ w = w (x , y) $ ])<eq-verformung-w>
@@ -1340,24 +1185,14 @@ beschrieben.
 
 - der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken.
 
-#figure([
-#box(width: 90%,image("00-pics/Kirchhoff.png"))
-], caption: figure.caption(
-position: bottom, 
-[
-Verformung einer Platte nach Kirchhoff
-]), 
-kind: "quarto-float-fig", 
-supplement: "Figure", 
-)
-
+TODO: abbildungbeschriftung innerhalb Bild ändern #box(width: 90%,image("00-pics/Kirchhoff.png"))
 
 #figure([
 #box(width: 90%,image("00-pics/Reissner-Mindlin.png"))
 ], caption: figure.caption(
 position: bottom, 
 [
-Verformung einer Platte nach Reissner-Mindlin
+Verformung einer Reissner-Mindlin Platte
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Figure", 
@@ -1593,7 +1428,7 @@ Das Randwertproblem wird als Divergenz des Gradienten von $w$ wie folgt ausgedr�
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: Finite Elemente für schubstarre Platten])))
 = Finite Elemente für schubstarre Platten
 <sec-fem-plattentragwerke>
-Anknüpfend an Kapitel … erfolgt die Herleitung der schwachen Form in @sec-vorbereitung.
+Anknüpfend an das, in @sec-mech-math-grundlagen hergeleitete Randwertproblem, erfolgt in @sec-vorbereitung die Herleitung der schwachen Form für die Kirchhoff-Platte. Ziel ist es das Variationsproblem und die daraus resultierende Bilinearform und Linearform zu formulieren. Abgeleitet aus dem Variationsproblem wird in @sec-Steifigkeitsmatrix-BFS und @sec-Steifigkeitsmatrix-DKQ die globale Steifigkeitsmatrix für das Bogner-Fox-Schmitt Element und das Discrete Kirchhoff Quadrilateral Element hergeleitet. Die Formulierung der Steifigkeitsmatrizen der beiden Element bilden die Basis für die Implementierung in das in @sec-Umsetzung-Julia beschriebene Programm.
 
 == Vorbereitung
 <sec-vorbereitung>
@@ -1652,113 +1487,243 @@ und die Linearform
 
 #math.equation(block: true, numbering: "(1)", [ $ b (delta w) = integral_Omega q dot.op delta w quad d Omega . $ ])<eq-linearform>
 
-=== Approximation von Funktionen
-<sec-approximation-funktionen>
-Die zwei wesentlichen Ideen der FEM-Lösung:
+== Assemblierung/Herleitung der globalen Steifigkeitsmatrix
+<sec-assemblierung-steifigkeitsmatrix>
+Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.
 
-+ Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
-+ Funktionen stückweise definieren auf sogenannten Elementen
+Der klassische Ansatz verwendet hierzu eine nodale Basis P nach Gleichung 3.40 aus Kapitel 3.3 auf den Elementen. Dabei entspricht eine der verwendeten lokale Basisfunktionen der Elemente φe i einem globalen Freiheitsgrad di.
 
-werden nachfolgend näher erläutert. Bei der schubstarren Platte nach Kirchhoff wird die Verformung durch $w$ beschrieben. Die Verdrehungen $theta_x$ und $theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $phi_1 , phi_2 , . . . , phi_N$ gewählt, sodass $w_h$ durch die Funktion #math.equation(block: true, numbering: "(1)", [ $  & w_h (x , y) = phi_1 (x , y) dot.op hat(w)_1 + phi_2 (x , y) dot.op hat(w)_2 + . . . + phi_N (x , y) dot.op hat(w)_N = sum_(i = 1)^N phi_i (x , y) dot.op hat(w)_i $ ])<eq-linearkombination-platte>
+=== BFS-Rechteckelement
+<sec-Steifigkeitsmatrix-BFS>
+Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
 
-approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $hat(w)_1 , hat(w)_2 , . . . , hat(w)_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $phi_1 , phi_2 , . . . , phi_N$ ist der endlich dimensionale Vektorraum
+#math.equation(block: true, numbering: "(1)", [ $ bold(hat(w)^e) = mat(delim: "[", w_1, theta_(x 1), theta_(y 1), theta_(x y 1), w_2, theta_(x 2), theta_(y 2), theta_(x y 2), w_3, theta_(x 3), theta_(y 3), theta_(x y 3), w_4, theta_(x 4), theta_(y 4), theta_(x y 4))^T $ ])<eq-knotenverschiebungsvekor-BFS>
 
-#math.equation(block: true, numbering: "(1)", [ $  & V_h = L i n (phi_1 , phi_2 , . . . , phi_N) = { sum_(i = 1)^N phi_i dot.op hat(w)_i \| hat(w)_i in bb(R) } ,\
- $ ])<eq-subspace>
+ist. Für die Herleitung der globalen Steifigkeitsmatrix mit dem Elementansatz des Bogner-Fox-Schmitt Rechteckelements wird das abstrakte, diskrete Variationsproblem, durch das Skalarprodukt von Momentenvektor
 
-wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $phi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird #emph[abstracktes, diskretes Variationsproblem] bezeichnet.
+$ bold(m) = mat(delim: "[", m_(x x); m_(y y); m_(x y)) #h(2em) #h(2em) upright("und Krümmungsvektor") #h(2em) #h(2em) bold(kappa) = mat(delim: "[", kappa_(x x); kappa_(y y); 2 kappa_(x y)) $
 
-#block(
-fill:luma(230),
-inset:8pt,
-radius:4pt,
-[
-#emph[Abstraktes, diskretes Variationsproblem] \
-\
-Gesucht ist eine Funktion $w_h in V_h$, sodass #math.equation(block: true, numbering: "(1)", [ $ a (w_h , delta w_h) = b (delta w_h) quad forall quad delta w_h in V_h $ ])<eq-abstraktes-diskretes-variationsproblem>
+ausgedrückt. Das Ergebnis ist die Formulierung #math.equation(block: true, numbering: "(1)", [ $ a (w , delta w) = integral_Omega bold(m) dot.op bold(kappa) d Omega = integral_Omega (m_(x x) kappa_(x x) + 2 m_(x y) kappa_(x y) + m_(y y) kappa_(y y)) d Omega . $ ])<eq-bilinearform-Skalarprodukt-m-kappa>
 
-])
+für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $theta_(x h)$ und $theta_(y h)$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ \(@eq-linearkombination-platte) und den Knotenverschiebungsvektor $bold(hat(w)^e)$ \(#strong[?\@eq-knotenverschiebungsvekor];), die Formulierung des Krümmungsvektors für das Element $i$
 
-Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $Omega$, in diesem Fall die Platte, wird in die Elemente $Omega_e , e = 1 , . . . , N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann \(siehe #strong[?\@sec-finite-elemente];). Die Basisfunktionen $phi_1 , phi_2 , . . . , phi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $hat(w)_i in bb(R)$ werden Freiheitsgrade bzw. im englischen #emph[degrees of freedom] \(abgekürzt DOF) bezeichnet.
+#math.equation(block: true, numbering: "(1)", [ $ bold(kappa_i) = bold(B_b) bold(hat(w)^e) $ ])<eq-kruemmungsvekor-mit-B-Matrix>
 
-=== numerische Lösung
-<sec-numerische-loesung>
-Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $delta w_h$. Für die numerische Lösung des Problems wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
+mit der B-Matrix $ bold(B_b) = mat(delim: "[", 0, frac(diff phi_1, diff x), 0, 0, 0, frac(diff phi_2, diff x), 0, 0, 0, frac(diff phi_3, diff x), 0, 0, dots.h.c, 0, frac(diff phi_16, diff x), 0, 0; 0, 0, frac(diff phi_1, diff y), 0, 0, 0, frac(diff phi_2, diff y), 0, 0, 0, frac(diff phi_3, diff y), 0, dots.h.c, 0, 0, frac(diff phi_16, diff y), 0; 0, frac(diff phi_1, diff y), frac(diff phi_1, diff x), 0, 0, frac(diff phi_2, diff y), frac(diff phi_2, diff x), 0, 0, frac(diff phi_3, diff y), frac(diff phi_3, diff x), 0, dots.h.c, 0, frac(diff phi_16, diff y), frac(diff phi_16, diff x), 0; #none) . $
 
-$ delta w_h = sum_(i = 1)^N phi_i dot.op delta hat(w)_i $
+Der Momentenvektor kann dementsprechend durch
 
-eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die in #strong[?\@sec-funktionale] besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze
+#math.equation(block: true, numbering: "(1)", [ $ bold(m_i) = bold(D_b) bold(kappa_i) = bold(D_b) bold(B_b) bold(hat(w)^e) $ ])<eq-momentenvekor-mit-B-Matrix>
 
-#block(
-fill:luma(230),
-inset:8pt,
-radius:4pt,
-[
-#math.equation(block: true, numbering: "(1)", [ $ a (w_h , delta w_h) & = b (delta w_h) #h(2em) &  & forall delta w_h in V_h\
-a (w_h , Sigma_(i = 1)^N phi_i dot.op delta hat(w)_i) & = b (Sigma_(i = 1)^N phi_i dot.op delta hat(w)_i) quad &  & forall quad delta w_h in V_h\
-a (w_h , phi_i) & = b (phi_i) #h(2em) &  & i = 1 , . . . , N $ ])<eq-03>
+mit $ bold(D_b) = D mat(delim: "[", 1, nu, 0; nu, 1, 0; 0, 0, frac(1 - nu, 2)) $
 
-])
+beschrieben werden, mit der isotropen Plattensteifigkeit $D$ \(s. @eq-plattensteifigkeit). Mit den Formulierungen aus @eq-kruemmungsvekor-mit-B-Matrix und @eq-momentenvekor-mit-B-Matrix, eingesetzt in @eq-bilinearform-Skalarprodukt-m-kappa, ergibt sich die elementweise Formulierung der Bilinearform zu $ a (w^e , delta w^e) & = integral_Omega bold(B_b)^T bold(D_b) bold(B_b) bold(hat(w)^e) quad d Omega\
+ $
 
-äquivalent sind. Im zweiten Schritt wird
+Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
 
-$ w_h = sum_(j = 1)^N phi_j dot.op hat(w)_j $
+#math.equation(block: true, numbering: "(1)", [ $ bold(k_(i j)^e) = a (phi_j^e , phi_i^e) = integral_(Omega^e) bold(B)_b^T bold(D_b) bold(B)_b d Omega $ ])<eq-elementsteifigkeitsmatrix>
 
-in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben,
+ausgedrückt.
 
-$ sum_(j = 1)^N underbrace(a (phi_j , phi_i), k_(i j)) dot.op hat(w)_j = underbrace(b (phi_i), r_i) $
-
-ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
-
-#math.equation(block: true, numbering: "(1)", [ $ bold(K) bold(hat(w)) = bold(r) . $ ])<eq-lin-gleichungssystem>
-
-mit $  & bold(K) &  & = k_(i j) &  & = a (phi_j , phi_i)\
- & bold(r) &  & = r_i &  & = b (phi_i) quad upright("mit") quad i , j = 1 , . . . , N , $
-
-$bold(K)$ bezeichnet die Gesamtsteifigkeitsmatrix, $bold(r)$ den Lastvektor und $bold(hat(w))$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform \(@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $bold(k_(i j)^e)$ für die Elementsteifigkeitsmatrix, $bold(r^e)$ für den Elementlastvektor und $bold(hat(w)^e)$ für den Knotenverschiebungsvektor \(siehe @tbl-Variablen).
+=== DKQ Element
+<sec-Steifigkeitsmatrix-DKQ>
+Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
 
 #figure([
-#figure(
-align(center)[#table(
-  columns: 3,
-  align: (col, row) => (left,center,center,).at(col),
-  inset: 6pt,
-  [], [Gesamtsystem], [Element],
-  [Bilinearform \(Variationsproblem)],
-  [$a (w , delta w)$],
-  [$a (w^e , delta w^e)$],
-  [Steifigkeitsmatrix],
-  [$bold(K)$],
-  [$bold(k_(i j)^e)$],
-  [Bilinearform \(Steifigkeitsmatrix)],
-  [$a (phi_j , phi_i)$],
-  [$a (phi_j^e , phi_i^e)$],
-  [Lastvektor],
-  [$bold(r)$],
-  [$bold(r^e)$],
-  [Verschiebungsvektor],
-  [$bold(hat(w))$],
-  [$bold(hat(w)^e)$],
-)]
-)
-
+#box(width: 70%,image("00-pics/Geometrie-BTP.png"))
 ], caption: figure.caption(
 position: bottom, 
 [
-Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise.
+Geometrie des DKQ-Elements
 ]), 
-kind: "quarto-float-tbl", 
-supplement: "Table", 
+kind: "quarto-float-fig", 
+supplement: "Figure", 
 numbering: "1", 
 )
-<tbl-Variablen>
+<fig-geometrie-DKQ>
 
+
+Dieses sogenannte DKQ \(#emph[discrete Kirchhoff quadrilateral];) Element basiert auf den folgenden Annahmen:
+
++ Die Verdrehungen $beta_x$ um die $y$-Achse und $beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination aus @eq-linearkombination-platte zu verstehen. #math.equation(block: true, numbering: "(1)", [ $  & beta_x & quad = - w ,_x & quad = theta_y & quad = frac(diff sum_(i = 1)^8 phi_i (x , y) dot.op hat(w)_i, diff x)\
+   & beta_y & quad = - w ,_y & quad = - theta_x & quad = frac(diff sum_(i = 1)^8 phi_i (x , y) dot.op hat(w)_i, diff x)\
+   $ ])<eq-betaX-betaY> Als Formfunktionen $phi_i (x , y)$ dienen die Funktionen des in #strong[?\@sec-finite-elemente] vorgestellten Serendipity-Elements, abhängig von den Variablen $xi$ und $eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $hat(w)_i$ mit $i = 1 , . . . , 8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
+
++ Entsprechend der Kirchhoff Theorie sind die Verdrehungen an den
+
+#block[
+#set enum(numbering: "a)", start: 1)
++ Eckknoten $i$ #math.equation(block: true, numbering: "(1)", [ $  & beta_(x_i) = - w ,_(x_i)\
+   & beta_(y_i) = - w ,_(y_i) #h(2em) upright("mit") i = 1 , 2 , 3 , 4 , $ ])<eq-verdrehungen-beta-i> \(Ableitungen der Verformung $w$ nach $x$ und nach $y$ an den Knoten $i$) und an den
++ Mittelknoten $k$ #math.equation(block: true, numbering: "(1)", [ $  & beta_(s_k) = - w ,_(s_k)\
+   & beta_(n_k) = - w ,_(n_k) #h(2em) upright("mit") k = 5 , 6 , 7 , 8 , $ ])<eq-verdrehungen-beta-k> \(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. \(siehe Abb.)
+]
+
+#block[
+#set enum(numbering: "1.", start: 3)
++ $beta_s$ ist die Verdrehung um die $n$-Achse. Nach BATOZ und TAHAR wird, zur Bestimmung von $beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form $ w (s) = a s^3 + b s^2 + c s + d $ mit den Randbedingungen $  & w (s_i) = w_i &  & #h(2em) w prime (s_i) = w ,_(s i)\
+   & w (s_j) = w_j &  & #h(2em) w prime (s_j) = w ,_(s j) $ gelöst. Für die Verdrehung um die n-Achse ergibt sich #math.equation(block: true, numbering: "(1)", [ $ w ,_(s k) = w prime (0) = frac(- 3, l_(i j)) (w_i - w_j) - 1 / 4 (w ,_(s i) + w ,_(s j)) $ ])<eq-verdrehungen-beta-x-Formel> wobei $k = 5 , 6 , 7 , 8$ die Mittelknoten der Elementkanten $i j = 12 , 23 , 34 , 41$ sind. $l_(i j)$ ist die Länge der Seiten $i j$.
+
++ $beta_n$ ist die Verdrehung um die $s$-Achse und wird entlang der Elementkanten durch eine lineare Funktion $ w prime (s) = a x + b $ mit den Randbedingungen \
+  $ w prime (s_i) = w ,_(n i) &  & #h(2em) w prime (s_j) = w ,_(n j) $ ausgedrückt. Es ergibt sich somit $ w ,_(n_k) = w prime (0) = - 1 / 2 (w ,_(n i) + w ,_(n j)) $
+]
+
+#block(
+fill:luma(230),
+inset:8pt,
+radius:4pt,
+[
+Zusammengefasst sind die die Verdrehungen der Knoten \
+#math.equation(block: true, numbering: "(1)", [ $  & #h(2em) #h(2em) #h(2em) beta_(x_i) = - w ,_(x_i)\
+ & #h(2em) #h(2em) #h(2em) beta_(y_i) = - w ,_(y_i) &  & upright("mit") i = 1 , 2 , 3 , 4\
+ & #h(2em) #h(2em) #h(2em) beta_(s_k) = - w ,_(s_k) = frac(- 3, l_(i j)) (w_i - w_j) - 1 / 4 (w ,_(s i) + w ,_(s j))\
+ & #h(2em) #h(2em) #h(2em) beta_(n_k) = - w ,_(n_k) = - 1 / 2 (w ,_(n i) + w ,_(n j)) &  & upright("mit") k = 5 , 6 , 7 , 8 $ ])<eq-verdrehungen-beta>
+
+])
+
+Die Formeln für die die Verdrehungen an den Eckknoten um die $x$-Achse und die $y$-Achse und für die Verdrehung an den Mittelknoten um die $s$-Achse und die $n$-Achse sind vorhanden. Da bei isoparametrischen Elementen die Elementkanten nicht parallel zu den Koordinatenachsen verlaufen ist eine Umrechnung der Verdrehung der Mittelknoten, auf die Verdrehung um die $x$- und $y$-Achse notwendig.
+
+Nach geometrischer Umrechnung der Verdrehung an den Mittelknoten, von $w ,_(s_k)$ und $w ,_(n_k)$ zu
+
+$  & w ,_(x_k) = - c o s (gamma_k) dot.op w ,_(n_k) + s i n (gamma_k) dot.op w ,_(s_k) #h(2em) #h(2em) upright("und")\
+ & w ,_(y_k) = - s i n (gamma_k) dot.op w ,_(n_k) - c o s (gamma_k) dot.op w ,_(s_k) #h(2em) #h(2em) upright("mit") gamma_k = gamma_(i j)\
+ $
+
+wird die Linearkombination aus @eq-betaX-betaY aufgeteilt in Eck- und Mittelknoten mit
+
+$  & beta_x = - sum_(i = 1)^4 phi_i (x , y) dot.op w ,_(x_i) - sum_(k = 5)^8 phi_i (x , y) dot.op w ,_(x_k)\
+ & beta_y = - sum_(i = 1)^4 phi_i (x , y) dot.op w ,_(y_i) - sum_(k = 5)^8 phi_i (x , y) dot.op w ,_(y_k)\
+ $
+
+und Einsetzen der Vereinbarungen aus @eq-verdrehungen-beta berechnet. Es ergibt sich durch extrahieren des Knotenverschiebungsvektor
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(hat(w)^e) = mat(delim: "[", w_1, theta_(x 1), theta_(y 1), w_2, theta_(x 2), theta_(y 2), w_3, theta_(x 3), theta_(y 3), w_4, theta_(x 4), theta_(y 4))^T $ ])<eq-knotenverschiebungsvekor-DKQ>
+
+die Formulierung $  & beta_x = mat(delim: "[", H_1^x, H_2^x, H_3^x, H_4^x, H_5^x, H_6^x, H_7^x, H_8^x, H_9^x, H_10^x, H_11^x, H_12^x) bold(hat(w)^e)\
+ & beta_y = mat(delim: "[", H_1^y, H_2^y, H_3^y, H_4^y, H_5^y, H_6^y, H_7^y, H_8^y, H_9^y, H_10^y, H_11^y, H_12^y) bold(hat(w)^e) $
+
+mit
+
+$ H_1^x & = 3 / 2 (phi_5 a_5 - phi_8 a_8) & #h(2em) #h(2em) H_1^y & = 3 / 2 (phi_5 d_5 - phi_8 d_8)\
+H_2^x & = phi_5 b_5 + phi_8 b_8 & #h(2em) #h(2em) H_2^y & = - phi_1 + phi_5 e_5 + phi_8 e_8\
+H_3^x & = phi_1 - phi_5 c_5 - phi_8 c_8 & #h(2em) #h(2em) H_3^y & = - phi_5 b_5 - phi_8 b_8\
+H_4^x & = 3 / 2 (phi_6 a_6 - phi_5 a_5) & #h(2em) #h(2em) H_4^y & = 3 / 2 (phi_6 d_6 - phi_5 d_5)\
+H_5^x & = phi_6 b_6 + phi_5 b_5 & #h(2em) #h(2em) H_5^y & = - phi_2 + phi_6 e_6 + phi_5 e_5\
+H_6^x & = phi_2 - phi_6 c_6 - phi_5 c_5 & #h(2em) #h(2em) H_6^y & = - phi_6 b_6 - phi_5 b_5\
+H_7^x & = 3 / 2 (phi_7 a_7 - phi_6 a_6) & #h(2em) #h(2em) H_7^y & = 3 / 2 (phi_7 d_7 - phi_6 d_6)\
+H_8^x & = phi_7 b_7 + phi_6 b_6 & #h(2em) #h(2em) H_8^y & = - phi_3 + phi_7 e_7 + phi_6 e_6\
+H_9^x & = phi_3 - phi_7 c_7 - phi_6 c_6 & #h(2em) #h(2em) H_9^y & = - phi_7 b_7 - phi_6 b_6\
+H_10^x & = 3 / 2 (phi_8 a_8 - phi_7 a_7) & #h(2em) #h(2em) H_10^y & = 3 / 2 (phi_8 d_8 - phi_7 d_7)\
+H_11^x & = phi_8 b_8 + phi_7 b_7 & #h(2em) #h(2em) H_11^y & = - phi_4 + phi_8 e_8 + phi_7 e_7\
+H_12^x & = phi_4 - phi_8 c_8 - phi_7 c_7 & #h(2em) #h(2em) H_12^y & = - phi_8 b_8 - phi_7 b_7 $
+
+und
+
+$  & a_k = frac(- s i n (gamma_(i j)), l_(i j)) &  & #h(2em) #h(2em) d_k = frac(c o s (gamma_(i j)), l_(i j))\
+ & b_k = - 3 / 4 c o s (gamma_(i j)) s i n (gamma_(i j))\
+ & c_k = - 1 / 2 c o s (gamma_(i j))^2 - 1 / 4 s i n (gamma_(i j))^2 &  & #h(2em) #h(2em) e_k = - 1 / 2 s i n (gamma_(i j))^2 + 1 / 4 c o s (gamma_(i j))^2\
+ $
+
+Ausgehen von der Formulierung aus @eq-bilinearform-Skalarprodukt-m-kappa und der Berechnung des Krümmungsvektors entsprechend @eq-kruemmungsvekor-mit-B-Matrix, ergibt sich die B-Matrix für das isoparametrische Element zu
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(B_b) = mat(delim: "[", frac(diff H_1^x, diff x), frac(diff H_2^x, diff x), dots.h.c, frac(diff H_12^x, diff x); frac(diff H_1^y, diff y), frac(diff H_2^y, diff y), dots.h.c, frac(diff H_12^y, diff y); frac(diff H_1^x, diff y) + frac(diff H_1^y, diff x), frac(diff H_2^x, diff y) + frac(diff H_2^y, diff x), dots.h.c, frac(diff H_12^x, diff y) + frac(diff H_12^y, diff x); #none) . $ ])<eq-B-Matrix-DQT>
+
+Die Formulierung der Elementsteifigkeitsmatrizen stimmt mit der Formulierung für das BFS-Element aus @eq-elementsteifigkeitsmatrix überein.
+
+=== Parametrisierung DKQ
+<sec-Parametrisierung>
+Die in dem vorrangehenden Kapitel hergelteitet Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $xi$ - und $eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten $xi$ und $eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements $ Omega_e := { (x , y) in bb(R)^2 } $
+
+auf das Referenzelement $ hat(Omega)_e := { (xi , eta) in bb(R)^2 \| - 1 lt.eq xi , eta lt.eq 1 } . $
+
+wie in @fig-parametrisierung dargestellt.
+
+#figure([
+#box(width: 100%,image("00-pics/Parametrisierung.png"))
+], caption: figure.caption(
+position: bottom, 
+[
+Abbildung des Raums $hat(Omega)$ auf $Omega$
+]), 
+kind: "quarto-float-fig", 
+supplement: "Figure", 
+numbering: "1", 
+)
+<fig-parametrisierung>
+
+
+Sei $(xi , eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(F) (xi , eta) = mat(delim: "[", x (xi , eta); y (xi , eta); #none) = mat(delim: "[", F_x (xi , eta); F_y (xi , eta); #none) = mat(delim: "[", sum_(i = 1)^n N_i (xi , eta) dot.op x_i; sum_(i = 1)^n N_i (xi , eta) dot.op y_i; #none) $ ])<eq-black-scholes-01>
+
+die physikalischen Koordinaten auf dem Element $Omega$ beschrieben. Die vier linearen Formfunktionen entsprechenen den in Kapitel … besprochenen Funktionen des bilinearen Elements, dargestellt in @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Um die physikalischen Koordinaten $(x , y)$ zu den Referenzkoordinaten $(xi , eta)$ umzurechnen, ist das Umkehren der Funktionen $F_x (xi , eta)$ und $F_y (xi , eta)$ zu #math.equation(block: true, numbering: "(1)", [ $ bold(F^(- 1)) (x , y) = mat(delim: "[", xi (x , y); eta (x , y); #none) = mat(delim: "[", F_x^(- 1) (x , y); F_y^(- 1) (x , y); #none) $ ])<eq-f-1>
+
+notwendig. Ziel der Parametrisierung ist die Umrechnung beliebiger Formfunktionen. Seien $N_i (xi , eta)$ die Formfunktionen definiert auf dem Referenzelement, so sind
+
+#math.equation(block: true, numbering: "(1)", [ $  & phi_I (x , y) = N_i (xi (x , y) , eta (x , y)) ,\
+ $ ])<eq-phi-I>
+
+die Formfunktionen defniert auf dem physikalischen Element, wobei $i$ und $I$ je nach Elementansatz variieren. Zur Berechnung der Elementsteifigkeitsmatrix, werden die Ableitungen
+
+#math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_x) (x , y) = mat(delim: "[", F_(x ,_x)^(- 1) (x , y), F_(y ,_x)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-x> #math.equation(block: true, numbering: "(1)", [ $ phi_(I ,_y) (x , y) = mat(delim: "[", F_(x ,_y)^(- 1) (x , y), F_(y ,_y)^(- 1) (x , y)) mat(delim: "[", N_(i ,_xi) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y)); N_(i ,_eta) (F_x^(- 1) (x , y) , F_y^(- 1) (x , y))) $ ])<eq-phi-I-Ableitung-y>
+
+benötigt, die mithilfe der Kettenregel zusammengefasst und durch die Formulierung aus @eq-f-1 vereinfacht zum Matrix-Vektor-Produkt #math.equation(block: true, numbering: "(1)", [ $ mat(delim: "[", phi_(I ,_x) (x , y); phi_(I ,_y) (x , y)) = underbrace(mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)), bold(J)_(F^(-) 1)) mat(delim: "[", N_(i ,_xi) (xi (x , y) , eta (x , y)); N_(i ,_eta) (xi (x , y) , eta (x , y))) . $ ])<eq-Ableitung-phi-I-gesamt>
+
+zusammengefasst werden. Der Ausdruck #math.equation(block: true, numbering: "(1)", [ $ nabla phi_I = bold(J)_(F^(- 1)) dot.op nabla N_i $ ])<eq-Ableitung-phi-I-Nabla>
+
+ergibt sich durch eine weitere Vereinfachung mit Hilfe des Nabla-Operators.
+
+Die Jacobi-Matrix der inversen Funktionen $F_x^(- 1)$ und $F_y^(- 1)$ #math.equation(block: true, numbering: "(1)", [ $ bold(J)_(F^(- 1)) (x , y) = mat(delim: "[", xi_(,_x) (x , y), eta_(,_x) (x , y); xi_(,_y) (x , y), eta_(,_y) (x , y)) = mat(delim: "[", frac(diff F_x^(- 1) (x , y), diff x), frac(diff F_y^(- 1) (x , y), diff x); frac(diff F_x^(- 1) (x , y), diff y), frac(diff F_y^(- 1) (x , y), diff y)) $ ])<eq-JF-1>
+
+fasst die Ableitung von $F_x^(- 1)$ und $F_y^(- 1)$ nach $x$ und nach $y$ in einer Matrix zusammen. Für die Funktionen $F_x$ und $F_y$ ist die entsprechende Ableitungsmatrix
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(J)_F & = mat(delim: "[", x_(,_xi) (xi , eta), y_(,_xi) (xi , eta); x_(,_eta) (xi , eta), y_(,_eta) (xi , eta)) = mat(delim: "[", frac(diff F_x (xi , eta), diff xi), frac(diff F_y (xi , eta), diff xi); frac(diff F_x (xi , eta), diff eta), frac(diff F_y (xi , eta), diff eta))\
+ & = mat(delim: "[", sum_(i = 1)^4 frac(N_i (xi , eta), diff xi) dot.op x_i^e, sum_(i = 1)^4 frac(N_i (xi , eta), diff xi) dot.op y_i^e; sum_(i = 1)^4 frac(N_i (xi , eta), diff eta) dot.op x_i^e, sum_(i = 1)^4 frac(N_i (xi , eta), diff eta) dot.op y_i^e) $ ])<eq-JF>
+
+$N_i$ mit $i = 1 , 2 , 3 , 4$ bezeichnet in diesem Fall die vier linearen Formfunktionen des bilinearen Elementansatzes, welche für die Parametrisierung notwendig sind. Sei die Jacobi-Matrix vereinfacht ausgedrückt
+
+$ bold(J)_F = mat(delim: "[", J_11, J_12; J_21, J_22) $
+
+und die inverse Jacobi-Matrix
+
+$ bold(J)_F^(- 1) = frac(1, d e t (bold(J))) mat(delim: "[", J_22, - J_12; - J_21, J_11) = mat(delim: "[", j_11, j_12; j_21, j_22) $
+
+so sind die Komponenten der Jacobi-Matrix
+
+$ J_11 & = 1 / 4 dot.op (- x_1^e + x_2^e + x_3^e - x_4^e + eta (x_1^e - x_2^e + x_3^e - x_4^e))\
+J_12 & = 1 / 4 dot.op (- y_1^e + y_2^e + y_3^e - y_4^e + eta (y_1^e - y_2^e + y_3^e - y_4^e))\
+J_21 & = 1 / 4 dot.op (- x_1^e - x_2^e + x_3^e + x_4^e + xi (x_1^e - x_2^e + x_3^e - x_4^e))\
+J_22 & = 1 / 4 dot.op (- y_1^e - y_2^e + y_3^e + y_4^e + xi (y_1^e - y_2^e + y_3^e - y_4^e))\
+ $
+
+und die Komponenten der inversen Transformationsmatrix $ j_11 & = frac(1, d e t (bold(J))) dot.op J_22 , quad & j_12 = frac(1, d e t (bold(J))) dot.op J_12 ,\
+j_21 & = frac(1, d e t (bold(J))) dot.op J_21 , quad & j_22 = frac(1, d e t (bold(J))) dot.op J_11 .\
+ $
+
+mit der Determinanten $ d e t (bold(J)) = J_11 J_22 - J_21 J_12 $
+
+Da, entsprechend dem #emph[inverse function theorem];, die Jacobi-Matrix der inversen Funktionen $F_x^(- 1)$ und $F_y^(- 1)$ gleich der inversen Jacobi-Matrix der Funktionen $F_x$ und $F_y$ ist,
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(J)_(F^(- 1)) = (bold(J)_F)^(- 1) , $ ])<eq-inverse-function-theorem>
+
+ergibt sich die Parametrisierung der Formfunktionen aus @eq-Ableitung-phi-I-gesamt zu
+
+$ mat(delim: "[", phi_(I ,_1) (x , y); phi_(I ,_2) (x , y)) = mat(delim: "[", j_11, j_12; j_21, j_22) mat(delim: "[", N_(i ,_x) (xi (x , y) , eta (x , y)); N_(i ,_y) (xi (x , y) , eta (x , y))) . $
+
+Bezogen auf das DKQ-Element aus @sec-Steifigkeitsmatrix-DKQ ist die Parametrisierte B-Matrix
+
+$ bold(B_b) = mat(delim: "[", j_11 H_(i ,_xi)^x + j_12 H_(i ,_eta)^x; j_21 H_(i ,_xi)^y + j_22 H_(i ,_eta)^y; j_11 H_(i ,_xi)^y + j_12 H_(i ,_eta)^y + j_21 H_(i ,_xi)^x + j_22 H_(i ,_eta)^x, ) $
+
+und die dementsprechende Formulierung für die Elementsteifigkeitsmatrizen bezogen auf das Referenzelement
+
+#math.equation(block: true, numbering: "(1)", [ $ bold(k_(i j)^e) = a (phi_j^e , phi_i^e) & = integral_(- 1)^1 integral_(- 1)^1 bold(B)_e^T bold(D_b) bold(B)_e d e t [J] quad d xi eta $ ])<eq-elementsteifigkeitsmatrix_DKQ>
 
 #pagebreak()
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA])))
 = Umsetzung in JULIA
 <sec-Umsetzung-Julia>
-Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile des Quelltextes dargestellt.
+Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben.
 
 == Programmiersprache JULIA
 <sec-JULIA>
@@ -2604,43 +2569,4 @@ supplement: "Figure",
 
 
 #pagebreak()
-muss noch eingefügt werden: Eigenschaften verwendete Funktionale funktionale.qmd \(an der STelle wo es auftaucht) numerische Integration numerische-integration.qmd \(an der STelle wo es auftaucht, oder Verweis auf eine Quelle) \#\# verwendete Funktionale {\#sec-funktionale}
-
-Für die Definition des Variationsproblems in Kapitel xxx werden die Linear- und die Bilinearform genutzt. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $bb(K)$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
-
-#block(
-fill:luma(230),
-inset:8pt,
-radius:4pt,
-[
-#emph[Definition] \(Funktional): Sei $V$ ein $bb(K)$-Vektorraum mit $bb(K) in { bb(R) , bb(C) }$. Ein Funktional $T$ ist eine Abbildung $T : V arrow.r bb(K)$.
-
-])
-
-Sowohl die Linearform, als auch die Bilinearform, sind, wie der Name erkennen lässt, lineare Funktionale. Als Vektorraum $V$ wird die Menge von Funktionen die $V$ abbilden genannt. Die folgenden Rechenoperationen können auf die Funktionen
-
-$quad quad quad f , g : bb(R)^n arrow.r bb(R)$
-
-angewandt werden: $  & upright("Addition zweier Funktionen:") &  & quad h = f + g &  & quad quad upright("definiert") quad quad h (x) = f (x) + g (x)\
- & upright("Multiplikation mit einer Zahl:") &  & quad h = alpha dot.op f &  & quad quad upright("definiert") quad quad h (x) = alpha dot.op f (x) quad , quad alpha in bb(R)\
- $
-
-Die Linearform $b (delta w)$ des abstrakten Variationsproblems \(Kap. xxx) beschreibt eine Abbildung von dem Vektorraum $V arrow.r bb(R)$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
-
-#math.equation(block: true, numbering: "(1)", [ $ b (u + v) = b (u) + b (v) &  & quad quad quad upright("(Additivität)") $ ])<eq-eig-linearform-01>
-
-#math.equation(block: true, numbering: "(1)", [ $  & b (alpha dot.op u) = alpha dot.op b (u) &  & quad quad quad upright("(Homogenität)") $ ])<eq-eig-linearform-02>
-
-Die Bilinearform $a (w , delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V times V arrow.r bb(R)$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu #math.equation(block: true, numbering: "(1)", [ $ a (u + v , w) = a (u , w) + a (v , w) quad , $ ])<eq-eig-bilinearform-01>
-
-#math.equation(block: true, numbering: "(1)", [ $ a (alpha dot.op u , v) = alpha dot.op a (u , v) quad , $ ])<eq-eig-bilinearform-02>
-
-#math.equation(block: true, numbering: "(1)", [ $ a (u , v + w) = a (u , v) + a (u , w) quad , $ ])<eq-eig-bilinearform-03>
-
-und #math.equation(block: true, numbering: "(1)", [ $ a (u , alpha dot.op v) = alpha dot.op a (u , v) quad . $ ])<eq-eig-bilinearform-04>
-
-Weiterführend ist die Bilinearform #emph[positiv definit] für $ a (u , u) gt.eq 0 quad forall quad u in V $
-
-und #emph[symmetrisch] für $ a (u , v) = a (v , u) quad . $
-
-Ist die Bilinearform sowohl positiv definit als auch symmetrisch, so wird von einem Skalarprodukt gesprochen. Dies ist im Fall der Bilinearform $a (w , delta w)$ des abstrakten Variationsproblems gegeben.
+muss noch eingefügt werden: numerische Integration numerische-integration.qmd \(an der STelle wo es auftaucht, oder Verweis auf eine Quelle)

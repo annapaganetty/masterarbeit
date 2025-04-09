@@ -1,6 +1,6 @@
 # Umsetzung in JULIA {#sec-Umsetzung-Julia}
 
-Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt.
+Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. 
 
 {{< include julia.qmd >}}
 {{< include FEM-programme.qmd >}}

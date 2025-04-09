@@ -1,4 +1,4 @@
-## DGL einer Platte nach Kirchhoff{#sec-kirchhoffschen-plattentheorie}
+## Differentialgleichung der Kirchhoff Platte{#sec-kirchhoffschen-plattentheorie}
 
 Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
 Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
@@ -12,9 +12,10 @@ beschrieben.
 
 - der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken. 
 
-![Verformung einer Platte nach Kirchhoff](00-pics/Kirchhoff.png){width=90%}
+TODO: abbildungbeschriftung innerhalb Bild ändern
+![Verformung einer Kirchhoff Platte](00-pics/Kirchhoff.png){width=90%}
 
-![Verformung einer Platte nach Reissner-Mindlin](00-pics/Reissner-Mindlin.png){width=90%}
+![Verformung einer Reissner-Mindlin Platte](00-pics/Reissner-Mindlin.png){width=90%}
 
 Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Modell der schubweichen Platte nicht unerwähnt bleiben. Letzteres wird in der Fachliteratur vielfach als Reissner-Mindlin-Platte aufgeführt. Den wesentlichen Unterschied stellt die Normalenhypothese dar. Die Hypothese vom Ebenebleiben des Querschnitts bleibt bei der schubweichen Platte bestehen, wohingegen die Normalenhypothese fallengelassen wird. Infolgedessen sind die Biegewinkel $\theta$ nicht mehr abhängig von der Durchbiegung und stellen unabhängige Freiheitsgrade dar. Eine weitere Folge sind transversale Schubverzerrungen, welche bei der Kirchhoff-Platte vernachlässigt werden.
 \

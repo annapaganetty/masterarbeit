@@ -1,4 +1,9 @@
-## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
+## Assemblierung/Herleitung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
+
+Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente  ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.  
+
+
+Der klassische Ansatz verwendet hierzu eine nodale Basis P nach Gleichung 3.40 aus Kapitel  3.3 auf den Elementen. Dabei entspricht eine der verwendeten lokale Basisfunktionen der  Elemente φe  i einem globalen Freiheitsgrad di.
 
 ### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 

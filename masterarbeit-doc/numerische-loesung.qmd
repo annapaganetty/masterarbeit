@@ -1,0 +1,61 @@
+## numerische Lösung {#sec-numerische-loesung}
+
+Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
+wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
+
+$$
+\delta w_h = \sum_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i
+$$
+
+eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die zuvor besprochenen Funktionale, angewandt auf das vorliegenden Problem ist festzustellen, dass die Sätze 
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+$$
+\begin{align}
+a(w_h, \delta w_h) &= b(\delta w_h) \qquad &&\forall \delta w_h \in V_h \\
+a(w_h, \Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i)&= b(\Sigma_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i) \quad &&\forall \quad \delta w_h \in V_h \\
+a(w_h, \varphi_i)&= b(\varphi_i) \qquad &&i = 1,...,N
+\end{align}
+$${#eq-03}
+
+:::
+
+äquivalent sind. Im zweiten Schritt wird 
+
+$$
+w_h = \sum_{j = 1}^N \varphi_j \cdot \hat{w}_j
+$$
+
+in die dritte Zeile von @eq-03 eingesetzt, dessen Ergebniss, nach gleicher Vorhergehensweise wie oben, 
+
+$$
+\sum_{j = 1}^N \underbrace{a(\varphi_j, \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
+$$
+
+ist. Für das Gesamtsystem ergibt sich das lineare Gleichungssystem
+
+$$
+\mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r}.
+$${#eq-lin-gleichungssystem}
+
+mit
+$$
+\begin{align}
+&\mathbf{K} &&= k_{ij} &&= a(\varphi_j, \varphi_i) \\
+&\boldsymbol{r} &&= r_i    &&= b(\varphi_i) \quad \text{mit} \quad i,j = 1,...,N,
+\end{align}
+$$
+
+$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+
+
+|                     | Gesamtsystem         | Element|
+|:--------------------|:--------------------:|:-----------:|
+| Bilinearform (Variationsproblem) | $a(w, \delta w)$ | $a(w^e, \delta w^e)$ | 
+| Steifigkeitsmatrix  | $\mathbf{K}$         |$\mathbf{k_{ij}^e}$|
+| Bilinearform (Steifigkeitsmatrix) | $a(\varphi_j, \varphi_i)$ | $a(\varphi^e_j, \varphi^e_i)$|
+| Lastvektor          | $\mathbf{r}$         |$\mathbf{r^e}$|
+| Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
+
+: Variablen des linearen Gleichungssystem für das Gesamtsystem und elementweise. {#tbl-Variablen}
