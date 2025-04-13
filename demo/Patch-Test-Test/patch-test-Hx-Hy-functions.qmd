@@ -10,7 +10,29 @@ WGLMakie.activate!()
 mHxHy = makequadrilateralMesh(p3)
 w = plate(mHxHy, p3, "BTP")
 plotmesh(mHxHy;title="Patch Test")
+element(mHxHy,1)
+println("Knoten 1 = ", node(mHxHy,1))
+println("Knoten 2 = ", node(mHxHy,2))
+println("Knoten 3 = ", node(mHxHy,3))
+println("Knoten 4 = ", node(mHxHy,4))
+println("Knoten 5 = ", node(mHxHy,5))
+println("Knoten 6 = ", node(mHxHy,6))
+println("Knoten 7 = ", node(mHxHy,7))
+println("Knoten 8 = ", node(mHxHy,8))
+println("Element 1 = ", element(mHxHy,1))
+println("Element 2 = ", element(mHxHy,2))
+println("Element 3 = ", element(mHxHy,3))
+println("Element 4 = ", element(mHxHy,4))
+println("Element 5 = ", element(mHxHy,5))
 ```
+
+wie die elemente sein müssen:
+
+1,4,3,2
+3,4,8,7
+6,7,8,5
+1,2,6,5
+2,3,6,7
 
 ```{julia}
 NN = 3 * nnodes(mHxHy) # Anzahl Freiheitsgrade gesamt
@@ -19,7 +41,6 @@ ni = [i for i in 1:nnodes(mHxHy) if i ∉ nb] # Innenknoten
 adofs = idxDOFs(ni, 3) # Freiheitsgrade der Innenknoten
 NNa = length(adofs) # Anzahl Freiheitsgrade der Innenknoten
 ei(n, i) = [j == i ? 1 : 0 for j ∈ 1:n]
-ei(NN, adofs[4])
 ```
 
 ## Basisfunktionen Hx auf Patch Test Netz
@@ -34,7 +55,7 @@ update_theme!(
     edgesvisible=false,
     featureedgelinewidth=2.5,
 ) 
-plotBasisfunc(mPatchOG, makeThetaxBTP(ei(NN, adofs[2])); title="Verformung")
+plotBasisfunc(mPatchOG, makeThetaxBTP(ei(NN, adofs[10])); title="Verformung")
 ```
 
 ```{julia}
@@ -58,7 +79,7 @@ for i = 1:4
         ax = Axis3(fig2[i,j], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.2, limits=(nothing, nothing, nothing), protrusions=1,elevation = 0.05)
         hidedecorations!(ax)
         hidespines!(ax)
-        mplot!(mPatchOG, makeThetaxBTP(ei(NN, adofs[n])),
+        mplot!(mPatchOG, makeThetayBTP(ei(NN, adofs[n])),
             faceplotzscale = 5,
             faceplotmesh = 5,
             edgesvisible = false, 
@@ -79,12 +100,12 @@ fig2
 ## Plot der Plattenelemente
 ```{julia}
 WGLMakie.activate!()
-mRegel = makerectMesh(p3, 4, 2)
+mRegel = makerectMesh(p4, 4, 2)
 plotmesh(mRegel;title="Patch Test")
 ```
 
 ```{julia}
-w = plate(mRegel, p3, "BTP")
+w = plate(mRegel, p4, "BTP")
 ```
 
 ```{julia}
@@ -94,7 +115,7 @@ plotwBTP(mRegel, w; title="Verformung")
 ```{julia}
 NN2 = 3 * nnodes(mRegel)
 nb2 = collect(mRegel.groups[:boundarynodes])
-ni2 = [i for i in 1:nnodes(mRegel) if i ∉ nb]
+ni2 = [i for i in 1:nnodes(mRegel) if i ∉ nb2]
 adofs2 = idxDOFs(ni2, 3)
 NNa2 = length(adofs2)
 ei(n, i) = [j == i ? 1 : 0 for j ∈ 1:n]
@@ -110,7 +131,7 @@ plotBasisfunc(mRegel, makeThetaxBTP(ei(NN2, adofs2[11])); title="Verformung")
 ```
 
 ```{julia}
-plotBasisfunc(mRegel, makeweBTP(ei(NN2, adofs2[7])); title="Verformung")
+plotBasisfunc(mRegel, makeweBTP(ei(NN2, adofs2[231])); title="Verformung")
 ```
 
 ```{julia}
@@ -119,8 +140,10 @@ plotBasisfunc(mRegel, makeweBTP(ei(NN2, adofs2[10])); title="Verformung")
 
 
 ```{julia}
+GLMakie.activate!()
 fig3 = Figure(;size = (700,700),linewidth = 0.5,fontsize = 12,font="calibri",title="Hx Funktionen auf regelmäßigem Netz")
-for i = 1:4
+for i = 1:3
+n=1
     for j = 1:3
         if i == 1
             n = j
@@ -128,8 +151,6 @@ for i = 1:4
             n = j + 3
         elseif i == 3
             n = j + 6
-        elseif i == 4
-            n = j + 9
         end
         ax = Axis3(fig3[i,j], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.2, limits=(nothing, nothing, nothing), protrusions=1,elevation = 0.05)
         hidedecorations!(ax)
@@ -147,5 +168,5 @@ for i = 1:4
             limits = (nothing, nothing, nothing))
     end
 end
-fig2
+fig3
 ```

@@ -1,7 +1,7 @@
 function mkfig2d(
     ;title=""
 )
-    fig = Figure(;size = (600, 500),linewidth = 0.5,fontsize = 12,font="calibri")
+    fig = Figure(;size = (1600, 1000),linewidth = 0.5,fontsize = 12,font="calibri")
     ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="calibri",xlabelfont = "calibri",ylabelfont ="calibri")
     hidedecorations!(ax)
     hidespines!(ax)

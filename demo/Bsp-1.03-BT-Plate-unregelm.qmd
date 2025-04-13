@@ -5,12 +5,16 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 ```{julia}
 using MMJMesh.Gmsh
-mQuadBTunr = Mesh("gmesh/plate-BT.msh")
+mQuadBTunr = Mesh("gmesh/plate-BT-04.msh")
 fig = plotmesh(mQuadBTunr; title="quadratische Platte | 8m x 8m | 400 unregelmäßige Elemente")
+# save("Beispiel-01-BTunr-mesh.png",fig)
 ```
+
+Knoten der Elemente sind falsch nummeriert
 
 ```{julia}
 element(mQuadBTunr,1)
+coordinates(element(mQuadBTunr,2))
 ```
 
 ```{julia}
@@ -22,13 +26,15 @@ w_fe = maximum(w[1:3:end])
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 # prozentuale Abweichung
 100 * abs(w_fe - w_czerny) / w_czerny
-w_fe
+# w_fe
 ```
 
 ## Plot Verformung
 
 ```{julia}
-plotwBTP(mQuadBTunr, w;title="Verformung")
+GLMakie.activate!()
+wBTPunr = plotwBTP(mQuadBTunr, w;title="Verformung")
+save("Beispiel-01-BTunr-w.png",wBTPunr)
 ```
 
 
@@ -89,15 +95,15 @@ figBTqyGlatt=plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = tru
 
 ```{julia}
 using CairoMakie
-save("Beispiel-01-BT-mx.png",figBTmx)
-save("Beispiel-01-BT-my.png",figBTmy)
-save("Beispiel-01-BT-mxy.png",figBTmxy)
+save("Beispiel-01-BTunr-mx.png",figBTmx)
+save("Beispiel-01-BTunr-my.png",figBTmy)
+save("Beispiel-01-BTunr-mxy.png",figBTmxy)
 # save("Beispiel-01-BT-qx.png",figBTqx)
 # save("Beispiel-01-BT-qy.png",figBTqy)
 
-save("Beispiel-01-BT-mx-glatt.png",figBTmxGlatt)
-save("Beispiel-01-BT-my-glatt.png",figBTmyGlatt)
-save("Beispiel-01-BT-mxy-glatt.png",figBTmxyGlatt)
+save("Beispiel-01-BTunr-mx-glatt.png",figBTmxGlatt)
+save("Beispiel-01-BTunr-my-glatt.png",figBTmyGlatt)
+save("Beispiel-01-BTunr-mxy-glatt.png",figBTmxyGlatt)
 # save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
 # save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
 ```

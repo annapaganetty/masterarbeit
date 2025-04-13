@@ -10,6 +10,10 @@ figBT = plotmesh(mQuadBT;title="quadratische Platte | 8m x 8m | 400 Elemente")
 ```
 
 ```{julia}
+coordinates(element(mQuadBT,2))
+```
+
+```{julia}
 # Berechnung des Verschiebungsvektors
 w = plate(mQuadBT, p1, "BTP")
 # maximale Verschiebung in vertikaler Richtung
@@ -24,11 +28,13 @@ w_fe
 ## Plot Verformung
 
 ```{julia}
+GLMakie.activate!()
 plotwBTP(mQuadBT, w;title="Verformung")
 ```
 
 
 ```{julia}
+
 set_theme!(theme_minimal())
 update_theme!(
     colormap=(:redblue,1.0),

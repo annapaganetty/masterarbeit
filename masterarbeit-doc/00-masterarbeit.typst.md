@@ -5,7 +5,6 @@ format:
 ---
 
 
-
 <!-- Kapitel 1 -->
 # Einleitung
 
@@ -2430,6 +2429,47 @@ end;
 ```
 
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
+
+## Patch-Test
+
+constant state of stresses on the rectangular plate
+Lasten auf die rechteckige Platte mit 5 Elementen aufbringen so dass sich ein kosntanter Spannungszustand einsdtellt. 
+
+Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu validieren.
+
+
+### Eingabewerte
+
+Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind Abbildung ... zu entnehmen. 
+
+::: {.cell execution_count=1}
+``` {.julia .cell-code}
+function makequadrilateralMesh(p)
+    coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
+              (9/25 * p.lx) (18/25 * p.lx) p.lx;
+              0.0 (2/10 * p.ly) (4/10 * p.ly) 0.0  
+              p.ly (7/10 * p.ly) (7/10 * p.ly) p.ly]
+    elts = [[1,4,3,2],[3,4,8,7],[6,7,8,5],[1,2,6,5],[2,3,7,6]]
+    m = MMJMesh.Meshes.Mesh(coords, elts, 2)
+    return m
+end
+```
+
+::: {.cell-output .cell-output-display execution_count=2}
+```
+makequadrilateralMesh (generic function with 1 method)
+```
+:::
+:::
+
+
+TODO: Abbildung Mesh mit Abmessungen und Lasten
+
+An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Achse ein Moment von 10 angesetz, so dass sich über die Länge verteilt ein Moment von 1 ergibt. Dementsprechend wird erwartet, dass sich bei den Ergebnissen sowohl um die x- als auch um die y-Achse ein Momenten Verlauf von konstant 1 einstellt.
+
+
+
+
 
 ## Beispiel 1: allseitig eingespannte Platte 
 

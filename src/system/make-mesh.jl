@@ -16,7 +16,7 @@ end
 function makequadrilateralMesh(p)
     coords = [  0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  (9/25 * p.lx) (18/25 * p.lx) p.lx;
                 0.0 (2/10 * p.ly) (4/10 * p.ly) 0.0  p.ly (7/10 * p.ly) (7/10 * p.ly) p.ly]
-    elts = [[1,2,3,4],[4,3,7,8],[8,7,6,5],[5,6,2,1],[2,3,7,6]]
+    elts = [[1,4,3,2],[3,4,8,7],[6,7,8,5],[1,2,6,5],[2,3,7,6]]
     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
     return m
 end

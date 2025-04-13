@@ -1,0 +1,174 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+## Plot der Plattenelemente
+```{julia}
+using MMJMesh.Gmsh
+using Makie
+GLMakie.activate!()
+mesh02 = Mesh("gmesh/plate-Bsp-03.msh")
+# fixierte Knoten
+fixedNodes = group(mesh02, :fixed0)
+# freie Knoten
+freeNodes = group(mesh02, :free0)
+# Knoten an denen ein Punktlager ist 
+column1 = coordinates(node(mesh02,4))
+column2 = coordinates(node(mesh02,9))
+column3 = coordinates(node(mesh02,11))
+# Plot des Meshes
+fig = mkfig2d(;title = "komplexe Platte | 1682 Elemente")
+mplot!(mesh02,facecolor=:seashell2,faceplotzscale= 0.5,edgelinewidth=0.4,nodesvisible=true,edgesvisible=true,nodesize=5)
+scatter!(coordinates(mesh02, group(mesh02, :fixed0)), color=:hotpink,markersize = 15)
+scatter!(coordinates(mesh02, group(mesh02, :free0)), color=:lightblue,markersize = 15)
+scatter!([column1 column2 column3], color=:green,markersize = 25)
+save("Beispiel-02-BT-complex-mesh.png",fig)
+fig
+```
+
+
+```{julia}
+nf = 3
+bcs = [true, true, true]
+mesh02.data[:kefunc] = plateKe(p1)
+mesh02.data[:refunc] = plateRe(p1.q)
+K,r = assembleKr(mesh02, nf)
+display(K)
+applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs)
+applyDirichletBCs!([4,9,11], K, r, bcs)
+```
+
+```{julia}
+w = K \ r
+```
+
+## Plot Verformung
+
+```{julia}
+GLMakie.activate!()
+w02 = plotwBTP(mesh02, w;title="Verformung")
+save("Beispiel-02-BT-complex-w.png",w02)
+```
+
+
+```{julia}
+mesh02.data[:post] = postprocessorBTP(p1, w)
+# set_theme!(theme_minimal())
+# update_theme!(
+#     colormap=(:redblue),
+#     color=3,
+#     faceplotzscale=1,
+#     faceplotnpoints=15,
+#     edgesvisible=false,
+#     featureedgelinewidth=2.5,
+# )   
+```
+
+```{julia}
+figB02mx = plotrBTP(mesh02, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
+```
+
+```{julia}
+figB02my= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
+```
+
+```{julia}
+figB02mxy= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
+```
+
+```{julia}
+figB02qx= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
+```
+
+```{julia}
+figB02qy= plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
+```
+
+Geglättete Ergebnisse 
+```{julia}
+figB02mxGlatt= plotrBTP(mQuadBTunr, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
+```
+
+
+```{julia}
+figB02myGlatt= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
+```
+
+```{julia}
+figB02mxyGlatt= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
+```
+
+```{julia}
+figB02qxGlatt= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
+```
+
+```{julia}
+figB02qyGlatt=plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+```
+
+
+```{julia}
+using CairoMakie
+save("Beispiel-01-BTunr-mx.png",figBTmx)
+save("Beispiel-01-BTunr-my.png",figBTmy)
+save("Beispiel-01-BTunr-mxy.png",figBTmxy)
+# save("Beispiel-01-BT-qx.png",figBTqx)
+# save("Beispiel-01-BT-qy.png",figBTqy)
+
+save("Beispiel-01-BTunr-mx-glatt.png",figBTmxGlatt)
+save("Beispiel-01-BTunr-my-glatt.png",figBTmyGlatt)
+save("Beispiel-01-BTunr-mxy-glatt.png",figBTmxyGlatt)
+# save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
+# save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
+```
+
+# Konvergenz Plot
+
+```{julia}
+nn = [];
+ww = [];
+for i = 2:2:30
+    xElement = i
+    mNew = makequadratcicMesh(p1, xElement)
+    wkonv = plate(mNew, p1, "BTP")
+    push!(nn, 4 * nnodes(mNew))
+    push!(ww, maximum(abs.(wkonv[1:4:end])))
+end
+ww
+```
+
+
+```{julia}
+using CairoMakie
+fig = Figure()
+Axis(fig[1, 1],title= "Konvergenz", xlabel="Anzahl Freiheitsgrade", ylabel="Maximale Verschiebung in mm")
+scatterlines!(nn, 1000*ww)
+fig
+```
+
+```{julia}
+save("Konvergenzplot_BT.png",fig)
+```
+
+
+```{julia}
+e = element(mQuadBT,1)
+Hx = (btpHx(e)) # 12 Element Vektor mit Hx Funktionen 
+Hy = (btpHy(e)) # 12 Element Vektor mit Hy Funktionen 
+
+# Ableitungen Hx und Hy
+Hxx = ∂x.(Hx)
+Hxy = ∂y.(Hx)
+Hyx = ∂x.(Hy)
+Hyy = ∂y.(Hy) 
+# Einträge inverse Jacobi Matrix
+j11,j12,j21,j22,d = jacobianMatrix(e)
+
+idxs = idxDOFs(nodeindices(e), 3)
+w[idxs]
+mx = 1e-3 * sum(((j11 * Hxx + j12 * Hxy) + 1 * (j21 * Hyx + j22 * Hyy)) .* w[idxs])
+my = 1e-3 * (1 * (j11 * Hxx + j12 * Hxy) + (j21 * Hyx + j22 * Hyy)) .* w[idxs]
+mxy = 1e-3 * (1 - 1)/2 * ((j11 * Hyx + j12 * Hyy) + (j21 * Hxx + j22 * Hxy)) .* w[idxs]
+
+mx
+```

@@ -1,14 +1,14 @@
 ```{julia}
-include("../../src/setup.jl")
+include("../src/setup.jl")
 ```
 
 # Patch Test
 
 ## Plot der Plattenelemente
 ```{julia}
-WGLMakie.activate!()
 mPatchOG = makequadrilateralMesh(p3)
-plotmesh(mPatchOG;title="Patch Test")
+meshPatch = plotmesh(mPatchOG;title="Patch Test")
+# save("Beispiel-00-Mesh.png",meshPatch)
 ```
 
 ## Verformung 
@@ -27,10 +27,10 @@ applyDirichletBCs!(mPatchOG.groups[:boundarynodes][1:4], K, r, bcs1)
 
 dofs2 = idxDOFs(mPatchOG.groups[:boundarynodes],3)
 
-# r[dofs2[10]] = 2
+r[dofs2[10]] = -2
 
 # Randmomente um die y-Achse
-r[dofs2[2]]  = a 
+r[dofs2[2]]  = a
 r[dofs2[5]]  = a
 r[dofs2[8]]  = -a
 r[dofs2[11]] = -a
@@ -48,17 +48,18 @@ w[1:3:end]
 ```
 
 ```{julia}
-plotwBTP(mPatchOG, w; title="Verformung")
+GLMakie.activate!()
+wPatch = plotwBTP(mPatchOG, w; title="Verformung")
 ```
 
 ## Verdrehung ThetaX
 ```{julia}
-plotThetaxBTP(mPatchOG, w; title="Verdrehung θx")
+θxPatch = plotThetaxBTP(mPatchOG, w; title="Verdrehung θx")
 ```
 
 ## Verdrehung ThetaY
 ```{julia}
-plotThetayBTP(mPatchOG, w; title="Verdrehung θy")
+θyPatch = plotThetayBTP(mPatchOG, w; title="Verdrehung θy")
 ```
 
 ## Schnittgrößen Plotten 
@@ -78,15 +79,25 @@ update_theme!(
 
 ### Mx
 ```{julia}
-plotrBTP(mPatchOG, :mx, "Biegemoment mx", (-0.02, 0.02),nodal = true, a3d=true)
+mxPatch = plotrBTP(mPatchOG, :mx, "Biegemoment mx", (0, 1),nodal = false, a3d=true)
 ```
 
 ### My
 ```{julia}
-plotrBTP(mPatchOG, :my, "Biegemoment my", (-0.03, 0.02),nodal = true, a3d=true)
+myPatch = plotrBTP(mPatchOG, :my, "Biegemoment my", (0, 1),nodal = false, a3d=true)
 ```
 
 ### Mxy
 ```{julia}
-plotrBTP(mPatchOG, :mxy, "Biegemoment mxy", (-14 , 9),nodal = false, a3d=true)
+mxyPatch = plotrBTP(mPatchOG, :mxy, "Biegemoment mxy", (0 , 1),nodal = false, a3d=true)
+```
+
+
+```{julia}
+save("Beispiel-00-w.png",wPatch)
+save("Beispiel-00-Thetax.png",θxPatch)
+save("Beispiel-00-Thetay.png",θyPatch)
+save("Beispiel-00-mx.png",mxPatch)
+save("Beispiel-00-my.png",myPatch)
+save("Beispiel-00-mxy.png",mxyPatch)
 ```

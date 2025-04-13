@@ -1,3 +1,4 @@
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
 
+{{< include patch-test.qmd >}}
 {{< include beispiel-01.qmd >}}
