@@ -36,21 +36,16 @@ include("h-functions/BTP-gen-H-functions.jl")
 include("h-functions/BTP-H-functions.jl")
 
 # Formfunktionen unterschiedlicher Elementansätze
-
-include("shapefunctions/hermitefunctions-1D.jl")
-include("shapefunctions/hermitefunctions.jl")
-include("shapefunctions/lagrangefunctions.jl")
-include("shapefunctions/serendipityfunctions.jl")
+include("shapefunctions.jl")
 
 # Berechnungen Gesamtsteifigkeitsmatrix, Schnittgrößen 
 include("calculation/internal-forces.jl")
-include("calculation/assembleKr.jl")
+include("calculation/fem.jl")
 
 # System Geometrie, Netz, Randbedinungen (Einspannungen etc.)
-include("system/boundary-conditions.jl")
-include("system/generate-plate.jl")
-include("system/make-mesh.jl")
-include("system/geo-element.jl")
+include("system/fixed-plate.jl")
+include("system/mesh.jl")
+include("system/geometry.jl")
 
 # Elementsteifigkeitmatrizen unterschiedlicher Elementansätze
 include("stiffness_matrix/ke-batoz-tahar.jl")

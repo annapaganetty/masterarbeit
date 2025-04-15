@@ -1,6 +1,6 @@
 function phcKe(p)
     function keFunc(e)
-        a,b = ab(e)
+        p,a,b= _fsize(e)
         E = p.E
         h = p.h
         ν = p.ν
@@ -74,7 +74,7 @@ end
 
 function phcRe(q)
     function reFunc(e)
-        a,b = ab(e)
+        p,a,b= _fsize(e)
         
         re = zeros(16)
 

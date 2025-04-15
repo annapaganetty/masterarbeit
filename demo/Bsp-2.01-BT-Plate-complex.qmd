@@ -7,7 +7,7 @@ include("../src/setup.jl")
 using MMJMesh.Gmsh
 using Makie
 GLMakie.activate!()
-mesh02 = Mesh("gmsh/plate-Bsp-03.msh")
+mesh02 = Meshes.Mesh("gmsh/plate-Bsp-03.msh")
 # fixierte Knoten
 fixedNodes = group(mesh02, :fixed0)
 # freie Knoten
@@ -22,7 +22,7 @@ mplot!(mesh02,facecolor=:seashell2,faceplotzscale= 0.5,edgelinewidth=0.4,nodesvi
 scatter!(coordinates(mesh02, group(mesh02, :fixed0)), color=:hotpink,markersize = 15)
 scatter!(coordinates(mesh02, group(mesh02, :free0)), color=:lightblue,markersize = 15)
 scatter!([column1 column2 column3], color=:green,markersize = 25)
-save("Beispiel-02-BT-complex-mesh.png",fig)
+# save("Beispiel-02-BT-complex-mesh.png",fig)
 fig
 ```
 
@@ -32,31 +32,31 @@ nf = 3
 bcs = [true, true, true]
 mesh02.data[:kefunc] = plateKe(p1)
 mesh02.data[:refunc] = plateRe(p1.q)
-K,r = assembleKr(mesh02, nf)
-display(K)
+@time K,r = assembleKr(mesh02, nf)
 applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs) # gestütze Ränder
 applyDirichletBCs!([4,9,11], K, r, bcs) # Knoten mit Stützen 
+@time w = K \ r
 ```
 
-```{julia}
-w = K \ r
-```
+3.777843 seconds (63.40 M allocations: 3.964 GiB, 5.44% gc time)
+0.727153 seconds (6 allocations: 223.546 MiB, 6.79% gc time)
 
 ## Plot Verformung
 
 ```{julia}
 GLMakie.activate!()
-w02 = plotwBTP(mesh02, w;title="Verformung")
+@time w02 = plotwBTP(mesh02, w;title="Verformung")
 # save("Beispiel-02-BT-complex-w.png",w02)
 ```
 
+18.468951 seconds (405.41 M allocations: 16.089 GiB, 11.42% gc time)
 
 ```{julia}
 mesh02.data[:post] = postprocessorBTP(p1, w)  
 ```
 
 ```{julia}
-figB02mx = plotrBTP(mesh02, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
+figB02mx = plotrBTP(mesh02, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=false)
 ```
 
 ```{julia}

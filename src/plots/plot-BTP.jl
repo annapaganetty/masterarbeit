@@ -40,7 +40,6 @@ function makeweBTP(wHat)
     H4 = lagrangeelement(V)
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)[1:3:end]  
-        # println(wHat[idxs] .* H4)
         return sum(wHat[idxs] .* H4)
     end
 end
@@ -49,7 +48,7 @@ end
 function makeThetaxBTP(wHat) # = -beta_y
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        Hy = btpHy(face)
+        Hy = bMatrix(face)[3,:]
         return -sum(wHat[idxs] .* Hy)
     end
 end
@@ -57,10 +56,7 @@ end
 function makeThetayBTP(wHat) # = -beta_x
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        # println("nodeindices(face) = ",nodeindices(face))
-        # println("idxs = ",idxs)
-        # println("wHat[idxs] = ",wHat[idxs])
-        Hx = btpHx(face)
+        Hx = bMatrix(face)[2,:]
         return -sum(wHat[idxs] .* Hx)
     end
 end

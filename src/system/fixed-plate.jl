@@ -7,21 +7,6 @@ function plate(m, p, model::String)
         bcs = [true, true, true, false]
         m.data[:kefunc] = pkcKe(p)
         m.data[:refunc] = pkcRe(p.q)
-    elseif model == "kirchhoff_nonconforming"
-        nf = 3
-        bcs = [true, true, true]
-        m.data[:kefunc] = pknKe(p)
-        m.data[:refunc] = pknRe(p.q)
-    elseif model == "hartmann5.2_conforming"
-        nf = 4
-        bcs = [true, true, true, false]
-        m.data[:kefunc] = phcKe(p)
-        m.data[:refunc] = phcRe(p.q)
-    elseif model == "hartmann5.2_nonconforming"
-        nf = 3
-        bcs = [true, true, true]
-        m.data[:kefunc] = phnKe(p)
-        m.data[:refunc] = phnRe(p.q)
     elseif model == "BTP"
         nf = 3
         bcs = [true, true, true]

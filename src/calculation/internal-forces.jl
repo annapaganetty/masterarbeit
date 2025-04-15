@@ -47,25 +47,12 @@ function postprocessor(params, wHat)
 		qx = -1e-3 * D * ∂X(Δw)
 		qy = -1e-3 * D * ∂Y(Δw)
 
-		# From equilibrium
-		qxe = ∂X(mx) + ∂Y(mxy)
-		qye = ∂X(mxy) + ∂Y(my)
-
         # Return
 		name == :mx && return mx
 		name == :my && return my
 		name == :mxy && return mxy
 		name == :qx && return qx
 		name == :qy && return qy
-		name == :qxe && return qxe
-		name == :qye && return qye
-		# name == :mxg && return interpolateg(mx, 2)
-		# name == :myg && return interpolateg(my, 2)
-		# name == :mxyg && return interpolateg(mxy, 2)
-		# name == :qxg && return interpolateg(qx, 2)
-		# name == :qyg && return interpolateg(qy, 2)
-		# name == :qxgg && return ∂X(interpolateg(mx, 2)) + ∂Y(interpolateg(mxy, 2))
-		# name == :qygg && return ∂X(interpolateg(mxy, 2)) + ∂Y(interpolateg(my, 2))
 
 		# Unknown label
 		error("Unkown function: ", name)
@@ -89,10 +76,11 @@ function postprocessorBTP(params, wHat)
         # this works 
         V = [ -1 1 1 -1; -1 -1 1 1]
         we = sum(wHat[idxsWe] .* lagrangeelement(V))
-
+        HxFace = bMatrix(face)[2,:]
+        HyFace = bMatrix(face)[3,:]
         # first Derivatives of w = -beta 
-        βx = sum(btpHx(face) .* wHat[idxs]) 
-        βy = sum(btpHy(face) .* wHat[idxs]) 
+        βx = sum(HxFace .* wHat[idxs]) 
+        βy = sum(HyFace .* wHat[idxs]) 
         wx =  -βx # Beta x = -wx
         wy =  -βy # Beta y = -wy
 
@@ -100,40 +88,28 @@ function postprocessorBTP(params, wHat)
         name == :w && return we
 
         jF = jacobian(parametrization(geometry(face)))
-        Hx = MappingFromComponents(btpHx(face)...) 
-        Hy = MappingFromComponents(btpHy(face)...) 
+        Hx = MappingFromComponents(HxFace...)  
+        Hy = MappingFromComponents(HyFace...) 
         ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
         ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
         Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
-        
-        function moment(name)
-            if name == :mxfunc
-                x -> begin
-                    J = jF(x)
-                    ∇ₓN = (inv(J') * ∇ξN(x))
-                    ∇yN = (inv(J') * ∇ηN(x)) 
-                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-                return (Db * B)[1] * wHat[idxs]
-                end
-            elseif name == :myfunc
-                x -> begin
-                    J = jF(x)
-                    ∇ₓN = (inv(J') * ∇ξN(x))
-                    ∇yN = (inv(J') * ∇ηN(x)) 
-                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-                return (Db * B)[2] * wHat[idxs]
-                end
-            elseif name == :mxyfunc
-                x -> begin
-                    J = jF(x)
-                    ∇ₓN = (inv(J') * ∇ξN(x))
-                    ∇yN = (inv(J') * ∇ηN(x)) 
-                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-                return (Db * B)[3] * wHat[idxs]
-                end
-            end
-        end
 
+        function moment(name)
+                x -> begin
+                    J = jF(x)
+                    ∇ₓN = (inv(J') * ∇ξN(x))
+                    ∇yN = (inv(J') * ∇ηN(x)) 
+                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+                    if name == :mxfunc
+                        return (Db * B)[1] * wHat[idxs]
+                    elseif name == :myfunc
+                        return (Db * B)[2] * wHat[idxs]
+                    elseif name == :mxyfunc
+                        return (Db * B)[3] * wHat[idxs]
+                    end
+                end
+        end
+        println("klappt")
         # Derivatives
         # βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
         # βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
@@ -158,7 +134,7 @@ function postprocessorBTP(params, wHat)
         name == :mx && return moment(:mxfunc)
         name == :my && return moment(:myfunc)
         name == :mxy && return moment(:mxyfunc)
-
+        
         # Figure out why these are false
         qx = -D * ∂x(Δw)
         qy = -D * ∂y(Δw)

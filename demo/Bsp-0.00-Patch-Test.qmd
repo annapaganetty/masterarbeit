@@ -1,14 +1,10 @@
-```{julia}
-include("../src/setup.jl")
-```
-
 # Patch Test
 
 ## Plot der Plattenelemente
 ```{julia}
-mPatchOG = makequadrilateralMesh(p3)
-meshPatch = plotmesh(mPatchOG;title="Patch Test")
-# save("Beispiel-00-Mesh.png",meshPatch)
+include("../src/setup.jl")
+mPatch = makequadrilateralMesh(p3)
+meshPatch = plotmesh(mPatch;title="Patch Test")
 ```
 
 ## Verformung 
@@ -19,14 +15,16 @@ Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung de
 nf = 3
 bcs1 = [true, false,false]
 bcs2 = [false, false, false]
-mPatchOG.data[:kefunc] = plateKe(p3)
-mPatchOG.data[:refunc] = plateRe(p3.q)
-K,r = assembleKr(mPatchOG,nf)
+mPatch.data[:kefunc] = plateKe(p3)
+mPatch.data[:refunc] = plateRe(p3.q)
+K,r = assembleKr(mPatch,nf)
 
-applyDirichletBCs!(mPatchOG.groups[:boundarynodes][1:4], K, r, bcs1)
+# Randbedinungen
+applyDirichletBCs!(mPatch.groups[:boundarynodes][1:4], K, r, bcs1)
 
-dofs2 = idxDOFs(mPatchOG.groups[:boundarynodes],3)
+dofs2 = idxDOFs(mPatch.groups[:boundarynodes],3)
 
+# Einzellast an Knoten
 r[dofs2[10]] = -2
 
 # Randmomente um die y-Achse
@@ -41,31 +39,23 @@ r[dofs2[9]]  = -b
 r[dofs2[12]] = b
 
 w = K \ r
-
-thetaX = w[2:3:end]
-# thetaY = w[3:3:end]
-w[1:3:end]
 ```
 
 ```{julia}
 GLMakie.activate!()
-wPatch = plotwBTP(mPatchOG, w; title="Verformung")
-```
-
-## Verdrehung ThetaX
-```{julia}
-θxPatch = plotThetaxBTP(mPatchOG, w; title="Verdrehung θx")
-```
-
-## Verdrehung ThetaY
-```{julia}
-θyPatch = plotThetayBTP(mPatchOG, w; title="Verdrehung θy")
+# Verformung 
+wPatch = plotwBTP(mPatch, w; title="Verformung")
+# Verdrehung ThetaX
+θxPatch = plotThetaxBTP(mPatch, w; title="Verdrehung θx")
+# Verdrehung ThetaY
+θyPatch = plotThetayBTP(mPatch, w; title="Verdrehung θy")
 ```
 
 ## Schnittgrößen Plotten 
 
+### Momente
 ```{julia}
-mPatchOG.data[:post] = postprocessorBTP(p3, w)
+mPatch.data[:post] = postprocessorBTP(p3, w)
 set_theme!(theme_minimal())
 update_theme!(
     colormap=:redblue,
@@ -73,27 +63,17 @@ update_theme!(
     faceplotzscale=1,
     faceplotnpoints=15,
     edgesvisible=true,
-    featureedgelinewidth=2.5
-)
-```
+    featureedgelinewidth=2.5)
 
-### Mx
-```{julia}
-mxPatch = plotrBTP(mPatchOG, :mx, "Biegemoment mx", (0, 1),nodal = false, a3d=true)
-```
-
-### My
-```{julia}
-myPatch = plotrBTP(mPatchOG, :my, "Biegemoment my", (0, 1),nodal = false, a3d=true)
-```
-
-### Mxy
-```{julia}
-mxyPatch = plotrBTP(mPatchOG, :mxy, "Biegemoment mxy", (0 , 1),nodal = false, a3d=true)
+mxPatch = plotrBTP(mPatch, :mx, "Biegemoment mx", (0, 1),nodal = false, a3d=true)
+myPatch = plotrBTP(mPatch, :my, "Biegemoment my", (0, 1),nodal = false, a3d=true)
+mxyPatch = plotrBTP(mPatch, :mxy, "Biegemoment mxy", (0 , 1),nodal = false, a3d=true)
+myPatch
 ```
 
 
 ```{julia}
+save("Beispiel-00-Mesh.png",meshPatch)
 save("Beispiel-00-w.png",wPatch)
 save("Beispiel-00-Thetax.png",θxPatch)
 save("Beispiel-00-Thetay.png",θyPatch)

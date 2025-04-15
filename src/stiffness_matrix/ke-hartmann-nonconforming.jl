@@ -1,6 +1,6 @@
 function phnKe(p)
     function keFunc(e)
-        a,b = ab(e)
+        p,a,b= _fsize(e)
         E = p.E
         h = p.h
         ν = p.ν
@@ -36,7 +36,7 @@ end
 
 function phnRe(q)
     function reFunc(e)
-        a,b = ab(e)
+        p,a,b= _fsize(e)
         re = zeros(12)
         re[1]=(1//4)*a*b
         re[2]=(1//24)*(a^2)*b

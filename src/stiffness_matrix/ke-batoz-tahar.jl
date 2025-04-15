@@ -14,9 +14,9 @@ function plateKe(p)
         Ke = zeros(12,12)
         # Jacobimatrix des betrachteten Elements (muss noch transponiert werden s. Zeile 28 und 29 J') 
         jF = jacobian(parametrization(geometry(e)))
-        
-        Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
-        Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
+
+        Hx = MappingFromComponents(bMatrix(e)[2,:]...) # 12 Element Vektor mit Hx Funktionen 
+        Hy = MappingFromComponents(bMatrix(e)[3,:]...)  # 12 Element Vektor mit Hy Funktionen 
         # 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
         ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
         # 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
@@ -58,7 +58,7 @@ end
 # Element vector
 function plateRe(q)
     function reFunc(e)
-        a,b = ab(e)
+        p,a,b= _fsize(e)
         re = zeros(12)
         re[1]=(1/4)*a*b
         re[2]= 0
