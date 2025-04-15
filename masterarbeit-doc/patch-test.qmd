@@ -1,14 +1,15 @@
-## Patch-Test
+## Patch-Test {#sec-patch-test}
 
 constant state of stresses on the rectangular plate
 Lasten auf die rechteckige Platte mit 5 Elementen aufbringen so dass sich ein kosntanter Spannungszustand einsdtellt. 
 
 Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu validieren.
 
+![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=90%} 
 
 ### Eingabewerte
 
-Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind Abbildung ... zu entnehmen. 
+Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. 
 ```{julia}
 function makequadrilateralMesh(p)
     coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
@@ -21,7 +22,7 @@ function makequadrilateralMesh(p)
 end
 ```
 
-TODO: Abbildung Mesh mit Abmessungen und Lasten
+
 
 An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Achse ein Moment von 10 angesetz, so dass sich über die Länge verteilt ein Moment von 1 ergibt. Dementsprechend wird erwartet, dass sich bei den Ergebnissen sowohl um die x- als auch um die y-Achse ein Momenten Verlauf von konstant 1 einstellt.
 

@@ -7,7 +7,7 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 ```{julia}
 using MMJMesh.Gmsh
-m1 = Mesh("gmesh/complex-plate-02.msh")
+m1 = Mesh("gmsh/complex-plate-02.msh")
 fig = plotmesh(m1; title="complex-plate.msh")
 # save("complex-plate.png",fig)
 ```

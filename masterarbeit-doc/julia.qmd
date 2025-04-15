@@ -16,6 +16,6 @@ Die Syntax von Julia ist ähnlich der von MATLAB und Python, was sie für Nutzer
 
 Obwohl Julia im Vergleich zu etablierten Programmiersprachen wie Python oder R eine jüngere Sprache ist, hat sie ein wachsendes Zahl von Paketen und Bibliotheken, die eine breite Palette von Anwendungsbereichen abdecken. Die Julia-Community ist sehr aktiv, und viele Pakete sind speziell auf wissenschaftliche und technische Berechnungen ausgerichtet.
 
-Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial Durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.
+Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.
 
 Der Quellcode von Julia ist auf GitHub verfügbar.

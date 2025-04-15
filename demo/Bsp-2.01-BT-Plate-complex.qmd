@@ -7,7 +7,7 @@ include("../src/setup.jl")
 using MMJMesh.Gmsh
 using Makie
 GLMakie.activate!()
-mesh02 = Mesh("gmesh/plate-Bsp-03.msh")
+mesh02 = Mesh("gmsh/plate-Bsp-03.msh")
 # fixierte Knoten
 fixedNodes = group(mesh02, :fixed0)
 # freie Knoten
@@ -34,8 +34,8 @@ mesh02.data[:kefunc] = plateKe(p1)
 mesh02.data[:refunc] = plateRe(p1.q)
 K,r = assembleKr(mesh02, nf)
 display(K)
-applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs)
-applyDirichletBCs!([4,9,11], K, r, bcs)
+applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs) # gestütze Ränder
+applyDirichletBCs!([4,9,11], K, r, bcs) # Knoten mit Stützen 
 ```
 
 ```{julia}
@@ -47,21 +47,12 @@ w = K \ r
 ```{julia}
 GLMakie.activate!()
 w02 = plotwBTP(mesh02, w;title="Verformung")
-save("Beispiel-02-BT-complex-w.png",w02)
+# save("Beispiel-02-BT-complex-w.png",w02)
 ```
 
 
 ```{julia}
-mesh02.data[:post] = postprocessorBTP(p1, w)
-# set_theme!(theme_minimal())
-# update_theme!(
-#     colormap=(:redblue),
-#     color=3,
-#     faceplotzscale=1,
-#     faceplotnpoints=15,
-#     edgesvisible=false,
-#     featureedgelinewidth=2.5,
-# )   
+mesh02.data[:post] = postprocessorBTP(p1, w)  
 ```
 
 ```{julia}

@@ -1,0 +1,22 @@
+## Beispiel 2: komplexe Platte {#sec-beispiel-02}
+
+
+
+|                   |                           |
+|:------------------|:--------------------------|
+|Plattendicke       | $d = 0.2 \text{ m}$        |
+|Elastizitätsmodul  | $E = 31.000 \text{ N/mm}^2$|
+|Flächenlast        | $p = 5 \text{ kN}$         |
+|                   | $\nu = 0.0$               |
+
+: Daten zum Beispiel "allseitig eingespannte Platte" {#tbl-Eingabedaten-komplex}
+
+
+### Berechnung nach Batoz und Tahar
+
+
+
+
+### Berechnung mit RFEM
+
+![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-RFEM-System-Komplex- width=80%}

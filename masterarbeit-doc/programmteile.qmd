@@ -1,4 +1,4 @@
-## Programmteile {#sec-Programmteile}
+## Programmteile {#sec-programmteile}
 
 Nachfolgend werden die Programmteile vorgestellt
 
@@ -6,7 +6,15 @@ Nachfolgend werden die Programmteile vorgestellt
 
 Als erstes werden die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt. 
 
-```{{julia}}
+```{julia}
+#| echo: false
+#| warning: false
+include("../src/setup.jl")
+nx = 1
+ny = 1;
+```
+
+```{julia}
 p = @var Params()
 p.lx = 8
 p.ly = 8
@@ -16,42 +24,54 @@ p.h = 0.2
 p.E = 31000e6;
 ```
 
-Die Definition der Parameter p.lx und p.ly ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion _makemeshonrectangle()_, ein FE-Netz für die Platte der Länge p.lx und der Breite p.ly erzeugt werden. Die Parameter p.q, p.ν, p.h und p.E beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
+Die Definition der Parameter `p.lx` und `p.ly` ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der MMJMesh.Meshes Bilbliothek. Für die Beispiele in Kapitel... sind die nachfolgenden drei Funktionen wichtig. Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen lx und ly und einem  gleichmäßiges Netz mit gleichgroßen Elementen wird die Funktion _makemeshonrectangle(lx, ly, nx, ny)_ genutzt. Die Eingabeparameter _nx_ und _ny_ geben die Anzahl der Unterteilungen je Seite an.
+Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek kann eine Platte und das FE-Netz erzeugt werden. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist, dass auf die Reihenfolge der Knoten geachtet wird.
 
-```{{julia}}
-m = makemeshonrectangle(lx, ly, nx, ny)
-```
-
-![FE-Netz erzueugt mit der Funktion _makemeshonrectangle_](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
-
-
-Alternativ kann die Platte und das FE-Netz mit selbstdefinierten Koordinaten _coords_ und der Verbindung von vier Knoten zu einem Element durch _elts_ erzeugt werden.
-
-```{{julia}}
+```{julia}
 coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
           0.0 0.0  0.0  10.0 10.0 10.0 20.0 20.0 20.0]
 elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
 m = Mesh(coords, elts, 2);
 ```
-![FE-Netz erzeugt mit der Funktion _Mesh()_](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
 
-Alternativ kann eine .msh Datei eingepflegt werden mit
+![FE-Netz erzeugt mit der Funktion `Mesh()`](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
 
-```{{julia}}
-m = Mesh("complex-plate.msh")
+Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an.
+
+```{julia}
+m = makemeshonrectangle(p.lx, p.ly, nx, ny);
+```
+
+![FE-Netz erzeugt mit der Funktion `makemeshonrectangle()`](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
+
+Als dritte Option kann eine .msh Datei eingepflegt werden mit
+
+```{julia}
+m = Mesh("../gmsh/complex-plate.msh");
 ```
 
 ![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
 
 ### Formfunktionen 
 
+Für die Definition der Formfunktionen wird ebenfalls auf die MMJMesh Bibliothek zugegriffen. Für die Konstruktion der Funktionen ist ein Bezugselement, mit den Koordinaten gespeichert in der Matrix `V` vom Typ Int64, zu definieren. Für das Referenzelement ist `V` wie folgt festgelegt.
+
+```{julia}
+V = [ -1 1 1 -1; -1 -1 1 1]
+```
+
+Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mittels der Funktion `mmonomials(n,p)` ein Vektor mit allen, für die Formfunktionen notwendigen, Monomen erzeugt. `n` ist dabei die Anzahl der Variablen und `p` der Grad der Monome. Außerdem kann optional das Gebiet und eine Vorschrift zum erstellen der Monome als Eingabeparameter in der Funktion übergeben werden, wie es bei der Erzeugung des nicht konformen Hermite-Elements und bei dem Serendipity Element notwendig ist.
+
+In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
+
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für Lagrange Element und das Serendipity Element dargestellt.
+
 __Hermite-Elemente__
 
-```{{julia}}
+```{julia}
 function hermiteelement(V;conforming=true)
     if conforming
         m = 16
@@ -75,15 +95,15 @@ function hermiteelement(V;conforming=true)
     end
     Imatrix = Matrix{Int}(I, m, m)
     M = [n(p) for p in P, n in N]
-    Minv = (M \ Imatrix) #round.(...., digits=10) 
+    Minv = (M \ Imatrix)
     H4 = (Minv*P)
-    return H4
+    return M
 end;
 ```
 
 __Lagrange-Elemente__
 
-```{{julia}}
+```{julia}
 function lagrangeelement(V)
         m = 4
         P = mmonomials(2, 1, QHat  ,type = Int)
@@ -101,7 +121,7 @@ end;
 
 __Serendipity-Elemente__
 
-```{{julia}}
+```{julia}
 function serendipityelement(V)
     W = Array{Int64,2}(undef, 2,4)
     for i = 1:3

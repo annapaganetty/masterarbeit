@@ -1,4 +1,4 @@
-## Programmstruktur {#sec-Programmstruktur}
+## Programmstruktur {#sec-programmstruktur}
 
 Umsetzung in JULIA entsprechend dem mathematischen Konzept welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. 
 

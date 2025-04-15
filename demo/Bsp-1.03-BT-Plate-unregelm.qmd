@@ -5,7 +5,7 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 ```{julia}
 using MMJMesh.Gmsh
-mQuadBTunr = Mesh("gmesh/plate-BT-04.msh")
+mQuadBTunr = Mesh("gmsh/plate-BT-04.msh")
 fig = plotmesh(mQuadBTunr; title="quadratische Platte | 8m x 8m | 400 unregelmäßige Elemente")
 # save("Beispiel-01-BTunr-mesh.png",fig)
 ```

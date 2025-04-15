@@ -1,6 +1,6 @@
 # Umsetzung in JULIA {#sec-Umsetzung-Julia}
 
-Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. 
+Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. @sec-kommerzielle-Software gibt einen Überblick über bestehende Finite Elemente Software, sowie der unterschiedlichen implementierten Elementansätze. Unter anderem wird das Programm RFEM vorgestellt, welches in @sec-anwendungsbeispiele für Vergleichsrechnungen genutzt wird. Darauf folgend wird die allgemeine Struktur des erstellten Programmcodes in @sec-programmstruktur dargestellt, um darauf aufbauend  in @sec-programmteile detaillierter auf die einzelnen Programmteile einzugehen.
 
 {{< include julia.qmd >}}
 {{< include FEM-programme.qmd >}}

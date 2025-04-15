@@ -1,4 +1,4 @@
-## Beispiel 1: allseitig eingespannte Platte 
+## Beispiel 1: allseitig eingespannte Platte {#sec-beispiel-01}
 
 Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
 
@@ -35,12 +35,14 @@ $$
 $${#eq-werte-czerny-tafeln}
 
 
-Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS dargestellt . 
+Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS und @fig-Biegemomente-BTP spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS für das BFS-Element dargestellt . 
 
 
-### Berechnung nach Bogner Fox Schmitt
+### Berechnung mit Bogner Fox Schmitt Elementansatz
 
-Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung 5.12 dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
+Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung ... dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
+
+![Durchbiegung $w$ der Platte (BFS-Elemente)](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-konvergenz width=60%}
 
 ::: {#fig-Biegemomente-BFS  layout-ncol=2}
 
@@ -73,7 +75,7 @@ Biegemomente Platte Bogner Fox Schmitt
 Querkräfte Platte Bogner Fox Schmitt
 :::
 
-### Berechnung nach Batoz und Tahar
+### Berechnung mit Batoz und Tahar Elementansatz
 
 
 ::: {#fig-Biegemomente-BTP  layout-ncol=2}

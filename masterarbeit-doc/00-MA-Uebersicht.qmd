@@ -48,7 +48,7 @@ Kern der Arbeit ist die Formulierung nach Batoz und Tahar und implementierung de
         Numerische Lösung
     
 
-**Umsetzung in JULIA**
+**5. Umsetzung in JULIA**
     Einführung in Julia für FEM
     Implementierung der Formulierung für rechteckige Elemente
         Code-Struktur und wichtige Funktionen
@@ -56,11 +56,11 @@ Kern der Arbeit ist die Formulierung nach Batoz und Tahar und implementierung de
         Herausforderungen und Lösungen
         
 
-**Anwendungsbeispiele**
+**6. Anwendungsbeispiele**
     Beschreibung der Beispiele
     Vergleich der Ergebnisse mit kommerziellen FEM-Programmen
 
-
+**7. Zusammenfassung und Ausblick**
 
 
 

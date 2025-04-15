@@ -1,4 +1,7 @@
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
 
+Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen entsprechend der Formulierung von Batoz und Tahar zu untersuchen. Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny [Quelle] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm MicroFE. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird eine Vergleichsrechnung mit dem Programm RFEM durchgeführt.
+
 {{< include patch-test.qmd >}}
 {{< include beispiel-01.qmd >}}
+{{< include beispiel-02.qmd >}}

@@ -28,11 +28,9 @@ w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 ## Plot Verformung
 
 ```{julia}
-# include("../src/setup.jl")
-# WGLMakie.activate!
-plotw(mQuadBFS, w;conforming = true,title="Verformung")
+GLMakie.activate!()
+wBFS = plotw(mQuadBFS, w;conforming = true,title="Verformung")
 ```
-
 
 ```{julia}
 set_theme!(theme_minimal())
@@ -45,7 +43,6 @@ update_theme!(
     featureedgelinewidth=2.5,
     transparency = false
 )
-
 figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = false, a3d=true)
 # save("Beispiel-01-BFS-mx.png",figBFSmx)
 ```
@@ -71,7 +68,6 @@ Geglättete Ergebnisse
 ```{julia}
 figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
 ```
-
 
 ```{julia}
 figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
@@ -104,6 +100,9 @@ save("Beispiel-01-BFS-qx-glatt.png",figBFSqxGlatt)
 save("Beispiel-01-BFS-qy-glatt.png",figBFSqyGlatt)
 ```
 
+```{julia}
+save("Beispiel-01-BFS-w.png",wBFS)
+```
 # Konvergenz Plot
 
 ```{julia}

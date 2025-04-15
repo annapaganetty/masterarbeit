@@ -2042,7 +2042,7 @@ $$ {#eq-elementsteifigkeitsmatrix_DKQ}
 
 # Umsetzung in JULIA {#sec-Umsetzung-Julia}
 
-Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. 
+Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. @sec-kommerzielle-Software gibt einen Überblick über bestehende Finite Elemente Software, sowie der unterschiedlichen implementierten Elementansätze. Unter anderem wird das Programm RFEM vorgestellt, welches in @sec-anwendungsbeispiele für Vergleichsrechnungen genutzt wird. Darauf folgend wird die allgemeine Struktur des erstellten Programmcodes in @sec-programmstruktur dargestellt, um darauf aufbauend  in @sec-programmteile detaillierter auf die einzelnen Programmteile einzugehen.
 
 ## Programmiersprache JULIA {#sec-JULIA}
 
@@ -2062,7 +2062,7 @@ Die Syntax von Julia ist ähnlich der von MATLAB und Python, was sie für Nutzer
 
 Obwohl Julia im Vergleich zu etablierten Programmiersprachen wie Python oder R eine jüngere Sprache ist, hat sie ein wachsendes Zahl von Paketen und Bibliotheken, die eine breite Palette von Anwendungsbereichen abdecken. Die Julia-Community ist sehr aktiv, und viele Pakete sind speziell auf wissenschaftliche und technische Berechnungen ausgerichtet.
 
-Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial Durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.
+Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.
 
 Der Quellcode von Julia ist auf GitHub verfügbar.
 
@@ -2114,7 +2114,7 @@ __SAP2000__
 Bei SAP2000 handelt es sich um eine amerikansiche Software die entwickelt und vertrieben wird über Computers and Structures Inc. (CSi), Walnut Creek, CA, USA. Neben den US-Amerikanischen Normen ist auch der Eurocode in dem Programm hinterlegt und ermöglicht die Nutzung in Deutschland. Sowohl für die Reissner-Mindlin Theorie, als auch für die Kirchhoffsche Plattentheorie enthält SAP2000 eine 3-Knoten-Dreieckelement und ein 4-Knoten-Viereckelement.
 
 
-## Programmstruktur {#sec-Programmstruktur}
+## Programmstruktur {#sec-programmstruktur}
 
 Umsetzung in JULIA entsprechend dem mathematischen Konzept welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. 
 
@@ -2123,7 +2123,7 @@ Die Abbildung zeigt den schematischen Aufbau des Programms anhand der einzelnen 
 
 
 
-## Programmteile {#sec-Programmteile}
+## Programmteile {#sec-programmteile}
 
 Nachfolgend werden die Programmteile vorgestellt
 
@@ -2131,7 +2131,10 @@ Nachfolgend werden die Programmteile vorgestellt
 
 Als erstes werden die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt. 
 
-```{{julia}}
+
+
+::: {.cell execution_count=2}
+``` {.julia .cell-code}
 p = @var Params()
 p.lx = 8
 p.ly = 8
@@ -2140,43 +2143,78 @@ p.ν = 0.2
 p.h = 0.2
 p.E = 31000e6;
 ```
+:::
 
-Die Definition der Parameter p.lx und p.ly ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion _makemeshonrectangle()_, ein FE-Netz für die Platte der Länge p.lx und der Breite p.ly erzeugt werden. Die Parameter p.q, p.ν, p.h und p.E beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
+
+Die Definition der Parameter `p.lx` und `p.ly` ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der MMJMesh.Meshes Bilbliothek. Für die Beispiele in Kapitel... sind die nachfolgenden drei Funktionen wichtig. Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen lx und ly und einem  gleichmäßiges Netz mit gleichgroßen Elementen wird die Funktion _makemeshonrectangle(lx, ly, nx, ny)_ genutzt. Die Eingabeparameter _nx_ und _ny_ geben die Anzahl der Unterteilungen je Seite an.
+Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek kann eine Platte und das FE-Netz erzeugt werden. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist, dass auf die Reihenfolge der Knoten geachtet wird.
 
-```{{julia}}
-m = makemeshonrectangle(lx, ly, nx, ny)
-```
-
-![FE-Netz erzueugt mit der Funktion _makemeshonrectangle_](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
-
-
-Alternativ kann die Platte und das FE-Netz mit selbstdefinierten Koordinaten _coords_ und der Verbindung von vier Knoten zu einem Element durch _elts_ erzeugt werden.
-
-```{{julia}}
+::: {.cell execution_count=3}
+``` {.julia .cell-code}
 coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
           0.0 0.0  0.0  10.0 10.0 10.0 20.0 20.0 20.0]
 elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
 m = Mesh(coords, elts, 2);
 ```
-![FE-Netz erzeugt mit der Funktion _Mesh()_](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
+:::
 
-Alternativ kann eine .msh Datei eingepflegt werden mit
 
-```{{julia}}
-m = Mesh("complex-plate.msh")
+![FE-Netz erzeugt mit der Funktion `Mesh()`](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
+
+Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an.
+
+::: {.cell execution_count=4}
+``` {.julia .cell-code}
+m = makemeshonrectangle(p.lx, p.ly, nx, ny);
 ```
+:::
+
+
+![FE-Netz erzeugt mit der Funktion `makemeshonrectangle()`](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
+
+Als dritte Option kann eine .msh Datei eingepflegt werden mit
+
+::: {.cell execution_count=5}
+``` {.julia .cell-code}
+m = Mesh("../gmsh/complex-plate.msh");
+```
+:::
+
 
 ![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
 
 ### Formfunktionen 
 
+Für die Definition der Formfunktionen wird ebenfalls auf die MMJMesh Bibliothek zugegriffen. Für die Konstruktion der Funktionen ist ein Bezugselement, mit den Koordinaten gespeichert in der Matrix `V` vom Typ Int64, zu definieren. Für das Referenzelement ist `V` wie folgt festgelegt.
+
+::: {.cell execution_count=6}
+``` {.julia .cell-code}
+V = [ -1 1 1 -1; -1 -1 1 1]
+```
+
+::: {.cell-output .cell-output-display execution_count=7}
+```
+2×4 Matrix{Int64}:
+ -1   1  1  -1
+ -1  -1  1   1
+```
+:::
+:::
+
+
+Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mittels der Funktion `mmonomials(n,p)` ein Vektor mit allen, für die Formfunktionen notwendigen, Monomen erzeugt. `n` ist dabei die Anzahl der Variablen und `p` der Grad der Monome. Außerdem kann optional das Gebiet und eine Vorschrift zum erstellen der Monome als Eingabeparameter in der Funktion übergeben werden, wie es bei der Erzeugung des nicht konformen Hermite-Elements und bei dem Serendipity Element notwendig ist.
+
+In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
+
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für Lagrange Element und das Serendipity Element dargestellt.
+
 __Hermite-Elemente__
 
-```{{julia}}
+::: {.cell execution_count=7}
+``` {.julia .cell-code}
 function hermiteelement(V;conforming=true)
     if conforming
         m = 16
@@ -2200,15 +2238,18 @@ function hermiteelement(V;conforming=true)
     end
     Imatrix = Matrix{Int}(I, m, m)
     M = [n(p) for p in P, n in N]
-    Minv = (M \ Imatrix) #round.(...., digits=10) 
+    Minv = (M \ Imatrix)
     H4 = (Minv*P)
-    return H4
+    return M
 end;
 ```
+:::
+
 
 __Lagrange-Elemente__
 
-```{{julia}}
+::: {.cell execution_count=8}
+``` {.julia .cell-code}
 function lagrangeelement(V)
         m = 4
         P = mmonomials(2, 1, QHat  ,type = Int)
@@ -2223,10 +2264,13 @@ function lagrangeelement(V)
     return L4
 end;
 ```
+:::
+
 
 __Serendipity-Elemente__
 
-```{{julia}}
+::: {.cell execution_count=9}
+``` {.julia .cell-code}
 function serendipityelement(V)
     W = Array{Int64,2}(undef, 2,4)
     for i = 1:3
@@ -2247,6 +2291,8 @@ function serendipityelement(V)
     return S8
 end;
 ```
+:::
+
 
 ### Elementsteifigkeitsmatrizen & Elementlastvektoren
 
@@ -2430,19 +2476,22 @@ end;
 
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
 
-## Patch-Test
+Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen entsprechend der Formulierung von Batoz und Tahar zu untersuchen. Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny [Quelle] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm MicroFE. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird eine Vergleichsrechnung mit dem Programm RFEM durchgeführt.
+
+## Patch-Test {#sec-patch-test}
 
 constant state of stresses on the rectangular plate
 Lasten auf die rechteckige Platte mit 5 Elementen aufbringen so dass sich ein kosntanter Spannungszustand einsdtellt. 
 
 Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu validieren.
 
+![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=90%} 
 
 ### Eingabewerte
 
-Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind Abbildung ... zu entnehmen. 
+Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. 
 
-::: {.cell execution_count=1}
+::: {.cell execution_count=10}
 ``` {.julia .cell-code}
 function makequadrilateralMesh(p)
     coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
@@ -2455,7 +2504,7 @@ function makequadrilateralMesh(p)
 end
 ```
 
-::: {.cell-output .cell-output-display execution_count=2}
+::: {.cell-output .cell-output-display execution_count=11}
 ```
 makequadrilateralMesh (generic function with 1 method)
 ```
@@ -2463,15 +2512,13 @@ makequadrilateralMesh (generic function with 1 method)
 :::
 
 
-TODO: Abbildung Mesh mit Abmessungen und Lasten
-
 An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Achse ein Moment von 10 angesetz, so dass sich über die Länge verteilt ein Moment von 1 ergibt. Dementsprechend wird erwartet, dass sich bei den Ergebnissen sowohl um die x- als auch um die y-Achse ein Momenten Verlauf von konstant 1 einstellt.
 
 
 
 
 
-## Beispiel 1: allseitig eingespannte Platte 
+## Beispiel 1: allseitig eingespannte Platte {#sec-beispiel-01}
 
 Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
 
@@ -2508,12 +2555,14 @@ $$
 $${#eq-werte-czerny-tafeln}
 
 
-Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS dargestellt . 
+Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS und @fig-Biegemomente-BTP spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS für das BFS-Element dargestellt . 
 
 
-### Berechnung nach Bogner Fox Schmitt
+### Berechnung mit Bogner Fox Schmitt Elementansatz
 
-Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung 5.12 dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
+Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung ... dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
+
+![Durchbiegung $w$ der Platte (BFS-Elemente)](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-konvergenz width=60%}
 
 ::: {#fig-Biegemomente-BFS  layout-ncol=2}
 
@@ -2546,7 +2595,7 @@ Biegemomente Platte Bogner Fox Schmitt
 Querkräfte Platte Bogner Fox Schmitt
 :::
 
-### Berechnung nach Batoz und Tahar
+### Berechnung mit Batoz und Tahar Elementansatz
 
 
 ::: {#fig-Biegemomente-BTP  layout-ncol=2}
@@ -2568,12 +2617,51 @@ Biegemomente Platte Batoz & Tahar
 :::
 
 
+## Beispiel 2: komplexe Platte {#sec-beispiel-02}
+
+
+
+|                   |                           |
+|:------------------|:--------------------------|
+|Plattendicke       | $d = 0.2 \text{ m}$        |
+|Elastizitätsmodul  | $E = 31.000 \text{ N/mm}^2$|
+|Flächenlast        | $p = 5 \text{ kN}$         |
+|                   | $\nu = 0.0$               |
+
+: Daten zum Beispiel "allseitig eingespannte Platte" {#tbl-Eingabedaten-komplex}
+
+
+### Berechnung nach Batoz und Tahar
+
+
+
+
+### Berechnung mit RFEM
+
+![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-RFEM-System-Komplex- width=80%}
+
+
 
 
 
 {{< pagebreak >}}
 
 
+
+
+
+<!-- Kapitel 7 -->
+
+
+```{=typst}
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 7: Zusammenfassung und ausblick])))
+```
+
+# Zusammenfassung und Ausblick {#sec-zusammenfassung-ausblick}
+
+
+
+{{< pagebreak >}}
 
 
 
