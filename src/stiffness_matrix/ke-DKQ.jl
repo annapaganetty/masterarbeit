@@ -8,7 +8,7 @@ V = [ -1 1 1 -1; -1 -1 1 1]
 const N = MappingFromComponents(lagrangeelement(V)...)
 
 # Element matrix
-function plateKe(p)
+function DKQKe(p)
     function keFunc(e)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
         Ke = zeros(12,12)
@@ -56,9 +56,9 @@ end
 
 
 # Element vector
-function plateRe(q)
+function DKQRe(q)
     function reFunc(e)
-        p,a,b= _fsize(e)
+        _,a,b= _fsize(e)
         re = zeros(12)
         re[1]=(1/4)*a*b
         re[2]= 0

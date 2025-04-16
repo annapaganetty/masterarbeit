@@ -31,29 +31,23 @@ update_theme!(faceplotmesh = 5)
 update_theme!(edgelinewidth = 2.5)
 update_theme!(colormap = (:aquamarine, 1.0))
 
-# H-Funktionen aus dem Batoz Tahar Paper
-include("h-functions/BTP-gen-H-functions.jl")
-include("h-functions/BTP-H-functions.jl")
-
+# Generierung Eingespannte Platte
+include("fixed-plate.jl")
+# Erzeugung unterschiedlicher meshes
+include("mesh.jl")
+# Geometrieeigenschaften Elemente
+include("geometry.jl")
 # Formfunktionen unterschiedlicher Elementansätze
 include("shapefunctions.jl")
-
-# Berechnungen Gesamtsteifigkeitsmatrix, Schnittgrößen 
-include("calculation/internal-forces.jl")
-include("calculation/fem.jl")
-
-# System Geometrie, Netz, Randbedinungen (Einspannungen etc.)
-include("system/fixed-plate.jl")
-include("system/mesh.jl")
-include("system/geometry.jl")
-
-# Elementsteifigkeitmatrizen unterschiedlicher Elementansätze
-include("stiffness_matrix/ke-batoz-tahar.jl")
-include("stiffness_matrix/weak_form-kirchhoff.jl") ####
-include("stiffness_matrix/ke-hartmann-conforming.jl")
-include("stiffness_matrix/ke-hartmann-nonconforming.jl")
+# H-Funktionen aus dem Batoz Tahar Paper
+include("DKQ-H-functions.jl")
+# Elementsteifigkeitmatrizen DKQ und konformer Hermite Ansatz
+include("stiffness_matrix/ke-DKQ.jl")
 include("stiffness_matrix/ke-kirchhoff-conforming.jl")
-include("stiffness_matrix/ke-kirchhoff-nonconforming.jl")
+# Assemblierung Gesamtsteifigkeitsmatrix + Randbedingungne
+include("fem.jl")
+# Berechnungen Schnittgrößen 
+include("internal-forces.jl")
 
 # Ausgabe der Ergebnisse und Zwischenergebnisse
 include("plots/plot.jl")
@@ -98,3 +92,7 @@ p4.E = 1000; # [N/mm^2] [MN/m^2]
 
 Base.setindex!(d::MMJMesh.Meshes.Data, x, s::Symbol) = setdata!(d.mesh, s, x)
 Base.getindex(d::MMJMesh.Meshes.Data, s::Symbol) = data(d.mesh, s)
+
+# Files zum generieren der H funktionen und von Ke der Kirchhoffplatte
+include("generate/BTP-H-functions.jl")
+include("generate/weak_form-kirchhoff.jl")

@@ -11,6 +11,7 @@ xElem = 20
 mQuadBFS = makequadratcicMesh(p1, xElem)
 figBFS = plotmesh(mQuadBFS;title="quadratische Platte | 8m x 8m | 400 Elemente")
 # save("Beispiel-01-BFS.png",figBFS)
+p1.E
 ```
 
 ```{julia}
@@ -43,48 +44,21 @@ update_theme!(
     featureedgelinewidth=2.5,
     transparency = false
 )
-figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = false, a3d=true)
-# save("Beispiel-01-BFS-mx.png",figBFSmx)
-```
-
-
-```{julia}
-figBFSmy= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = false, a3d=true)
-```
-
-```{julia}
-figBFSmxy= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4, 4),nodal = false, a3d=true)
-```
-
-```{julia}
+figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
+figBFSmy= plotr(mQuadBFS, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
+figBFSmxy= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
 figBFSqx= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
-```
-
-```{julia}
 figBFSqy= plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
 ```
 
 Geglättete Ergebnisse 
 ```{julia}
 figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
-```
-
-```{julia}
 figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
-```
-
-```{julia}
 figBFSmxyGlatt= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4, 4),nodal = true, a3d=true)
-```
-
-```{julia}
 figBFSqxGlatt= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
-```
-
-```{julia}
 figBFSqyGlatt=plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
 ```
-
 
 ```{julia}
 save("Beispiel-01-BFS-mx.png",figBFSmx)

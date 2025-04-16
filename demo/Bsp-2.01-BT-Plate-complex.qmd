@@ -36,6 +36,7 @@ mesh02.data[:refunc] = plateRe(p1.q)
 applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs) # gestütze Ränder
 applyDirichletBCs!([4,9,11], K, r, bcs) # Knoten mit Stützen 
 @time w = K \ r
+
 ```
 
 3.777843 seconds (63.40 M allocations: 3.964 GiB, 5.44% gc time)
@@ -52,7 +53,17 @@ GLMakie.activate!()
 18.468951 seconds (405.41 M allocations: 16.089 GiB, 11.42% gc time)
 
 ```{julia}
-mesh02.data[:post] = postprocessorBTP(p1, w)  
+e = element(mesh02,1)
+idxs = idxDOFs(nodeindices(e), 3)
+LgFace = bMatrix(e)[1,:]
+HxFace = bMatrix(e)[2,:]
+HyFace = bMatrix(e)[3,:]
+nnodes(mesh02)
+w[idxs][1:3:end]
+```
+
+```{julia}
+mesh02.data[:post] = postprocessor(p1, w,"BTP")  
 ```
 
 ```{julia}

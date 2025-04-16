@@ -10,19 +10,14 @@ function plate(m, p, model::String)
     elseif model == "BTP"
         nf = 3
         bcs = [true, true, true]
-        m.data[:kefunc] = plateKe(p)
-        m.data[:refunc] = plateRe(p.q)
+        m.data[:kefunc] = DKQKe(p)
+        m.data[:refunc] = DKQRe(p.q)
     end
 
     K,r = assembleKr(m, nf)
     applyDirichletBCs!(m.groups[:boundarynodes], K, r, bcs)
     w = K \ r
 
-    if model == "BTP"
-	    m.data[:post] = postprocessorBTP(p, w)
-    else
-        m.data[:post] = postprocessor(p, w)
-    end
-
+	m.data[:post] = postprocessor(p, w, model)
     return w
 end
