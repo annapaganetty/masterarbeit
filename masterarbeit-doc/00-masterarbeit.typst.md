@@ -2179,7 +2179,7 @@ Als dritte Option kann eine .msh Datei eingepflegt werden mit
 
 ::: {.cell execution_count=5}
 ``` {.julia .cell-code}
-m = Mesh("../gmsh/complex-plate.msh");
+m = Mesh("../gmsh/complex-plate-02.msh");
 ```
 :::
 

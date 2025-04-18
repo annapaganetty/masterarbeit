@@ -12,15 +12,27 @@ meshPatch = plotmesh(mPatch;title="Patch Test")
 Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
 
 ```{julia}
+a = 20
+b = 10
+p3 = @var Params()
+p3.lx = 2*a #[m]
+p3.ly = 2*b #[m]
+p3.q = 0
+p3.ν = 0
+p3.h = 1 #[m]
+p3.E = 1000; # [N/mm^2] [MN/m^2]
+```
+
+```{julia}
 nf = 3
 bcs1 = [true, false,false]
 bcs2 = [false, false, false]
-mPatch.data[:kefunc] = plateKe(p3)
-mPatch.data[:refunc] = plateRe(p3.q)
+mPatch.data[:kefunc] = DKQKe(p3)
+mPatch.data[:refunc] = DKQRe(p3.q)
 K,r = assembleKr(mPatch,nf)
 
 # Randbedinungen
-applyDirichletBCs!(mPatch.groups[:boundarynodes][1:4], K, r, bcs1)
+applyDirichletBCs!(mPatch.groups[:boundarynodes][1:3], K, r, bcs1)
 
 dofs2 = idxDOFs(mPatch.groups[:boundarynodes],3)
 
@@ -41,6 +53,7 @@ r[dofs2[12]] = b
 w = K \ r
 ```
 
+
 ```{julia}
 GLMakie.activate!()
 # Verformung 
@@ -49,6 +62,7 @@ wPatch = plotwBTP(mPatch, w; title="Verformung")
 θxPatch = plotThetaxBTP(mPatch, w; title="Verdrehung θx")
 # Verdrehung ThetaY
 θyPatch = plotThetayBTP(mPatch, w; title="Verdrehung θy")
+θyPatch
 ```
 
 ## Schnittgrößen Plotten 
@@ -68,7 +82,7 @@ update_theme!(
 mxPatch = plotrBTP(mPatch, :mx, "Biegemoment mx", (0, 1),nodal = false, a3d=true)
 myPatch = plotrBTP(mPatch, :my, "Biegemoment my", (0, 1),nodal = false, a3d=true)
 mxyPatch = plotrBTP(mPatch, :mxy, "Biegemoment mxy", (0 , 1),nodal = false, a3d=true)
-mxPatch
+mxyPatch
 ```
 
 

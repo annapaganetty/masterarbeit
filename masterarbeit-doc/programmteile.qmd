@@ -50,7 +50,7 @@ m = makemeshonrectangle(p.lx, p.ly, nx, ny);
 Als dritte Option kann eine .msh Datei eingepflegt werden mit
 
 ```{julia}
-m = Mesh("../gmsh/complex-plate.msh");
+m = Mesh("../gmsh/complex-plate-02.msh");
 ```
 
 ![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}

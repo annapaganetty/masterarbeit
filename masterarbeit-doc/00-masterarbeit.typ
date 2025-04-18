@@ -1898,7 +1898,7 @@ Als dritte Option kann eine .msh Datei eingepflegt werden mit
 
 #block[
 ```julia
-m = Mesh("../gmsh/complex-plate.msh");
+m = Mesh("../gmsh/complex-plate-02.msh");
 ```
 
 ]

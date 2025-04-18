@@ -14,20 +14,19 @@ function DKQKe(p)
         Ke = zeros(12,12)
         # Jacobimatrix des betrachteten Elements (muss noch transponiert werden s. Zeile 28 und 29 J') 
         jF = jacobian(parametrization(geometry(e)))
-
-        Hx = MappingFromComponents(bMatrix(e)[2,:]...) # 12 Element Vektor mit Hx Funktionen 
-        Hy = MappingFromComponents(bMatrix(e)[3,:]...)  # 12 Element Vektor mit Hy Funktionen 
+        HxFace, HyFace = makeDKQFunctions(e)
+        Hx = MappingFromComponents(HxFace...)  
+        Hy = MappingFromComponents(HyFace...)  # 12 Element Vektor mit Hy Funktionen 
         # 2 x 12 Matrix, oben Ableitung Hx nach ξ und unten nach η
-        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
-        # 2 x 12 Matrix, oben Ableitung Hy nach ξ und unten nach η
-        ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+        ∇ξηHx = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+        ∇ξηHy = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
             # Jacobi matrix ausgewertet an der Stelle ξ
             J = jF(ξ)
-            ∇ₓN = (inv(J') * ∇ξN(ξ))
-            ∇yN = (inv(J') * ∇ηN(ξ)) 
-            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+            ∇ˣʸHx = (inv(J') * ∇ξηHx(ξ))
+            ∇ˣʸHy = (inv(J') * ∇ξηHy(ξ)) 
+            B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']
             Ke += w * B' * D * B * det(J)
         end
         return Ke

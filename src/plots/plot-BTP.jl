@@ -48,16 +48,16 @@ end
 function makeThetaxBTP(wHat) # = -beta_y
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        Hy = bMatrix(face)[3,:]
-        return -sum(wHat[idxs] .* Hy)
+        Hx,Hy = makeDKQFunctions(face)
+        return -(Hy * w[idxs])[1]
     end
 end
 # Verdrehung theta y = -w,x = w nach x abgeleitet = beta_x
 function makeThetayBTP(wHat) # = -beta_x
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        Hx = bMatrix(face)[2,:]
-        return -sum(wHat[idxs] .* Hx)
+        Hx,Hy = makeDKQFunctions(face)
+        return -(Hx * w[idxs])[1]
     end
 end
 
@@ -192,7 +192,7 @@ function maketitle(p, title)
 	return title * " | min: " * min * " | max: " * max
 end
 
-function plotrBTP(m, result, title, cr, npoints = 15; nodal, a3d)
+function plotrBTP(m, result, title, cr, npoints = 1; nodal, a3d)
 		fig = Figure(size = (600, 600))
 		if a3d == true
 			ax = Axis3(fig[1, 1])

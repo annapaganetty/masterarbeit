@@ -6,7 +6,7 @@ function makeDKQFunctions(e)
     Ns = serendipityelement(V)
 
     Hx = Array{Any}(undef,1, 12)
-    Hx = Array{Any}(undef,1, 12)
+    Hy = Array{Any}(undef,1, 12)
 
     Hx[1] = (-3Ns[5]*S₅*l₄₁ + 3Ns[8]*S₈*l₁₂) / (2l₁₂*l₄₁)
     Hx[2] = -0.75C₅*Ns[5]*S₅ - 0.75C₈*Ns[8]*S₈
@@ -37,6 +37,14 @@ function makeDKQFunctions(e)
     return Hx,Hy
 end
 
-
+# Berechnung der Gradienten von Hx und Hy für ein DKQ Element e
+function makeDKQGradients(e)
+    HxFace, HyFace = makeDKQFunctions(e)
+    Hx = MappingFromComponents(HxFace...)  
+    Hy = MappingFromComponents(HyFace...) 
+    ∇Hx = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+    ∇Hy = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+    return  ∇Hx, ∇Hy
+end
 
 

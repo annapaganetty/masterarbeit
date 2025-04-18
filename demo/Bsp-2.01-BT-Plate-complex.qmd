@@ -7,7 +7,7 @@ include("../src/setup.jl")
 using MMJMesh.Gmsh
 using Makie
 GLMakie.activate!()
-mesh02 = Meshes.Mesh("gmsh/plate-Bsp-03.msh")
+mesh02 = Meshes.Mesh("gmsh/plate-Bsp-03.2.msh")
 # fixierte Knoten
 fixedNodes = group(mesh02, :fixed0)
 # freie Knoten
@@ -26,21 +26,24 @@ scatter!([column1 column2 column3], color=:green,markersize = 25)
 fig
 ```
 
-
 ```{julia}
 nf = 3
-bcs = [true, true, true]
-mesh02.data[:kefunc] = plateKe(p1)
-mesh02.data[:refunc] = plateRe(p1.q)
+bcs = [true, false,false]
+mesh02.data[:kefunc] = DKQKe(p1)
+mesh02.data[:refunc] = DKQRe(p1.q)
 @time K,r = assembleKr(mesh02, nf)
 applyDirichletBCs!(mesh02.groups[:fixed0], K, r, bcs) # gestütze Ränder
 applyDirichletBCs!([4,9,11], K, r, bcs) # Knoten mit Stützen 
 @time w = K \ r
-
+# maximum(w[1:3:end])
 ```
 
 3.777843 seconds (63.40 M allocations: 3.964 GiB, 5.44% gc time)
 0.727153 seconds (6 allocations: 223.546 MiB, 6.79% gc time)
+
+```{julia}
+maximum(w[3:3:end])
+```
 
 ## Plot Verformung
 
@@ -53,25 +56,84 @@ GLMakie.activate!()
 18.468951 seconds (405.41 M allocations: 16.089 GiB, 11.42% gc time)
 
 ```{julia}
-e = element(mesh02,1)
-idxs = idxDOFs(nodeindices(e), 3)
-LgFace = bMatrix(e)[1,:]
-HxFace = bMatrix(e)[2,:]
-HyFace = bMatrix(e)[3,:]
-nnodes(mesh02)
-w[idxs][1:3:end]
-```
-
-```{julia}
 mesh02.data[:post] = postprocessor(p1, w,"BTP")  
 ```
 
 ```{julia}
-figB02mx = plotrBTP(mesh02, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=false)
+GLMakie.activate!()
+set_theme!(theme_minimal())
+update_theme!(
+    colormap=(:redblue,1.0),
+    color=3,
+    faceplotzscale=1,
+    faceplotnpoints=15,
+    edgesvisible=false,
+    featureedgelinewidth=2.5,
+) 
+function plotr2D(m,r;title="")
+    fig = mkfig2d(title=title)
+    p = mplot!(m, nodalresult(m, r), 
+    nodewarp = nothing,
+    faceplotnpoints=1,
+    faceplotmesh=0,
+    facecolor=3,
+    faceplotzscale=0,
+    colorrange=(-1e4, 1e4),
+    colormap=:RdBu)
+    mplot!(m, edgesvisible = true, facesvisible = false)
+    Colorbar(fig[1, 2],colorrange =(-1e4, 1e4))
+    return fig
+end
+```
+
+p1 = @var Params()
+p1.q = 5e3		# [N/m]
+p1.ν = 0.0
+p1.h = 0.2		# [m]
+p1.E = 31000e6;	# [N/m^2]
+
+```{julia}
+plotr2D(mesh02,:mx,title = "Biegemoment mx")
 ```
 
 ```{julia}
-figB02my= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
+nrMX = nodalresult(mesh02, :mx)
+nrMY = nodalresult(mesh02, :my)
+nrMXY = nodalresult(mesh02, :mxy)
+
+minMX = minimum(nrMX/1e3)
+minMY = minimum(nrMY/1e3)
+minMXY = minimum(nrMXY/1e3)
+maxMX = maximum(nrMX/1e3)
+maxMY = maximum(nrMY/1e3)
+maxMXY = maximum(nrMXY/1e3)
+```
+
+```{julia}
+minMY
+```
+
+```{julia}
+fig = mkfig2d(title="tti")
+p = mplot!(mesh02, :w, 
+    nodewarp = nothing,
+    faceplotnpoints=1,
+    faceplotmesh=0,
+    facecolor=3,
+    faceplotzscale=0,
+    colorrange=(-0.005, 0.015),
+    colormap=:RdBu)
+mplot!(mesh02, edgesvisible = false, facesvisible = false)
+Colorbar(fig[1, 2],colorrange =(-0.005, 0.015))
+fig
+```
+
+```{julia}
+plotr2D(mesh02,:my,title = "Biegemoment my")
+```
+
+```{julia}
+plotr2D(mesh02,:mxy,title = "Biegemoment mxy")
 ```
 
 ```{julia}

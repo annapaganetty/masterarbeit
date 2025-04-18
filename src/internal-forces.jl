@@ -64,8 +64,8 @@ function postprocessor(params, wHat,model::String)
             idxs = idxDOFs(nodeindices(face), 3)
             V = [ -1 1 1 -1; -1 -1 1 1]
             Ni = lagrangeelement(V)
-            
-            HxFace, HyFace = makeDKQFunctions(e)
+
+            HxFace, HyFace = makeDKQFunctions(face)
             # first Derivatives of w = -beta 
             we = sum(Ni .* wHat[idxs][1:3:end])
             βx = sum(HxFace .* wHat[idxs]) 
@@ -76,16 +76,16 @@ function postprocessor(params, wHat,model::String)
             jF = jacobian(parametrization(geometry(face)))
             Hx = MappingFromComponents(HxFace...)  
             Hy = MappingFromComponents(HyFace...) 
-            ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
-            ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+            ∇ξηHx = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+            ∇ξηHy = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
             Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
 
             function moment(name)
                     x -> begin
-                        J = jF(x)
-                        ∇ₓN = (inv(J') * ∇ξN(x))
-                        ∇yN = (inv(J') * ∇ηN(x)) 
-                        B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
+                        J = jF(x) 
+                        ∇ˣʸHx = (inv(J') * ∇ξηHx(x))
+                        ∇ˣʸHy = (inv(J') * ∇ξηHy(x)) 
+                        B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']
                         if name == :mxfunc
                             return (Db * B)[1] * wHat[idxs]
                         elseif name == :myfunc
@@ -107,8 +107,8 @@ function postprocessor(params, wHat,model::String)
 
             # Moments Gl. 17 Batoz & Tahar
             mx = moment(:mxfunc)
-            my = moment(:mxfunc)
-            mxy = moment(:mxfunc)
+            my = moment(:myfunc)
+            mxy = moment(:mxyfunc)
             # Figure out why these are false
             qx = -D * ∂x(Δw)
             qy = -D * ∂y(Δw)
@@ -137,90 +137,6 @@ function postprocessor(params, wHat,model::String)
     end
 end
 
-function postprocessorBTP(params, wHat)
-    return (face, name) -> begin
-
-        # Plate properties
-        h = params.h
-        E = params.E
-        ν = params.ν
-        D = (E*h^3) / (12*(1-ν^2))
-
-        # Element displacement function
-            # Indices
-        idxs = idxDOFs(nodeindices(face), 3)
-
-        LgFace = bMatrix(face)[1,:]
-        HxFace = bMatrix(face)[2,:]
-        HyFace = bMatrix(face)[3,:]
-        # first Derivatives of w = -beta 
-        we = sum(LgFace .* wHat[idxs])
-        βx = sum(HxFace .* wHat[idxs]) 
-        βy = sum(HyFace .* wHat[idxs]) 
-        wx =  -βx # Beta x = -wx
-        wy =  -βy # Beta y = -wy
-
-        # Quick return
-        name == :w && return we
-
-        jF = jacobian(parametrization(geometry(face)))
-        Hx = MappingFromComponents(HxFace...)  
-        Hy = MappingFromComponents(HyFace...) 
-        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
-        ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
-        Db = D * [1 ν 0; ν 1 0; 0 0 (1-ν)/2]
-
-        function moment(name)
-                x -> begin
-                    J = jF(x)
-                    ∇ₓN = (inv(J') * ∇ξN(x))
-                    ∇yN = (inv(J') * ∇ηN(x)) 
-                    B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+∇ₓN[2,:]']
-                    if name == :mxfunc
-                        return (Db * B)[1] * wHat[idxs]
-                    elseif name == :myfunc
-                        return (Db * B)[2] * wHat[idxs]
-                    elseif name == :mxyfunc
-                        return (Db * B)[3] * wHat[idxs]
-                    end
-                end
-        end
-        # Derivatives
-        # βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
-        # βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
-        # βxy = ∂y(βx) + ∂x(βy)
-        
-        wxx = ∂x(wx)
-        wyy = ∂y(wy)
-        wxy = ∂y(wx) + ∂x(wy)
-        Δw = wxx + wyy
-
-        # Return
-        name == :βx && return βx
-        name == :βy && return βy
-        name == :wx && return wx
-        name == :wy && return wy
-        name == :wxx && return wxx
-        name == :wyy && return wyy
-        name == :wxy && return wxy
-        name == :Δw && return Δw
-
-        # Figure out why these are false
-        qx = -D * ∂x(Δw)
-        qy = -D * ∂y(Δw)
-
-        # Return
-        # Moments Gl. 17 Batoz & Tahar
-        name == :mx && return moment(:mxfunc)
-        name == :my && return moment(:myfunc)
-        name == :mxy && return moment(:mxyfunc)
-        name == :qx && return qx
-        name == :qy && return qy
-        # Unknown label
-        error("Unkown function: ", name)
-    end
-end
-
 function nodalresult(m, result)
     # Vektor mit 0en: Anzahl 0en = Anzahl Knoten
 	sr = zeros(nnodes(m))
@@ -233,6 +149,11 @@ function nodalresult(m, result)
     # nfaces(n) = Anzahl der Elemente die an dem Knoten angrenzen 
     # i = Anzahl der Knoten
 		sr[i] /= nfaces(n)
+        # if sr[i] > 15000
+        #     sr[i] =0
+        # elseif sr[i] < -15000
+        #     sr[i] = 0
+        # end
 	end
 	return sr
 end
