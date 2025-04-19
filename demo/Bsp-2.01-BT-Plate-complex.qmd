@@ -7,7 +7,7 @@ include("../src/setup.jl")
 using MMJMesh.Gmsh
 using Makie
 GLMakie.activate!()
-mesh02 = Meshes.Mesh("gmsh/plate-Bsp-03.2.msh")
+mesh02 = Meshes.Mesh("gmsh/plate-Bsp-03.1.msh")
 # fixierte Knoten
 fixedNodes = group(mesh02, :fixed0)
 # freie Knoten
@@ -93,7 +93,7 @@ p1.h = 0.2		# [m]
 p1.E = 31000e6;	# [N/m^2]
 
 ```{julia}
-plotr2D(mesh02,:mx,title = "Biegemoment mx")
+plotr2D(mesh02,:mxy,title = "Biegemoment mx")
 ```
 
 ```{julia}

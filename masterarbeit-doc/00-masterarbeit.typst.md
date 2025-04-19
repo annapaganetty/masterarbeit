@@ -2129,7 +2129,7 @@ Nachfolgend werden die Programmteile vorgestellt
 
 ### Parameter {#sec-Parameter}
 
-Als erstes werden die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt. 
+Um ein physikalische Problem lösen zu können, müssen zunächst die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt werden. Eine beispielhafte Parameterliste wird nachfolgend dargestellt. 
 
 
 
@@ -2146,18 +2146,18 @@ p.E = 31000e6;
 :::
 
 
-Die Definition der Parameter `p.lx` und `p.ly` ist nicht zwingendermaßen notwendig. Bei einer rechteckigen Platte kann anhand dessen, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
+Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek kann eine Platte und das FE-Netz erzeugt werden. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist, dass auf die Reihenfolge der Knoten geachtet wird.
+Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist, dass auf die Reihenfolge der Knoten geachtet wird.
 
 ::: {.cell execution_count=3}
 ``` {.julia .cell-code}
 coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
           0.0 0.0  0.0  10.0 10.0 10.0 20.0 20.0 20.0]
 elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
-m = Mesh(coords, elts, 2);
+m = MMJMesh.Meshes.Mesh(coords, elts, 2);
 ```
 :::
 
@@ -2175,11 +2175,11 @@ m = makemeshonrectangle(p.lx, p.ly, nx, ny);
 
 ![FE-Netz erzeugt mit der Funktion `makemeshonrectangle()`](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
 
-Als dritte Option kann eine .msh Datei eingepflegt werden mit
+Alternativ kann eine .msh Datei eingepflegt werden mit
 
 ::: {.cell execution_count=5}
 ``` {.julia .cell-code}
-m = Mesh("../gmsh/complex-plate-02.msh");
+m = MMJMesh.Meshes.Mesh("../gmsh/complex-plate-02.msh");
 ```
 :::
 
@@ -2209,7 +2209,7 @@ Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mit
 
 In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
 
-Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für Lagrange Element und das Serendipity Element dargestellt.
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für das Lagrange Element und das Serendipity Element dargestellt.
 
 __Hermite-Elemente__
 
@@ -2218,7 +2218,7 @@ __Hermite-Elemente__
 function hermiteelement(V;conforming=true)
     if conforming
         m = 16
-        P = mmonomials(2, 3, QHat  ,type = Int)
+        P = mmonomials(2, 3, QHat  ,type = BigInt)
         N = vcat(
             [   [ValueAtLF(p), 
                 PDerivativeAtLF(p, [1, 0]), 
@@ -2228,7 +2228,7 @@ function hermiteelement(V;conforming=true)
             )
     else 
         m = 12
-        P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = Int)
+        P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = BigInt)
         N = vcat(
             [   [ValueAtLF(p), 
                 PDerivativeAtLF(p, [1, 0]), 
@@ -2238,9 +2238,9 @@ function hermiteelement(V;conforming=true)
     end
     Imatrix = Matrix{Int}(I, m, m)
     M = [n(p) for p in P, n in N]
-    Minv = (M \ Imatrix)
-    H4 = (Minv*P)
-    return M
+    Minv = simplifyx.(M \ Imatrix)
+    H4 = Minv * P
+    return H4
 end;
 ```
 :::
@@ -2296,52 +2296,72 @@ end;
 
 ### Elementsteifigkeitsmatrizen & Elementlastvektoren
 
-für Bogner-Fox-Schmitt Formulierung
+Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das Symbolics Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
+
+::: {.cell execution_count=10}
+``` {.julia .cell-code}
+using Symbolics
+@variables  a,b, h, ν,E;
+# Punkte des Elements
+points = [0 a a 0; 0 0 b b]
+# Formfunktione konformes Hermite Element
+H4 = hermiteelement(points;conforming=true)
+∂1(u) =  (∂x(∂x(u)))
+∂2(u) =  (∂y(∂y(u)))
+∂3(u) =  2*(∂x(∂y(u)))
+Be1std(u) = [∂1(u), ∂2(u), ∂3(u)]
+Be2std(u) = [∂1(u) + ν * ∂2(u), ν * ∂1(u) + ∂2(u),(1- ν)/2 * ∂3(u)]
+aestd(u,v) = integrate(Be1std(u) ⋅ Be2std(v), (0 .. a) , (0 .. b))
+Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]));
+```
+:::
 
 
-für allgemeine Vierecke:
+Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da sich die Geometrieeigenschaften der Elemente nicht nur in der Länge und der Breite unterscheiden, sondern zusätzlich die Winkel unterschiedlich sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$ und $H_y$ Funktionen generiert, dessen Anforderungen basierend auf dem Paper von Batoz und Tahar in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffe. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` und den zugehörigen Integrationsgewichte `gaussWeights`. 
 
-```{{julia}}
-using MMJMesh.Geometries
-# Gauss points for numerical integration
-const gaussWeights = ones(4)
-const gaussPoints = 1 / sqrt(3) * [[-1, -1], [1, -1], [1, 1], [-1, 1]]
-
-# Shape functions and gradients
-V = [ -1 1 1 -1; -1 -1 1 1]
-const N = MappingFromComponents(lagrangeelement(V)...)
-
+::: {.cell execution_count=11}
+``` {.julia .cell-code}
 # Element matrix
-function plateKe(p)
+function DKQKe(p)
     function keFunc(e)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
         Ke = zeros(12,12)
+        # Jacobimatrix des betrachteten Elements
         jF = jacobian(parametrization(geometry(e)))
-        
-        Hx = MappingFromComponents(btpHx(e)...) # 12 Element Vektor mit Hx Funktionen 
-        Hy = MappingFromComponents(btpHy(e)...) # 12 Element Vektor mit Hy Funktionen 
-        ∇ξN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx))
-        ∇ηN = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
+        HxFace, HyFace = makeDKQFunctions(e)
+        Hx = MappingFromComponents(HxFace...)  # 12 Element Vektor mit Hx Funktionen 
+        Hy = MappingFromComponents(HyFace...)  # 12 Element Vektor mit Hy Funktionen 
+        # Gradient Hx
+        ∇ξηHx = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) 
+        # Gradient Hy
+        ∇ξηHy = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))
 
         for (ξ, w) ∈ zip(gaussPoints, gaussWeights)
             # Jacobi matrix ausgewertet an der Stelle ξ
             J = jF(ξ)
-            ∇ₓN = (inv(J') * ∇ξN(ξ))
-            ∇yN = (inv(J') * ∇ηN(ξ)) 
-            B = [∇ₓN[1,:]', ∇yN[2,:]', ∇yN[1,:]'+ ∇ₓN[2,:]']
+            ∇ˣʸHx = (inv(J') * ∇ξηHx(ξ))
+            ∇ˣʸHy = (inv(J') * ∇ξηHy(ξ)) 
+            B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']
             Ke += w * B' * D * B * det(J)
         end
         return Ke
     end
     return keFunc
-end;
+end
 ```
 
-Die Funktionen Hx und Hy werden wie in Kapitel ... beschrieben hergeleitet. Ke = Gl. (16) aus dem Paper von Batoz und Tahar.
+::: {.cell-output .cell-output-display execution_count=12}
+```
+DKQKe (generic function with 1 method)
+```
+:::
+:::
+
 
 ### Randbedingungen
 
-```{{julia}}
+::: {.cell execution_count=12}
+``` {.julia .cell-code}
 function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])
     dofs = fixedDOFs(fixedNodes,fixed)
     r[dofs] .= 0
@@ -2350,10 +2370,13 @@ function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])
     return nothing 
 end;
 ```
+:::
+
 
 ### Assemblierung Steifigkeitsmatrix
 
-```{{julia}}
+::: {.cell execution_count=13}
+``` {.julia .cell-code}
 function assembleKr(s, nf)
     N = nnodes(s) * nf
     K = zeros(N, N)
@@ -2361,29 +2384,21 @@ function assembleKr(s, nf)
 
     for e ∈ elements(s)
         # Indexvektor
-        nI = nodeindices(e)
-        I = fill(1, nf * 4)      # Vektor (mit 1 gefüllt)
-        for i = 1:nf
-            I[i+0*nf] = nI[1] * nf - nf + i
-            I[i+1*nf] = nI[2] * nf - nf + i
-            I[i+2*nf] = nI[3] * nf - nf + i
-            I[i+3*nf] = nI[4] * nf - nf + i
-        end
-        # Berechnung ke für jedes Element
-        kef = data(e, :kefunc)
-        Ke = kef(e)
-        # Addition von ke auf die globale Steifigkeitsmatrix K
-        K[I, I] += Ke
+        I = idxDOFs(nodeindices(e),nf)
 
-        # Berechnung re für jedes Element
+        # Berechnung ke für Element + Addition ke globale Steifigkeitsmatrix K
+        kef = data(e, :kefunc)
+        K[I, I] += kef(e)
+
+        # Berechnung re für Elemente + Addition re globalen Lastvektor
         ref = data(e, :refunc)
-        re = ref(e)
-        # Addition von re auf den globalen Lastvektor
-        r[I] += re
+        r[I] += ref(e)
     end
     return K, r
 end;
 ```
+:::
+
 
 ### Postprozessor
 
@@ -2491,7 +2506,7 @@ Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu val
 
 Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. 
 
-::: {.cell execution_count=10}
+::: {.cell execution_count=14}
 ``` {.julia .cell-code}
 function makequadrilateralMesh(p)
     coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
@@ -2504,7 +2519,7 @@ function makequadrilateralMesh(p)
 end
 ```
 
-::: {.cell-output .cell-output-display execution_count=11}
+::: {.cell-output .cell-output-display execution_count=15}
 ```
 makequadrilateralMesh (generic function with 1 method)
 ```
@@ -2638,7 +2653,19 @@ Biegemomente Platte Batoz & Tahar
 
 ### Berechnung mit RFEM
 
-![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-RFEM-System-Komplex- width=80%}
+![FE-Netz der RFEM Berechnung](00-pics/RFEM-Netz.png){#fig-RFEM-Netz width=80%}
+
+![Verformung der RFEM Berechnung](00-pics/RFEM-Verformung-u.png){#fig-RFEM-u width=80%}
+
+
+Schnittgröße  
+
+![Mx der RFEM Berechnung](00-pics/RFEM-Moment-mx.png){#fig-RFEM-mx width=80%}
+
+![My der RFEM Berechnung](00-pics/RFEM-Moment-my.png){#fig-RFEM-my width=80%}
+
+![Mxy der RFEM Berechnung](00-pics/RFEM-Moment-mxy.png){#fig-RFEM-mxy width=80%}
+
 
 
 

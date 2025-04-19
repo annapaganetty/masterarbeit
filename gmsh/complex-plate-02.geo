@@ -50,5 +50,7 @@ Transfinite Curve {13, 14} = 13 Using Progression 1;
 Recombine Surface {1};
 Recombine Surface {2};
 Recombine Surface {3};
+Coherence;
+Mesh 2;
 //+
 Save "complex-plate-02.msh";

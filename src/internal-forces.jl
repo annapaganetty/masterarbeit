@@ -66,7 +66,7 @@ function postprocessor(params, wHat,model::String)
             Ni = lagrangeelement(V)
 
             HxFace, HyFace = makeDKQFunctions(face)
-            # first Derivatives of w = -beta 
+
             we = sum(Ni .* wHat[idxs][1:3:end])
             βx = sum(HxFace .* wHat[idxs]) 
             βy = sum(HyFace .* wHat[idxs]) 

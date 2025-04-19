@@ -19,4 +19,16 @@
 
 ### Berechnung mit RFEM
 
-![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-RFEM-System-Komplex- width=80%}
+![FE-Netz der RFEM Berechnung](00-pics/RFEM-Netz.png){#fig-RFEM-Netz width=80%}
+
+![Verformung der RFEM Berechnung](00-pics/RFEM-Verformung-u.png){#fig-RFEM-u width=80%}
+
+
+Schnittgröße  
+
+![Mx der RFEM Berechnung](00-pics/RFEM-Moment-mx.png){#fig-RFEM-mx width=80%}
+
+![My der RFEM Berechnung](00-pics/RFEM-Moment-my.png){#fig-RFEM-my width=80%}
+
+![Mxy der RFEM Berechnung](00-pics/RFEM-Moment-mxy.png){#fig-RFEM-mxy width=80%}
+
