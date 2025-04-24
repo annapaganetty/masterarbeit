@@ -2,12 +2,8 @@
 
 Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
 
-::: {#fig-Beispiel-01-BFS  layout-ncol=2}
+![allseitig eingespannte quadratische Platte](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
 
-![quadratische Platte | 8m x 8m mit 400 Elementen](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
-
-allseitig eingespannte quadratische Platte
-:::
 
 Für die Berechnung der $8m \times 8m$ großen Platte werden die in @tbl-Eingabedaten angegebenen Eingangsparameter zugrunde gelegt.
 

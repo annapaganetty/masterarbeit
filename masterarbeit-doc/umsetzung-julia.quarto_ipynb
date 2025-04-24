@@ -1,0 +1,546 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Umsetzung in JULIA {#sec-Umsetzung-Julia}\n",
+        "\n",
+        "Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zentrale Teile  des Quelltextes dargestellt. Da die verwendete Programmiersprache JULIA noch sehr jung ist, wird in @sec-JULIA eine kurze Einführung in die Sprache gegeben. @sec-kommerzielle-Software gibt einen Überblick über bestehende Finite Elemente Software, sowie der unterschiedlichen implementierten Elementansätze. Unter anderem wird das Programm RFEM vorgestellt, welches in @sec-anwendungsbeispiele für Vergleichsrechnungen genutzt wird. Darauf folgend wird die allgemeine Struktur des erstellten Programmcodes in @sec-programmstruktur dargestellt, um darauf aufbauend  in @sec-programmteile detaillierter auf die einzelnen Programmteile einzugehen.\n",
+        "\n",
+        "\n",
+        "## Programmiersprache JULIA {#sec-JULIA}\n",
+        "\n",
+        "JUlIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für numerische und wissenschaftliche Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Libarys von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen, die sowohl eine benutzerfreundliche Umgebung hat, als auch leistungsfähig wie C und Fortran ist. \n",
+        "\n",
+        "JULIA beschreibt sich selber als^[www.julialang.org] \\\n",
+        "- Fast - Schnell \\\n",
+        "- Dynamic - Dynamisch \\\n",
+        "- Reproducible - Nachvollziehbar \\\n",
+        "- Composable - Ausbaubar / Erweiterbar \\\n",
+        "- General - Allgemein \\\n",
+        "- Open Source \\\n",
+        "\n",
+        "Die Programmiersprache hat einen LLVM (Low-Level Virtual Machine) basierten Just-in-Time Kompiler wodurch eine _hohe Ausführungsgeschwindigkeit_ erzielt wird, die in vielen Fällen mit der von C und Fortran vergleichbar ist.\n",
+        "\n",
+        "Die Syntax von Julia ist ähnlich der von MATLAB und Python, was sie für Nutzer aus diesen Umfeldern leicht zugänglich macht. Eine Deklaration von Typen ist in der Juliaumgebung nicht notwendig, dank ihrer dynamischen Typisierung. Trotzdem ermöglicht Julia auch die Verwendung von statischen Typen, wenn dies erforderlich ist.\n",
+        "\n",
+        "Obwohl Julia im Vergleich zu etablierten Programmiersprachen wie Python oder R eine jüngere Sprache ist, hat sie ein wachsendes Zahl von Paketen und Bibliotheken, die eine breite Palette von Anwendungsbereichen abdecken. Die Julia-Community ist sehr aktiv, und viele Pakete sind speziell auf wissenschaftliche und technische Berechnungen ausgerichtet.\n",
+        "\n",
+        "Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.\n",
+        "\n",
+        "Der Quellcode von Julia ist auf GitHub verfügbar.\n",
+        "\n",
+        "\n",
+        "## Plattenelementtypen in aktueller Finite-Element-Software {#sec-kommerzielle-Software}\n",
+        "\\\n",
+        "\n",
+        "Zu den bekanntesten Finite Elemente Softwares gehören ADINA und ANSYS, welche, neben der Lösung von statischen und dynamischen Aufgabenstellungen der linearen und nichtlinearen Strukturmechanik, primär in der Strömungsmechanik, und bei der Lösung multiphysikalischer Probleme eingesetzt werden. Diese beiden Programme gelten als Vertreter der  General-Purpose Software, wohingegen InfoCAD, RFEM, SAP2000, SOFiSTiK, iTWO structure fem / TRIMAS und MircoFE speziell für die Tragwerksplanung entwickelte Programme sind. Die numerische Berechnung von Plattentragwerken durch die Finite ELemente Analyse basiert in allen Fällen entweder auf der Reissner-Mindlin Theorie oder der Kirchhoffplattentheorie. Neben der Wahl der Plattentheorie ist auch der Elementansatz von wesentlicher Bedeutung und variiert je nach kommerziellen Programm. Auf die Software von InfoCAD, RFEM und SAP2000 wird nachfolgend näher eingegangen.\n",
+        "\n",
+        "\n",
+        "|*Software* |*Elementtyp Platten*|\n",
+        "|:--------|:--------------|\n",
+        "|_ADINA_| DKT-Element (Kirchhoffsche Plattentheorie) \\\n",
+        "              3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \\\n",
+        "              -> gemische Interpolation tensorieller Komponenten (?) \\\n",
+        "              4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie) \\\n",
+        "              -> gemische Interpolation tensorieller Komponenten (?) \\\n",
+        "              Elemente höherer Ordnung|\n",
+        "|_ANSYS_|  schubweiche Dreieck-Plattenelemente \\\n",
+        "                schubweiche Viereck-Plattenelemente|\n",
+        "|_InfoCad_| DKT-Element (Kirchhoffsche Plattentheorie) \\\n",
+        "                DKQ-Element (Kirchhoffsche Plattentheorie) \\ alternativ auch Elemente mit gemischter Interpolation nach Reissner-Mindlin Plattentheorie |\n",
+        "|_RFEM_| 3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \\\n",
+        "              4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie)|\n",
+        "|_SAP2000_| DKT-Element (Kirchhoffsche Plattentheorie)\\\n",
+        "                DKQ-Element (Kirchhoffsche Plattentheorie)\\\n",
+        "                3-Knoten-Dreieck-Schalenelement (Reissner-Mindlin-Plattentheorie) \\\n",
+        "                4-Knoten-Viereck-Schalenelement (Reissner-Mindlin-Plattentheorie)|\n",
+        "|_SOFiSTiK_|schubweiches 4-Knoten-Viereck-Plattenelement|\n",
+        "|_iTWO structure fem / TRIMAS_ | 4-Knoten-Viereck-Schalenelement \\\n",
+        "9-Knoten-Viereck-Schalenelement \\\n",
+        "3-Knoten-Dreieck-Schalenelement \\\n",
+        "6-Knoten-Dreieck-Schalenelement |\n",
+        "|_MicroFe_ | Kirchhoff/Mindlin Elementansätze für dicke und dünne Platten und Faltwerke (mbAEC, Produktflyer MicroFe) |\n",
+        "\n",
+        ": Finite-Elemente-Software und deren Elementtypen {#tbl-FEM-Software}\n",
+        "\n",
+        "__InfoCAD__\n",
+        "\n",
+        "InfoCAD bietet die Möglichkeit, sich zwischen „discrete Kirchhoff theory“ (DKT) - Elementen und „Mindlin-Reissner“ (MR) - Elemente zu entscheiden. Laut Benutzerhandbuch erfüllen alle Elementansätzt den Patch-Test. Bei der berechnung nach Kirchhoff werden nachdem die Verzerrungs-Verschiebungs-Beziehungen für die dicke Platte formuliert wurden, die Kirchhoff'schen Bedingungen für die dünne Platte an diskreten Punkten der Elementberandung eingeführt. \"Dadurch können auch bei diesen Elementen die Unbekannten des Verformungsansatzes durch die Eckknotenverformungen ausgedrückt werden. Der Vorteil gegenüber einem reinen Verschiebungsansatz bei Plattenelementen\n",
+        "zeigt sich in einem wesentlich verbesserten Konvergenzverhalten.\"^[siehe Benutzerhandbuch InfoCAD].\n",
+        "\n",
+        "__RFEM__\n",
+        "\n",
+        "Auch bei RFEM ist die Wahl zwischen beiden Plattentheorien möglich. Empfohlen wird die Nutzung der Kirchhofftheorie für die Berechnung dünnerer Platten wie Stahlbleche. Dicke Platten und Schalen des Massivbaus sollten auf Grundlage der Reissner-Mindlin Theorie berechnet werden. Eine genaue Beschreibung der verwendeten Plattenelemente erfolgt in dem Handbuch von RFEM 6 nicht. Lediglich die Viereckigen Schalenelemente, basierend auf der Reissner-Mindlin Theorie werden vorgestellt. \"Basierend aufeiner gemischten Interpolation der transversalen Verschiebungen, Querschnittsdrehungen und transversalen Schubverzerrungen werden die von Bathe und Dvorkin [3] vorgestellten MITC-Elemente (Mixed Interpolationof Tensorial Components) verwendet: MITC3+ für Dreiecke, MITC4 für Vierecke.\"^[siehe Benutzerhandbuch RFEM]\n",
+        "\n",
+        "__SAP2000__\n",
+        "\n",
+        "Bei SAP2000 handelt es sich um eine amerikansiche Software die entwickelt und vertrieben wird über Computers and Structures Inc. (CSi), Walnut Creek, CA, USA. Neben den US-Amerikanischen Normen ist auch der Eurocode in dem Programm hinterlegt und ermöglicht die Nutzung in Deutschland. Sowohl für die Reissner-Mindlin Theorie, als auch für die Kirchhoffsche Plattentheorie enthält SAP2000 eine 3-Knoten-Dreieckelement und ein 4-Knoten-Viereckelement.\n",
+        "\n",
+        "\n",
+        "## Programmstruktur {#sec-programmstruktur}\n",
+        "\n",
+        "Umsetzung in JULIA entsprechend dem mathematischen Konzept welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. \n",
+        "\n",
+        "Die Abbildung zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden.\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n",
+        "## Programmteile {#sec-programmteile}\n",
+        "\n",
+        "### Parameter {#sec-Parameter}\n",
+        "\n",
+        "Um ein physikalische Problem lösen zu können, müssen zunächst die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt werden. Eine beispielhafte Parameterliste wird nachfolgend dargestellt. "
+      ],
+      "id": "443b8d43"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "#| warning: false\n",
+        "include(\"../src/setup.jl\")\n",
+        "using MMJMesh.Meshes\n",
+        "nx = 1\n",
+        "ny = 1;"
+      ],
+      "id": "d2f32e60",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "p = @var Params()\n",
+        "p.lx = 8\n",
+        "p.ly = 8\n",
+        "p.q = 5e3\n",
+        "p.ν = 0.2\n",
+        "p.h = 0.2\n",
+        "p.E = 31000e6;"
+      ],
+      "id": "5ff29dc2",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.\n",
+        "\n",
+        "### Gebiet $\\Omega$ {#sec-Berechnungsgebiet}\n",
+        "\n",
+        "Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten."
+      ],
+      "id": "bf63741b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;\n",
+        "          0.0 0.0  0.0  10.0 10.0 10.0 20.0 20.0 20.0]\n",
+        "elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]\n",
+        "m = MMJMesh.Meshes.Mesh(coords, elts, 2);"
+      ],
+      "id": "9591d265",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![FE-Netz erzeugt mit der Funktion `Mesh()`](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}\n",
+        "\n",
+        "Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an."
+      ],
+      "id": "35036566"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "m = makemeshonrectangle(p.lx, p.ly, nx, ny);"
+      ],
+      "id": "a362f6fe",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![FE-Netz erzeugt mit der Funktion `makemeshonrectangle()`](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}\n",
+        "\n",
+        "Alternativ kann eine .msh Datei eingepflegt werden mit"
+      ],
+      "id": "02e28ed0"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "m = MMJMesh.Meshes.Mesh(\"../gmsh/complex-plate-02.msh\");"
+      ],
+      "id": "c3505882",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![FE-Netz aus complex-plate-02.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}\n",
+        "\n",
+        "### Formfunktionen \n",
+        "\n",
+        "Für die Definition der Formfunktionen wird ebenfalls auf die MMJMesh Bibliothek zugegriffen. Für die Konstruktion der Funktionen ist ein Bezugselement, mit den Koordinaten gespeichert in der Matrix `V` vom Typ Int64, zu definieren. Für das Referenzelement ist `V` wie folgt festgelegt."
+      ],
+      "id": "f3d91c34"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "V = [ -1 1 1 -1; -1 -1 1 1]"
+      ],
+      "id": "b2d00b54",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mittels der Funktion `mmonomials(n,p)` ein Vektor mit allen, für die Formfunktionen notwendigen, Monomen erzeugt. `n` ist dabei die Anzahl der Variablen und `p` der Grad der Monome. Außerdem kann optional das Gebiet und eine Vorschrift zum erstellen der Monome als Eingabeparameter in der Funktion übergeben werden, wie es bei der Erzeugung des nicht konformen Hermite-Elements und bei dem Serendipity Element notwendig ist.\n",
+        "\n",
+        "In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \\mathbb{R}^n \\to \\mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.\n",
+        "\n",
+        "Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für das Lagrange Element und das Serendipity Element dargestellt.\n",
+        "\n",
+        "__Hermite-Elemente__"
+      ],
+      "id": "e476d898"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function hermiteelement(V;conforming=true)\n",
+        "    if conforming\n",
+        "        m = 16\n",
+        "        P = mmonomials(2, 3, QHat  ,type = BigInt)\n",
+        "        N = vcat(\n",
+        "            [   [ValueAtLF(p), \n",
+        "                PDerivativeAtLF(p, [1, 0]), \n",
+        "                PDerivativeAtLF(p, [0, 1]), \n",
+        "                PDerivativeAtLF(p, [1, 1])]\n",
+        "                for p in eachcol(V)]...\n",
+        "            )\n",
+        "    else \n",
+        "        m = 12\n",
+        "        P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = BigInt)\n",
+        "        N = vcat(\n",
+        "            [   [ValueAtLF(p), \n",
+        "                PDerivativeAtLF(p, [1, 0]), \n",
+        "                PDerivativeAtLF(p, [0, 1])]\n",
+        "                for p in eachcol(V)]...\n",
+        "        )\n",
+        "    end\n",
+        "    Imatrix = Matrix{Int}(I, m, m)\n",
+        "    M = [n(p) for p in P, n in N]\n",
+        "    Minv = simplifyx.(M \\ Imatrix)\n",
+        "    H4 = Minv * P\n",
+        "    return H4\n",
+        "end;"
+      ],
+      "id": "93f383a6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Lagrange-Elemente__"
+      ],
+      "id": "9370c993"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function lagrangeelement(V)\n",
+        "        m = 4\n",
+        "        P = mmonomials(2, 1, QHat  ,type = Int)\n",
+        "        N = vcat(\n",
+        "            [   [ValueAtLF(p)]\n",
+        "                for p in eachcol(V)]...\n",
+        "            )\n",
+        "        Imatrix = Matrix{Int}(I, m, m)\n",
+        "        M = [n(p) for p in P, n in N]\n",
+        "        Minv = simplifyx.(M \\ Imatrix)\n",
+        "        L4 = Minv*P\n",
+        "    return L4\n",
+        "end;"
+      ],
+      "id": "a2a1e299",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "__Serendipity-Elemente__"
+      ],
+      "id": "753da528"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function serendipityelement(V)\n",
+        "    W = Array{Int64,2}(undef, 2,4)\n",
+        "    for i = 1:3\n",
+        "            W[1,i] = (V[1,i] + V[1,i+1]) * 0.5\n",
+        "            W[2,i] = (V[2,i] + V[2,i+1]) * 0.5\n",
+        "    end\n",
+        "    W[1,4] = (V[1,4] + V[1,1]) * 0.5\n",
+        "    W[2,4] = (V[2,4] + V[2,1]) * 0.5\n",
+        "    P = mmonomials(2, 2, QHat,(p1, p2) -> p1 + p2 < 4, type = Int)\n",
+        "    N = vcat(\n",
+        "        [   ValueAtLF(p)\n",
+        "            for p in eachcol(V)],\n",
+        "        [   [ValueAtLF(q)]\n",
+        "            for q in eachcol(W)]...\n",
+        "    )\n",
+        "    M = [n(p) for p in P, n in N]\n",
+        "    S8 = inv(M)*P\n",
+        "    return S8\n",
+        "end;"
+      ],
+      "id": "ea96f841",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Elementsteifigkeitsmatrizen & Elementlastvektoren\n",
+        "\n",
+        "Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. "
+      ],
+      "id": "ba054de1"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "using Symbolics\n",
+        "@variables  a,b, h, ν,E;\n",
+        "# Punkte des Elements\n",
+        "points = [0 a a 0; 0 0 b b]\n",
+        "# Formfunktione konformes Hermite Element\n",
+        "H4 = hermiteelement(points;conforming=true)\n",
+        "∂1(u) =  (∂x(∂x(u)))\n",
+        "∂2(u) =  (∂y(∂y(u)))\n",
+        "∂3(u) =  2*(∂x(∂y(u)))\n",
+        "Be1std(u) = [∂1(u), ∂2(u), ∂3(u)]\n",
+        "Be2std(u) = [∂1(u) + ν * ∂2(u), ν * ∂1(u) + ∂2(u),(1- ν)/2 * ∂3(u)]\n",
+        "aestd(u,v) = integrate(Be1std(u) ⋅ Be2std(v), (0 .. a) , (0 .. b))\n",
+        "Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]));"
+      ],
+      "id": "833d5b72",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da neben der Länge und der Breite auch die Winkel verschieden sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$- und $H_y$-Funktionen generiert, dessen Anforderungen, basierend auf dem Paper von Batoz und Tahar, in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffe. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` mit den zugehörigen Integrationsgewichte `gaussWeights`. "
+      ],
+      "id": "0c58026b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function DKQKe(p)\n",
+        "    function keFunc(e)\n",
+        "        D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]\n",
+        "        Ke = zeros(12,12)\n",
+        "        # Jacobimatrix des betrachteten Elements\n",
+        "        jF = jacobian(parametrization(geometry(e)))\n",
+        "        HxFace, HyFace = makeDKQFunctions(e)\n",
+        "        Hx = MappingFromComponents(HxFace...)  # 12 Element Vektor mit Hx Funktionen \n",
+        "        Hy = MappingFromComponents(HyFace...)  # 12 Element Vektor mit Hy Funktionen \n",
+        "        # Gradient Hx\n",
+        "        ∇ξηHx = MMJMesh.Mathematics.TransposeMapping(jacobian(Hx)) \n",
+        "        # Gradient Hy\n",
+        "        ∇ξηHy = MMJMesh.Mathematics.TransposeMapping(jacobian(Hy))\n",
+        "\n",
+        "        for (ξ, w) ∈ zip(gaussPoints, gaussWeights)\n",
+        "            # Jacobi matrix ausgewertet an der Stelle ξ\n",
+        "            J = jF(ξ)\n",
+        "            ∇ˣʸHx = (inv(J') * ∇ξηHx(ξ))\n",
+        "            ∇ˣʸHy = (inv(J') * ∇ξηHy(ξ)) \n",
+        "            B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']\n",
+        "            Ke += w * B' * D * B * det(J)\n",
+        "        end\n",
+        "        return Ke\n",
+        "    end\n",
+        "    return keFunc\n",
+        "end"
+      ],
+      "id": "c6c3d906",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Randbedingungen\n",
+        "\n",
+        "Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von Randbedinungen unabdingbar. Bei bautechnischen Fragestellungen wird dies in Form von Auflagerbedinungen umgesetzt. Je nach Elementansatz gibt es drei bzw. vier Freiheitsgrade je Knoten. Mit der Funktion `applyDirichletBCs!()` können die Verschiebung und die Verdrehungen an bestimmten Knoten zu Null gesetzt werden. \n",
+        "\n",
+        "|Lagerbedingung | BFS                        | DKQ                 |\n",
+        "|:-------------:|:---------------------------|:--------------------|\n",
+        "| gelenkig      | `[true,false,false,false]` | `[true,false,false]`| \n",
+        "| starr         | `[true,true,true,true]`    | `[true,true,true]`  | \n",
+        "\n",
+        ": Auflagerbedinungen für den Bogner-Fox-Schmitt Elementansatz und für das DKQ Element {#tbl-Auflagerbedinungen-Programm}"
+      ],
+      "id": "bbdcc69b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])\n",
+        "    dofs = fixedDOFs(fixedNodes,fixed)\n",
+        "    r[dofs] .= 0\n",
+        "    K[dofs, :] .= 0\n",
+        "    K[diagind(K)[dofs]] .= 1\n",
+        "    return nothing \n",
+        "end;"
+      ],
+      "id": "891aec82",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Assemblierung Steifigkeitsmatrix\n",
+        "\n",
+        "Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N \\times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheisgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktione `idxDOFs()` erstellt."
+      ],
+      "id": "92824f9d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :))"
+      ],
+      "id": "853cba0a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren  `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt. "
+      ],
+      "id": "188e30b7"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function assembleKr(s, nf)\n",
+        "    N = nnodes(s) * nf\n",
+        "    K = zeros(N, N)\n",
+        "    r = zeros(N)\n",
+        "\n",
+        "    for e ∈ elements(s)\n",
+        "        # Indexvektor\n",
+        "        I = idxDOFs(nodeindices(e),nf)\n",
+        "\n",
+        "        # Berechnung ke für Element + Addition ke globale Steifigkeitsmatrix K\n",
+        "        kef = data(e, :kefunc)\n",
+        "        K[I, I] += kef(e)\n",
+        "\n",
+        "        # Berechnung re für Elemente + Addition re globalen Lastvektor\n",
+        "        ref = data(e, :refunc)\n",
+        "        r[I] += ref(e)\n",
+        "    end\n",
+        "    return K, r\n",
+        "end;"
+      ],
+      "id": "e21c167c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### Postprozessor\n",
+        "\n",
+        "Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wird der Verschiebungsvektor durch \n",
+        "\n",
+        "`K \\ w` \n",
+        "\n",
+        "berechnet. Für das Bogner-Fox-Schmitt Element basieren die im `postprozessor()` berechneten Größen je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\\beta_x$ und $\\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder."
+      ],
+      "id": "e338c541"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "function moment(name)\n",
+        "    x -> begin\n",
+        "        J = jF(x) \n",
+        "        ∇ˣʸHx = (inv(J') * ∇ξηHx(x))\n",
+        "        ∇ˣʸHy = (inv(J') * ∇ξηHy(x)) \n",
+        "        B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']\n",
+        "        if name == :mxfunc\n",
+        "            return (Db * B)[1] * wHat[idxs]\n",
+        "        elseif name == :myfunc\n",
+        "            return (Db * B)[2] * wHat[idxs]\n",
+        "        elseif name == :mxyfunc\n",
+        "            return (Db * B)[3] * wHat[idxs]\n",
+        "        end\n",
+        "    end\n",
+        "end"
+      ],
+      "id": "ee195923",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "julia-1.10",
+      "language": "julia",
+      "display_name": "Julia 1.10.0",
+      "path": "/Users/annapaganetty/Library/Jupyter/kernels/julia-1.10"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

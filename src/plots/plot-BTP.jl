@@ -48,16 +48,16 @@ end
 function makeThetaxBTP(wHat) # = -beta_y
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        Hx,Hy = makeDKQFunctions(face)
-        return -(Hy * w[idxs])[1]
+        _,Hy = makeDKQFunctions(face)
+        return -(Hy * wHat[idxs])[1]
     end
 end
 # Verdrehung theta y = -w,x = w nach x abgeleitet = beta_x
 function makeThetayBTP(wHat) # = -beta_x
     return face -> begin
         idxs = idxDOFs(nodeindices(face), 3)
-        Hx,Hy = makeDKQFunctions(face)
-        return -(Hx * w[idxs])[1]
+        Hx,_ = makeDKQFunctions(face)
+        return -(Hx * wHat[idxs])[1]
     end
 end
 

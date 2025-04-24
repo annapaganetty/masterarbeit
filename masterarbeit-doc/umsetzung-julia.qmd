@@ -6,10 +6,3 @@ Im Folgenden wird der Aufbau des Programmcodes schematisch erläutert sowie zent
 {{< include FEM-programme.qmd >}}
 {{< include programmstruktur.qmd >}}
 {{< include programmteile.qmd >}}
-
-**Umsetzung in JULIA**
-    Einführung in Julia für FEM
-    Implementierung der Formulierung für rechteckige Elemente
-        Code-Struktur und wichtige Funktionen
-    Implementierung für allgemeine Vierecke
-        Herausforderungen und Lösungen

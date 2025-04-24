@@ -45,3 +45,19 @@ function _fsize(face)
 	l2 = x[2, 3] - x[2, 2]
 	return p, l1, l2
 end
+
+function jacobi(e)
+    V = [ -1 1 1 -1; -1 -1 1 1]
+    Ni = lagrangeelement(V)
+    ∂xNjacobi = ∂x.(Ni)
+    ∂yNjacobi = ∂y.(Ni)
+    ∇H4 = [ ∂xNjacobi[1] ∂xNjacobi[2] ∂xNjacobi[3] ∂xNjacobi[4];
+            ∂yNjacobi[1] ∂yNjacobi[2] ∂yNjacobi[3] ∂yNjacobi[4]]
+    return(∇H4 * coordinates(e)')
+end
+
+function invJacobi(e)
+    J = jacobi(e)
+    DetJ = J[1,1] * J[2,2] - J[2,1] * J[1,2]
+    1 / DetJ
+end

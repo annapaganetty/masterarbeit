@@ -1,15 +1,29 @@
 ## Patch-Test {#sec-patch-test}
 
-constant state of stresses on the rectangular plate
-Lasten auf die rechteckige Platte mit 5 Elementen aufbringen so dass sich ein kosntanter Spannungszustand einsdtellt. 
+Der Patch-Test ist eine gängige Methode um die Qualität eines Elementansatzes zu überprüfen. Ziel ist es, ein statisches System zu berechnen, bei dem erwartet wird, dass sich ein konstanter Spannungszustand einstellt. Um das in @sec-programmstruktur und @sec-programmteile beschriebene Programm zu validieren wird der Patch-Test auf das in @fig-Patch-test-system gezeigte System angewandt.
 
-Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu validieren.
+|                   |                           |
+|:------------------|:--------------------------|
+|Plattendicke       | $d = 1.0 \text{ m}$        |
+|Elastizitätsmodul  | $E = 1.000 \text{ N/mm}^2$|
+|                   | $\nu = 0.0$               |
+|                   | $a = 20\text{ m}$ bzw. $a = 20\text{ kNm}$             |
+|                   | $b = 10\text{ m}$ bzw. $b = 10\text{ kNm}$               |
 
-![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=90%} 
+: Daten zum Beispiel "Patch-Test" {#tbl-Eingabedaten_patch}
 
-### Eingabewerte
+![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=70%} 
 
-Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. 
+Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20\text{ m}$ und $b = 10\text{ m}$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus [Quelle :batoz Tahar] Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
+
+$$
+\begin{align}
+&\nu = 0.0 \\
+&E = 1000 \\ 
+&h = 1
+\end{align}
+$$
+
 ```{julia}
 function makequadrilateralMesh(p)
     coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
@@ -19,12 +33,26 @@ function makequadrilateralMesh(p)
     elts = [[1,4,3,2],[3,4,8,7],[6,7,8,5],[1,2,6,5],[2,3,7,6]]
     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
     return m
-end
+end;
 ```
 
 
+An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20\text{ kNm}$ und um die $x$-Achse ein Moment von $10\text{ kNm}$ angesetzt. Über die Länge verteilt entspricht das an allen Außenkanten einem Moment von $1\text{ kNm/m}$. 
 
-An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Achse ein Moment von 10 angesetz, so dass sich über die Länge verteilt ein Moment von 1 ergibt. Dementsprechend wird erwartet, dass sich bei den Ergebnissen sowohl um die x- als auch um die y-Achse ein Momenten Verlauf von konstant 1 einstellt.
+![Patch-Test: Verformung $w$](00-pics/Beispiel-00-w.png){#fig-Patch-test-verformung width=60%} 
 
+Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (siehe @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse konstant $1\text{ kNm/m}^2$
+
+
+::: {#fig-Patch-Momente  layout-ncol=1}
+
+![Patch-Test: Momentenverlauf $m_x$ [kNm]](00-pics/Beispiel-00-mx.png){#fig-Patch-test-mx width=60%} 
+
+![Patch-Test: Momentenverlauf $m_y$ [kNm]](00-pics/Beispiel-00-my.png){#fig-Patch-test-my width=60%} 
+
+![Patch-TestMomentenverlauf $m_xy$ [kNm]](00-pics/Beispiel-00-mxy.png){#fig-Patch-test-mxy width=60%} 
+
+Patch-Test: Momentverläufe
+:::
 
 

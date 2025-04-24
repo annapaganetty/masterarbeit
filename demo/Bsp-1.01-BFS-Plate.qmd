@@ -4,14 +4,13 @@ include("../src/setup.jl")
 
 
 ## Plot der Plattenelemente
+
 ```{julia}
 # using CairoMakie
-
 xElem = 20
 mQuadBFS = makequadratcicMesh(p1, xElem)
 figBFS = plotmesh(mQuadBFS;title="quadratische Platte | 8m x 8m | 400 Elemente")
 # save("Beispiel-01-BFS.png",figBFS)
-p1.E
 ```
 
 ```{julia}
@@ -26,12 +25,28 @@ w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 100 * abs(w_fe - w_czerny) / w_czerny
 ```
 
+_Abweichung = 4.03 %_
+
 ## Plot Verformung
 
 ```{julia}
 GLMakie.activate!()
 wBFS = plotw(mQuadBFS, w;conforming = true,title="Verformung")
 ```
+
+
+```{julia}
+f = face(mQuadBFS,1)
+VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+sr = zeros(4)
+sr[[1,2,3,4]] .+= mQuadBFS.data[:post](f, :mx).(VV)
+V = [ -1 1 1 -1; -1 -1 1 1]
+Ni = lagrangeelement(V)
+q = sum(Ni .* sr)
+∂y(q)
+```
+
+## Plot ungeglättete Schnittgrößen
 
 ```{julia}
 set_theme!(theme_minimal())
@@ -47,17 +62,18 @@ update_theme!(
 figBFSmx = plotr(mQuadBFS, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
 figBFSmy= plotr(mQuadBFS, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
 figBFSmxy= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
-figBFSqx= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
-figBFSqy= plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
+figBFSqx= plotr(mQuadBFS, :qx, "Querkraft qx", (-25500, 25500),nodal = false, a3d=true)
+figBFSqy= plotr(mQuadBFS, :qy, "Querkraft qy", (-25500, 25500),nodal = false, a3d=true)
 ```
 
-Geglättete Ergebnisse 
+## Plot geglättete Schnittgrößen
+
 ```{julia}
-figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17, 17),nodal = true, a3d=true)
-figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17, 17),nodal = true, a3d=true)
-figBFSmxyGlatt= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4, 4),nodal = true, a3d=true)
-figBFSqxGlatt= plotr(mQuadBFS, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
-figBFSqyGlatt=plotr(mQuadBFS, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
+figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
+figBFSmxyGlatt= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
+figBFSqxGlatt= plotr(mQuadBFS, :qx, "Querkraft qx", (-25500, 25500),nodal = true, a3d=true)
+figBFSqyGlatt=plotr(mQuadBFS, :qy, "Querkraft qy", (-25500, 25500),nodal = true, a3d=true)
 ```
 
 ```{julia}
@@ -77,6 +93,7 @@ save("Beispiel-01-BFS-qy-glatt.png",figBFSqyGlatt)
 ```{julia}
 save("Beispiel-01-BFS-w.png",wBFS)
 ```
+
 # Konvergenz Plot
 
 ```{julia}

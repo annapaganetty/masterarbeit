@@ -57,21 +57,17 @@ end
 # Element vector
 function DKQRe(q)
     function reFunc(e)
-        _,a,b= _fsize(e)
         re = zeros(12)
-        re[1]=(1/4)*a*b
-        re[2]= 0
-        re[3]= 0
-        re[4]=(1/4)*a*b
-        re[5]= 0
-        re[6]= 0
-        re[7]=(1/4)*a*b
-        re[8]= 0
-        re[9]= 0
-        re[10]=(1/4)*a*b
-        re[11]= 0
-        re[12]= 0
-        return re*q
+        V = [ -1 1 1 -1; -1 -1 1 1]
+        H4= lagrangeelement(V)
+
+        jac = jacobi(e)
+        DetJac = jac[1,1] * jac[2,2] - jac[2,1] * jac[1,2]
+        re[1] = integrate(DetJac * H4[1], -1 .. 1, -1 .. 1)
+        re[4] = integrate(DetJac * H4[2], -1 .. 1, -1 .. 1)
+        re[7] = integrate(DetJac * H4[3], -1 .. 1, -1 .. 1)
+        re[10] = integrate(DetJac * H4[4], -1 .. 1, -1 .. 1)
+        return q * re
     end
     return reFunc
 end

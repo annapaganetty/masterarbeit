@@ -8,13 +8,8 @@ function postprocessor(params, wHat,model::String)
     if model == "kirchhoff_conforming"
         return (face, name) -> begin
     
-            # Element size and differential operators
+            # Element size
             _, a, b = _fsize(face)
-            ∂X(we) = (2 / a) * ∂x(we)
-            ∂Y(we) = (2 / b) * ∂y(we)
-            ∂XX(we) = (2 / a)^2 * ∂xx(we)
-            ∂YY(we) = (2 / b)^2 * ∂yy(we)
-            ∂XY(we) = (2 / a) * (2 / b) * ∂xy(we)
 
             # Element displacement function
             V = [ -1 1 1 -1; -1 -1 1 1]
@@ -22,22 +17,22 @@ function postprocessor(params, wHat,model::String)
             idxs = idxDOFs(nodeindices(face), 4)
         
             t = repeat([1, a / 2, b / 2, a * b / 4], 4)
-            we = sum(wHat[idxs] .* t .* H4) # TODO make dot work
+            we = sum(wHat[idxs] .* t .* H4)
     
             # Derivatives
-            wx = ∂X(we)
-            wy = ∂Y(we)
-            wxx = ∂XX(we)
-            wyy = ∂YY(we)
-            wxy = ∂XY(we)
+            wx = (2 / a) * ∂x(we)
+            wy = (2 / b) * ∂y(we)
+            wxx = (2 / a)^2 * ∂xx(we)
+            wyy = (2 / b)^2 * ∂yy(we)
+            wxy = (2 / a) * (2 / b) * ∂xy(we)
             Δw = wxx + wyy
 
 		    # Section forces (Altenbach et al. p176)
 		    mx = -D * (wxx + ν * wyy)
 		    my = -D * (ν * wxx + wyy)
 		    mxy = -D * (1 - ν) * wxy
-		    qx = -D * ∂X(Δw)
-		    qy = -D * ∂Y(Δw)
+		    qx = -D * (2 / a) * ∂x(Δw)
+		    qy = -D * (2 / b) * ∂y(Δw)
 
             # Quick return
             name == :w && return we
@@ -70,8 +65,6 @@ function postprocessor(params, wHat,model::String)
             we = sum(Ni .* wHat[idxs][1:3:end])
             βx = sum(HxFace .* wHat[idxs]) 
             βy = sum(HyFace .* wHat[idxs]) 
-            wx =  -βx # Beta x = -wx
-            wy =  -βy # Beta y = -wy
 
             jF = jacobian(parametrization(geometry(face)))
             Hx = MappingFromComponents(HxFace...)  
@@ -95,23 +88,35 @@ function postprocessor(params, wHat,model::String)
                         end
                     end
             end
-            # Derivatives
-            # βxx = j11 * ∂x(βx) + j12 * ∂y(βx)
-            # βyy = j21 * ∂x(βy) + j22 * ∂y(βy)
-            # βxy = ∂y(βx) + ∂x(βy)
-            
-            wxx = ∂x(wx)
-            wyy = ∂y(wy)
-            wxy = ∂y(wx) + ∂x(wy)
-            Δw = wxx + wyy
+
+            NiMap = MappingFromComponents(Ni...)
+            ∇Ni = MMJMesh.Mathematics.TransposeMapping(jacobian(NiMap)) 
+
+            function querkraft(name)
+                x -> begin
+                    VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+                    J = jF(x) 
+                    ∇ˣʸNi = (inv(J') * ∇Ni(x))
+                    ∇Mx = ∇ˣʸNi * moment(:mxfunc).(VV)
+                    ∇My = ∇ˣʸNi * moment(:myfunc).(VV)
+                    ∇Mxy = ∇ˣʸNi * moment(:mxyfunc).(VV)
+                    qx = ∇Mx[1] + ∇Mxy[2]
+                    qy = ∇Mxy[1] + ∇My[2]
+                    if name == :qxfunc
+                        return qx
+                    elseif name == :qyfunc
+                        return qy
+                    end
+                end
+            end
 
             # Moments Gl. 17 Batoz & Tahar
             mx = moment(:mxfunc)
             my = moment(:myfunc)
             mxy = moment(:mxyfunc)
-            # Figure out why these are false
-            qx = -D * ∂x(Δw)
-            qy = -D * ∂y(Δw)
+            # Querkräfte 
+            qx = querkraft(:qxfunc)
+            qy = querkraft(:qyfunc)
 
             # Quick return
             name == :w && return we
@@ -119,12 +124,8 @@ function postprocessor(params, wHat,model::String)
             name == :βx && return βx
             name == :βy && return βy
             # Return
-	        name == :wx && return wx
-	        name == :wy && return wy
-            name == :wxx && return wxx
-            name == :wyy && return wyy
-            name == :wxy && return wxy
-            name == :Δw && return Δw
+	        name == :wx && return -βx # Beta x = -wx
+	        name == :wy && return -βy # Beta y = -wy
     
             name == :mx && return mx
             name == :my && return my
@@ -140,20 +141,19 @@ end
 function nodalresult(m, result)
     # Vektor mit 0en: Anzahl 0en = Anzahl Knoten
 	sr = zeros(nnodes(m))
+    xCoord = zeros(nnodes(m))
+    yCoord = zeros(nnodes(m))
     # Vektor mit Koordinaten Referenzelement
 	VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
 	for f ∈ faces(m)
 		sr[nodeindices(f)] .+= m.data[:post](f, result).(VV)
 	end
 	for (i, n) ∈ enumerate(nodes(m))
-    # nfaces(n) = Anzahl der Elemente die an dem Knoten angrenzen 
-    # i = Anzahl der Knoten
+        # i = Anzahl der Knoten
+        # xCoord[i] = coordinates(n)[1]
+        # yCoord[i] = coordinates(n)[2]
+        # nfaces(n) = Anzahl der Elemente die an dem Knoten angrenzen 
 		sr[i] /= nfaces(n)
-        # if sr[i] > 15000
-        #     sr[i] =0
-        # elseif sr[i] < -15000
-        #     sr[i] = 0
-        # end
 	end
-	return sr
+	return sr#,xCoord,yCoord
 end

@@ -10,10 +10,6 @@ figBT = plotmesh(mQuadBT;title="quadratische Platte | 8m x 8m | 400 Elemente")
 ```
 
 ```{julia}
-coordinates(element(mQuadBT,2))
-```
-
-```{julia}
 # Berechnung des Verschiebungsvektors
 w = plate(mQuadBT, p1, "BTP")
 # maximale Verschiebung in vertikaler Richtung
@@ -22,8 +18,9 @@ w_fe = maximum(w[1:3:end])
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 # prozentuale Abweichung
 100 * abs(w_fe - w_czerny) / w_czerny
-w_fe
 ```
+
+_Abweichung = 4.77 %_
 
 ## Plot Verformung
 
@@ -32,9 +29,11 @@ GLMakie.activate!()
 plotwBTP(mQuadBT, w;title="Verformung")
 ```
 
+## Plot ungeglättete Schnittgrößen
+
+Momente
 
 ```{julia}
-
 set_theme!(theme_minimal())
 update_theme!(
     colormap=(:redblue,1.0),
@@ -47,47 +46,38 @@ update_theme!(
 ```
 
 ```{julia}
+GLMakie.activate!()
 figBTmx = plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
-```
-
-```{julia}
 figBTmy= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
-```
-
-```{julia}
 figBTmxy= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
+figBTmy
 ```
 
+Querkräfte
 ```{julia}
-figBTqx= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
+figBTqx= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-17000, 17000),nodal = false, a3d=true)
+figBTqy= plotrBTP(mQuadBT, :qy, "Querkraft qy", (-17000, 17000),nodal = false, a3d=true)
 ```
 
-```{julia}
-figBTqy= plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
-```
+## Plot geglättete Schnittgrößen
 
-Geglättete Ergebnisse 
+Momente
+
 ```{julia}
 figBTmxGlatt= plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
-```
-
-
-```{julia}
 figBTmyGlatt= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
-```
-
-```{julia}
 figBTmxyGlatt= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
 ```
 
-```{julia}
-figBTqxGlatt= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
-```
+Querkräfte
 
 ```{julia}
-figBTqyGlatt=plotrBTP(mQuadBT, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+figBTqxGlatt= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-17000, 17000),nodal = true, a3d=true)
+figBTqyGlatt=plotrBTP(mQuadBT, :qy, "Querkraft qy", (-17000, 17000),nodal = true, a3d=true)
 ```
 
+
+## Speichern der Plots
 
 ```{julia}
 using CairoMakie
@@ -130,27 +120,4 @@ fig
 
 ```{julia}
 save("Konvergenzplot_BT.png",fig)
-```
-
-
-```{julia}
-e = element(mQuadBT,1)
-Hx = (btpHx(e)) # 12 Element Vektor mit Hx Funktionen 
-Hy = (btpHy(e)) # 12 Element Vektor mit Hy Funktionen 
-
-# Ableitungen Hx und Hy
-Hxx = ∂x.(Hx)
-Hxy = ∂y.(Hx)
-Hyx = ∂x.(Hy)
-Hyy = ∂y.(Hy) 
-# Einträge inverse Jacobi Matrix
-j11,j12,j21,j22,d = jacobianMatrix(e)
-
-idxs = idxDOFs(nodeindices(e), 3)
-w[idxs]
-mx = 1e-3 * sum(((j11 * Hxx + j12 * Hxy) + 1 * (j21 * Hyx + j22 * Hyy)) .* w[idxs])
-my = 1e-3 * (1 * (j11 * Hxx + j12 * Hxy) + (j21 * Hyx + j22 * Hyy)) .* w[idxs]
-mxy = 1e-3 * (1 - 1)/2 * ((j11 * Hyx + j12 * Hyy) + (j21 * Hxx + j22 * Hxy)) .* w[idxs]
-
-mx
 ```

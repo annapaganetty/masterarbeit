@@ -3,15 +3,7 @@
 ## Plot der Plattenelemente
 ```{julia}
 include("../src/setup.jl")
-mPatch = makequadrilateralMesh(p3)
-meshPatch = plotmesh(mPatch;title="Patch Test")
-```
 
-## Verformung 
-
-Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
-
-```{julia}
 a = 20
 b = 10
 p3 = @var Params()
@@ -21,7 +13,14 @@ p3.q = 0
 p3.ν = 0
 p3.h = 1 #[m]
 p3.E = 1000; # [N/mm^2] [MN/m^2]
+
+mPatch = makequadrilateralMesh(p3)
+meshPatch = plotmesh(mPatch;title="Patch Test")
 ```
+
+## Verformung 
+
+Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
 
 ```{julia}
 nf = 3
@@ -51,8 +50,8 @@ r[dofs2[9]]  = -b
 r[dofs2[12]] = b
 
 w = K \ r
+w[1:3:end]
 ```
-
 
 ```{julia}
 GLMakie.activate!()
@@ -82,11 +81,12 @@ update_theme!(
 mxPatch = plotrBTP(mPatch, :mx, "Biegemoment mx", (0, 1),nodal = false, a3d=true)
 myPatch = plotrBTP(mPatch, :my, "Biegemoment my", (0, 1),nodal = false, a3d=true)
 mxyPatch = plotrBTP(mPatch, :mxy, "Biegemoment mxy", (0 , 1),nodal = false, a3d=true)
-mxyPatch
+myPatch
 ```
 
 
 ```{julia}
+using Makie
 save("Beispiel-00-Mesh.png",meshPatch)
 save("Beispiel-00-w.png",wPatch)
 save("Beispiel-00-Thetax.png",θxPatch)

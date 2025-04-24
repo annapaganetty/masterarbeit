@@ -41,6 +41,7 @@ Physical Surface("plate", 17) = {1};
 //+
 Recombine Surface {1};
 
+MeshSize{:} = 0.5;
 Mesh 2;
 Save "plate-Bsp-03.1.msh";
 //+

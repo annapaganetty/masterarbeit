@@ -59,9 +59,11 @@ p1 = @var Params()
 p1.lx = 8		# [m]
 p1.ly = 8		# [m]
 p1.q = 5e3		# [N/m]
-p1.ν = 0.2
+p1.ν = 0
 p1.h = 0.2		# [m]
+p1.r = 8
 p1.E = 31000e6;	# [N/m^2]
+
 
 p2 = @var Params()
 p2.lx = 8

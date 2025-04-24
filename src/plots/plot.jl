@@ -5,7 +5,7 @@ function mkfig2d(
     ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="calibri",xlabelfont = "calibri",ylabelfont ="calibri")
     hidedecorations!(ax)
     hidespines!(ax)
-    return fig
+    return fig#,ax
 end
 
 function mkfig3d(

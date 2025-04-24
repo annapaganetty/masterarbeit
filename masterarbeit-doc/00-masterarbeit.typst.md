@@ -5,7 +5,9 @@ format:
 ---
 
 
+
 <!-- Kapitel 1 -->
+
 # Einleitung
 
 ## Motivation {#sec-motivation}
@@ -55,13 +57,13 @@ Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULI
 
 
 
-
 <!-- Kapitel 2 -->
 
 
 ```{=typst}
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundidee der Finite Elemente Methode])))
 ```
+
 
 # Grundidee der Finite Elemente Methode {#sec-Grundlagen-FEM}
 
@@ -809,13 +811,13 @@ $\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastv
 
 
 
-
 <!-- Kapitel 3 -->
 
 
 ```{=typst}
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 3: Kirchhoffsche Plattentheorie])))
 ```
+
 
 # Kirchhoffsche Plattentheorie {#sec-mech-math-grundlagen}
 
@@ -1094,13 +1096,13 @@ $$ {#eq-black-scholes}
 
 
 
-
 <!-- Kapitel 4 -->
 
 
 ```{=typst}
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 4: Finite Elemente für schubstarre Platten])))
 ```
+
 
 # Finite Elemente für schubstarre Platten {#sec-fem-plattentragwerke}
 
@@ -2032,13 +2034,13 @@ $$ {#eq-elementsteifigkeitsmatrix_DKQ}
 
 
 
-
 <!-- Kapitel 5 -->
 
 
 ```{=typst}
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 5: Umsetzung in JULIA])))
 ```
+
 
 # Umsetzung in JULIA {#sec-Umsetzung-Julia}
 
@@ -2125,8 +2127,6 @@ Die Abbildung zeigt den schematischen Aufbau des Programms anhand der einzelnen 
 
 ## Programmteile {#sec-programmteile}
 
-Nachfolgend werden die Programmteile vorgestellt
-
 ### Parameter {#sec-Parameter}
 
 Um ein physikalische Problem lösen zu können, müssen zunächst die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt werden. Eine beispielhafte Parameterliste wird nachfolgend dargestellt. 
@@ -2150,7 +2150,7 @@ Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist, dass auf die Reihenfolge der Knoten geachtet wird.
+Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten.
 
 ::: {.cell execution_count=3}
 ``` {.julia .cell-code}
@@ -2184,7 +2184,7 @@ m = MMJMesh.Meshes.Mesh("../gmsh/complex-plate-02.msh");
 :::
 
 
-![FE-Netz aus complex-plate.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
+![FE-Netz aus complex-plate-02.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
 
 ### Formfunktionen 
 
@@ -2296,7 +2296,7 @@ end;
 
 ### Elementsteifigkeitsmatrizen & Elementlastvektoren
 
-Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das Symbolics Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
+Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
 
 ::: {.cell execution_count=10}
 ``` {.julia .cell-code}
@@ -2317,11 +2317,10 @@ Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]));
 :::
 
 
-Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da sich die Geometrieeigenschaften der Elemente nicht nur in der Länge und der Breite unterscheiden, sondern zusätzlich die Winkel unterschiedlich sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$ und $H_y$ Funktionen generiert, dessen Anforderungen basierend auf dem Paper von Batoz und Tahar in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffe. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` und den zugehörigen Integrationsgewichte `gaussWeights`. 
+Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da neben der Länge und der Breite auch die Winkel verschieden sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$- und $H_y$-Funktionen generiert, dessen Anforderungen, basierend auf dem Paper von Batoz und Tahar, in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffe. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` mit den zugehörigen Integrationsgewichte `gaussWeights`. 
 
 ::: {.cell execution_count=11}
 ``` {.julia .cell-code}
-# Element matrix
 function DKQKe(p)
     function keFunc(e)
         D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
@@ -2360,6 +2359,15 @@ DKQKe (generic function with 1 method)
 
 ### Randbedingungen
 
+Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von Randbedinungen unabdingbar. Bei bautechnischen Fragestellungen wird dies in Form von Auflagerbedinungen umgesetzt. Je nach Elementansatz gibt es drei bzw. vier Freiheitsgrade je Knoten. Mit der Funktion `applyDirichletBCs!()` können die Verschiebung und die Verdrehungen an bestimmten Knoten zu Null gesetzt werden. 
+
+|Lagerbedingung | BFS                        | DKQ                 |
+|:-------------:|:---------------------------|:--------------------|
+| gelenkig      | `[true,false,false,false]` | `[true,false,false]`| 
+| starr         | `[true,true,true,true]`    | `[true,true,true]`  | 
+
+: Auflagerbedinungen für den Bogner-Fox-Schmitt Elementansatz und für das DKQ Element {#tbl-Auflagerbedinungen-Programm}
+
 ::: {.cell execution_count=12}
 ``` {.julia .cell-code}
 function applyDirichletBCs!(fixedNodes, K, r, fixed = [true])
@@ -2375,7 +2383,24 @@ end;
 
 ### Assemblierung Steifigkeitsmatrix
 
+Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N \times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheisgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktione `idxDOFs()` erstellt.
+
 ::: {.cell execution_count=13}
+``` {.julia .cell-code}
+idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :))
+```
+
+::: {.cell-output .cell-output-display execution_count=14}
+```
+idxDOFs (generic function with 1 method)
+```
+:::
+:::
+
+
+Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren  `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt. 
+
+::: {.cell execution_count=14}
 ``` {.julia .cell-code}
 function assembleKr(s, nf)
     N = nnodes(s) * nf
@@ -2402,81 +2427,41 @@ end;
 
 ### Postprozessor
 
+Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wird der Verschiebungsvektor durch 
 
-für die Formulierung allgemeiner Vierecke werden die Schnittgrößen von den Verdrehungen $\beta_x$ und $\beta_y$ abgeleitet gemäß Batoz und Tahar, da für die Verschiebung w keine weiteren Aussagen getätigt werden.
+`K \ w` 
 
-```{{julia}}
-function postprocessor(params, wHat)
-    return (face, name) -> begin
+berechnet. Für das Bogner-Fox-Schmitt Element basieren die im `postprozessor()` berechneten Größen je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\beta_x$ und $\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
 
-        # Plate properties
-        h = params.h
-        E = params.E
-        ν = params.ν
-        D = E*h^3 / 12*(1-ν^2) 
-
-        # Element displacement function
-            # Indices
-        idxs = idxDOFs(nodeindices(face), 3)
-        idxsWe = idxs[1:3:end]  
-
-        V = [ -1 1 1 -1; -1 -1 1 1]
-        we = sum(wHat[idxsWe] .* lagrangeelement(V))
-
-        # first Derivatives of w = beta 
-        βx = -sum(btpHx(face) .* wHat[idxs]) # Beta x = -wx
-        βy = -sum(btpHy(face) .* wHat[idxs]) # Beta y = -wy
-
-        # Quick return
-        name == :w && return we
-
-        # Derivatives
-        wxx = ∂x(βx)
-        wyy = ∂y(βy)
-        wxy = ∂y(βx) + ∂x(βy)
-        Δw = wxx + wyy
-
-        # Return
-        name == :βx && return βx
-        name == :βx && return βx
-        name == :wxx && return wxx
-        name == :wyy && return wyy
-        name == :wxy && return wxy
-        name == :Δw && return Δw
-
-        # Section forces (Altenbach et al. p176)
-        mx = -1e-3 * D * (wxx + ν * wyy)
-        my = -1e-3 * D * (ν * wxx + wyy)
-        mxy = -1e-3 * D * (1 - ν) * wxy
-        qx = -1e-3 * D * ∂x(Δw)
-        qy = -1e-3 * D * ∂y(Δw)
-
-        # Return
-        name == :mx && return mx
-        name == :my && return my
-        name == :mxy && return mxy
-        name == :qx && return qx
-        name == :qy && return qy
-
-        # Unknown label
-        error("Unkown function: ", name)
+::: {.cell execution_count=15}
+``` {.julia .cell-code}
+function moment(name)
+    x -> begin
+        J = jF(x) 
+        ∇ˣʸHx = (inv(J') * ∇ξηHx(x))
+        ∇ˣʸHy = (inv(J') * ∇ξηHy(x)) 
+        B = [∇ˣʸHx[1,:]', ∇ˣʸHy[2,:]', ∇ˣʸHy[1,:]'+∇ˣʸHx[2,:]']
+        if name == :mxfunc
+            return (Db * B)[1] * wHat[idxs]
+        elseif name == :myfunc
+            return (Db * B)[2] * wHat[idxs]
+        elseif name == :mxyfunc
+            return (Db * B)[3] * wHat[idxs]
+        end
     end
-end;
+end
 ```
 
-
-
-**Umsetzung in JULIA**
-    Einführung in Julia für FEM
-    Implementierung der Formulierung für rechteckige Elemente
-        Code-Struktur und wichtige Funktionen
-    Implementierung für allgemeine Vierecke
-        Herausforderungen und Lösungen
+::: {.cell-output .cell-output-display execution_count=16}
+```
+moment (generic function with 1 method)
+```
+:::
+:::
 
 
 
 {{< pagebreak >}}
-
 
 
 
@@ -2489,24 +2474,38 @@ end;
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 6: Anwendungsbeispiele])))
 ```
 
+
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
 
 Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen entsprechend der Formulierung von Batoz und Tahar zu untersuchen. Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny [Quelle] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm MicroFE. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird eine Vergleichsrechnung mit dem Programm RFEM durchgeführt.
 
 ## Patch-Test {#sec-patch-test}
 
-constant state of stresses on the rectangular plate
-Lasten auf die rechteckige Platte mit 5 Elementen aufbringen so dass sich ein kosntanter Spannungszustand einsdtellt. 
+Der Patch-Test ist eine gängige Methode um die Qualität eines Elementansatzes zu überprüfen. Ziel ist es, ein statisches System zu berechnen, bei dem erwartet wird, dass sich ein konstanter Spannungszustand einstellt. Um das in @sec-programmstruktur und @sec-programmteile beschriebene Programm zu validieren wird der Patch-Test auf das in @fig-Patch-test-system gezeigte System angewandt.
 
-Wird hier eingesetzt um zu überprüfen, ob das Programm funktioniert und zu validieren.
+|                   |                           |
+|:------------------|:--------------------------|
+|Plattendicke       | $d = 1.0 \text{ m}$        |
+|Elastizitätsmodul  | $E = 1.000 \text{ N/mm}^2$|
+|                   | $\nu = 0.0$               |
+|                   | $a = 20\text{ m}$ bzw. $a = 20\text{ kNm}$             |
+|                   | $b = 10\text{ m}$ bzw. $b = 10\text{ kNm}$               |
 
-![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=90%} 
+: Daten zum Beispiel "Patch-Test" {#tbl-Eingabedaten_patch}
 
-### Eingabewerte
+![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=70%} 
 
-Die rechteckige Platte wird in 5 allgemeine Vierecke unterteilt. Die Außenabmessungen entsprechen Abbildung 3 aus [Quelle:Batoz Tahar]. Auch die Innenabmessungen sind an das Beispiel angelehnt. Um das Mesh zu erzeugen wird die Funktion 'makequadrilateralMesh(p)' aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. 
+Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20\text{ m}$ und $b = 10\text{ m}$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus [Quelle :batoz Tahar] Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
 
-::: {.cell execution_count=14}
+$$
+\begin{align}
+&\nu = 0.0 \\
+&E = 1000 \\ 
+&h = 1
+\end{align}
+$$
+
+::: {.cell execution_count=16}
 ``` {.julia .cell-code}
 function makequadrilateralMesh(p)
     coords = [0.0 (9/50 * p.lx) (18/25 * p.lx) p.lx 0.0  
@@ -2516,19 +2515,28 @@ function makequadrilateralMesh(p)
     elts = [[1,4,3,2],[3,4,8,7],[6,7,8,5],[1,2,6,5],[2,3,7,6]]
     m = MMJMesh.Meshes.Mesh(coords, elts, 2)
     return m
-end
-```
-
-::: {.cell-output .cell-output-display execution_count=15}
-```
-makequadrilateralMesh (generic function with 1 method)
+end;
 ```
 :::
+
+
+An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20\text{ kNm}$ und um die $x$-Achse ein Moment von $10\text{ kNm}$ angesetzt. Über die Länge verteilt entspricht das an allen Außenkanten einem Moment von $1\text{ kNm/m}$. 
+
+![Patch-Test: Verformung $w$](00-pics/Beispiel-00-w.png){#fig-Patch-test-verformung width=60%} 
+
+Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (siehe @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse konstant $1\text{ kNm/m}^2$
+
+
+::: {#fig-Patch-Momente  layout-ncol=1}
+
+![Patch-Test: Momentenverlauf $m_x$ [kNm]](00-pics/Beispiel-00-mx.png){#fig-Patch-test-mx width=60%} 
+
+![Patch-Test: Momentenverlauf $m_y$ [kNm]](00-pics/Beispiel-00-my.png){#fig-Patch-test-my width=60%} 
+
+![Patch-TestMomentenverlauf $m_xy$ [kNm]](00-pics/Beispiel-00-mxy.png){#fig-Patch-test-mxy width=60%} 
+
+Patch-Test: Momentverläufe
 :::
-
-
-An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Achse ein Moment von 10 angesetz, so dass sich über die Länge verteilt ein Moment von 1 ergibt. Dementsprechend wird erwartet, dass sich bei den Ergebnissen sowohl um die x- als auch um die y-Achse ein Momenten Verlauf von konstant 1 einstellt.
-
 
 
 
@@ -2537,12 +2545,8 @@ An den Eckpunkten wird jeweils um die y-Achse ein Moment von 20 und umd die x-Ac
 
 Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
 
-::: {#fig-Beispiel-01-BFS  layout-ncol=2}
+![allseitig eingespannte quadratische Platte](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
 
-![quadratische Platte | 8m x 8m mit 400 Elementen](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
-
-allseitig eingespannte quadratische Platte
-:::
 
 Für die Berechnung der $8m \times 8m$ großen Platte werden die in @tbl-Eingabedaten angegebenen Eingangsparameter zugrunde gelegt.
 
@@ -2676,7 +2680,6 @@ Schnittgröße
 
 
 
-
 <!-- Kapitel 7 -->
 
 
@@ -2684,12 +2687,12 @@ Schnittgröße
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 7: Zusammenfassung und ausblick])))
 ```
 
+
 # Zusammenfassung und Ausblick {#sec-zusammenfassung-ausblick}
 
 
 
 {{< pagebreak >}}
-
 
 
 
