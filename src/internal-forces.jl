@@ -141,19 +141,24 @@ end
 function nodalresult(m, result)
     # Vektor mit 0en: Anzahl 0en = Anzahl Knoten
 	sr = zeros(nnodes(m))
-    xCoord = zeros(nnodes(m))
-    yCoord = zeros(nnodes(m))
     # Vektor mit Koordinaten Referenzelement
 	VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
 	for f ∈ faces(m)
 		sr[nodeindices(f)] .+= m.data[:post](f, result).(VV)
 	end
 	for (i, n) ∈ enumerate(nodes(m))
-        # i = Anzahl der Knoten
-        # xCoord[i] = coordinates(n)[1]
-        # yCoord[i] = coordinates(n)[2]
-        # nfaces(n) = Anzahl der Elemente die an dem Knoten angrenzen 
 		sr[i] /= nfaces(n)
 	end
-	return sr#,xCoord,yCoord
+	return sr
+end
+
+function meshNodes(m)
+    xCoord = zeros(nnodes(m))
+    yCoord = zeros(nnodes(m))
+	for (i, n) ∈ enumerate(nodes(m))
+        # i = Anzahl der Knoten
+        xCoord[i] = coordinates(n)[1]
+        yCoord[i] = coordinates(n)[2] 
+	end
+	return xCoord,yCoord
 end

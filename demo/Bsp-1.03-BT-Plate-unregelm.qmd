@@ -3,38 +3,43 @@ include("../src/setup.jl")
 ```
 
 ## Plot der Plattenelemente
+
 ```{julia}
 using MMJMesh.Gmsh
-mQuadBTunr = Mesh("gmsh/plate-BT-04.msh")
-fig = plotmesh(mQuadBTunr; title="quadratische Platte | 8m x 8m | 400 unregelmäßige Elemente")
-# save("Beispiel-01-BTunr-mesh.png",fig)
+mQuadBTunr = MMJMesh.Gmsh.Mesh("gmsh/plate-BT-04.msh")
+figBTunr = plotmesh(mQuadBTunr; title="quadratische Platte | 8m x 8m | 400 unregelmäßige Elemente")
 ```
 
+Berechnung des Verschiebungsvektors
 
 ```{julia}
 # Berechnung des Verschiebungsvektors
 w = plate(mQuadBTunr, p1, "BTP")
 # maximale Verschiebung in vertikaler Richtung
 w_fe = maximum(w[1:3:end])
+```
+
+Vergleich mit Czerny Tafeln
+
+```{julia}
 # Vergleichswert der Czerny Tafeln
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 # prozentuale Abweichung
 100 * abs(w_fe - w_czerny) / w_czerny
 ```
 
-_Abweichung = 4.86 %_
+_Abweichung = 0.515 %_
 
 ## Plot Verformung
 
 ```{julia}
 GLMakie.activate!()
-wBTPunr = plotwBTP(mQuadBTunr, w;title="Verformung")
-# save("Beispiel-01-BTunr-w.png",wBTPunr)
+wBTunr = plotwBTP(mQuadBTunr, w;title="Verformung")
 ```
 
 ## Plot ungeglättete Schnittgrößen
 
-Momente
+Darstellungsfarben festlegen 
 
 ```{julia}
 set_theme!(theme_minimal())
@@ -48,6 +53,8 @@ update_theme!(
 )   
 ```
 
+Momente
+
 ```{julia}
 figBTmx = plotrBTP(mQuadBTunr, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
 figBTmy= plotrBTP(mQuadBTunr, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
@@ -57,8 +64,8 @@ figBTmxy= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = fa
 Querkräfte
 
 ```{julia}
-figBTqx= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = false, a3d=true)
-figBTqy= plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = false, a3d=true)
+figBTqx= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-17000, 17000),nodal = false, a3d=true)
+figBTqy= plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-17000, 17000),nodal = false, a3d=true)
 ```
 
 ## Plot geglättete Schnittgrößen
@@ -74,23 +81,27 @@ figBTmxyGlatt= plotrBTP(mQuadBTunr, :mxy, "Biegemoment mxy", (-4000, 4000),nodal
 Querkräfte
 
 ```{julia}
-figBTqxGlatt= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-25.5, 25.5),nodal = true, a3d=true)
-figBTqyGlatt=plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-25.5, 25.5),nodal = true, a3d=true)
+figBTqxGlatt= plotrBTP(mQuadBTunr, :qx, "Querkraft qx", (-17000, 17000),nodal = true, a3d=true)
+figBTqyGlatt=plotrBTP(mQuadBTunr, :qy, "Querkraft qy", (-17000, 17000),nodal = true, a3d=true)
 ```
 
 
-## Speichern der Plots
+## Speichern der generierten Plots
+
 ```{julia}
 using CairoMakie
+save("Beispiel-01-BTunr-mesh.png",figBTunr)
+save("Beispiel-01-BTunr-w.png",wBTunr)
+
 save("Beispiel-01-BTunr-mx.png",figBTmx)
 save("Beispiel-01-BTunr-my.png",figBTmy)
 save("Beispiel-01-BTunr-mxy.png",figBTmxy)
-# save("Beispiel-01-BT-qx.png",figBTqx)
-# save("Beispiel-01-BT-qy.png",figBTqy)
+save("Beispiel-01-BT-qx.png",figBTqx)
+save("Beispiel-01-BT-qy.png",figBTqy)
 
 save("Beispiel-01-BTunr-mx-glatt.png",figBTmxGlatt)
 save("Beispiel-01-BTunr-my-glatt.png",figBTmyGlatt)
 save("Beispiel-01-BTunr-mxy-glatt.png",figBTmxyGlatt)
-# save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
-# save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
+save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
+save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
 ```

@@ -1,0 +1,91 @@
+```{julia}
+include("../src/setup.jl")
+```
+
+## Plot der Plattenelemente
+
+Eingabewerte
+
+```{julia}
+p4 = @var Params()
+p4.ri = 1 # [m]
+p4.ra = 3 # [m]
+p4.h = 0.03 # [m]
+p4.q = 4e3 # [N/m^2]
+p4.E = 210000e6 # [N/m^2]
+p4.ν = 0.3
+```
+
+```{julia}
+5e3 # [N/m^2] = 5 [kN/m^2]
+5e3/(1000*1000) # [N/mm^2]
+```
+
+```{julia}
+using MMJMesh.Gmsh
+mDisk2 = MMJMesh.Gmsh.Mesh(
+        """
+        SetFactory("OpenCASCADE");
+        Disk(1) = {0, 0, 0, 3, 3};
+        Disk(2) = {0, 0, 0, 1, 1};
+        BooleanDifference(3) = { Surface{1}; Delete; }{ Surface{2}; Delete; };
+        Physical Curve("ΓD") = {2};
+        Physical Surface("S") = {3};
+        Recombine Surface {3};
+        MeshSize{:} = 0.125;
+        Mesh 2;
+        """
+)
+```
+
+```{julia}
+# fixierte Knoten
+GLMakie.activate!()
+fixedNodes = group(mDisk2, :ΓD0)
+figDisk2 = mkfig2d(;title = "Ring-Platte | ri = 1m, ra = 3m")
+mplot!(mDisk2,facecolor=:seashell2,faceplotzscale= 0.5,edgelinewidth=0.4,nodesvisible=true,edgesvisible=true,nodesize=5)
+scatter!(coordinates(mDisk2, group(mDisk2, :ΓD0)), color=:hotpink,markersize = 15)
+figDisk2
+```
+
+# Vergleichswerte aus ...
+
+```{julia}
+w_vgl = 16.5*1/1000
+```
+
+# Berechnung des Verschiebung
+
+```{julia}
+nf = 3
+bcs = [true, true,true]
+mDisk2.data[:kefunc] = DKQKe(p4)
+mDisk2.data[:refunc] = DKQRe(p4.q)
+K,r = assembleKr(mDisk2, nf)
+applyDirichletBCs!(mDisk2.groups[:ΓD0], K, r, bcs) # gestützer Rand
+w = K \ r
+w_fe = maximum(w[1:3:end])
+```
+
+# prozentuale Abweichung Verschiebung
+
+```{julia}
+100 * abs(w_fe - w_vgl) / w_vgl
+```
+
+_Abweichung = 0.3778 %_
+
+## Plot Verformung
+
+```{julia}
+GLMakie.activate!()
+wDisk2 = plotwBTP(mDisk2, w;title="Verformung")
+```
+
+## Speichern der generierten Plots
+
+```{julia}
+using CairoMakie
+save("Beispiel-01-Circ-mesh.png",figCirc)
+save("Beispiel-01-BTunr-w.png",wCirc)
+```

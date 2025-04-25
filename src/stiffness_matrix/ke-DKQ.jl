@@ -10,7 +10,7 @@ const N = MappingFromComponents(lagrangeelement(V)...)
 # Element matrix
 function DKQKe(p)
     function keFunc(e)
-        D = p.E*p.h^3 / 12*(1-p.ν^2) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
+        D = (p.E*p.h^3) / (12*(1-p.ν^2)) * [1 p.ν 0; p.ν 1 0; 0 0 (1-p.ν)/2]
         Ke = zeros(12,12)
         # Jacobimatrix des betrachteten Elements (muss noch transponiert werden s. Zeile 28 und 29 J') 
         jF = jacobian(parametrization(geometry(e)))

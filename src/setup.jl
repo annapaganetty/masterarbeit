@@ -58,7 +58,7 @@ include("plots/plot-BTP.jl")
 p1 = @var Params()
 p1.lx = 8		# [m]
 p1.ly = 8		# [m]
-p1.q = 5e3		# [N/m]
+p1.q = 5e3		# [N/m^2]
 p1.ν = 0
 p1.h = 0.2		# [m]
 p1.r = 8
@@ -66,20 +66,13 @@ p1.E = 31000e6;	# [N/m^2]
 
 
 p2 = @var Params()
-p2.lx = 8
-p2.ly = 8
-p2.q = 5e3
+p2.lx = p1.lx
+p2.ly = p1.lx
+p2.q = p1.q
 p2.ν = 0.2
-p2.h = 0.2
-p2.E = 31000e6;
-
-# p4 = @var Params()
-# p4.lx = 2*a #[m]
-# p4.ly = 2*b #[m]
-# p4.q = 10
-# p4.ν = 0
-# p4.h = 1 #[m]
-# p4.E = 1000; # [N/mm^2] [MN/m^2]
+p2.h = p1.h
+p2.r = p1.r
+p2.E = p1.E;
 
 Base.setindex!(d::MMJMesh.Meshes.Data, x, s::Symbol) = setdata!(d.mesh, s, x)
 Base.getindex(d::MMJMesh.Meshes.Data, s::Symbol) = data(d.mesh, s)

@@ -3,35 +3,43 @@ include("../src/setup.jl")
 ```
 
 ## Plot der Plattenelemente
+
 ```{julia}
 xElem = 20
 mQuadBT = makequadratcicMesh(p1, xElem)
 figBT = plotmesh(mQuadBT;title="quadratische Platte | 8m x 8m | 400 Elemente")
 ```
 
+Berechnung des Verschiebungsvektors
+
 ```{julia}
 # Berechnung des Verschiebungsvektors
 w = plate(mQuadBT, p1, "BTP")
 # maximale Verschiebung in vertikaler Richtung
 w_fe = maximum(w[1:3:end])
-# Vergleichswert der Czerny Tafeln
+```
+
+Vergleich mit Czerny Tafeln
+
+```{julia}
+# Vergleichswert aus den Czerny Tafeln
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 # prozentuale Abweichung
 100 * abs(w_fe - w_czerny) / w_czerny
 ```
 
-_Abweichung = 4.77 %_
+_Abweichung = 0.566 %_
 
 ## Plot Verformung
 
 ```{julia}
 GLMakie.activate!()
-plotwBTP(mQuadBT, w;title="Verformung")
+wBT = plotwBTP(mQuadBT, w;title="Verformung")
 ```
 
 ## Plot ungeglättete Schnittgrößen
 
-Momente
+Darstellungsfarben festlegen 
 
 ```{julia}
 set_theme!(theme_minimal())
@@ -45,15 +53,17 @@ update_theme!(
 )   
 ```
 
+Momente
+
 ```{julia}
 GLMakie.activate!()
 figBTmx = plotrBTP(mQuadBT, :mx, "Biegemoment mx", (-17000, 17000),nodal = false, a3d=true)
 figBTmy= plotrBTP(mQuadBT, :my, "Biegemoment my", (-17000, 17000),nodal = false, a3d=true)
 figBTmxy= plotrBTP(mQuadBT, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = false, a3d=true)
-figBTmy
 ```
 
 Querkräfte
+
 ```{julia}
 figBTqx= plotrBTP(mQuadBT, :qx, "Querkraft qx", (-17000, 17000),nodal = false, a3d=true)
 figBTqy= plotrBTP(mQuadBT, :qy, "Querkraft qy", (-17000, 17000),nodal = false, a3d=true)
@@ -77,21 +87,24 @@ figBTqyGlatt=plotrBTP(mQuadBT, :qy, "Querkraft qy", (-17000, 17000),nodal = true
 ```
 
 
-## Speichern der Plots
+## Speichern der generierten Plots
 
 ```{julia}
 using CairoMakie
+save("Beispiel-01-BTunr-mesh.png",figBT)
+save("Beispiel-01-BTunr-w.png",wBT)
+
 save("Beispiel-01-BT-mx.png",figBTmx)
 save("Beispiel-01-BT-my.png",figBTmy)
 save("Beispiel-01-BT-mxy.png",figBTmxy)
-# save("Beispiel-01-BT-qx.png",figBTqx)
-# save("Beispiel-01-BT-qy.png",figBTqy)
+save("Beispiel-01-BT-qx.png",figBTqx)
+save("Beispiel-01-BT-qy.png",figBTqy)
 
 save("Beispiel-01-BT-mx-glatt.png",figBTmxGlatt)
 save("Beispiel-01-BT-my-glatt.png",figBTmyGlatt)
 save("Beispiel-01-BT-mxy-glatt.png",figBTmxyGlatt)
-# save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
-# save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
+save("Beispiel-01-BT-qx-glatt.png",figBTqxGlatt)
+save("Beispiel-01-BT-qy-glatt.png",figBTqyGlatt)
 ```
 
 # Konvergenz Plot

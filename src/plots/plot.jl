@@ -8,6 +8,16 @@ function mkfig2d(
     return fig#,ax
 end
 
+function mkfig2dComplex(
+    ;title=""
+)
+    fig = Figure(;size = (1600, 1000),linewidth = 0.5,fontsize = 12,font="calibri")
+    ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="calibri",xlabelfont = "calibri",ylabelfont ="calibri")
+    hidedecorations!(ax)
+    hidespines!(ax)
+    return fig,ax
+end
+
 function mkfig3d(
     ;title ="")
     fig = Figure(;size = (500,400),linewidth = 0.5,fontsize = 12,font="calibri")
