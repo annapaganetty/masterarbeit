@@ -2,9 +2,6 @@
 
 Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente  ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.  
 
-
-Der klassische Ansatz verwendet hierzu eine nodale Basis P nach Gleichung 3.40 aus Kapitel  3.3 auf den Elementen. Dabei entspricht eine der verwendeten lokale Basisfunktionen der  Elemente φe  i einem globalen Freiheitsgrad di.
-
 ### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 
 Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
@@ -43,7 +40,7 @@ a(w, \delta w)
 = \int_{\Omega} (m_{xx} \kappa_{xx} + 2 m_{xy} \kappa_{xy} + m_{yy} \kappa_{yy} ) d \Omega. 
 $$ {#eq-bilinearform-Skalarprodukt-m-kappa}
 
-für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $\theta_{xh}$ und $\theta_{yh}$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $\mathbf{\hat{w}^e}$ (@eq-knotenverschiebungsvekor), die Formulierung des Krümmungsvektors für das Element $i$  
+für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $\theta_{xh}$ und $\theta_{yh}$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $\mathbf{\hat{w}^e}$ (@eq-knotenverschiebungsvekor-BFS), die Formulierung des Krümmungsvektors für das Element $i$  
 
 $$
 \begin{align}

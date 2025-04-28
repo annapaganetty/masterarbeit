@@ -2,6 +2,7 @@
 include("../src/setup.jl")
 ```
 
+
 ## Plot der Plattenelemente
 
 ```{julia}
@@ -19,6 +20,7 @@ w = plate(mQuadBFS, p1, "kirchhoff_conforming")
 # maximale Verschiebung in vertikaler Richtung
 w_fe = maximum(w[1:4:end])
 ```
+
 
 Vergleich mit Czerny Tafeln
 
@@ -45,7 +47,7 @@ Darstellungsfarben festlegen
 ```{julia}
 set_theme!(theme_minimal())
 update_theme!(
-    colormap=(:redblue,1.0),
+    colormap=(:redblue),
     color=3,
     faceplotzscale=1,
     faceplotnpoints=15,
@@ -65,6 +67,10 @@ figBFSqx= plotr(mQuadBFS, :qx, "Querkraft qx", (-25500, 25500),nodal = false, a3
 figBFSqy= plotr(mQuadBFS, :qy, "Querkraft qy", (-25500, 25500),nodal = false, a3d=true)
 ```
 
+```{julia}
+figBFSmx
+```
+
 ## Plot geglättete Schnittgrößen
 
 Momente & Querkräfte
@@ -73,14 +79,19 @@ Momente & Querkräfte
 figBFSmxGlatt= plotr(mQuadBFS, :mx, "Biegemoment mx", (-17000, 17000),nodal = true, a3d=true)
 figBFSmyGlatt= plotr(mQuadBFS, :my, "Biegemoment my", (-17000, 17000),nodal = true, a3d=true)
 figBFSmxyGlatt= plotr(mQuadBFS, :mxy, "Biegemoment mxy", (-4000, 4000),nodal = true, a3d=true)
-figBFSqxGlatt= plotr(mQuadBFS, :qx, "Querkraft qx", (-25500, 25500),nodal = true, a3d=true)
-figBFSqyGlatt=plotr(mQuadBFS, :qy, "Querkraft qy", (-25500, 25500),nodal = true, a3d=true)
+figBFSqxGlatt= plotr(mQuadBFS, :qxgg, "Querkraft qx", (-25500, 25500),nodal = true, a3d=true)
+figBFSqyGlatt=plotr(mQuadBFS, :qygg, "Querkraft qy", (-25500, 25500),nodal = true, a3d=true)
+```
+
+```{julia}
+figBFSqyGlatt
 ```
 
 ## Speichern der generierten Plots
 
 ```{julia}
 save("Beispiel-01-BFS.png",figBFS)
+save("Beispiel-01-BFS-w.png",wBFS)
 
 save("Beispiel-01-BFS-mx.png",figBFSmx)
 save("Beispiel-01-BFS-my.png",figBFSmy)

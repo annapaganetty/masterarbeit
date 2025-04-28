@@ -66,9 +66,8 @@ Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mit
 
 In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
 
-Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für das Lagrange Element und das Serendipity Element dargestellt.
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend wird beispielhaft der Ablauf zur Konstruktion der Formfunktionen für das konforme und nicht konforem Hermite Element dargestellt.
 
-__Hermite-Elemente__
 
 ```{julia}
 function hermiteelement(V;conforming=true)
@@ -97,48 +96,6 @@ function hermiteelement(V;conforming=true)
     Minv = simplifyx.(M \ Imatrix)
     H4 = Minv * P
     return H4
-end;
-```
-
-__Lagrange-Elemente__
-
-```{julia}
-function lagrangeelement(V)
-        m = 4
-        P = mmonomials(2, 1, QHat  ,type = Int)
-        N = vcat(
-            [   [ValueAtLF(p)]
-                for p in eachcol(V)]...
-            )
-        Imatrix = Matrix{Int}(I, m, m)
-        M = [n(p) for p in P, n in N]
-        Minv = simplifyx.(M \ Imatrix)
-        L4 = Minv*P
-    return L4
-end;
-```
-
-__Serendipity-Elemente__
-
-```{julia}
-function serendipityelement(V)
-    W = Array{Int64,2}(undef, 2,4)
-    for i = 1:3
-            W[1,i] = (V[1,i] + V[1,i+1]) * 0.5
-            W[2,i] = (V[2,i] + V[2,i+1]) * 0.5
-    end
-    W[1,4] = (V[1,4] + V[1,1]) * 0.5
-    W[2,4] = (V[2,4] + V[2,1]) * 0.5
-    P = mmonomials(2, 2, QHat,(p1, p2) -> p1 + p2 < 4, type = Int)
-    N = vcat(
-        [   ValueAtLF(p)
-            for p in eachcol(V)],
-        [   [ValueAtLF(q)]
-            for q in eachcol(W)]...
-    )
-    M = [n(p) for p in P, n in N]
-    S8 = inv(M)*P
-    return S8
 end;
 ```
 
@@ -200,7 +157,7 @@ Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von R
 |Lagerbedingung | BFS                        | DKQ                 |
 |:-------------:|:---------------------------|:--------------------|
 | gelenkig      | `[true,false,false,false]` | `[true,false,false]`| 
-| starr         | `[true,true,true,true]`    | `[true,true,true]`  | 
+| starr         | `[true,true,true,false]`    | `[true,true,true]`  | 
 
 : Auflagerbedinungen für den Bogner-Fox-Schmitt Elementansatz und für das DKQ Element {#tbl-Auflagerbedinungen-Programm}
 
@@ -219,7 +176,7 @@ end;
 Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N \times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheisgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktione `idxDOFs()` erstellt.
 
 ```{julia}
-idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :))
+idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :));
 ```
 
 Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren  `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt. 
@@ -252,7 +209,7 @@ Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wir
 
 `K \ w` 
 
-berechnet. Für das Bogner-Fox-Schmitt Element basieren die im `postprozessor()` berechneten Größen je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\beta_x$ und $\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
+berechnet. Für das Bogner-Fox-Schmitt Element basieren die, im `postprozessor()` berechneten Größen, je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\beta_x$ und $\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
 
 ```{julia}
 function moment(name)
@@ -267,6 +224,28 @@ function moment(name)
             return (Db * B)[2] * wHat[idxs]
         elseif name == :mxyfunc
             return (Db * B)[3] * wHat[idxs]
+        end
+    end
+end
+```
+
+Für die Berechnung der Querkräfte werden die Momentenfunktionen an den Knotenpunkten ausgewertet und bilinear interpoliert. Anschließend werden die entstandenen Funktionen abgeleitet und mittels der inversen Jacobi-Matrix parametrisiert.
+
+```{julia}
+function querkraft(name)
+    x -> begin
+        VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+        J = jF(x) 
+        ∇ˣʸNi = (inv(J') * ∇Ni(x))
+        ∇Mx = ∇ˣʸNi * moment(:mxfunc).(VV)
+        ∇My = ∇ˣʸNi * moment(:myfunc).(VV)
+        ∇Mxy = ∇ˣʸNi * moment(:mxyfunc).(VV)
+        qx = ∇Mx[1] + ∇Mxy[2]
+        qy = ∇Mxy[1] + ∇My[2]
+        if name == :qxfunc
+            return qx
+        elseif name == :qyfunc
+            return qy
         end
     end
 end

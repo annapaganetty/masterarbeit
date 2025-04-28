@@ -61,3 +61,14 @@ function invJacobi(e)
     DetJ = J[1,1] * J[2,2] - J[2,1] * J[1,2]
     1 / DetJ
 end
+
+function meshNodes(m)
+    xCoord = zeros(nnodes(m))
+    yCoord = zeros(nnodes(m))
+	for (i, n) ∈ enumerate(nodes(m))
+        # i = Anzahl der Knoten
+        xCoord[i] = coordinates(n)[1]
+        yCoord[i] = coordinates(n)[2] 
+	end
+	return xCoord,yCoord
+end

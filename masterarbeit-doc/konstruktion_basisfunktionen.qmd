@@ -11,13 +11,14 @@ Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente 
 
 Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM vorrangig $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen von Bedeutung. Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 \le j \le n$ stetig in allen Punkten ist. Beispiele dieser sind in @fig-c-funktionen dargestellt.
 
+
 |Kontinuität | Knicke | Sprünge | Kommentar             |
 |:----------:|:------:|:-------:|:---------------------|
 | $C^{-1}$   | Ja     | Ja      | stückweise stetig     |
 | $C^{0}$    | Ja     | Nein    | stückweise stetig differenzierbar|
 | $C^{1}$    | Nein   | Nein    | stetig differenzierbar|
 
-:  {#tbl-kontinuität}
+:Kontinuitätseigenschaften  {#tbl-kontinuität}
 
 
 Die Ableitung einer $C^0$ Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^{-1}$-Funktion, welche an den Knicken der $C^0$-Funktion einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.

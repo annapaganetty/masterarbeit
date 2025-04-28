@@ -1,7 +1,7 @@
 function mkfig2d(
     ;title=""
 )
-    fig = Figure(;size = (1600, 1000),linewidth = 0.5,fontsize = 12,font="calibri")
+    fig = Figure(;size = (1600, 1000),linewidth = 0.5,fontsize = 20,font="calibri")
     ax = Axis(fig[1, 1],aspect=DataAspect(),  title=title, titlefont="calibri",xlabelfont = "calibri",ylabelfont ="calibri")
     hidedecorations!(ax)
     hidespines!(ax)
@@ -31,7 +31,7 @@ function mkfig3d(
         protrusions=0)
     hidedecorations!(ax)
     hidespines!(ax)
-    return fig
+    return fig,ax
 end
 
 function plotmesh(m;title)
@@ -88,8 +88,8 @@ function plotw(
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
 )
-    fig = mkfig3d(title=title)
-    mplot!(
+    fig,ax = mkfig3d(title=title)
+    p=mplot!(
         m, makewe(wHat,conforming = conforming),
         faceplotzscale= zs / maximum(wHat),
         faceplotmesh=mesh,
@@ -103,6 +103,7 @@ function plotw(
         colormap=colormap,
         limits = limits
     )
+    ax.title = maketitle(p, title)
     fig
 end
 

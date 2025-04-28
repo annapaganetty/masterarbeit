@@ -1,0 +1,34 @@
+## Kreisplatte {#sec-kreisplatte}
+
+![Beispiel "Kreisplatte": Finite-Elemente-Netz](00-pics/Beispiel-01-Circ-mesh.png){#fig-Kreisplatte-mesh width=70%} 
+
+Als weiteres Minimalbeispiel dient eine rundum eingespannte Kreisplatte mit konstanter Flächenlast. Die Eingabeparameter sind in @tbl-Eingabedaten_kreisplatte aufgeführt.
+
+| Eingabeparameter  |                           |
+|:------------------|:--------------------------|
+|Radius             | $r = 8.0 \text{ m}$        |
+|Plattendicke       | $d = 0.2 \text{ m}$        |
+|Elastizitätsmodul  | $E = 31000*10^6 \text{ N/m}^2$|
+|Querdehnzahl       | $\nu = 0.0$               |
+|Flächenlast        | $q = 5000\text{ N/m}^2$|
+
+: Daten zum Beispiel "Kreisplatte" {#tbl-Eingabedaten_kreisplatte}
+
+Die Durchbiegung einer eingespannte Kreisplatte kann entsprechend Abb. 3.35 aus [quelle:Altenbach et al.] berechnet werden. Die maximaler Verformung mit den angegebenen Parametern ist
+$$
+\begin{align}
+&w_{max} = \frac{q * r^4}{64 K} \qquad \qquad \qquad = 0.0154  \text{ m}\\
+\\
+&\qquad \text{mit} \quad K = \frac{E*d^3}{12*(1-p1.ν^2)}.
+\end{align}
+$$
+
+Mit dem in @fig-Kreisplatte-mesh dargestellten Netz errechnet sich die maximale Verformung mit der DKQ-Formulierung zu 
+
+$$
+w_{fe} = 0.0155 \text{ m}
+$$
+
+was einer Abweichung von _0.680 %_ entspricht. Die Verformungfigur ist in @fig-Kreisplatte-verformung dargestellt.
+
+![Beispiel "Kreisplatte": Verformungsfigur](00-pics/Beispiel-01-Circ-w.png){#fig-Kreisplatte-verformung width=70%}

@@ -145,10 +145,6 @@ $$ {#eq-spannungen}
 
 sind linear veränderlich über die Plattendicken $h$. 
 
-__TODO:__ auf Widersprüche der Kirchhoff Plattentheorie eingehen 
-
-\
-
 ### Schnittgrößen {#sec-schnittgrößen}
 
 Resultierend aus den Spannungskomponenten $\sigma_{xx}$,$\sigma_{yy}$ und $\tau_{xy}$ ergeben sich die Biegemomente $m_{xx}$ und $m_{yy}$ und das Drillmoment $m_{xy}$, definiert als Moment pro Längeneinheit. Die Momente lassen sich durch Integration der Spannungen über die Höhe der Platte und Multiplikation mit dem Hebelarm $z$ zu

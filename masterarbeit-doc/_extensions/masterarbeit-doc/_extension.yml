@@ -21,3 +21,5 @@ contributes:
       number-sections: true
       keep-typ: true
       keep-md: true
+bibliography: 
+  - references.bib 

@@ -77,9 +77,7 @@ end
 function pkcRe(q)
     function reFunc(e)
         _,a,b= _fsize(e)
-        
         re = zeros(16)
-
         re[1]=(1//4)*a*b
         re[2]=(1//24)*(a^2)*b
         re[3]=(1//24)*a*(b^2)
@@ -96,7 +94,6 @@ function pkcRe(q)
         re[14]=(1//24)*(a^2)*b
         re[15]=(-1//24)*a*(b^2)
         re[16]=(-1//144)*(a^2)*(b^2)
-
         return re*q
     end
     return reFunc

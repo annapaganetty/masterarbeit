@@ -1,7 +1,12 @@
 # Anwendungsbeispiele {#sec-anwendungsbeispiele}
 
-Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen entsprechend der Formulierung von Batoz und Tahar zu untersuchen. Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny [Quelle] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm MicroFE. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird eine Vergleichsrechnung mit dem Programm RFEM durchgeführt.
+Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen, entsprechend der Formulierung von Batoz und Tahar, zu untersuchen. Der Patch-Test dient vor allem zu Überprüfung der Momentenverläufe. In @sec-kreisplatte wird an einer eingespannten Kreisplatte die Verformungsberechnung mit einem Berechnungsbeispiel aus [Quelle: Altenbach et al] verglichen.
+
+Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny [Quelle] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm _RFEM_. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird die Vergleichsrechnung mit selbigem Programm durchgeführt.
 
 {{< include patch-test.qmd >}}
+{{< include kreisplatte.qmd >}}
+{{< pagebreak >}}
 {{< include beispiel-01.qmd >}}
+{{< pagebreak >}}
 {{< include beispiel-02.qmd >}}

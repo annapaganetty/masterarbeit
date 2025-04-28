@@ -47,8 +47,8 @@ maximum(w[1:3:end])
 ## Plot Verformung
 
 ```{julia}
-GLMakie.activate!()
-w02 = plotwBTP(mesh02, w;title="Verformung")
+# GLMakie.activate!()
+# w02 = plotwBTP(mesh02, w;title="Verformung")
 ```
 
 Postprozessor
@@ -87,6 +87,27 @@ function plotr2D(m,nr,cr,ticks;title="")
 end
 ```
 
+
+```{julia}
+figW,ax2 = mkfig2dComplex(title="Verformung w")
+p = mplot!(mesh02, :w, 
+    nodewarp = nothing,
+    faceplotnpoints=1,
+    edgesvisible = false,
+    facesvisible = false,
+    faceplotmesh=0,
+    facecolor=3,
+    faceplotzscale=0,
+    colorrange=(0,0.022),
+    colormap=cgrad(:lightrainbow, 11, categorical = true))
+mplot!(mesh02, edgesvisible = false, facesvisible = false)
+Colorbar(figW[1, 2],colorrange =(0,0.022),ticks = 0:0.002:0.022)
+figW
+```
+
+```{julia}
+0.022/11
+```
 ## Ergebnisse Knotenweise 
 
 Momente
@@ -136,13 +157,13 @@ maxMXY = maximum(nrMXY)/1e3
 
 ```{julia}
 using CairoMakie
-save("Beispiel-02-BT-complex-mesh.png",fig)
-save("Beispiel-02-BT-complex-w.png",w02)
+# save("Beispiel-02-BT-complex-mesh.png",fig)
+save("Beispiel-02-BT-complex-w.png",figW)
 
-save("Beispiel-02-BT-complex-mx.png",figComplmx)
-save("Beispiel-02-BT-complex-my.png",figComplmy)
-save("Beispiel-02-BT-complex-mxy.png",figComplmxy)
-save("Beispiel-02-BT-complex-qx.png",figComplqx)
-save("Beispiel-02-BT-complex-qy.png",figComplqy)
+# save("Beispiel-02-BT-complex-mx.png",figComplmx)
+# save("Beispiel-02-BT-complex-my.png",figComplmy)
+# save("Beispiel-02-BT-complex-mxy.png",figComplmxy)
+# save("Beispiel-02-BT-complex-qx.png",figComplqx)
+# save("Beispiel-02-BT-complex-qy.png",figComplqy)
 
 ```

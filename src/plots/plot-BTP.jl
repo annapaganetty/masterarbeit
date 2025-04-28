@@ -73,8 +73,8 @@ function plotwBTP(
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
 )
-    fig = mkfig3d(title=title)
-    mplot!(
+    fig,_ = mkfig3d(title=title)
+    p=mplot!(
         m, makeweBTP(wHat),
         faceplotzscale=zs,
         faceplotmesh=mesh,
@@ -87,6 +87,7 @@ function plotwBTP(
         colormap=colormap,
         limits = limits
     )
+    # ax.title = maketitle(p, title)
     fig
 end
 # Plot Verdrehung ThetaX
@@ -101,7 +102,7 @@ function plotThetaxBTP(
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
 )
-    fig = mkfig3d(title=title)
+    fig,_ = mkfig3d(title=title)
     mplot!(
         m, makeThetaxBTP(wHat),
         faceplotzscale=zs,
@@ -130,7 +131,7 @@ function plotThetayBTP(
     colormap=Makie.theme(:colormap),
     limits=(nothing, nothing, nothing)
 )
-    fig = mkfig3d(title=title)
+    fig,_ = mkfig3d(title=title)
     mplot!(
         m, makeThetayBTP(wHat),
         faceplotzscale=zs,
@@ -188,7 +189,7 @@ function plotBasisfunc(
 end
 
 function maketitle(p, title)
-	min, max = string.(round.(valuerange(p), digits = 2))
+	min, max = string.(round.(valuerange(p), digits = 3))
 	return title * " | min: " * min * " | max: " * max
 end
 

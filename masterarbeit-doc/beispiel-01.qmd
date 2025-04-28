@@ -1,17 +1,17 @@
 ## Beispiel 1: allseitig eingespannte Platte {#sec-beispiel-01}
 
-Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-BFS dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma _mb AEC Software GmbH_.
+Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-FE-Netz dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Bogner-Fox-Schmitt Elementansatzes (BFS-Element), als auch des DKQ-Element wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm RFEM der Firma _Dlubal Software GmbH_.
 
 ![allseitig eingespannte quadratische Platte](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
 
 
 Für die Berechnung der $8m \times 8m$ großen Platte werden die in @tbl-Eingabedaten angegebenen Eingangsparameter zugrunde gelegt.
 
-|                   |                           |
+| Eingabeparameter       |                           |
 |:------------------|:--------------------------|
 |Plattendicke       | $d = 0.2 \text{ m}$        |
-|Elastizitätsmodul  | $E = 31.000 \text{ N/mm}^2$|
-|Flächenlast        | $p = 5 \text{ kN}$         |
+|Elastizitätsmodul  | $E = 31000*10^6 \text{ N/m}^2$|
+|Flächenlast        | $p = 5000 \text{ N}$         |
 |                   | $\nu = 0.0$               |
 
 : Daten zum Beispiel "allseitig eingespannte Platte" {#tbl-Eingabedaten}
@@ -31,63 +31,136 @@ $$
 $${#eq-werte-czerny-tafeln}
 
 
-Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS und @fig-Biegemomente-BTP spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_{x_{erm}}$ und $q_{y_{erm}}$ sind in @fig-Querkräfte-BFS für das BFS-Element dargestellt . 
+Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder sind $q_{x_{erm}}$ und $q_{y_{erm}}$. Nachfolgend werden die Biegemomentenverläufe und die Querkraftverläufe des Beispiels dargestellt. 
 
+Die resultierende Verformungsfigur in überhöhter Darstellung stimmt bei beiden Elementansätzen überein und ist in @fig-BFS-w dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.001255 m$ für den BFS-Elementansatz bzw. $w_{max} =  0.001262 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ bzw. $0.566 \%$ ab. 
 
-### Berechnung mit Bogner Fox Schmitt Elementansatz
+![Durchbiegung $w$ der Platte](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-w width=60%}
 
-Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung ... dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ ab. 
-
-![Durchbiegung $w$ der Platte (BFS-Elemente)](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-konvergenz width=60%}
+{{< pagebreak >}}
+### Berechnungsergebnisse: BFS Elementansatz
 
 ::: {#fig-Biegemomente-BFS  layout-ncol=2}
 
-![$m_x$ [kNm]](00-pics/Beispiel-01-BFS-mx.png){#fig-BFS-mx width=80%}
+![$m_x$ [kNm/m]](00-pics/Beispiel-01-BFS-mx.png){#fig-BFS-mx width=75%}
 
-![$m_x$ geglättet [kNm]](00-pics/Beispiel-01-BFS-mx-glatt.png){#fig-BFS-mx-Glatt width=80%}
+![$m_x$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-mx-glatt.png){#fig-BFS-mx-Glatt width=75%}
 
-![$m_y$ [kNm]](00-pics/Beispiel-01-BFS-my.png){#fig-BFS-my width=80%}
+![$m_y$ [kNm/m]](00-pics/Beispiel-01-BFS-my.png){#fig-BFS-my width=75%}
 
-![$m_y$ geglättet [kNm]](00-pics/Beispiel-01-BFS-my-glatt.png){#fig-BFS-my-Glatt width=80%}
+![$m_y$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-my-glatt.png){#fig-BFS-my-Glatt width=75%}
 
-![$m_{xy}$ [kNm]](00-pics/Beispiel-01-BFS-mxy.png){#fig-BFS-mxy width=80%}
+![$m_{xy}$ [kNm/m]](00-pics/Beispiel-01-BFS-mxy.png){#fig-BFS-mxy width=75%}
 
-![$m_{xy}$ geglättet [kNm]](00-pics/Beispiel-01-BFS-mxy-glatt.png){#fig-BFS-mxy-Glatt width=80%}
+![$m_{xy}$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-mxy-glatt.png){#fig-BFS-mxy-Glatt width=75%}
 
 
-Biegemomente Platte Bogner Fox Schmitt
+Biegemomente BFS-Elementansatz
 :::
 
 ::: {#fig-Querkräfte-BFS  layout-ncol=2}
 
-![qx](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx width=80%}
+![$q_{x}$ [kN/m]](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx width=80%}
 
-![qx geglättet](00-pics/Beispiel-01-BFS-qx-glatt.png){#fig-BFS-qx-Glatt width=80%}
+![$q_{x}$ geglättet [kN/m]](00-pics/Beispiel-01-BFS-qx-glatt.png){#fig-BFS-qx-Glatt width=80%}
 
-![qy](00-pics/Beispiel-01-BFS-qy.png){#fig-BFS-qy width=80%}
+![$q_{y}$ [kN/m]](00-pics/Beispiel-01-BFS-qy.png){#fig-BFS-qy width=80%}
 
-![qy geglättet](00-pics/Beispiel-01-BFS-qy-glatt.png){#fig-BFS-qy-Glatt width=80%}
+![$q_{y}$ geglättet [kN/m]](00-pics/Beispiel-01-BFS-qy-glatt.png){#fig-BFS-qy-Glatt width=80%}
 
-Querkräfte Platte Bogner Fox Schmitt
+Querkräfte BFS-Elementansatz
 :::
 
-### Berechnung mit Batoz und Tahar Elementansatz
-
+{{< pagebreak >}}
+### Berechnungsergebnisse. DKQ-Elementansatz
 
 ::: {#fig-Biegemomente-BTP  layout-ncol=2}
 
-![$m_x$ [kNm]](00-pics/Beispiel-01-BT-mx.png){#fig-BFS-mx width=80%}
+![$m_x$ [kNm/m]](00-pics/Beispiel-01-BT-mx.png){#fig-BT-mx width=75%}
 
-![$m_x$ geglättet [kNm]](00-pics/Beispiel-01-BT-mx-glatt.png){#fig-BFS-mx-Glatt width=80%}
+![$m_x$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-mx-glatt.png){#fig-BT-mx-Glatt width=75%}
 
-![$m_y$ [kNm]](00-pics/Beispiel-01-BT-my.png){#fig-BFS-my width=80%}
+![$m_y$ [kNm/m]](00-pics/Beispiel-01-BT-my.png){#fig-BT-my width=75%}
 
-![$m_y$ geglättet [kNm]](00-pics/Beispiel-01-BT-my-glatt.png){#fig-BFS-my-Glatt width=80%}
+![$m_y$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-my-glatt.png){#fig-BT-my-Glatt width=75%}
 
-![$m_{xy}$ [kNm]](00-pics/Beispiel-01-BT-mxy.png){#fig-BFS-mxy width=80%}
+![$m_{xy}$ [kNm/m]](00-pics/Beispiel-01-BT-mxy.png){#fig-BT-mxy width=75%}
 
-![$m_{xy}$ geglättet [kNm]](00-pics/Beispiel-01-BT-mxy-glatt.png){#fig-BFS-mxy-Glatt width=80%}
+![$m_{xy}$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-mxy-glatt.png){#fig-BT-mxy-Glatt width=75%}
 
 
-Biegemomente Platte Batoz & Tahar
+Biegemomente DKQ-Elementansatz
 :::
+
+::: {#fig-Querkräfte-DKQ  layout-ncol=2}
+
+![$q_{x}$ [kN/m]](00-pics/Beispiel-01-BT-qx.png){#fig-BT-qx width=80%}
+
+![$q_{x}$ geglättet [kN/m]](00-pics/Beispiel-01-BT-qx-glatt.png){#fig-BT-qx-Glatt width=80%}
+
+![$q_{y}$ [kN/m]](00-pics/Beispiel-01-BT-qy.png){#fig-BT-qy width=80%}
+
+![$q_{y}$ geglättet [kN/m]](00-pics/Beispiel-01-BT-qy-glatt.png){#fig-BT-qy-Glatt width=80%}
+
+Querkräfte DKQ-Elementansatz
+:::
+
+{{< pagebreak >}}
+### Berechnungsergebnisse: RFEM
+
+::: {#fig-Biegemomente-RFEM  layout-ncol=1}
+
+![$m_x$ [kNm/m]](00-pics/bsp01-RFEM-Moment-mx.PNG){#fig-01-RFEM-mx width=90%}
+
+![$m_y$ [kNm/m]](00-pics/bsp01-RFEM-Moment-my.PNG){#fig-01-RFEM-my width=90%}
+
+![$m_{xy}$ [kNm/m]](00-pics/bsp01-RFEM-Moment-mxy.PNG){#fig-01-RFEM-mxy width=90%}
+
+Biegemomente berechnet mit _RFEM_
+:::
+
+::: {#fig-Querkräfte-RFEM  layout-ncol=1}
+
+![$q_{x}$ [kN/m]](00-pics/bsp01-RFEM-Querkraft-vx.PNG){#fig-01-RFEM-qx width=90%}
+
+![$q_{y}$ [kN/m]](00-pics/bsp01-RFEM-Querkraft-vy.PNG){#fig-01-RFEM-qy width=90%}
+
+Querkräfte berechnet mit _RFEM_
+:::
+
+
+### Vergleich der Berechnungsergebnisse
+
+Aufgrund der Symmetrie der Platte, der identischen Lagerung aller Ränder und der gleichmäßigen Belastung durch eine Gleichflächenlast, sind die Momentenverläufe und die Querkraftverläufe in $x$- und in $y$-Richtungen deckungsgleich.
+Der rein optischen Vergleich der Schnittgrößen, zeigt, zwischen den Berechnungsergebnisse der beiden Elementansätze sowie den Ergebnissen von _RFEM_, nahezu kongruente Verläufe. Neben den maximalen Verformungen stimmen auch die Zahlenwerte der Momente, aufgelistet in @tbl-Vergleich-Ergebnisse, mit einer maximalen Abweichung von $1.040 \%$ überein. 
+<!-- 
+| Ergebnis                |        | Czerny         | BFS         | DKQ            | RFEM         |
+|:------------------------|:------------|:---------------|:------------|:---------------|:-------------|
+| $w_{max}$               |[m]     | $0.001255$     | $0.001255$  | $0.001262$     | $0.0013$     |
+| $m_x_{max} = m_y_{max}$ |[kNm/m] | $5633.80$      | $5658.78$   | $5692.38$      | $5671$       |
+| $m_x_{erm} = m_y_{erm}$ |[kNm/m] | $-16494.85$    | $-16359.92$ | $-16388.71$    | $-16483$     |
+| $q_x_{erm} = q_y_{erm}$ |[kN/m]  | $\pm 17857.14$ | $\pm 16080$ | $\pm 15867.62$ | $\pm 17552$  |
+
+: Vergleich der Ergebnisse zum Beispiel "allseitig eingespannte Platte" {#tbl-Vergleich-Ergebnisse} 
+-->
+
+
+
+|            | $w_{max}$    | $m_{x,max} = m_{y,max}$ | $m_{x,erm} = m_{y,erm}$ | $q_{y,erm} = q_{y,erm}$ |
+|:-----------|:----------------|:------------------------|:------------------------|:------------------------|
+| Czerny     | $0.001255$ m | $5633.80$ kNm/m         | $-16494.85$ kNm/m       | $\pm 17857.14$ kN/m     |
+| BFS        | $0.001255$ m | $5658.78$ kNm/m         | $-16359.92$ kNm/m       | $\pm 16080.00$ kN/m     |
+| DKQ        | $0.001262$ m | $5692.38$ kNm/m         | $-16388.71$ kNm/m       | $\pm 15867.62$ kN/m     |
+| RFEM       | $0.0013$   m | $5671.00$ kNm/m         | $-16483.00$ kNm/m       | $\pm 17552.00$ kN/m     |
+
+: Vergleich der Ergebnisse zum Beispiel "allseitig eingespannte Platte" {#tbl-Vergleich-Ergebnisse}
+
+Bei der Anwendung kommerzieller Finite-Elemente Software ist die Ausgabe der Berechnungsergebnisse immer _geglättet_. Eine nähere Betrachtung der ungeglätteten Querkraftverläufe des BFS-Ansatzes in @fig-BFS-qx-bsplhaft zeigt an den Elementkanten große Versprünge. Dieser Diskretisierungsfehler resultiert aus den höheren Ableitungen der Basisfunktionen, welche für die Berechnung der Querkräfte wesentlich sind.
+
+![Querkraftverlauf $q_{x}$ [kN/m] (BFS)](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx-bsplhaft width=80%}
+
+Zur Verbesserung der Berechnung aus @fig-BFS-qx-bsplhaft wurde der Querkraftverlauf zwischen speziellen Punkten des Elements bilinear interpoliert. Die Punkte wurden entsprechend den Punkten der Gauss-Integration gewählt. Um einen fließenden Übergang zwischen den Elementen zu erzeugen, werden die Werte zudem an den gemeinsamen Knoten gemittelt. In @fig-interpolation ist der Vorgang der Interpolation und in @fig-glaettung ist die Mittlung an den Knoten schematisch dargestellt. 
+
+![Interpolation der Ergebnisse](00-pics/Interpolation.png){#fig-interpolation width=80%}
+
+![Glättung der Ergebnisse](00-pics/Glaettung.png){#fig-glaettung width=80%}

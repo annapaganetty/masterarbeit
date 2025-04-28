@@ -390,17 +390,17 @@ Die Verträglichkeit der Rotation von benachbarten Elemente stellt bei der Finit
 
 Ziel dieser Arbeit ist die Herleitung einer ausgewählten Formulierung für allgemeine Vierecke, sowie die Implementierung in der Programmierumgebung JULIA. An ausgewählten Anwendungsbeispielen wird die Umsetzung verifiziert und dadurch eine offene und nachvollziehbare Lösung für die Anwendung der Kirchhoff-Plattentheorie geschaffen.
 
-Zudem ist das grundlegende Verständnis der Finite Element Methode und etablierter Elementansätze von großer Wichtigkeit. Die Erläuterung numerischer Methoden für die Kirchhoffsche Plattentheorie ist, vor allem in der deutschsprachigen Literatur, bisher sehr lückenhaft. Daher stellt die Aufarbeitung theoretischer Grundlagen, die zur Formulierung der FEM für Kirchhoffplatten notwending sind ein weiteres Ziel dar. Dies beinhaltet sowohl mechanischen Zusammenhänge, als auch mathematische Verfahren.
+Zudem ist das grundlegende Verständnis der Finite Element Methode und etablierter Elementansätze von großer Wichtigkeit. Die Erläuterung numerischer Methoden für die Kirchhoffsche Plattentheorie ist, vor allem in der deutschsprachigen Literatur, bisher sehr lückenhaft. Daher stellt die Aufarbeitung theoretischer Grundlagen, die zur Formulierung der FEM für Kirchhoffplatten notwending sind, ein weiteres Ziel dar. Dies beinhaltet sowohl mechanischen Zusammenhänge, als auch mathematische Verfahren.
 
 == Gliederung der Arbeit
 <sec-gliederung>
-Die Grundlagen der Finite Elemente Methode sind in @sec-Grundlagen-FEM dargestellt. Dabei werden zunächst diverse Elementansätze für finite Elemente erläutert und deren Kontinuität dargestellt. Weiterhin werden die mathematischen Werkzeuge zur Anwendung der FEM beschrieben und in @sec-einfuehrungsbeispiel auf das Einführungsbeispiel angewandt.
+Die Grundlagen der Finite Elemente Methode sind in @sec-Grundlagen-FEM dargestellt. Dabei wird zunächst in @sec-einfuehrungsbeispiel anhand eines Einführungsbeispiels der Ablauf der FEM beschrieben. Anschließend werden die diverse Elementansätze für finite Elemente erläutert und deren Kontinuität dargestellt. Weiterhin werden die zwei wesentlichen Schritte der Finite Elemente Analyse #emph[Approximation] und #emph[numerische Lösung] in @sec-approximation-funktionen und @sec-numerische-loesung erläutert.
 
-Die zur Analyse notwendigen Differentialgleichungen einer Platte nach Kirchhoff werden in @sec-mech-math-grundlagen hergeleitet. Weiterhin sind die mathematisch relevanten Grundlagen für die aus der DGL entstehenden Funktionale sowie die Cialet’sche Definition eines finiten Elements in @sec-mech-math-grundlagen aufgeführt.
+Die zur Analyse notwendigen Differentialgleichungen einer Kirchhoff Platte werden in @sec-mech-math-grundlagen hergeleitet.
 
-Für die Analyse von Plattentragwerken wird dann in @sec-fem-plattentragwerke zunächst die allgemeines schwache Form des Problems hergeleitet um danach die globale Steifigkeitsmatrix sowohl für das Rechteckelement nach Bogner Fox und Schmitt als auch für das allgemeine DKQ Element zu berechnen.
+Für die Analyse von Plattentragwerken wird dann in @sec-fem-plattentragwerke zunächst die allgemeines schwache Form des Problems hergeleitet um danach die globale Steifigkeitsmatrix sowohl für das Bogner-Fox-Schmitt Rechteckelement als auch für das allgemeine DKQ Element zu berechnen.
 
-Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA, sowie die Anwendung auf Beispiele zur Testung, sind in #strong[?\@sec-Umsetzung-Julia-Beispiele] dokumentiert.
+Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA erfolgt in @sec-Umsetzung-Julia. Die Anwendung auf Beispiele zur Testung, wird im Anschluss in sind in @sec-anwendungsbeispiele dokumentiert.
 
 #pagebreak()
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 2: Grundidee der Finite Elemente Methode])))
@@ -412,7 +412,7 @@ Nachdem in @sec-einfuehrungsbeispiel, anhand eines Einführungsbeispiel, der Abl
 
 == Einführungsbeispiel: Biegebalken
 <sec-einfuehrungsbeispiel>
-Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist siehe (@fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der #emph[starken Form] des Problems geredet, welche die Grundlage für die Finite Elemente Analyse bildet.
+Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist (siehe @fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der #emph[starken Form] des Problems gesprochen, welche die Grundlage für die Finite Elemente Analyse bildet.
 
 #figure([
 #box(image("00-pics/Balken-Beispiel.png", width: 75%))
@@ -577,9 +577,10 @@ Balkenelement
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
+<fig-balkenelemente>
 
 
-Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade eines Euler-Bernoulli-Balkenelements ergeben sich somit zu #math.equation(block: true, numbering: "(1)", [ $ hat(w)_e = mat(delim: "[", w_1; theta_1; w_2; theta_2; #none) , $ ])<eq-verschiebungsvektor>
+Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade, dargestellt in @fig-balkenelemente, eines Euler-Bernoulli-Balkenelements ergeben sich somit zu #math.equation(block: true, numbering: "(1)", [ $ hat(w)_e = mat(delim: "[", w_1; theta_1; w_2; theta_2; #none) , $ ])<eq-verschiebungsvektor>
 
 mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [- 1 , 1]$, sind in @fig-Hermite-Funktionen dargestellt.
 
@@ -596,7 +597,7 @@ supplement: "Abbildung",
 <fig-Hermite-Funktionen>
 
 
-Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($xi = - 1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($xi = 1$) bei. Es gelten demnach die Bedingungen
+Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($xi = - 1$) und die Funktion $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($xi = 1$) bei. Es gelten demnach die Bedingungen
 
 #math.equation(block: true, numbering: "(1)", [ $ H_1 (- 1) & = 1 , quad & H_1 (1) = 0 , quad & H_1' (- 1) = 0 , quad & H_1' (1) = 0\
 H_2 (- 1) & = 0 , quad & H_2 (1) = 1 , quad & H_2' (- 1) = 0 , quad & H_2' (1) = 0\
@@ -604,16 +605,12 @@ H_3 (- 1) & = 0 , quad & H_3 (1) = 0 , quad & H_3' (- 1) = 1 , quad & H_3' (1) =
 H_4 (- 1) & = 0 , quad & H_4 (1) = 0 , quad & H_4' (- 1) = 0 , quad & H_4' (1) = 1 ,\
  $ ])<eq-Bedingungen-Hermite>
 
-Die kubischen Polynome #math.equation(block: true, numbering: "(1)", [ $ H_1 (xi) & = 1 / 4 (2 - 3 xi + xi^3)\
-H_2 (xi) & = 1 / 4 (1 - xi - xi^2 + xi^3)\
-H_3 (xi) & = 1 / 4 (2 + 3 xi - xi^3)\
-H_4 (xi) & = 1 / 4 (- 1 - xi + xi^2 + xi^3)\
+Die kubischen Polynome #math.equation(block: true, numbering: "(1)", [ $  & H_1 (xi) & = 1 / 4 (2 - 3 xi + xi^3) #h(2em) &  & H_2 (xi) & = 1 / 4 (1 - xi - xi^2 + xi^3)\
+ & H_3 (xi) & = 1 / 4 (2 + 3 xi - xi^3) #h(2em) &  & H_4 (xi) & = 1 / 4 (- 1 - xi + xi^2 + xi^3)\
  $ ])<eq-Hermite-Funktionen>
 
-erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu #math.equation(block: true, numbering: "(1)", [ $  & H_1 (x) = 1 - 3 dot.op x^2 / l_e^2 + 2 dot.op x^3 / l_e^3\
- & H_2 (x) = x - 2 dot.op x^2 / l_e + x^3 / l_e^2\
- & H_3 (x) = 3 dot.op x^2 / l_e^2 - 2 dot.op x^3 / l_e^3\
- & H_4 (x) = - x^2 / l_e + x^3 / l_e^2 . $ ])<eq-hermite-Elementlaenge>
+erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu #math.equation(block: true, numbering: "(1)", [ $  & H_1 (x) = 1 - 3 dot.op x^2 / l_e^2 + 2 dot.op x^3 / l_e^3 #h(2em) &  & H_2 (x) = x - 2 dot.op x^2 / l_e + x^3 / l_e^2\
+ & H_3 (x) = 3 dot.op x^2 / l_e^2 - 2 dot.op x^3 / l_e^3 #h(2em) &  & H_4 (x) = - x^2 / l_e + x^3 / l_e^2 . $ ])<eq-hermite-Elementlaenge>
 
 Für ein Element mit den Knoten $x_j$ und $x_(j + 1)$ gelten die Eigenschaften des #emph[Kronecker-Deltas] für die Formfunktionen $H_i$, beschrieben durch #math.equation(block: true, numbering: "(1)", [ $ phi_i (x_j) = delta_(i j) = cases(delim: "{", 1 quad & upright("für ") quad i = j, 0 quad & upright("für ") quad i eq.not j) $ ])<eq-konecker-delta-01>
 
@@ -642,7 +639,7 @@ zu #math.equation(block: true, numbering: "(1)", [ $ upright(bold(K_(i j)^e)) & 
 upright("und") upright(bold(r^e)) & = q_z dot.op frac(l e, 2) dot.op a_i integral_(- 1)^1 N_i (xi) d xi . $ ])<eq-lastvektor-final-balken>
 
 #figure([
-#box(image("00-pics/Hermite-Polynome-Balken.png", width: 100%))
+#box(image("00-pics/Hermite-Polynome-Balken.png", width: 90%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -676,13 +673,12 @@ $  & #h(2em) #h(2em) #h(2em) #h(2em) L = 20 &  & quad upright("m") &  & #h(2em) 
 ist in @fig-Durchbiegung-Balken die Durchbiegung mittels FEA für $N_e = 2 , 4 , 8 , 16 , 32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers #math.equation(block: true, numbering: "(1)", [ $  & w (x) = frac(1 + xi overline(xi), 24 E I) xi overline(xi) q_z L^4\
  $ ])<eq-Durchbiegung-exakt-balken>
 
-mit den Konstanten $  & xi = x / L\
- & overline(xi) = frac(L - x, L) $
+mit den Konstanten $  & xi = x / L , #h(2em) &  & overline(xi) = frac(L - x, L) $
 
 und konstanter Streckenlast in demselben Diagramm zu sehen.
 
 #figure([
-#box(image("00-pics/Balken-Durchbiegung.png", width: 100%))
+#box(image("00-pics/Balken-Durchbiegung.png", width: 80%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -694,38 +690,34 @@ supplement: "Abbildung",
 <fig-Durchbiegung-Balken>
 
 
+#pagebreak()
 == Einführung in die Finite Elemente Methode (FEM)
 <sec-einfuehrung-FEM>
-In der Baubranche findet die FEM vor Allem bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansätze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt @tbl-elementansaetze. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
+In der Baubranche findet die FEM vor Allem bei zwei- und dreidimensionalen Problemen Anwendung. Ein Beispiel für ein zweidimensionales Problem sind Plattentragwerke, welche durch dreieckige und viereckige Elemente abgebildet werden können. Die Lösung der Probleme ist in jedem Fall nur eine Näherung, dessen Güte abhängig von den gewählten Verschiebungsansätzen ist. Die Verschiebungsansätze der Finite Elemente beruhen auf der Annahme von Verschiebungsverläufen des Elements, den sogenannten Formfunktionen. Bei dem bilinearen Verschiebungsansatz ist der Verlauf beispielsweise geradlinig zwischen je zwei Knotenpunkten des Elements. Einen Überblick über weitere Elementansätze von quadratischen Elementen gibt #strong[?\@tbl-elementansaetze];. Es sei darauf hingewiesen, dass die Aufreihung nicht vollständig ist.
 
-#figure([
 #table(
-  columns: (18.75%, 31.25%, 27.08%, 22.92%),
+  columns: (29.27%, 36.59%, 19.51%, 14.63%),
   align: (left,left,center,center,),
   table.header([#strong[Elementansatz];], [#strong[Polynome];], [#strong[Elementknoten];], [#strong[Stetigkeit];],),
   table.hline(),
   [linear], [$mat(delim: "[", 1, xi, eta)$], [$4$], [$C^0$],
   [quadratisch], [$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2)$], [$4$], [$C^0$],
-  [LAGRANGE], [], [], [],
-  [bilinear], [$mat(delim: "[", 1, xi, eta, xi eta)$], [$4$], [$C^0$],
-  [quadratisch vollständig], [$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2, xi^2 eta^2)$], [$9$], [$C^0$],
-  [quadratisch unvollständig (Serendipity)], [$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2)$], [$8$], [$C^0$],
-  [HERMITE], [], [], [],
-  [kubisch vollständig], [$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [$C^1$],
-  [kubisch unvollständig], [$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$], [$4$], [semi-$C^1$],
 )
-], caption: figure.caption(
-position: bottom, 
-[
-Elementansätze in der FEM
-]), 
-kind: "quarto-float-tbl", 
-supplement: "Tabelle", 
+#table(
+  columns: (37.5%),
+  align: (auto,),
+  table.header([|LAGRANGE | | | |],),
+  table.hline(),
+  [| bilinear |$mat(delim: "[", 1, xi, eta, xi eta)$ | $4$ | $C^0$| | quadratisch vollständig |$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2, xi^2 eta^2)$ |$9$ |$C^0$ | | quadratisch unvollständig (Serendipity) |$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^2 eta, xi eta^2)$ | $8$ |$C^0$|],
 )
-<tbl-elementansaetze>
+== | HERMITE | | | |
+<hermite>
+kubisch vollständig |$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$ |$4$ |$C^1$ | \
+kubisch unvollständig |$mat(delim: "[", 1, xi, eta, xi^2, xi eta, eta^2, xi^3, xi^2 eta, xi eta^2, eta^3, xi^3 eta, xi eta^3)$ |$4$ |semi-$C^1$ |
 
+: Elementansätze in der FEM {\#tbl-elementansaetze}
 
-Bereits in den frühen 1940er Jahren lässt sich die erste Anwendung der Finite Elemente Analyse verzeichnen. 1941 nutzte A. HRENNIKOF zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. COURAND ein Paper publiziert (1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. TURNER et al.~hat 1959 in dem JOURNAL OF THE AERONAUTICAL SCIENCES eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. CLOUGH publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung #emph[Finite Elemente] nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz u.v.a.
+Bereits in den frühen 1940er Jahren lässt sich die erste Anwendung der Finite Elemente Analyse verzeichnen. 1941 nutzte A. Hrennikof zum ersten mal zur Lösung eines 2D-Scheibenproblems ein Stabmodell, welches der heutigen FE-Methode ähnelt. Wenig später hat R. Courand ein Paper publiziert (1943), in dem Differentialgleichungen, durch den Ansatz von Testfunktionen auf dreieckigen Teilbereichen, gelöst werden. In den 1950er Jahren wurden die ersten Einsätze der Finite Elemente Methode in der Luft- und Raumfahrtindustrie verzeichnet. M.J. Turner et al.~hat 1959 in dem Journal of the Aeronautical Sciences eine der frühesten Veröffentlichungen zu der Grundidee der FEM gemacht. Der Co-Autor R. W. Clough publizierte ein weiteres Paper, welches zum ersten Mal die Formulierung #emph[Finite Elemente] nutzte. Neben den beiden genannten Autoren, sind weitere bedeutende Wissenschaftler, die zu der Entwicklung der FEM erheblich beigetragen haben, Ted Belytschko, Olgierd C. Zienkiewicz u.v.a.
 
 Um einen ersten Überblick über die Finite Elemente Methode zu schaffen ist in @fig-Ablauf-FEM der formale Ablauf dargestellt, wie die FEM heutzutage bei der Lösung von Problemen eingebracht wird. In den meisten Fällen liegt das zu berechnende Bauteil als CAD-Modell vor. Aus diesem Modell soll im Vorgang des Preprozessing ein FE-Modell erstellt werden. Teil dessen ist die Generierung eines Netzes mit Finiten Elementen, der Zuweisung von Elementdaten und Materialinformationen, das Aufbringen von Lasten, sowie die Festlegung von Randbedingungen. Ein dadurch erstelltes lineares Gleichungssystem wird im Zuge der FEM gelöst. Die Ergebnisauswertung erfolgt im Postprozessor durch die Darstellung von Verformungen, Spannungen und Schnittgrößen.
 
@@ -742,7 +734,9 @@ supplement: "Abbildung",
 <fig-Ablauf-FEM>
 
 
-Der Ablauf der computergestützten numerischen Berechnung wurde bereits in @sec-einfuehrungsbeispiel anhand des Biegebalkens erläutert und wird in allgemeiner Form in dem Ablaufschema @fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = sum phi_i hat(w)_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden (Schritt (4), @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a (w , delta w) = b (delta w)$, gelöst werden. Die zweite Idee, auf der die FEM beruht, ist die Unterteilung des Gebiets in sogenannte Elemente, auf denen die Formfunkionen $phi_i$ definiert werden. Diese Basisfunktionen werden in @sec-FE-Lagrange bis @sec-FE-Hermite-konform für unterschiedliche Elementtypen hergeleitet.
+Der Ablauf der computergestützten numerischen Berechnung wurde bereits in @sec-einfuehrungsbeispiel anhand des Biegebalkens erläutert und wird in allgemeiner Form in dem Ablaufschema @fig-Ablauf-FEM-Berechnung visualisiert. Die Basisidee der Finite Elemente Methode ist die Lösung eines Problems möglichst genau zu approximieren. Die Approximation der gesuchten Lösungsfunktion $w_h = sum phi_i hat(w)_i$ erfolgt durch die Kombination von bereits bekannten Funktionen, welche elementweise definiert werden (Schritt 4, @fig-Ablauf-FEM-Berechnung). Hierfür muss das lineare Gleichungssystem, hergeleitet aus der schwachen Form des Problems $a (w , delta w) = b (delta w)$, gelöst werden. Die zweite Idee, auf der die FEM beruht, ist die Unterteilung des Gebiets in sogenannte Elemente, auf denen die Formfunkionen $phi_i$ definiert werden. Diese Basisfunktionen werden in @sec-FE-Lagrange bis @sec-FE-Hermite-konform für unterschiedliche Elementtypen hergeleitet.
+
+Die, auf dem physikalischen Problem basierenden, Grundgleichungen und Randbedingungen beschreiben die starke Form (Schritt 1, @fig-Ablauf-FEM-Berechnung), die in den meisten Fällen eine partielle Differentialgleichungen ist. Zwischen der Approximierten Lösung und der exakten Lösung entsteht der sogenannte Diskretisierungsfehler, d.h der Unterschied zwischen dem Designmodell und dem Analysemodell. Dieser Fehler kann durch die Feinheit des Finite Elemente Netzes größtenteils eingedämmt werden, wohingegen Fehler bei der Modellbildung und Ergebnisinterpretation alleine bei der Anwendung der Finite-Element-Methode geschehen. Auf diese Aspekte wird hier nicht weiterführend eingegangen sondern auf den Artikel \[…\] von Werkle verwiesen.
 
 #figure([
 #box(image("00-pics/Ablauf-FEM-Berechnung.png", width: 95%))
@@ -756,8 +750,6 @@ supplement: "Abbildung",
 )
 <fig-Ablauf-FEM-Berechnung>
 
-
-Die, auf dem physikalischen Problem basierenden, Grundgleichungen und Randbedingungen beschreiben die starke Form (Schritt (1), @fig-Ablauf-FEM-Berechnung), die in den meisten Fällen eine partielle Differentialgleichungen ist. Zwischen der Approximierten Lösung und der exakten Lösung entsteht der sogenannte Diskretisierungsfehler, d.h der Unterschied zwischen dem Designmodell und dem Analysemodell. Dieser Fehler kann durch die Feinheit des Finite Elemente Netzes größtenteils eingedämmt werden, wohingegen Fehler bei der Modellbildung und Ergebnisinterpretation alleine bei der Anwendung der Finite-Element-Methode geschehen. Auf diese Aspekte wird hier nicht weiterführend eingegangen sondern auf den Artikel \[…\] von WERKLE verwiesen.
 
 == Basis Funktionen der finiten Elemente
 <sec-basis-funktionen>
@@ -782,11 +774,9 @@ Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM
   [$C^1$], [Nein], [Nein], [stetig differenzierbar],
 )
 ], caption: figure.caption(
-separator: "", 
 position: bottom, 
 [
-#block[
-]
+Kontinuitätseigenschaften
 ]), 
 kind: "quarto-float-tbl", 
 supplement: "Tabelle", 
@@ -1220,10 +1210,6 @@ tau_(x y) & = frac(E, 2 dot.op (1 + nu)) dot.op gamma_(x y) med $ ])<eq-spannung
 
 sind linear veränderlich über die Plattendicken $h$.
 
-#strong[TODO:] auf Widersprüche der Kirchhoff Plattentheorie eingehen
-
-\
-
 === Schnittgrößen
 <sec-schnittgrößen>
 Resultierend aus den Spannungskomponenten $sigma_(x x)$,$sigma_(y y)$ und $tau_(x y)$ ergeben sich die Biegemomente $m_(x x)$ und $m_(y y)$ und das Drillmoment $m_(x y)$, definiert als Moment pro Längeneinheit. Die Momente lassen sich durch Integration der Spannungen über die Höhe der Platte und Multiplikation mit dem Hebelarm $z$ zu #math.equation(block: true, numbering: "(1)", [ $ m_(x x) & = integral_(- h \/ 2)^(h \/ 2) z dot.op underbrace(frac(E, 1 - nu^2) dot.op (epsilon.alt_(x x) + nu dot.op epsilon.alt_(y y)), sigma_(x x)) dot.op d z\
@@ -1417,8 +1403,6 @@ und die Linearform
 <sec-assemblierung-steifigkeitsmatrix>
 Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.
 
-Der klassische Ansatz verwendet hierzu eine nodale Basis P nach Gleichung 3.40 aus Kapitel 3.3 auf den Elementen. Dabei entspricht eine der verwendeten lokale Basisfunktionen der Elemente φe i einem globalen Freiheitsgrad di.
-
 === BFS-Rechteckelement
 <sec-Steifigkeitsmatrix-BFS>
 Wie in @sec-FE-BFS bereits beschrieben, hat das konforme Rechteckelement vier Knoten und an jedem Knoten vier Freiheitsgrade, sodass der Knotenverschiebungsvektor eines Elements
@@ -1431,7 +1415,7 @@ $ upright(bold(m)) = mat(delim: "[", m_(x x); m_(y y); m_(x y)) #h(2em) #h(2em) 
 
 ausgedrückt. Das Ergebnis ist die Formulierung #math.equation(block: true, numbering: "(1)", [ $ a (w , delta w) = integral_Omega upright(bold(m)) dot.op upright(bold(kappa)) d Omega = integral_Omega (m_(x x) kappa_(x x) + 2 m_(x y) kappa_(x y) + m_(y y) kappa_(y y)) d Omega . $ ])<eq-bilinearform-Skalarprodukt-m-kappa>
 
-für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $theta_(x h)$ und $theta_(y h)$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $upright(bold(hat(w)^e))$ (#strong[?\@eq-knotenverschiebungsvekor];), die Formulierung des Krümmungsvektors für das Element $i$
+für die Bilinearform. Der Krümmungsvektor kann gemäß @eq-kruemmung durch die zweiten Ableitungen der Verschiebung $w_h$ bzw. durch die ersten Ableitungen der Verdrehungen $theta_(x h)$ und $theta_(y h)$ ausgedrückt werden. Bezogen auf ein Element ergibt sich, durch die Linearkombination für $w_h$ (@eq-linearkombination-platte) und den Knotenverschiebungsvektor $upright(bold(hat(w)^e))$ (@eq-knotenverschiebungsvekor-BFS), die Formulierung des Krümmungsvektors für das Element $i$
 
 #math.equation(block: true, numbering: "(1)", [ $ upright(bold(kappa_i)) = upright(bold(B_b)) upright(bold(hat(w)^e)) $ ])<eq-kruemmungsvekor-mit-B-Matrix>
 
@@ -1677,6 +1661,10 @@ Der Quellcode von Julia ist auf GitHub verfügbar.
 
 Zu den bekanntesten Finite Elemente Softwares gehören ADINA und ANSYS, welche, neben der Lösung von statischen und dynamischen Aufgabenstellungen der linearen und nichtlinearen Strukturmechanik, primär in der Strömungsmechanik, und bei der Lösung multiphysikalischer Probleme eingesetzt werden. Diese beiden Programme gelten als Vertreter der General-Purpose Software, wohingegen InfoCAD, RFEM, SAP2000, SOFiSTiK, iTWO structure fem / TRIMAS und MircoFE speziell für die Tragwerksplanung entwickelte Programme sind. Die numerische Berechnung von Plattentragwerken durch die Finite ELemente Analyse basiert in allen Fällen entweder auf der Reissner-Mindlin Theorie oder der Kirchhoffplattentheorie. Neben der Wahl der Plattentheorie ist auch der Elementansatz von wesentlicher Bedeutung und variiert je nach kommerziellen Programm. Auf die Software von InfoCAD, RFEM und SAP2000 wird nachfolgend näher eingegangen.
 
+#strong[InfoCAD]
+
+InfoCAD bietet die Möglichkeit, sich zwischen „discrete Kirchhoff theory“ (DKT) - Elementen und „Mindlin-Reissner“ (MR) - Elemente zu entscheiden. Laut Benutzerhandbuch erfüllen alle Elementansätzt den Patch-Test. Bei der berechnung nach Kirchhoff werden nachdem die Verzerrungs-Verschiebungs-Beziehungen für die dicke Platte formuliert wurden, die Kirchhoff’schen Bedingungen für die dünne Platte an diskreten Punkten der Elementberandung eingeführt. "Dadurch können auch bei diesen Elementen die Unbekannten des Verformungsansatzes durch die Eckknotenverformungen ausgedrückt werden. Der Vorteil gegenüber einem reinen Verschiebungsansatz bei Plattenelementen zeigt sich in einem wesentlich verbesserten Konvergenzverhalten."#footnote[siehe Benutzerhandbuch InfoCAD];.
+
 #figure([
 #table(
   columns: (37.5%, 62.5%),
@@ -1717,10 +1705,6 @@ supplement: "Tabelle",
 <tbl-FEM-Software>
 
 
-#strong[InfoCAD]
-
-InfoCAD bietet die Möglichkeit, sich zwischen „discrete Kirchhoff theory“ (DKT) - Elementen und „Mindlin-Reissner“ (MR) - Elemente zu entscheiden. Laut Benutzerhandbuch erfüllen alle Elementansätzt den Patch-Test. Bei der berechnung nach Kirchhoff werden nachdem die Verzerrungs-Verschiebungs-Beziehungen für die dicke Platte formuliert wurden, die Kirchhoff’schen Bedingungen für die dünne Platte an diskreten Punkten der Elementberandung eingeführt. "Dadurch können auch bei diesen Elementen die Unbekannten des Verformungsansatzes durch die Eckknotenverformungen ausgedrückt werden. Der Vorteil gegenüber einem reinen Verschiebungsansatz bei Plattenelementen zeigt sich in einem wesentlich verbesserten Konvergenzverhalten."#footnote[siehe Benutzerhandbuch InfoCAD];.
-
 #strong[RFEM]
 
 Auch bei RFEM ist die Wahl zwischen beiden Plattentheorien möglich. Empfohlen wird die Nutzung der Kirchhofftheorie für die Berechnung dünnerer Platten wie Stahlbleche. Dicke Platten und Schalen des Massivbaus sollten auf Grundlage der Reissner-Mindlin Theorie berechnet werden. Eine genaue Beschreibung der verwendeten Plattenelemente erfolgt in dem Handbuch von RFEM 6 nicht. Lediglich die Viereckigen Schalenelemente, basierend auf der Reissner-Mindlin Theorie werden vorgestellt. "Basierend aufeiner gemischten Interpolation der transversalen Verschiebungen, Querschnittsdrehungen und transversalen Schubverzerrungen werden die von Bathe und Dvorkin \[3\] vorgestellten MITC-Elemente (Mixed Interpolationof Tensorial Components) verwendet: MITC3+ für Dreiecke, MITC4 für Vierecke."#footnote[siehe Benutzerhandbuch RFEM]
@@ -1731,10 +1715,22 @@ Bei SAP2000 handelt es sich um eine amerikansiche Software die entwickelt und ve
 
 == Programmstruktur
 <sec-programmstruktur>
-Umsetzung in JULIA entsprechend dem mathematischen Konzept welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde.
+Die Umsetzung in JULIA entsprechend dem mathematischen Konzept, welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. Die @fig-Programmstruktur zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden. Die Topologie und die Parameter bilden die Basis der Berechnung und spiegeln das physikalische Problem wieder. Mittels des erzeugten Netzes und den festgelegten Parametern werden die Funktionen zur Berechnung der Elementsteifigkeitsmatrizen und Elementlastvektoren an das Netz in Form von Daten zugewiesen. In der darauf folgenden Assemblierung von $K$ und $r$ werden diese Funktionen elementweise aufgerufen und ausgewertet. Es ergeben sich die globale Steifigkeitsmatrix und der globale Lastvekor. Zur Lösung der Differentialgleichung, welche den Kern der FE-Methode darstellt, ist die Definition und Anwendung von Randbedinungen erforderlich. Abschließend werden aus dem berechneten Verschiebungsvektors `w` die Schnittgrößen des physikalischen Problems abgeleitet.
 
-Die Abbildung zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden.
+#figure([
+#box(image("00-pics/Programmstruktur.png", width: 450%))
+], caption: figure.caption(
+position: bottom, 
+[
+Programmstruktur
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-Programmstruktur>
 
+
+#pagebreak()
 == Programmteile
 <sec-programmteile>
 === Parameter
@@ -1841,9 +1837,7 @@ Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mit
 
 In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : bb(R)^n arrow.r bb(R)$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[- 1 , - 1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
 
-Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend werden die Funktionen zur Konstruktion der Formfunktionen für das konforme und nichtkonformen Hermite Element sowie für das Lagrange Element und das Serendipity Element dargestellt.
-
-#strong[Hermite-Elemente]
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend wird beispielhaft der Ablauf zur Konstruktion der Formfunktionen für das konforme und nicht konforem Hermite Element dargestellt.
 
 #block[
 ```julia
@@ -1873,52 +1867,6 @@ function hermiteelement(V;conforming=true)
     Minv = simplifyx.(M \ Imatrix)
     H4 = Minv * P
     return H4
-end;
-```
-
-]
-#strong[Lagrange-Elemente]
-
-#block[
-```julia
-function lagrangeelement(V)
-        m = 4
-        P = mmonomials(2, 1, QHat  ,type = Int)
-        N = vcat(
-            [   [ValueAtLF(p)]
-                for p in eachcol(V)]...
-            )
-        Imatrix = Matrix{Int}(I, m, m)
-        M = [n(p) for p in P, n in N]
-        Minv = simplifyx.(M \ Imatrix)
-        L4 = Minv*P
-    return L4
-end;
-```
-
-]
-#strong[Serendipity-Elemente]
-
-#block[
-```julia
-function serendipityelement(V)
-    W = Array{Int64,2}(undef, 2,4)
-    for i = 1:3
-            W[1,i] = (V[1,i] + V[1,i+1]) * 0.5
-            W[2,i] = (V[2,i] + V[2,i+1]) * 0.5
-    end
-    W[1,4] = (V[1,4] + V[1,1]) * 0.5
-    W[2,4] = (V[2,4] + V[2,1]) * 0.5
-    P = mmonomials(2, 2, QHat,(p1, p2) -> p1 + p2 < 4, type = Int)
-    N = vcat(
-        [   ValueAtLF(p)
-            for p in eachcol(V)],
-        [   [ValueAtLF(q)]
-            for q in eachcol(W)]...
-    )
-    M = [n(p) for p in P, n in N]
-    S8 = inv(M)*P
-    return S8
 end;
 ```
 
@@ -1991,7 +1939,7 @@ Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von R
   table.header([Lagerbedingung], [BFS], [DKQ],),
   table.hline(),
   [gelenkig], [`[true,false,false,false]`], [`[true,false,false]`],
-  [starr], [`[true,true,true,true]`], [`[true,true,true]`],
+  [starr], [`[true,true,true,false]`], [`[true,true,true]`],
 )
 ], caption: figure.caption(
 position: bottom, 
@@ -2020,14 +1968,12 @@ end;
 <assemblierung-steifigkeitsmatrix>
 Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheisgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktione `idxDOFs()` erstellt.
 
+#block[
 ```julia
-idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :))
+idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :));
 ```
 
-```
-idxDOFs (generic function with 1 method)
-```
-
+]
 Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt.
 
 #block[
@@ -2060,7 +2006,7 @@ Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wir
 
 `K \ w`
 
-berechnet. Für das Bogner-Fox-Schmitt Element basieren die im `postprozessor()` berechneten Größen je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $beta_x$ und $beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
+berechnet. Für das Bogner-Fox-Schmitt Element basieren die, im `postprozessor()` berechneten Größen, je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $beta_x$ und $beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
 
 ```julia
 function moment(name)
@@ -2084,11 +2030,39 @@ end
 moment (generic function with 1 method)
 ```
 
+Für die Berechnung der Querkräfte werden die Momentenfunktionen an den Knotenpunkten ausgewertet und bilinear interpoliert. Anschließend werden die entstandenen Funktionen abgeleitet und mittels der inversen Jacobi-Matrix parametrisiert.
+
+```julia
+function querkraft(name)
+    x -> begin
+        VV = [[-1, -1], [1, -1], [1, 1], [-1, 1]]
+        J = jF(x) 
+        ∇ˣʸNi = (inv(J') * ∇Ni(x))
+        ∇Mx = ∇ˣʸNi * moment(:mxfunc).(VV)
+        ∇My = ∇ˣʸNi * moment(:myfunc).(VV)
+        ∇Mxy = ∇ˣʸNi * moment(:mxyfunc).(VV)
+        qx = ∇Mx[1] + ∇Mxy[2]
+        qy = ∇Mxy[1] + ∇My[2]
+        if name == :qxfunc
+            return qx
+        elseif name == :qyfunc
+            return qy
+        end
+    end
+end
+```
+
+```
+querkraft (generic function with 1 method)
+```
+
 #pagebreak()
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 6: Anwendungsbeispiele])))
 = Anwendungsbeispiele
 <sec-anwendungsbeispiele>
-Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen entsprechend der Formulierung von Batoz und Tahar zu untersuchen. Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny \[Quelle\] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm MicroFE. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird eine Vergleichsrechnung mit dem Programm RFEM durchgeführt.
+Um das in @sec-Umsetzung-Julia beschriebene Programm anzuwenden werden zwei Plattensysteme untersucht. In @sec-patch-test wird zuvor ein sogenannter Patch-Test durchgeführt, und die Berechnungen, entsprechend der Formulierung von Batoz und Tahar, zu untersuchen. Der Patch-Test dient vor allem zu Überprüfung der Momentenverläufe. In @sec-kreisplatte wird an einer eingespannten Kreisplatte die Verformungsberechnung mit einem Berechnungsbeispiel aus \[Quelle: Altenbach et al\] verglichen.
+
+Darauf Folgend wird ein einfaches statisches Plattensystem in @sec-beispiel-01, dann ein komplexeres System in @sec-beispiel-02 berechnet. Die verschiedenen Elementansätze werden angewandt. Die Validierung der Ergebnisse erfolgt bei Beispiel 1 zum einen durch den Vergleich mit den Tabellenwerten der Plattentafeln von Czerny \[Quelle\] und zum anderen durch die Vergleichsrechnung mit dem kommerziellen Programm #emph[RFEM];. Zur Überprüfung der Berechnungsergebnisse von Beispiel 2 wird die Vergleichsrechnung mit selbigem Programm durchgeführt.
 
 == Patch-Test
 <sec-patch-test>
@@ -2096,13 +2070,15 @@ Der Patch-Test ist eine gängige Methode um die Qualität eines Elementansatzes 
 
 #figure([
 #table(
-  columns: (41.3%, 58.7%),
+  columns: 2,
   align: (left,left,),
-  [Plattendicke], [$d = 1.0 upright(" m")$],
-  [Elastizitätsmodul], [$E = 1.000 upright(" N/mm")^2$],
-  [], [$nu = 0.0$],
-  [], [$a = 20 upright(" m")$ bzw. $a = 20 upright(" kNm")$],
-  [], [$b = 10 upright(" m")$ bzw. $b = 10 upright(" kNm")$],
+  table.header([Eingabeparameter], [],),
+  table.hline(),
+  [Plattendicke], [\$d = 1.0],
+  [Elastizitätsmodul], [\$E = 1.000],
+  [Querdehnzahl], [$nu = 0.0$],
+  [], [$a = 20$ bzw. $a = 20$],
+  [], [$b = 10$ bzw. $b = 10$],
 )
 ], caption: figure.caption(
 position: bottom, 
@@ -2128,11 +2104,7 @@ supplement: "Abbildung",
 <fig-Patch-test-system>
 
 
-Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20 upright(" m")$ und $b = 10 upright(" m")$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus \[Quelle :batoz Tahar\] Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
-
-$  & nu = 0.0\
- & E = 1000\
- & h = 1 $
+Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus \[Quelle :batoz Tahar\] Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
 
 #block[
 ```julia
@@ -2148,10 +2120,10 @@ end;
 ```
 
 ]
-An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20 upright(" kNm")$ und um die $x$-Achse ein Moment von $10 upright(" kNm")$ angesetzt. Über die Länge verteilt entspricht das an allen Außenkanten einem Moment von $1 upright(" kNm/m")$.
+An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20$ und um die $x$-Achse ein Moment von $10$ angesetzt. Über die Länge verteilt entspricht das, an allen Außenkanten, einem Moment von $1$.
 
 #figure([
-#box(image("00-pics/Beispiel-00-w.png", width: 60%))
+#box(image("00-pics/Beispiel-00-w.png", width: 45%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -2163,7 +2135,7 @@ supplement: "Abbildung",
 <fig-Patch-test-verformung>
 
 
-Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (siehe @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse konstant $1 upright(" kNm/m")^2$
+Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (siehe @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse, konstant $1$
 
 #quarto_super(
 kind: 
@@ -2190,7 +2162,7 @@ subcapnumbering:
 "(a)"
 , 
 [
-#grid(columns: 1, gutter: 2em,
+#grid(columns: 2, gutter: 2em,
   [
 #block[
 #figure([
@@ -2245,9 +2217,73 @@ supplement: "Abbildung",
 )
 ]
 )
+== Kreisplatte
+<sec-kreisplatte>
+#figure([
+#box(image("00-pics/Beispiel-01-Circ-mesh.png", width: 70%))
+], caption: figure.caption(
+position: bottom, 
+[
+Beispiel "Kreisplatte": Finite-Elemente-Netz
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-Kreisplatte-mesh>
+
+
+Als weiteres Minimalbeispiel dient eine rundum eingespannte Kreisplatte mit konstanter Flächenlast. Die Eingabeparameter sind in @tbl-Eingabedaten_kreisplatte aufgeführt.
+
+#figure([
+#table(
+  columns: 2,
+  align: (left,left,),
+  table.header([Eingabeparameter], [],),
+  table.hline(),
+  [Radius], [$r = 8.0 upright(" m")$],
+  [Plattendicke], [$d = 0.2 upright(" m")$],
+  [Elastizitätsmodul], [$E = 31000 \* 10^6 upright(" N/m")^2$],
+  [Querdehnzahl], [$nu = 0.0$],
+  [Flächenlast], [$q = 5000 upright(" N/m")^2$],
+)
+], caption: figure.caption(
+position: bottom, 
+[
+Daten zum Beispiel "Kreisplatte"
+]), 
+kind: "quarto-float-tbl", 
+supplement: "Tabelle", 
+)
+<tbl-Eingabedaten_kreisplatte>
+
+
+Die Durchbiegung einer eingespannte Kreisplatte kann entsprechend Abb. 3.35 aus \[quelle:Altenbach et al.\] berechnet werden. Die maximaler Verformung mit den angegebenen Parametern ist $  & w_(m a x) = frac(q \* r^4, 64 K) #h(2em) #h(2em) #h(2em) = 0.0154 upright(" m")\
+\
+ & #h(2em) upright("mit") quad K = frac(E \* d^3, 12 \* (1 - p 1 . nu^2)) . $
+
+Mit dem in @fig-Kreisplatte-mesh dargestellten Netz errechnet sich die maximale Verformung mit der DKQ-Formulierung zu
+
+$ w_(f e) = 0.0155 upright(" m") $
+
+was einer Abweichung von #emph[0.680 %] entspricht. Die Verformungfigur ist in @fig-Kreisplatte-verformung dargestellt.
+
+#figure([
+#box(image("00-pics/Beispiel-01-Circ-w.png", width: 70%))
+], caption: figure.caption(
+position: bottom, 
+[
+Beispiel "Kreisplatte": Verformungsfigur
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-Kreisplatte-verformung>
+
+
+#pagebreak()
 == Beispiel 1: allseitig eingespannte Platte
 <sec-beispiel-01>
-Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in #strong[?\@fig-Beispiel-01-BFS] dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Elementansatzes nach Bogner Fox und Schmitt (BFS-Element), als auch nach Batoz und Tahar (DKQ-Element) wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm MicroFE der Firma #emph[mb AEC Software GmbH];.
+Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-FE-Netz dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Bogner-Fox-Schmitt Elementansatzes (BFS-Element), als auch des DKQ-Element wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm RFEM der Firma #emph[Dlubal Software GmbH];.
 
 #figure([
 #box(image("00-pics/Beispiel-01-BFS.png", width: 80%))
@@ -2268,9 +2304,11 @@ Für die Berechnung der $8 m times 8 m$ großen Platte werden die in @tbl-Eingab
 #table(
   columns: 2,
   align: (left,left,),
+  table.header([Eingabeparameter], [],),
+  table.hline(),
   [Plattendicke], [$d = 0.2 upright(" m")$],
-  [Elastizitätsmodul], [$E = 31.000 upright(" N/mm")^2$],
-  [Flächenlast], [$p = 5 upright(" kN")$],
+  [Elastizitätsmodul], [$E = 31000 \* 10^6 upright(" N/m")^2$],
+  [Flächenlast], [$p = 5000 upright(" N")$],
   [], [$nu = 0.0$],
 )
 ], caption: figure.caption(
@@ -2295,32 +2333,33 @@ Aus den Czerny-Tafeln (Tafel 2.2.6.1, "Starre Einspannung der vier Ränder") erg
  & w_(m a x) &  & = frac(p dot.op l_x^4, E dot.op d^3) dot.op 0.0152 &  & = 0.001255 &  & upright("m")\
  $ ])<eq-werte-czerny-tafeln>
 
-Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_(x_(e r m))$ und $m_(y_(e r m))$. Die Feldmomente in Plattenmitte $m_(x_m)$ und $m_(y_m)$ und die größten Feldmomente im Plattenmittenschnitt $m_(x_(m a x))$, $m_(y_(m a x))$ stimmen bei der symmetrischen Platte überein. Die Biegemomentenverläufe in @fig-Biegemomente-BFS und @fig-Biegemomente-BTP spiegeln dies wieder. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder $q_(x_(e r m))$ und $q_(y_(e r m))$ sind in @fig-Querkräfte-BFS für das BFS-Element dargestellt .
+Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_(x_(e r m))$ und $m_(y_(e r m))$. Die Feldmomente in Plattenmitte $m_(x_m)$ und $m_(y_m)$ und die größten Feldmomente im Plattenmittenschnitt $m_(x_(m a x))$, $m_(y_(m a x))$ stimmen bei der symmetrischen Platte überein. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder sind $q_(x_(e r m))$ und $q_(y_(e r m))$. Nachfolgend werden die Biegemomentenverläufe und die Querkraftverläufe des Beispiels dargestellt.
 
-=== Berechnung mit Bogner Fox Schmitt Elementansatz
-<berechnung-mit-bogner-fox-schmitt-elementansatz>
-Die resultierende Verformungsfigur in überhöhter Darstellung ist in Abbildung … dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_(m a x) = 0.00125 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 %$ ab.
+Die resultierende Verformungsfigur in überhöhter Darstellung stimmt bei beiden Elementansätzen überein und ist in @fig-BFS-w dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_(m a x) = 0.001255 m$ für den BFS-Elementansatz bzw. $w_(m a x) = 0.001262 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 %$ bzw. $0.566 %$ ab.
 
 #figure([
 #box(image("00-pics/Beispiel-01-BFS-w.png", width: 60%))
 ], caption: figure.caption(
 position: bottom, 
 [
-Durchbiegung $w$ der Platte (BFS-Elemente)
+Durchbiegung $w$ der Platte
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-konvergenz>
+<fig-BFS-w>
 
 
+#pagebreak()
+=== Berechnungsergebnisse: BFS Elementansatz
+<berechnungsergebnisse-bfs-elementansatz>
 #quarto_super(
 kind: 
 "quarto-float-fig"
 , 
 caption: 
 [
-Biegemomente Platte Bogner Fox Schmitt
+Biegemomente BFS-Elementansatz
 ]
 , 
 label: 
@@ -2343,11 +2382,11 @@ subcapnumbering:
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-mx.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-mx.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_x$ \[kNm\]
+$m_x$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2360,11 +2399,11 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-mx-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-mx-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_x$ geglättet \[kNm\]
+$m_x$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2377,11 +2416,11 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-my.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-my.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_y$ \[kNm\]
+$m_y$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2394,11 +2433,11 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-my-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-my-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_y$ geglättet \[kNm\]
+$m_y$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2411,11 +2450,11 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-mxy.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-mxy.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_(x y)$ \[kNm\]
+$m_(x y)$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2428,11 +2467,11 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BFS-mxy-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-mxy-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_(x y)$ geglättet \[kNm\]
+$m_(x y)$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2451,7 +2490,7 @@ kind:
 , 
 caption: 
 [
-Querkräfte Platte Bogner Fox Schmitt
+Querkräfte BFS-Elementansatz
 ]
 , 
 label: 
@@ -2478,7 +2517,7 @@ subcapnumbering:
 ], caption: figure.caption(
 position: bottom, 
 [
-qx
+$q_x$ \[kN/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2495,7 +2534,7 @@ supplement: "Abbildung",
 ], caption: figure.caption(
 position: bottom, 
 [
-qx geglättet
+$q_x$ geglättet \[kN/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2512,7 +2551,7 @@ supplement: "Abbildung",
 ], caption: figure.caption(
 position: bottom, 
 [
-qy
+$q_y$ \[kN/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2529,7 +2568,7 @@ supplement: "Abbildung",
 ], caption: figure.caption(
 position: bottom, 
 [
-qy geglättet
+$q_y$ geglättet \[kN/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2542,15 +2581,16 @@ supplement: "Abbildung",
 )
 ]
 )
-=== Berechnung mit Batoz und Tahar Elementansatz
-<berechnung-mit-batoz-und-tahar-elementansatz>
+#pagebreak()
+=== Berechnungsergebnisse. DKQ-Elementansatz
+<berechnungsergebnisse.-dkq-elementansatz>
 #quarto_super(
 kind: 
 "quarto-float-fig"
 , 
 caption: 
 [
-Biegemomente Platte Batoz & Tahar
+Biegemomente DKQ-Elementansatz
 ]
 , 
 label: 
@@ -2573,16 +2613,16 @@ subcapnumbering:
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-mx.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-mx.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_x$ \[kNm\]
+$m_x$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-mx>
+<fig-BT-mx>
 
 
 ]
@@ -2590,16 +2630,16 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-mx-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-mx-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_x$ geglättet \[kNm\]
+$m_x$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-mx-Glatt>
+<fig-BT-mx-Glatt>
 
 
 ]
@@ -2607,16 +2647,16 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-my.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-my.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_y$ \[kNm\]
+$m_y$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-my>
+<fig-BT-my>
 
 
 ]
@@ -2624,16 +2664,16 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-my-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-my-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_y$ geglättet \[kNm\]
+$m_y$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-my-Glatt>
+<fig-BT-my-Glatt>
 
 
 ]
@@ -2641,16 +2681,16 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-mxy.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-mxy.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_(x y)$ \[kNm\]
+$m_(x y)$ \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-mxy>
+<fig-BT-mxy>
 
 
 ]
@@ -2658,16 +2698,16 @@ supplement: "Abbildung",
   [
 #block[
 #figure([
-#box(image("00-pics/Beispiel-01-BT-mxy-glatt.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BT-mxy-glatt.png", width: 75%))
 ], caption: figure.caption(
 position: bottom, 
 [
-$m_(x y)$ geglättet \[kNm\]
+$m_(x y)$ geglättet \[kNm/m\]
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-BFS-mxy-Glatt>
+<fig-BT-mxy-Glatt>
 
 
 ]
@@ -2675,34 +2715,325 @@ supplement: "Abbildung",
 )
 ]
 )
-== Beispiel 2: komplexe Platte
-<sec-beispiel-02>
+#quarto_super(
+kind: 
+"quarto-float-fig"
+, 
+caption: 
+[
+Querkräfte DKQ-Elementansatz
+]
+, 
+label: 
+<fig-Querkräfte-DKQ>
+, 
+position: 
+bottom
+, 
+supplement: 
+"Abbildung"
+, 
+subrefnumbering: 
+"1a"
+, 
+subcapnumbering: 
+"(a)"
+, 
+[
+#grid(columns: 2, gutter: 2em,
+  [
+#block[
+#figure([
+#box(image("00-pics/Beispiel-01-BT-qx.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_x$ \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-BT-qx>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/Beispiel-01-BT-qx-glatt.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_x$ geglättet \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-BT-qx-Glatt>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/Beispiel-01-BT-qy.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_y$ \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-BT-qy>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/Beispiel-01-BT-qy-glatt.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_y$ geglättet \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-BT-qy-Glatt>
+
+
+]
+],
+)
+]
+)
+#pagebreak()
+=== Berechnungsergebnisse: RFEM
+<berechnungsergebnisse-rfem>
+#quarto_super(
+kind: 
+"quarto-float-fig"
+, 
+caption: 
+[
+Biegemomente berechnet mit #emph[RFEM]
+]
+, 
+label: 
+<fig-Biegemomente-RFEM>
+, 
+position: 
+bottom
+, 
+supplement: 
+"Abbildung"
+, 
+subrefnumbering: 
+"1a"
+, 
+subcapnumbering: 
+"(a)"
+, 
+[
+#grid(columns: 1, gutter: 2em,
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp01-RFEM-Moment-mx.PNG", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_x$ \[kNm/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-01-RFEM-mx>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp01-RFEM-Moment-my.PNG", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_y$ \[kNm/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-01-RFEM-my>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp01-RFEM-Moment-mxy.PNG", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_(x y)$ \[kNm/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-01-RFEM-mxy>
+
+
+]
+],
+)
+]
+)
+#quarto_super(
+kind: 
+"quarto-float-fig"
+, 
+caption: 
+[
+Querkräfte berechnet mit #emph[RFEM]
+]
+, 
+label: 
+<fig-Querkräfte-RFEM>
+, 
+position: 
+bottom
+, 
+supplement: 
+"Abbildung"
+, 
+subrefnumbering: 
+"1a"
+, 
+subcapnumbering: 
+"(a)"
+, 
+[
+#grid(columns: 1, gutter: 2em,
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp01-RFEM-Querkraft-vx.PNG", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_x$ \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-01-RFEM-qx>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp01-RFEM-Querkraft-vy.PNG", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$q_y$ \[kN/m\]
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-01-RFEM-qy>
+
+
+]
+],
+)
+]
+)
+=== Vergleich der Berechnungsergebnisse
+<vergleich-der-berechnungsergebnisse>
+Aufgrund der Symmetrie der Platte, der identischen Lagerung aller Ränder und der gleichmäßigen Belastung durch eine Gleichflächenlast, sind die Momentenverläufe und die Querkraftverläufe in $x$- und in $y$-Richtungen deckungsgleich. Der rein optischen Vergleich der Schnittgrößen, zeigt, zwischen den Berechnungsergebnisse der beiden Elementansätze sowie den Ergebnissen von #emph[RFEM];, nahezu kongruente Verläufe. Neben den maximalen Verformungen stimmen auch die Zahlenwerte der Momente, aufgelistet in @tbl-Vergleich-Ergebnisse, mit einer maximalen Abweichung von $1.040 %$ überein.
+
 #figure([
 #table(
-  columns: 2,
-  align: (left,left,),
-  [Plattendicke], [$d = 0.2 upright(" m")$],
-  [Elastizitätsmodul], [$E = 31.000 upright(" N/mm")^2$],
-  [Flächenlast], [$p = 5 upright(" kN")$],
-  [], [$nu = 0.0$],
+  columns: (11.54%, 16.35%, 24.04%, 24.04%, 24.04%),
+  align: (left,left,left,left,left,),
+  table.header([], [$w_(m a x)$], [$m_(x , m a x) = m_(y , m a x)$], [$m_(x , e r m) = m_(y , e r m)$], [$q_(y , e r m) = q_(y , e r m)$],),
+  table.hline(),
+  [Czerny], [$0.001255$ m], [$5633.80$ kNm/m], [$- 16494.85$ kNm/m], [$plus.minus 17857.14$ kN/m],
+  [BFS], [$0.001255$ m], [$5658.78$ kNm/m], [$- 16359.92$ kNm/m], [$plus.minus 16080.00$ kN/m],
+  [DKQ], [$0.001262$ m], [$5692.38$ kNm/m], [$- 16388.71$ kNm/m], [$plus.minus 15867.62$ kN/m],
+  [RFEM], [$0.0013$ m], [$5671.00$ kNm/m], [$- 16483.00$ kNm/m], [$plus.minus 17552.00$ kN/m],
 )
 ], caption: figure.caption(
 position: bottom, 
 [
-Daten zum Beispiel "allseitig eingespannte Platte"
+Vergleich der Ergebnisse zum Beispiel "allseitig eingespannte Platte"
 ]), 
 kind: "quarto-float-tbl", 
 supplement: "Tabelle", 
 )
-<tbl-Eingabedaten-komplex>
+<tbl-Vergleich-Ergebnisse>
 
 
-=== Berechnung nach Batoz und Tahar
-<berechnung-nach-batoz-und-tahar>
-=== Berechnung mit RFEM
-<berechnung-mit-rfem>
+Bei der Anwendung kommerzieller Finite-Elemente Software ist die Ausgabe der Berechnungsergebnisse immer #emph[geglättet];. Eine nähere Betrachtung der ungeglätteten Querkraftverläufe des BFS-Ansatzes in @fig-BFS-qx-bsplhaft zeigt an den Elementkanten große Versprünge. Dieser Diskretisierungsfehler resultiert aus den höheren Ableitungen der Basisfunktionen, welche für die Berechnung der Querkräfte wesentlich sind.
+
 #figure([
-#box(image("00-pics/RFEM-Netz.png", width: 80%))
+#box(image("00-pics/Beispiel-01-BFS-qx.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+Querkraftverlauf $q_x$ \[kN/m\] (BFS)
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-BFS-qx-bsplhaft>
+
+
+Zur Verbesserung der Berechnung aus @fig-BFS-qx-bsplhaft wurde der Querkraftverlauf zwischen speziellen Punkten des Elements bilinear interpoliert. Die Punkte wurden entsprechend den Punkten der Gauss-Integration gewählt. Um einen fließenden Übergang zwischen den Elementen zu erzeugen, werden die Werte zudem an den gemeinsamen Knoten gemittelt. In @fig-interpolation ist der Vorgang der Interpolation und in @fig-glaettung ist die Mittlung an den Knoten schematisch dargestellt.
+
+#figure([
+#box(image("00-pics/Interpolation.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+Interpolation der Ergebnisse
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-interpolation>
+
+
+#figure([
+#box(image("00-pics/Glaettung.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+Glättung der Ergebnisse
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-glaettung>
+
+
+#pagebreak()
+== Beispiel 2: komplexe Platte
+<sec-beispiel-02>
+Als zweites Beispiel wurde die Formulierung des Finite Elemente Ansatzes für allgemeine Vierecke auf ein realitätsnahes Beispiel angewandt. Die Geometrie der Platte erfordert die Anwendung des DKQ-Elementansatzes. Das Finite Elemente Netz ist, für das in JULIA entwickelte Programm in @fig-BSP-02-RFEM-Netz dargestellt. Neben der komplexen Geometrie, wurden bei dem Beispiel verschiedene Lagerungstypen verwendet. An den drei grün markierten Punkten wird die Platte durch eine Stütze gelenkig gelagert. Die pinken Linien stellen gelenkige Linienlager dar.
+
+#figure([
+#box(image("00-pics/Beispiel-02-BT-complex-mesh.png", width: 80%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -2711,30 +3042,99 @@ FE-Netz der RFEM Berechnung
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-RFEM-Netz>
+<fig-BSP-02-RFEM-Netz>
 
+
+Die Eingabeparameter sind in @tbl-Eingabedaten-komplex aufgelistet. Das gewählte Elastizitätsmodul entspricht der Betongüte C25/30. Das Eigengewicht der Platte, welches aus der Dicke von $0.2 upright(" m")$ resultiert, wurde nicht berücksichtigt. Ersatzweise wird die Berechnung mit einer Gleichflächenlast von $p = 5.00 upright(" kN")$ durchgeführt.
 
 #figure([
-#box(image("00-pics/RFEM-Verformung-u.png", width: 80%))
+#table(
+  columns: 2,
+  align: (left,left,),
+  table.header([Eingabeparameter], [],),
+  table.hline(),
+  [Plattendicke], [$d = 0.2 upright(" m")$],
+  [Elastizitätsmodul], [$E = 31.000 upright(" N/mm")^2$],
+  [Flächenlast], [$p = 5.00 upright(" kN")$],
+  [], [$nu = 0.0$],
+)
 ], caption: figure.caption(
 position: bottom, 
 [
-Verformung der RFEM Berechnung
+Daten zum Beispiel "komplexe Platte"
+]), 
+kind: "quarto-float-tbl", 
+supplement: "Tabelle", 
+)
+<tbl-Eingabedaten-komplex>
+
+
+Zur besseren Vergleichbarkeit der Ergebnisse sind nachfolgend die Schnittgrößenverläufe $m_x$ ,$m_y$ und $m_x y$, jeweils aus der eigenen Berechnung und aus RFEM, untereinander dargestellt. Die maximale Verformung beträgt $0.0213$ m nach der RFEM-Berechnung und $0.0217$ m nach der eigenen Berechnung. Sowohl der Verformungsverlauf, als auch die Schnittgrößenverläufe sind Kongruent.
+
+#strong[Verformungsverlauf]
+
+#figure([
+#box(image("00-pics/Beispiel-02-BT-complex-w.png", width: 80%))
+], caption: figure.caption(
+position: bottom, 
+[
+Verformung $w$ Biegemomente DKQ-Elementansatz
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
 )
-<fig-RFEM-u>
+<fig-komplex-w>
 
-
-Schnittgröße
 
 #figure([
-#box(image("00-pics/RFEM-Moment-mx.png", width: 80%))
+#box(image("00-pics/bsp02-RFEM-Verformung-u.png", width: 80%))
 ], caption: figure.caption(
 position: bottom, 
 [
-Mx der RFEM Berechnung
+Verformung $w$ der RFEM Berechnung
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-02-RFEM-w>
+
+
+#strong[Berechnungsergebnisse: DKQ]
+
+#quarto_super(
+kind: 
+"quarto-float-fig"
+, 
+caption: 
+[
+Biegemomente DKQ-Elementansatz
+]
+, 
+label: 
+<fig-Biegemomente-02-DKQ>
+, 
+position: 
+bottom
+, 
+supplement: 
+"Abbildung"
+, 
+subrefnumbering: 
+"1a"
+, 
+subcapnumbering: 
+"(a)"
+, 
+[
+#grid(columns: 1, gutter: 2em,
+  [
+#block[
+#figure([
+#box(image("00-pics/Beispiel-02-BT-complex-mx.png", width: 70%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_x$ (DKQ-Elementansatz)
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2742,12 +3142,16 @@ supplement: "Abbildung",
 <fig-RFEM-mx>
 
 
+]
+],
+  [
+#block[
 #figure([
-#box(image("00-pics/RFEM-Moment-my.png", width: 80%))
+#box(image("00-pics/Beispiel-02-BT-complex-my.png", width: 70%))
 ], caption: figure.caption(
 position: bottom, 
 [
-My der RFEM Berechnung
+$m_y$ (DKQ-Elementansatz)
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2755,12 +3159,16 @@ supplement: "Abbildung",
 <fig-RFEM-my>
 
 
+]
+],
+  [
+#block[
 #figure([
-#box(image("00-pics/RFEM-Moment-mxy.png", width: 80%))
+#box(image("00-pics/Beispiel-02-BT-complex-mxy.png", width: 80%))
 ], caption: figure.caption(
 position: bottom, 
 [
-Mxy der RFEM Berechnung
+$m_(x y)$ (DKQ-Elementansatz)
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Abbildung", 
@@ -2768,9 +3176,129 @@ supplement: "Abbildung",
 <fig-RFEM-mxy>
 
 
+]
+],
+)
+]
+)
+#strong[Berechnungsergebnisse: RFEM]
+
+#quarto_super(
+kind: 
+"quarto-float-fig"
+, 
+caption: 
+[
+Biegemomente berechnet mit #emph[RFEM]
+]
+, 
+label: 
+<fig-Biegemomente-02-RFEM>
+, 
+position: 
+bottom
+, 
+supplement: 
+"Abbildung"
+, 
+subrefnumbering: 
+"1a"
+, 
+subcapnumbering: 
+"(a)"
+, 
+[
+#grid(columns: 1, gutter: 2em,
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp02-RFEM-Moment-mx.png", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_x$ RFEM Berechnung
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-RFEM-mx>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp02-RFEM-Moment-my.png", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_y$ RFEM Berechnung
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-RFEM-my>
+
+
+]
+],
+  [
+#block[
+#figure([
+#box(image("00-pics/bsp02-RFEM-Moment-mxy.png", width: 90%))
+], caption: figure.caption(
+position: bottom, 
+[
+$m_(x y)$ RFEM Berechnung
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-RFEM-mxy>
+
+
+]
+],
+)
+]
+)
 #pagebreak()
-#set page(header: align(right, emph(text(size: 12pt)[Kapitel 7: Zusammenfassung und ausblick])))
+#set page(header: align(right, emph(text(size: 12pt)[Kapitel 7: Zusammenfassung und Ausblick])))
 = Zusammenfassung und Ausblick
 <sec-zusammenfassung-ausblick>
+Im Rahmen dieser Arbeit wurde eine
+
+Das #emph[Discrete Kirchhoff Quadrilateral] Element ist laut Benutzerhandbüchern in einigen Softwarelösungen implementiert, jedoch ist dies in der Literatur nur spärlich dokumentiert. Essentiell für die Formulierung des DKQ-Elementansatzes sind die in @sec-Steifigkeitsmatrix-DKQ hergeleiteten $H$-Funktionen. Die globale Steifigkeitsmatrix wird dann über die Summe der Elementsteifigkeitsmatrizen
+
+$ upright(bold(k_(i j)^e)) = a (phi_j^e , phi_i^e) & = integral_(- 1)^1 integral_(- 1)^1 upright(bold(B))_e^T upright(bold(D_b)) upright(bold(B))_e d e t [J] quad d xi eta $
+
+assembliert.
+
+Mit Hilfe des implementierten Programmcodes wurde die Formulierung für den DKQ-Elementansatz für unterschiedliche Beispiele angewandt. Die Ergebnisse des Patch-Tests und der Kreisplatte bestätigen die Richtigkeit der Formulierung. Die Plausibilität des 1. und des 2. Beispiels wurde durch Vergleichsrechnung mit der Software RFEM und durch Tabellenwerte geprüft. Die Genauigkeit der Berechnung der allseitig eingespannten quadratischen Platte steigt mit zunehmender Anzahl von Systemfreiheitsgraden wie @fig-Konvergenz-DKQ zeigt.
+
+#figure([
+#box(image("00-pics/Konvergenzplot_quadratischePlatte.png", width: 70%))
+], caption: figure.caption(
+position: bottom, 
+[
+Konvergenz Bespiel "allseitig eingespannte Platte"
+]), 
+kind: "quarto-float-fig", 
+supplement: "Abbildung", 
+)
+<fig-Konvergenz-DKQ>
+
+
+Der Konvergenzplot lässt vermuten, dass ein feineres Netz immer zu genaueren Ergebnissen führt. Bei dem Berechnungsbeispiel der komplexen Platten wird jedoch sichtbar, dass vor Allem Punktlager, Knicke in Wänden und Wandenden kritische Punkte für die Berechnung sind. An den genannten Stellen konzentrieren sich Querkräfte und Momente. Diese sogenannten Singularitäten verstärken sich durch zu feine Netze.
+
+Ich hoffe mit dieser Arbeit, insbesondere der Entwicklung der computergestützten Berechnung mit Hilfe der T-Matrizen sowie der Implementierung der Berechnungsalgorithmen einen Beitrag für weitere Untersuchungen rund um computergestützte Berechnungen, geleistet zu haben und
+
+interessierten Studierenden die Möglichkeit für eine tiefer gehende Anwendung zu bieten.
+
 #pagebreak()
-muss noch eingefügt werden: numerische Integration numerische-integration.qmd (an der STelle wo es auftaucht, oder Verweis auf eine Quelle)
+#set page(header: align(right, emph(text(size: 12pt)[Literatur])))
+
+
+
+

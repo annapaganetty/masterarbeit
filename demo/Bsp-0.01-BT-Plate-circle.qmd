@@ -6,7 +6,8 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 
 ```{julia}
-using MMJMesh.Gmsh
+# using MMJMesh.Gmsh
+WGLMakie.activate!()
 mCirc = MMJMesh.Gmsh.Mesh(
         """
         SetFactory("OpenCASCADE");
@@ -19,7 +20,7 @@ mCirc = MMJMesh.Gmsh.Mesh(
         Mesh 2;
         """
 )
-figCirc = plotmesh(mCirc; title="runde Platte | d = 8m | 165 unregelmäßige Elemente")
+figCirc = plotmesh(mCirc; title="eingespannte Platte | r = 8m | 165 unregelmäßige Elemente")
 ```
 
 # Vergleichswerte aus Altenbach et. al
@@ -27,7 +28,6 @@ figCirc = plotmesh(mCirc; title="runde Platte | d = 8m | 165 unregelmäßige Ele
 ```{julia}
 K = p1.E*p1.h^3 / 12*(1-p1.ν^2)
 w_altenbach = (p1.q * p1.r^4) / (64*K)
-v_altenbach = (p1.q * p1.r) / 2
 ```
 
 # Berechnung des Verschiebung
@@ -58,5 +58,5 @@ wCirc = plotwBTP(mCirc, w;title="Verformung")
 ```{julia}
 using CairoMakie
 save("Beispiel-01-Circ-mesh.png",figCirc)
-save("Beispiel-01-BTunr-w.png",wCirc)
+save("Beispiel-01-Circ-w.png",wCirc)
 ```

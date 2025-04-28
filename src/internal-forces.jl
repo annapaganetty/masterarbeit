@@ -1,9 +1,22 @@
+## Gausspoint interpolation
+using FastGaussQuadrature
+function interpolateg(f, np = 2)
+    xg, _ = gausslegendre(2)
+    VG = [xg[[1 2 2 1]]; xg[[1 1 2 2]]]
+    L4g = lagrangeelement(VG)
+	if np == 2
+		return sum(L4g .* f.([collect(p) for p ∈ eachcol(VG)]))
+	else
+		return MPolynomial([0; 0;;], [f(0, 0)], QHat)
+	end
+end
+
 function postprocessor(params, wHat,model::String)
     # Plate properties
     h = params.h
     E = params.E
     ν = params.ν
-    D = E * h^3 / (12 * (1 - ν^2))
+    D = (E * h^3) / (12 * (1 - ν^2))
 
     if model == "kirchhoff_conforming"
         return (face, name) -> begin
@@ -15,7 +28,7 @@ function postprocessor(params, wHat,model::String)
             V = [ -1 1 1 -1; -1 -1 1 1]
             H4 = hermiteelement(V;conforming=true)
             idxs = idxDOFs(nodeindices(face), 4)
-        
+
             t = repeat([1, a / 2, b / 2, a * b / 4], 4)
             we = sum(wHat[idxs] .* t .* H4)
     
@@ -31,8 +44,11 @@ function postprocessor(params, wHat,model::String)
 		    mx = -D * (wxx + ν * wyy)
 		    my = -D * (ν * wxx + wyy)
 		    mxy = -D * (1 - ν) * wxy
-		    qx = -D * (2 / a) * ∂x(Δw)
-		    qy = -D * (2 / b) * ∂y(Δw)
+		    # qx = -D * (2 / a) * ∂x(Δw)
+		    # qy = -D * (2 / b) * ∂y(Δw)
+
+            qxe = (2 / a) * ∂x(mx) + (2 / b) * ∂y(mxy)
+            qye = (2 / a) * ∂x(mxy) + (2 / b) * ∂y(my)
 
             # Quick return
             name == :w && return we
@@ -47,8 +63,10 @@ function postprocessor(params, wHat,model::String)
             name == :mx && return mx
             name == :my && return my
             name == :mxy && return mxy
-            name == :qx && return qx
-            name == :qy && return qy
+            name == :qx && return qxe
+            name == :qy && return qye
+            name == :qxgg && return (2 / a) * ∂x(interpolateg(mx, 2)) + (2 / b) * ∂y(interpolateg(mxy, 2))
+            name == :qygg && return (2 / a) * ∂x(interpolateg(mxy, 2)) + (2 / b) * ∂y(interpolateg(my, 2))
             # Unknown label
             error("Unkown function: ", name)
         end
@@ -152,13 +170,3 @@ function nodalresult(m, result)
 	return sr
 end
 
-function meshNodes(m)
-    xCoord = zeros(nnodes(m))
-    yCoord = zeros(nnodes(m))
-	for (i, n) ∈ enumerate(nodes(m))
-        # i = Anzahl der Knoten
-        xCoord[i] = coordinates(n)[1]
-        yCoord[i] = coordinates(n)[2] 
-	end
-	return xCoord,yCoord
-end

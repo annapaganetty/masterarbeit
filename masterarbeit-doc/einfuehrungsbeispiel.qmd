@@ -1,6 +1,6 @@
 ## Einführungsbeispiel: Biegebalken {#sec-einfuehrungsbeispiel}
 
-Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist siehe (@fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems geredet, welche die Grundlage für die Finite Elemente Analyse bildet.
+Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist (siehe @fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems gesprochen, welche die Grundlage für die Finite Elemente Analyse bildet.
 
 ![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=75%}
 
@@ -183,9 +183,9 @@ beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet u
 
 Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
 
-![Balkenelement](00-pics/Balkenelemente.png){width=100%}
+![Balkenelement](00-pics/Balkenelemente.png){#fig-balkenelemente width=100%}
 
-Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $\Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade eines Euler-Bernoulli-Balkenelements ergeben sich somit zu 
+Als Basisfunktionen werden bei diesem Beispiel die Hermite-Polynomen genutzt. Um $C^1$-Kontinuität zwischen den Elementen $\Omega_e$ zu erreichen, müssen, bei der Kombination der Basisfunktionen, sowohl die Verschiebung $w$, als auch die Ableitung der Verschiebung $w'$ an den Knoten übereinstimmen. Die Freiheitsgrade, dargestellt in @fig-balkenelemente, eines Euler-Bernoulli-Balkenelements ergeben sich somit zu 
 $$
 \hat{w}_e =
 \left[ \begin{array}{center} 
@@ -200,7 +200,7 @@ mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polyno
 
 ![Hermite Funktionen](00-pics/Hermite-Polynome.png){#fig-Hermite-Funktionen width=60%}
 
-Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktionen $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
+Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktion $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
 
 $$
 \begin{align}
@@ -214,20 +214,20 @@ $$ {#eq-Bedingungen-Hermite}
 Die kubischen Polynome 
 $$
 \begin{align}
-H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \\
-H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
-H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \\
-H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
+&H_1(\xi) &= \frac{1}{4} (2-3\xi+\xi^3) \qquad
+&&H_2(\xi) &= \frac{1}{4} (1-\xi-\xi^2+\xi^3) \\
+&H_3(\xi) &= \frac{1}{4} (2+3\xi-\xi^3) \qquad
+&&H_4(\xi) &= \frac{1}{4} (-1-\xi+\xi^2+\xi^3) \\
 \end{align}
 $$ {#eq-Hermite-Funktionen}
 
 erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
 $$ 
 \begin{align}
-&H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \\
-&H_2(x) = x - 2 \cdot \frac{x^2}{l_e} + \frac{x^3}{l_e^2} \\
-&H_3(x) = 3 \cdot \frac{x^2}{l_e^2} - 2\cdot \frac{x^3}{l_e^3} \\
-&H_4(x) = - \frac{x^2}{l_e} + \frac{x^3}{l_e^2}. 
+&H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \qquad
+&&H_2(x) = x - 2 \cdot \frac{x^2}{l_e} + \frac{x^3}{l_e^2} \\
+&H_3(x) = 3 \cdot \frac{x^2}{l_e^2} - 2\cdot \frac{x^3}{l_e^3} \qquad
+&&H_4(x) = - \frac{x^2}{l_e} + \frac{x^3}{l_e^2}. 
 \end{align}
 $${#eq-hermite-Elementlaenge}
 
@@ -319,7 +319,7 @@ $$
 \end{align}
 $${#eq-lastvektor-final-balken}
 
-![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=100%}
+![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=90%}
 
 Für eine Element der Länge $l_e$ und konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
 $$
@@ -372,11 +372,11 @@ $${#eq-Durchbiegung-exakt-balken}
 mit den Konstanten
 $$
 \begin{align}
-&\xi = \frac{x}{L} \\
-&\overline{\xi} = \frac{L-x}{L}
+&\xi = \frac{x}{L}, \qquad
+&&\overline{\xi} = \frac{L-x}{L}
 \end{align}
 $$
 
 und konstanter Streckenlast in demselben Diagramm zu sehen.
 
-![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=100%}
+![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=80%}

@@ -1,34 +1,52 @@
 ## Beispiel 2: komplexe Platte {#sec-beispiel-02}
 
+Als zweites Beispiel wurde die Formulierung des Finite Elemente Ansatzes für allgemeine Vierecke auf ein realitätsnahes Beispiel angewandt. Die Geometrie der Platte erfordert die Anwendung des DKQ-Elementansatzes. Das Finite Elemente Netz ist, für das in JULIA entwickelte Programm in @fig-BSP-02-RFEM-Netz dargestellt. Neben der komplexen Geometrie, wurden bei dem Beispiel verschiedene Lagerungstypen verwendet. An den drei grün markierten Punkten wird die Platte durch eine Stütze gelenkig gelagert. Die pinken Linien stellen gelenkige Linienlager dar. 
 
+![FE-Netz der RFEM Berechnung](00-pics/Beispiel-02-BT-complex-mesh.png){#fig-BSP-02-RFEM-Netz width=80%}
 
-|                   |                           |
+Die Eingabeparameter sind in @tbl-Eingabedaten-komplex aufgelistet. Das gewählte Elastizitätsmodul entspricht der Betongüte C25/30.
+Das Eigengewicht der Platte, welches aus der Dicke von $0.2 \text{ m}$ resultiert, wurde nicht berücksichtigt. Ersatzweise wird die Berechnung mit einer Gleichflächenlast von $p = 5.00 \text{ kN}$ durchgeführt.
+
+|Eingabeparameter   |                           |
 |:------------------|:--------------------------|
 |Plattendicke       | $d = 0.2 \text{ m}$        |
 |Elastizitätsmodul  | $E = 31.000 \text{ N/mm}^2$|
-|Flächenlast        | $p = 5 \text{ kN}$         |
+|Flächenlast        | $p = 5.00 \text{ kN}$         |
 |                   | $\nu = 0.0$               |
 
-: Daten zum Beispiel "allseitig eingespannte Platte" {#tbl-Eingabedaten-komplex}
+: Daten zum Beispiel "komplexe Platte" {#tbl-Eingabedaten-komplex}
 
+Zur besseren Vergleichbarkeit der Ergebnisse sind nachfolgend die Schnittgrößenverläufe $m_x$ ,$m_y$ und  $m_xy$, jeweils aus der eigenen Berechnung und aus RFEM, untereinander dargestellt. 
+Die maximale Verformung beträgt $0.0213$ m nach der RFEM-Berechnung und $0.0217$ m nach der eigenen Berechnung. Sowohl der Verformungsverlauf, als auch die Schnittgrößenverläufe sind Kongruent.
 
-### Berechnung nach Batoz und Tahar
+__Verformungsverlauf__
 
+![Verformung $w$ Biegemomente DKQ-Elementansatz](00-pics/Beispiel-02-BT-complex-w.png){#fig-komplex-w width=80%} 
 
+![Verformung $w$ der RFEM Berechnung](00-pics/bsp02-RFEM-Verformung-u.png){#fig-02-RFEM-w width=80%}
 
+__Berechnungsergebnisse: DKQ__
 
-### Berechnung mit RFEM
+::: {#fig-Biegemomente-02-DKQ  layout-ncol=1}
 
-![FE-Netz der RFEM Berechnung](00-pics/RFEM-Netz.png){#fig-RFEM-Netz width=80%}
+![$m_x$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-mx.png){#fig-RFEM-mx width=70%}
 
-![Verformung der RFEM Berechnung](00-pics/RFEM-Verformung-u.png){#fig-RFEM-u width=80%}
+![$m_y$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-my.png){#fig-RFEM-my width=70%}
 
+![$m_{xy}$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-mxy.png){#fig-RFEM-mxy width=80%}
 
-Schnittgröße  
+Biegemomente DKQ-Elementansatz
+:::
 
-![Mx der RFEM Berechnung](00-pics/RFEM-Moment-mx.png){#fig-RFEM-mx width=80%}
+__Berechnungsergebnisse: RFEM__
 
-![My der RFEM Berechnung](00-pics/RFEM-Moment-my.png){#fig-RFEM-my width=80%}
+::: {#fig-Biegemomente-02-RFEM  layout-ncol=1}
 
-![Mxy der RFEM Berechnung](00-pics/RFEM-Moment-mxy.png){#fig-RFEM-mxy width=80%}
+![$m_x$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-mx.png){#fig-RFEM-mx width=90%}
 
+![$m_y$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-my.png){#fig-RFEM-my width=90%}
+
+![$m_{xy}$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-mxy.png){#fig-RFEM-mxy width=90%}
+
+Biegemomente berechnet mit _RFEM_
+:::
