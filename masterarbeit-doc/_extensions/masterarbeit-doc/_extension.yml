@@ -8,7 +8,7 @@ contributes:
     typst:
       crossref:
         fig-title: Abbildung     # (default is "Figure")
-        tbl-title: Tabelle     # (default is "Table")
+        tbl-title: Tabelle    # (default is "Table")
       tbl-cap-location: bottom
       template-partials:
         - typst-template.typ
@@ -18,8 +18,8 @@ contributes:
       lot: true
       lof: true
       code-line-numbers: true
-      number-sections: true
-      keep-typ: true
-      keep-md: true
-bibliography: 
-  - references.bib 
+number-sections: true
+keep-typ: true
+keep-md: true
+bibliography: references.bib
+bibliographystyle: apa

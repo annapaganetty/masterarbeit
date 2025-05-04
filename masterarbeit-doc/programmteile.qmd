@@ -27,7 +27,7 @@ Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten.
+Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten. Die Platte, erzeugt durch den nachfolgend beschriebenen Code, ist in @fig-Mesh dargestellt.
 
 ```{julia}
 coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
@@ -36,13 +36,13 @@ elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
 m = MMJMesh.Meshes.Mesh(coords, elts, 2);
 ```
 
-![FE-Netz erzeugt mit der Funktion `Mesh()`](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
-
-Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an.
+Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an. Eine beispielhafte Anwendung der Funktion zeit @fig-makemeshonrectangle.
 
 ```{julia}
 m = makemeshonrectangle(p.lx, p.ly, nx, ny);
 ```
+
+![FE-Netz erzeugt mit der Funktion `Mesh()`](00-pics/mesh-coords-elts.png){#fig-Mesh width=80%}
 
 ![FE-Netz erzeugt mit der Funktion `makemeshonrectangle()`](00-pics/mesh-rect.png){#fig-makemeshonrectangle width=80%}
 
@@ -52,7 +52,7 @@ Alternativ kann eine .msh Datei eingepflegt werden mit
 m = MMJMesh.Meshes.Mesh("../gmsh/complex-plate-02.msh");
 ```
 
-![FE-Netz aus complex-plate-02.msh Datei](00-pics/complex-plate.png){#fig-Mesh width=80%}
+![FE-Netz aus complex-plate-02.msh Datei](00-pics/complex-plate.png){#fig-Mesh-complex width=45%}
 
 ### Formfunktionen 
 
@@ -70,8 +70,7 @@ Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Mono
 
 
 ```{julia}
-function hermiteelement(V;conforming=true)
-    if conforming
+function hermiteelement(V)
         m = 16
         P = mmonomials(2, 3, QHat  ,type = BigInt)
         N = vcat(
@@ -81,16 +80,6 @@ function hermiteelement(V;conforming=true)
                 PDerivativeAtLF(p, [1, 1])]
                 for p in eachcol(V)]...
             )
-    else 
-        m = 12
-        P = mmonomials(2, 3, QHat , (p1, p2) -> p1 + p2 <= 4 && p1 * p2 <4,type = BigInt)
-        N = vcat(
-            [   [ValueAtLF(p), 
-                PDerivativeAtLF(p, [1, 0]), 
-                PDerivativeAtLF(p, [0, 1])]
-                for p in eachcol(V)]...
-        )
-    end
     Imatrix = Matrix{Int}(I, m, m)
     M = [n(p) for p in P, n in N]
     Minv = simplifyx.(M \ Imatrix)
@@ -103,7 +92,7 @@ end;
 
 Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
 
-```{julia}
+```{{julia}}
 using Symbolics
 @variables  a,b, h, ν,E;
 # Punkte des Elements
@@ -147,7 +136,7 @@ function DKQKe(p)
         return Ke
     end
     return keFunc
-end
+end;
 ```
 
 ### Randbedingungen
@@ -203,6 +192,7 @@ function assembleKr(s, nf)
 end;
 ```
 
+{{< pagebreak >}}
 ### Postprozessor
 
 Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wird der Verschiebungsvektor durch 
@@ -226,7 +216,7 @@ function moment(name)
             return (Db * B)[3] * wHat[idxs]
         end
     end
-end
+end;
 ```
 
 Für die Berechnung der Querkräfte werden die Momentenfunktionen an den Knotenpunkten ausgewertet und bilinear interpoliert. Anschließend werden die entstandenen Funktionen abgeleitet und mittels der inversen Jacobi-Matrix parametrisiert.
@@ -248,5 +238,5 @@ function querkraft(name)
             return qy
         end
     end
-end
+end;
 ```

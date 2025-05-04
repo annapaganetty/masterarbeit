@@ -23,16 +23,17 @@ Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM
 
 Die Ableitung einer $C^0$ Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^{-1}$-Funktion, welche an den Knicken der $C^0$-Funktion einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
 
-![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=75%}
+![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=60%}
 
 Die Formfunktionen unterschiedlicher finite Elemente Ansätze, werden für die Lösung des Problems elementweise definiert. In @fig-kombi-basis-bilinear und @fig-kombi-basis-konf-hermite sind die Formfunktionen des bilinearen Elements und des konformen Hermite Elements auf einer $8m \times 8m$  Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist erkennbar, dass es sich um $C^{0}$-Funktionen handelt, da _Knicke_ an den Elementkanten vorhanden sind. 
 
-![bilineareBasisfunktionen angewandt auf $8m \times 8m$ Platte mit 9 Elementen](00-pics/Basisfunktionen_Bilinear.png){#fig-kombi-basis-bilinear width=100%}
+![bilineare Basisfunktionen angewandt auf $8m \times 8m$ Platte mit 9 Elementen](00-pics/Basisfunktionen_Bilinear.png){#fig-kombi-basis-bilinear width=100%}
 
 ![konforme Hermite Basisfunktionen angewandt auf $8m \times 8m$ Platte mit 9 Elementen](00-pics/Basisfunktionen_Hermite.png){#fig-kombi-basis-konf-hermite width=100%}
 
 Nachfolgend wird die Konstruktion der Basisfunktionen des bilineare Lagrange Element, das konforme und nicht konforme Hermite Rechteckelement und das Serendipityelement erläutert. Die Definition der Formfunktionen erfolgt auf dem Referenzelement, dargestellt jeweils für die verschiedenen Elementansätze in @fig-bilineares-element, @fig-BFS-element und @fig-ref-serendipity. Das Referenzelement wird in dem $\xi-\eta-$ Koordinatesystem definiert mit den Eckknoten $(-1,-1), (1,-1), (1,1) \text{und} (-1,1)$.
 
+{{< pagebreak >}}
 ### Lagrange Elemente (Bilineares Rechteckelement){#sec-FE-Lagrange}
 
 Das bilineare Element ist das simpelste unter den Viereckelementen. 
@@ -45,10 +46,10 @@ $$ {#eq-polynome-lagrange}
 wobei der bilineare Term $xy$ aus der dritten Reihe des Pascalschen Dreiecks enthalten ist (siehe ). Sei das betrachtete Element, ein Rechteck dessen Kanten parallel zu den Koordinatenachsen verlauft, so ist das Monom $xy$ ist an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant sind. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken des Rechtecks eindeutig bestimmt werden. Das Ergebnis sind die Funktionen 
 $$
 \begin{align}
-N_1^e(x,y) &= \frac{1}{A^e} (x-x_2^e)(y-y_4^e),  \\
-N_2^e(x,y) &= -\frac{1}{A^e} (x-x_1^e)(y-y_4^e), \\
-N_3^e(x,y) &= \frac{1}{A^e} (x-x_1^e)(y-y_1^e), \\
-N_4^e(x,y) &= -\frac{1}{A^e} (x-x_2^e)(y-y_1^e) \\
+N_1^e(x,y) &= \frac{1}{A^e} (x-x_2^e)(y-y_4^e), 
+&\qquad \qquad N_2^e(x,y) &= -\frac{1}{A^e} (x-x_1^e)(y-y_4^e), \\
+N_3^e(x,y) &= \frac{1}{A^e} (x-x_1^e)(y-y_1^e), 
+&\qquad \qquad N_4^e(x,y) &= -\frac{1}{A^e} (x-x_2^e)(y-y_1^e) \\
 \end{align}
 $$ {#eq-black-scholes}
 
@@ -59,16 +60,16 @@ für ein rechteckiges Element, wobei $A^e$ die Fläche des Elements bezeichnet. 
 Für das Referenzelement $T_{ref} = [-1,1]^2$ mit den Referenzkoordinaten $\xi$ und $\eta$, wie in @fig-bilineares-element definiert, ergeben sich die Formfunktionen 
 $$
 \begin{align}
-N_1(\xi,\eta) &= \frac{1}{4} (\xi\eta - \xi - \eta + 1) \\
-N_2(\xi,\eta) &= \frac{1}{4} (-\xi\eta+ \xi - \eta + 1) \\
-N_3(\xi,\eta) &= \frac{1}{4} (\xi\eta + \xi + \eta + 1) \\
-N_4(\xi,\eta) &= \frac{1}{4} (-\xi\eta- \xi + \eta + 1). \\
+N_1(\xi,\eta) &= \frac{1}{4} (\xi\eta - \xi - \eta + 1) 
+&\qquad\qquad N_2(\xi,\eta) &= \frac{1}{4} (-\xi\eta+ \xi - \eta + 1) \\
+N_3(\xi,\eta) &= \frac{1}{4} (\xi\eta + \xi + \eta + 1) 
+&\qquad\qquad N_4(\xi,\eta) &= \frac{1}{4} (-\xi\eta- \xi + \eta + 1). \\
 \end{align}
 $$ {#eq-formfunktionen-bilinear}
 
 Für allgemeine Vierecke ist der oben beschriebene bilineare Ansatz untauglich. Zudem kommt der Ansatz der Forderung nach $C^1$-Stetigkeit nicht nach. Für die Parametrisierung in @sec-Parametrisierung sind die in @eq-formfunktionen-bilinear beschriebenen Formfunktionen von wesentlicher Bedeutung.
 
-![bilineare Formfunktionen auf dem Referenzelement](00-pics/Lagrange-Formfunktionen.png){#fig-Lagrange-Formfunktionen width=75%}
+![bilineare Formfunktionen auf dem Referenzelement](00-pics/Lagrange-Formfunktionen.png){#fig-Lagrange-Formfunktionen width=65%}
 
 ### konformes Hermite Rechteckelement (Bogner-Fox-Schmitt) {#sec-FE-BFS}
 
@@ -95,7 +96,6 @@ $${#eq-BFS-Formfunktionen}
 dargestellt. Für die ausformulierten Basisfunktionen wird auf [Quelle:Def Element] verwiesen. Für reine Rechtecke ist der Bogner-Fox-Schmitt Ansatz sehr sinnvoll, nicht aber für allgemeine Vierecke, da dort der zusätzliche Freiheitsgrad $\theta_{\xi \eta i}$ an den vier Knoten störend wirkt.
 
 ![Bogner-Fox-Schmitt Formfunktionen auf dem Referenzelement](00-pics/Bogner-Fox-Schmitt-Element.png){#fig-Bogner-Fox-Schmitt-Formfunktionen width=75%}
-
 
 <!--
  ### nichtkonformes Hermite Rechteckelement {#sec-FE-Hermite-nichtkonform}
@@ -125,8 +125,6 @@ $$
 
 Das Element besteht, wie @fig-ref-serendipity zeigt, aus vier Eckknoten und vier Mittelknoten in der Mitte der jeweiligen Seiten. Die Forderung nach $C^1$-Stetigkeit der Ansatzfunktionen an den Rändern benachbarter Elemente wird nicht erfüllt.
 
-\
-
 ![Serendipityelement](00-pics/Serendipity.png){#fig-ref-serendipity width=40%}
 
 Die sich ergebenen Formfunktionen
@@ -145,4 +143,4 @@ $$
 
 sind in @fig-Serendipity-Formfunktionen dargestellt. Häufig finden die Formfunktionen der Serendipiy Klasse Anwendung bei der Berechnung von Strukturen, dessen Elemente isoparametrisch sind. Dies ist vorallem dann der Fall, wenn die Struktur eine unregelmäßige, unsymmetrische Geometrie hat und die Elemente dementsprechend schiefwinklig und in beliebiger Lage angeordnet sind. Auf die Formulierung für allgemeine Viereckelemente wird in @sec-Steifigkeitsmatrix-DKQ und @sec-Parametrisierung näher eingegangen.
 
-![Formfunktionen des Serendipity Elements auf dem Referenzelement](00-pics/Serendipity-Formfunktionen.png){#fig-Serendipity-Formfunktionen width=75%}
+![Formfunktionen des Serendipity Elements auf dem Referenzelement](00-pics/Serendipity-Formfunktionen.png){#fig-Serendipity-Formfunktionen width=60%}

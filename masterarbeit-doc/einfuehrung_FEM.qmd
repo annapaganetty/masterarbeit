@@ -7,15 +7,11 @@ In der Baubranche findet die FEM vor Allem bei zwei- und dreidimensionalen Probl
 |:-----------|:--------------|:------:|:----:|
 | linear      |$\left[\begin{array}{center}1&\xi&\eta\end{array}\right]$ | $4$ |$C^0$ |
 | quadratisch |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2\end{array}\right]$ | $4$ |$C^0$ |
---------------------------
-|LAGRANGE     |         |             |           |
---------------------------
+|__LAGRANGE__     |         |             |           |
 | bilinear    |$\left[\begin{array}{center}1 & \xi & \eta & \xi\eta \end{array}\right]$ | $4$ | $C^0$|
 | quadratisch vollständig |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^2\eta&\xi\eta^2&\xi^2\eta^2\end{array}\right]$ |$9$ |$C^0$ |
 | quadratisch unvollständig (Serendipity) |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^2\eta&\xi\eta^2\end{array}\right]$ | $8$ |$C^0$|
---------------------------
-| HERMITE     |         |             |           |
---------------------------
+| __HERMITE__     |         |             |           |
 | kubisch vollständig |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$ |$C^1$ |
 | kubisch unvollständig   |$\left[\begin{array}{center}1&\xi&\eta&\xi^2&\xi\eta&\eta^2&\xi^3&\xi^2\eta&\xi\eta^2&\eta^3&\xi^3\eta&\xi\eta^3\end{array}\right]$ |$4$          |semi-$C^1$ |
 

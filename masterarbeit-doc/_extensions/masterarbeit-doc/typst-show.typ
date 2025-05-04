@@ -3,4 +3,7 @@
   lang: "$lang$",
   font: "$font$",
   font-size: "$font-size$",
+  $if(bibliography)$
+    bibliography-file: "$bibliography$",
+  $endif$
 )

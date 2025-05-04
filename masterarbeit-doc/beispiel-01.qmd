@@ -35,97 +35,99 @@ Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sin
 
 Die resultierende Verformungsfigur in überhöhter Darstellung stimmt bei beiden Elementansätzen überein und ist in @fig-BFS-w dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.001255 m$ für den BFS-Elementansatz bzw. $w_{max} =  0.001262 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ bzw. $0.566 \%$ ab. 
 
-![Durchbiegung $w$ der Platte](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-w width=60%}
+![Durchbiegung $w$ der Platte](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-w width=50%}
 
 {{< pagebreak >}}
 ### Berechnungsergebnisse: BFS Elementansatz
 
-::: {#fig-Biegemomente-BFS  layout-ncol=2}
-
-![$m_x$ [kNm/m]](00-pics/Beispiel-01-BFS-mx.png){#fig-BFS-mx width=75%}
-
-![$m_x$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-mx-glatt.png){#fig-BFS-mx-Glatt width=75%}
-
-![$m_y$ [kNm/m]](00-pics/Beispiel-01-BFS-my.png){#fig-BFS-my width=75%}
-
-![$m_y$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-my-glatt.png){#fig-BFS-my-Glatt width=75%}
-
-![$m_{xy}$ [kNm/m]](00-pics/Beispiel-01-BFS-mxy.png){#fig-BFS-mxy width=75%}
-
-![$m_{xy}$ geglättet [kNm/m]](00-pics/Beispiel-01-BFS-mxy-glatt.png){#fig-BFS-mxy-Glatt width=75%}
-
-
-Biegemomente BFS-Elementansatz
+:::{#fig-Biegemomente-BFS  layout-ncol=2}
+```{=typst}
+#grid(
+  columns: (220pt, 220pt),
+  rows: (180pt, 180pt,180pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/Beispiel-01-BFS-mx.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BFS-mx-glatt.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BFS-my.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BFS-my-glatt.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BFS-mxy.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BFS-mxy-glatt.png", width: 100%)),
+)
+```
+quadratische Platte: Biegemomente $m_x$, $m_y$ und $m_{xy}$ [kNm/m] (BFS) | links: _unbehandelte_ Ergebnisse | rechts: _geglättete_ Ergebnisse
 :::
 
 ::: {#fig-Querkräfte-BFS  layout-ncol=2}
 
-![$q_{x}$ [kN/m]](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx width=80%}
+![](00-pics/Beispiel-01-BFS-qx.png){width=80%}
 
-![$q_{x}$ geglättet [kN/m]](00-pics/Beispiel-01-BFS-qx-glatt.png){#fig-BFS-qx-Glatt width=80%}
+![](00-pics/Beispiel-01-BFS-qx-glatt.png){width=80%}
 
-![$q_{y}$ [kN/m]](00-pics/Beispiel-01-BFS-qy.png){#fig-BFS-qy width=80%}
+![](00-pics/Beispiel-01-BFS-qy.png){width=80%}
 
-![$q_{y}$ geglättet [kN/m]](00-pics/Beispiel-01-BFS-qy-glatt.png){#fig-BFS-qy-Glatt width=80%}
+![](00-pics/Beispiel-01-BFS-qy-glatt.png){width=80%}
 
-Querkräfte BFS-Elementansatz
+quadratische Platte: Querkräfte $q_x$ und $q_y$ [kN/m] (BFS) | links: _unbehandelte_ Ergebnisse | rechts: _geglättete_ Ergebnisse
 :::
 
 {{< pagebreak >}}
 ### Berechnungsergebnisse. DKQ-Elementansatz
 
-::: {#fig-Biegemomente-BTP  layout-ncol=2}
-
-![$m_x$ [kNm/m]](00-pics/Beispiel-01-BT-mx.png){#fig-BT-mx width=75%}
-
-![$m_x$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-mx-glatt.png){#fig-BT-mx-Glatt width=75%}
-
-![$m_y$ [kNm/m]](00-pics/Beispiel-01-BT-my.png){#fig-BT-my width=75%}
-
-![$m_y$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-my-glatt.png){#fig-BT-my-Glatt width=75%}
-
-![$m_{xy}$ [kNm/m]](00-pics/Beispiel-01-BT-mxy.png){#fig-BT-mxy width=75%}
-
-![$m_{xy}$ geglättet [kNm/m]](00-pics/Beispiel-01-BT-mxy-glatt.png){#fig-BT-mxy-Glatt width=75%}
-
-
-Biegemomente DKQ-Elementansatz
+::: {#fig-Biegemomente-BTP  layout-nrow="3"}
+```{=typst}
+#grid(
+  columns: (220pt, 220pt),
+  rows: (180pt, 180pt,180pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/Beispiel-01-BT-mx.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BT-mx-glatt.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BT-my.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BT-my-glatt.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BT-mxy.png", width: 100%)),
+  grid.cell(image("00-pics/Beispiel-01-BT-mxy-glatt.png", width: 100%)),
+)
+```
+quadratische Platte: Biegemomente $m_x$, $m_y$ und $m_{xy}$ [kNm/m] (DKQ) | links: _unbehandelte_ Ergebnisse | rechts: _geglättete_ Ergebnisse
 :::
 
-::: {#fig-Querkräfte-DKQ  layout-ncol=2}
 
-![$q_{x}$ [kN/m]](00-pics/Beispiel-01-BT-qx.png){#fig-BT-qx width=80%}
+::: {#fig-Querkräfte-DKQ  layout-ncol="2"}
 
-![$q_{x}$ geglättet [kN/m]](00-pics/Beispiel-01-BT-qx-glatt.png){#fig-BT-qx-Glatt width=80%}
+![](00-pics/Beispiel-01-BT-qx.png){width=80%}
 
-![$q_{y}$ [kN/m]](00-pics/Beispiel-01-BT-qy.png){#fig-BT-qy width=80%}
+![](00-pics/Beispiel-01-BT-qx-glatt.png){width=80%}
 
-![$q_{y}$ geglättet [kN/m]](00-pics/Beispiel-01-BT-qy-glatt.png){#fig-BT-qy-Glatt width=80%}
+![](00-pics/Beispiel-01-BT-qy.png){width=80%}
 
-Querkräfte DKQ-Elementansatz
+![](00-pics/Beispiel-01-BT-qy-glatt.png){width=80%}
+
+quadratische Platte: Querkräfte $q_x$ und $q_y$ [kN/m] (DKQ) | links: _unbehandelte_ Ergebnisse | rechts: _geglättete_ Ergebnisse
 :::
 
 {{< pagebreak >}}
 ### Berechnungsergebnisse: RFEM
 
 ::: {#fig-Biegemomente-RFEM  layout-ncol=1}
-
-![$m_x$ [kNm/m]](00-pics/bsp01-RFEM-Moment-mx.PNG){#fig-01-RFEM-mx width=90%}
-
-![$m_y$ [kNm/m]](00-pics/bsp01-RFEM-Moment-my.PNG){#fig-01-RFEM-my width=90%}
-
-![$m_{xy}$ [kNm/m]](00-pics/bsp01-RFEM-Moment-mxy.PNG){#fig-01-RFEM-mxy width=90%}
-
-Biegemomente berechnet mit _RFEM_
+```{=typst}
+#grid(
+  columns: (440pt),
+  rows: (180pt, 180pt,180pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/bsp01-RFEM-Moment-mx.PNG", width: 100%)),
+  grid.cell(image("00-pics/bsp01-RFEM-Moment-my.PNG", width: 100%)),
+  grid.cell(image("00-pics/bsp01-RFEM-Moment-mxy.PNG", width: 100%)),
+)
+```
+quadratische Platte: Biegemomente $m_x$, $m_y$ und $m_{xy}$ [kNm/m] (_RFEM_) 
 :::
 
 ::: {#fig-Querkräfte-RFEM  layout-ncol=1}
 
-![$q_{x}$ [kN/m]](00-pics/bsp01-RFEM-Querkraft-vx.PNG){#fig-01-RFEM-qx width=90%}
+![](00-pics/bsp01-RFEM-Querkraft-vx.PNG){width=90%}
 
-![$q_{y}$ [kN/m]](00-pics/bsp01-RFEM-Querkraft-vy.PNG){#fig-01-RFEM-qy width=90%}
+![](00-pics/bsp01-RFEM-Querkraft-vy.PNG){width=90%}
 
-Querkräfte berechnet mit _RFEM_
+quadratische Platte: Querkräfte $q_x$ und $q_y$ [kN/m] (_RFEM_) 
 :::
 
 
@@ -133,17 +135,6 @@ Querkräfte berechnet mit _RFEM_
 
 Aufgrund der Symmetrie der Platte, der identischen Lagerung aller Ränder und der gleichmäßigen Belastung durch eine Gleichflächenlast, sind die Momentenverläufe und die Querkraftverläufe in $x$- und in $y$-Richtungen deckungsgleich.
 Der rein optischen Vergleich der Schnittgrößen, zeigt, zwischen den Berechnungsergebnisse der beiden Elementansätze sowie den Ergebnissen von _RFEM_, nahezu kongruente Verläufe. Neben den maximalen Verformungen stimmen auch die Zahlenwerte der Momente, aufgelistet in @tbl-Vergleich-Ergebnisse, mit einer maximalen Abweichung von $1.040 \%$ überein. 
-<!-- 
-| Ergebnis                |        | Czerny         | BFS         | DKQ            | RFEM         |
-|:------------------------|:------------|:---------------|:------------|:---------------|:-------------|
-| $w_{max}$               |[m]     | $0.001255$     | $0.001255$  | $0.001262$     | $0.0013$     |
-| $m_x_{max} = m_y_{max}$ |[kNm/m] | $5633.80$      | $5658.78$   | $5692.38$      | $5671$       |
-| $m_x_{erm} = m_y_{erm}$ |[kNm/m] | $-16494.85$    | $-16359.92$ | $-16388.71$    | $-16483$     |
-| $q_x_{erm} = q_y_{erm}$ |[kN/m]  | $\pm 17857.14$ | $\pm 16080$ | $\pm 15867.62$ | $\pm 17552$  |
-
-: Vergleich der Ergebnisse zum Beispiel "allseitig eingespannte Platte" {#tbl-Vergleich-Ergebnisse} 
--->
-
 
 
 |            | $w_{max}$    | $m_{x,max} = m_{y,max}$ | $m_{x,erm} = m_{y,erm}$ | $q_{y,erm} = q_{y,erm}$ |

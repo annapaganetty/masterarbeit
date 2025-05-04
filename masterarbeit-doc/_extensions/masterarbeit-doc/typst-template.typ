@@ -1,4 +1,3 @@
-
 #let script-size = 7.97224pt
 #let footnote-size = 8.50012pt
 #let small-size = 9.24994pt
@@ -16,6 +15,7 @@
   lot: true,
   lof: true,
   region: "DE",
+  bibliography-file: "references.bib",
   body,
 ) = {
   set text(lang: "de")
@@ -64,30 +64,75 @@
   }
   pagebreak()
   // Abbildungsverzeichnis
-   if lof {
+  set page(header: align(right, emph(text(size: 12pt)[Abbildungsverzeichnis])))
+  if lof {
+      show outline.entry: it => context {
+        if it.element.has("kind") {
+          let loc = it.element.location()
+          if counter(figure.where(kind: it.element.kind)).at(loc).first() == 1 {
+            v(1em)
+          }
+          show link: set text(rgb("000000"))
+          link(loc,
+            box(it.body.children.at(2), width: 2.6em) // figure number
+            + it.body.children.slice(4).join()        // figure caption
+            + box(it.fill, width: 1fr)
+            + it.page
+          )
+        } else {
+          it
+        }
+      }
     block(above: 0em, below: 2em)
     [#v(100pt, weak: true)
      #text(size: 30pt, weight: 600,"Abbildungsverzeichnis")
      #v(60pt, weak: true)
      #outline( 
       title: none,
+      depth: 2,
+      indent: 2em,
       target: figure.where(kind: "quarto-float-fig")
     );
     ]
   }
+  
   pagebreak()
+
   // Tabellenverzeichnis
+  set page(header: align(right, emph(text(size: 12pt)[Tabellenverzeichnis])))
   if lot {
+          show outline.entry: it => context {
+            if it.element.has("kind") {
+            let loc = it.element.location()
+
+          if counter(figure.where(kind: it.element.kind)).at(loc).first() == 1 {
+            v(1em)
+          }
+
+          show link: set text(rgb("000000"))
+          link(loc,
+            box(it.body.children.at(2), width: 2.6em) // figure number
+            + it.body.children.slice(4).join()        // figure caption
+            + box(it.fill, width: 1fr)
+            + it.page
+          )
+    } else {
+      it
+    }
+  }
     block(above: 0em, below: 2em)
     [#v(100pt, weak: true)
      #text(size: 30pt, weight: 600,"Tabellenverzeichnis")
      #v(60pt, weak: true)
      #outline( 
       title: none,
+      depth: 1,
+      indent: 2em,
       target: figure.where(kind: "quarto-float-tbl")
     );
     ]
   }
+  set page(header: align(right, emph(text(size: 12pt)[])))
 
   pagebreak()
   set heading(numbering: "1.1.1")
@@ -121,18 +166,23 @@
       #it.body
       #v(middle-size, weak: true)]}
 
+  // set supplement to KAPITEL
+  set heading(supplement: "Kapitel")
+
   set list(indent: 24pt, body-indent: 5pt)
   set enum(indent: 24pt, body-indent: 5pt)
   show link: set text(font: "New Computer Modern Mono")
 
-//  if abstract != none { 
-//    block(inset: 2em)[ 
-//    #text()[Abbildung] #h(1em) #abstract 
-//    ] 
-//  }
-// set figure: it => box(
+  show heading.where(level: 1): it => {
+    counter(math.equation).update(0)
+    counter(figure.where(kind: "quarto-float-fig")).update(0)
+    counter(figure.where(kind: "quarto-float-tbl")).update(0)
+    it
+  }
 
-
+  set figure(numbering: (..num) =>
+    numbering("1.1.a", counter(heading).get().first(), num.pos().first())
+  )
 
   // Configure figure captions 
   show figure.caption: it => box(
@@ -144,17 +194,31 @@
     }
     )
 
-  // show figure.supplement: it => (
-  //   if it.kind == "quarto-float-tbl" {
-  //     [*Tabelle*]}
-  //   else if it.kind == "quarto-float-fig"{
-  //     [*Abbildung*]
-  // })
-
   // Gleichungen 
-  show math.equation: set block(below: 15pt, above: 15pt)
   show math.equation: set text(weight: 400)
-  set math.equation(supplement: [Gl.])
+  // Gleichungsreferenzen mit Link 
+  show ref: it => {
+    let eq = math.equation
+    let el = it.element
+    if el != none and el.func() == eq {
+      // Override equation references.    Aktuell Section number nicht von dem Kapitel wo die gl. steht
+      link(el.location(),[Gl.~(#counter(heading.where(level: 1)).at(el.location()).first().#numbering("1.1",counter(eq).at(el.location()).first()))])
+    } else {
+      // Other references as usual.
+      it
+    }
+  }
+  // Gleichung mit Nummerierung 
+  show math.equation:it => {
+    if it.fields().keys().contains("label") == true{
+      show math.equation: set block(below: -10pt, above: 15pt)
+      [#it.body.children.slice(1).join()~#h(1fr)~(#counter(heading).get().first().#counter(math.equation).get().first())]
+      block(below: 10pt)
+    } else {
+      show math.equation: set block(below: 15pt, above: 15pt)
+      it
+    }
+  }
 
   set table(stroke:none)
 
@@ -163,12 +227,20 @@
   show par: set block(spacing: 1.5em)
 
   // Hauptteil des Dokuments
-   set page(numbering: "1",
-          header: locate(loc => {
-          let i = counter(page).at(loc).first()
-          if i == 5 { return }
-          align(right, emph(text(size: 12pt)[Kapitel 1: Einleitung]))}))
-  counter(page).update(1)
-  v(29pt, weak: true)
   body
+  // Display bibliography.
+  set bibliography(style: "american-society-of-civil-engineers", title: text(11pt)[Literatur],full:true)
+  // Display the bibliography
+
+  show bibliography: set text(11pt)
+  show bibliography: set par(leading: 0.58em)
+  set block(spacing: 2em)
+  show bibliography: pad.with(top:10pt,x: 5pt)
+
+  set page(numbering: "1",header: align(right, emph(text(size: 12pt)[Literatur])))
+  v(100pt, weak: true)
+  text(size: 30pt, weight: 600,"Literatur")
+  v(60pt, weak: true)
+  bibliography("references.bib", title: text(11pt)[Literatur])
+
 }

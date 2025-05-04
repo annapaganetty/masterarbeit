@@ -1,8 +1,12 @@
 ## Programmstruktur {#sec-programmstruktur}
 
-Die Umsetzung in JULIA entsprechend dem mathematischen Konzept, welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. Die @fig-Programmstruktur zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden. Die Topologie und die Parameter bilden die Basis der Berechnung und spiegeln das physikalische Problem wieder. Mittels des erzeugten Netzes und den festgelegten Parametern werden die Funktionen zur Berechnung der Elementsteifigkeitsmatrizen und Elementlastvektoren an das Netz in Form von Daten zugewiesen. In der darauf folgenden Assemblierung von $K$ und $r$ werden diese Funktionen elementweise aufgerufen und ausgewertet. Es ergeben sich die globale Steifigkeitsmatrix und der globale Lastvekor. Zur Lösung der Differentialgleichung, welche den Kern der FE-Methode darstellt, ist die Definition und Anwendung von Randbedinungen erforderlich. Abschließend werden aus dem berechneten Verschiebungsvektors `w` die Schnittgrößen des physikalischen Problems  abgeleitet.
+Die Umsetzung in JULIA erfolgt entsprechend dem mathematischen Konzept, welches in den vorangegangenden Kapiteln ausführlich beschrieben wurde. @fig-Programmstruktur zeigt den schematischen Aufbau des Programms anhand der einzelnen Programmteile, welche in den folgenden Unterkapiteln näher betrachtet werden. 
 
-![Programmstruktur](00-pics/Programmstruktur.png){#fig-Programmstruktur width=450%} 
+![Programmstruktur](00-pics/Programmstruktur.png){#fig-Programmstruktur width=65%} 
+
+Die Topologie und die Parameter bilden die Basis der Berechnung und spiegeln das physikalische Problem wieder. Mittels des erzeugten Netzes und den festgelegten Parametern werden die Funktionen zur Berechnung der Elementsteifigkeitsmatrizen und Elementlastvektoren an das Netz in Form von Daten zugewiesen. In der darauf folgenden Assemblierung von $K$ und $r$ werden diese Funktionen elementweise aufgerufen und ausgewertet. Es ergeben sich die globale Steifigkeitsmatrix und der globale Lastvekor. Zur Lösung der Differentialgleichung, welche den Kern der FE-Methode darstellt, ist die Definition und Anwendung von Randbedinungen erforderlich. Abschließend werden aus dem berechneten Verschiebungsvektors `w` die Schnittgrößen des physikalischen Problems  abgeleitet.
+
+
 
 
 

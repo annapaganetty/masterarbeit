@@ -2,9 +2,23 @@
 title: Einleitung
 format:
   masterarbeit-doc-typst: default
+
 ---
 
 <!-- Kapitel 1 -->
+{{< include abstract.qmd >}}
+{{< pagebreak >}}
+
+<!-- Kapitel 1 -->
+```{=typst}
+#set page(numbering: "1",
+  header: locate(loc => {
+  let i = counter(page).at(loc).first()
+  if i == 5 { return }
+    align(right, emph(text(size: 12pt)[Kapitel 1: Einleitung]))}))
+#counter(page).update(1)
+#v(29pt, weak: true)
+```
 {{< include einleitung.qmd >}}
 {{< pagebreak >}}
 
@@ -49,11 +63,3 @@ format:
 #set page(header: align(right, emph(text(size: 12pt)[Kapitel 7: Zusammenfassung und Ausblick])))
 ```
 {{< include zusammenfassung-ausblick.qmd >}}
-{{< pagebreak >}}
-
-
-<!-- Literaturverzeichnis -->
-```{=typst}
-#set page(header: align(right, emph(text(size: 12pt)[Literatur])))
-```
-

@@ -1,4 +1,4 @@
-## Assemblierung/Herleitung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
+## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
 
 Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente  ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.  
 
@@ -134,7 +134,7 @@ $$
 
 Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
 
-![Geometrie des DKQ-Elements](00-pics/Geometrie-BTP.png){#fig-geometrie-DKQ fig-env="figure*" width=70%}
+![Geometrie des DKQ-Elements](00-pics/Geometrie-BTP.png){#fig-geometrie-DKQ fig-env="figure*" width=60%}
 
 Dieses sogenannte DKQ (_discrete Kirchhoff quadrilateral_) Element basiert auf den folgenden Annahmen: 
 
@@ -145,7 +145,7 @@ $$
 &\beta_y &\quad= - w,_y &\quad= - \theta_x &\quad= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x} \\
 \end{align}
 $$ {#eq-betaX-betaY}
-Als Formfunktionen $\varphi_i(x,y)$ dienen die Funktionen des in @sec-finite-elemente vorgestellten Serendipity-Elements, abhängig von den Variablen $\xi$ und $\eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $\hat{w}_i$ mit $i = 1,...,8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
+Als Formfunktionen $\varphi_i(x,y)$ dienen die Funktionen des in @sec-basis-funktionen vorgestellten Serendipity-Elements, abhängig von den Variablen $\xi$ und $\eta$. Die Freiheitsgrade des Serendipity-Elements sind die Verformungen $\hat{w}_i$ mit $i = 1,...,8$, wobei $i$ die Nummer des Knotens nach @fig-geometrie-DKQ angibt.
 
 2. Entsprechend der Kirchhoff Theorie sind die Verdrehungen an den 
 a) Eckknoten $i$
@@ -163,7 +163,7 @@ $$
 &\beta_n_k = - w,_n_k \qquad \text{mit} k = 5,6,7,8,
 \end{align}
 $$ {#eq-verdrehungen-beta-k}
-(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. (siehe Abb.)
+(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. (siehe @fig-geometrie-DKQ)
 
 3. $\beta_s$ ist die Verdrehung um die $n$-Achse. Nach BATOZ und TAHAR wird, zur Bestimmung von $\beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form
 $$
@@ -196,6 +196,8 @@ ausgedrückt. Es ergibt sich somit
 $$
 w,_n_k = w'(0) = -\frac{1}{2}(w,_{ni}+w,_{nj})
 $$
+
+{{< pagebreak >}}
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 Zusammengefasst sind die die Verdrehungen der Knoten  
@@ -307,6 +309,8 @@ $$ {#eq-B-Matrix-DQT}
 
 Die Formulierung der Elementsteifigkeitsmatrizen stimmt mit der Formulierung für das BFS-Element aus @eq-elementsteifigkeitsmatrix überein.
 
+{{< pagebreak >}}
+
 ### Parametrisierung DKQ {#sec-Parametrisierung}
 
 Die in dem vorrangehenden Kapitel hergelteitet Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $\xi$ - und $\eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten  $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements 
@@ -321,7 +325,7 @@ $$
 
 wie in @fig-parametrisierung dargestellt.
 
-![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=100%}
+![Abbildung des Raums $\hat{\Omega}$ auf $\Omega$](00-pics/Parametrisierung.png){#fig-parametrisierung width=90%}
 
 Sei $(\xi,\eta)$ ein beliebiger Punkt auf dem Referenzelement, so werden durch
 

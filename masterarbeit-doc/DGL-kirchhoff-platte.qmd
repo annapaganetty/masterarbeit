@@ -1,23 +1,22 @@
 ## Differentialgleichung der Kirchhoff Platte{#sec-kirchhoffschen-plattentheorie}
 
 Die Platte, als ebenes Flächentragwerk, zeichnet sich durch  ausschließlich senkrecht zur Plattenmittelebene wirkende Beanspruchungen aus. Zudem ist die Plattendicke $h$ signifikant kleiner, verglichen mit den Abmessungen in der Plattenebene.
-Die zu Grunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [1]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
-\
-- eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Achse. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch 
+Die zugrunde liegende Theorie wurde von Gustav Kirchhoff im Jahr 1850 zum ersten Mal formuliert [QUELLE]. Entsprechend der Annahmen von Bernoulli in Bezug auf einen elastischen Stab, geht Kirchhoff von folgenden zwei grundlegenden kinematischen Annahmen aus:
+
+- eine Normale, welche im unverformten Zustand senkrecht zur Plattenmittelebene ist, bleibt auch im verformten Zustand senkrecht zu der neutralen Ebene. Die Durchbiegung der verformten Platte im Abstand $z$ zur neutralen Achse wird durch 
 $$ 
 w = w(x,y) 
 $$ {#eq-verformung-w}
-
 beschrieben.
 
-- der Plattenquerschnitt ist im verformten und unverformten Zustand eben und verwölbt sich nicht. Dies entspricht der Hypothese vom Ebenebleiben des Querschnitts beim Euler-Bernoulli-Balken. 
+- die Plattenfaser verwölbt sich im  verformten und unverformten Zustand nicht. Dies entspricht der Hypothese vom Ebenbleiben des Querschnitts beim Euler-Bernoulli-Balken und ist in @fig-kirchhoffplatte dargestellt.
 
-TODO: abbildungbeschriftung innerhalb Bild ändern
-![Verformung einer Kirchhoff Platte](00-pics/Kirchhoff.png){width=90%}
+![Verformung einer Kirchhoff Platte](00-pics/Kirchhoff.png){#fig-kirchhoffplatte width=80%}
 
-![Verformung einer Reissner-Mindlin Platte](00-pics/Reissner-Mindlin.png){width=90%}
+Neben dem beschriebenen schubstarren Kirchhoff-Plattenmodell, gibt es das Modell der schubweichen Platte (@fig-reissner-mindlin-platte). Letzteres wird in der Fachliteratur vielfach als Reissner-Mindlin-Platte aufgeführt. Den wesentlichen Unterschied stellt die Normalenhypothese dar. Die Hypothese vom Ebenebleiben des Querschnitts bleibt bei der schubweichen Platte bestehen, wohingegen die Normalenhypothese fallengelassen wird. Infolgedessen sind die Biegewinkel $\theta$ nicht mehr abhängig von der Durchbiegung und stellen unabhängige Freiheitsgrade dar. Eine weitere Folge sind transversale Schubverzerrungen, welche bei der Kirchhoff-Platte vernachlässigt werden.
 
-Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Modell der schubweichen Platte nicht unerwähnt bleiben. Letzteres wird in der Fachliteratur vielfach als Reissner-Mindlin-Platte aufgeführt. Den wesentlichen Unterschied stellt die Normalenhypothese dar. Die Hypothese vom Ebenebleiben des Querschnitts bleibt bei der schubweichen Platte bestehen, wohingegen die Normalenhypothese fallengelassen wird. Infolgedessen sind die Biegewinkel $\theta$ nicht mehr abhängig von der Durchbiegung und stellen unabhängige Freiheitsgrade dar. Eine weitere Folge sind transversale Schubverzerrungen, welche bei der Kirchhoff-Platte vernachlässigt werden.
+![Verformung einer Reissner-Mindlin Platte](00-pics/Reissner-Mindlin.png){#fig-reissner-mindlin-platte width=80%}
+
 \
 
 ### kinematische Gleichungen (Verschiebungsfeld) {#sec-kinematik}
@@ -25,12 +24,12 @@ Neben dem beschriebenen schubstarren Plattenmodell nach Kirchhoff, darf das Mode
 Zur Formulierung der kinematischen Gleichungen werden die partiellen Ableitung von $w(x,y)$ nach $x$, beziehungsweise $y$ berechnet, welche die Neigung der neutralen Ebene angeben. Der Winkel des Steigungsdreiecks von $\frac{\partial w}{\partial y}$ oder $\frac{\partial w}{\partial x}$ an dem Punkt $P(x,y)$ der Ebene, entspricht dem Verdrehwinkel der Fläche an dem Punkt $P(x,y)$ um die x-Achse oder y-Achse. In Abhängigkeit der Verdrehwinkel
 
 $$ 
-\theta_x (x,y) = arctan(-\frac{\partial w(x,y)}{\partial y}) 
+\theta_x (x,y) = \arctan(-\frac{\partial w(x,y)}{\partial y}) 
 $$ {#eq-black-scholes-02}
 
 und
 $$ 
-\theta_y (x,y) = arctan(-\frac{\partial w(x,y)}{\partial x}) 
+\theta_y (x,y) = \arctan(-\frac{\partial w(x,y)}{\partial x}) 
 $$ {#eq-black-scholes-03}
 
 werden die horizontalen Verschiebungen des Punktes P
@@ -44,7 +43,7 @@ v(x,y,z)=sin(\theta_y (x,y)) \cdot z
 $$ {#eq-black-scholes-05}
 
 berechnet. 
-Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergeben sich die Zusammenhänge
+Unter der weiteren Annahme, dass die Verschiebungen und die Verdrehungen klein sind gilt näherungsweise $sin(\theta_x) \approx \theta$ und $sin(\theta_y) \approx \theta$ und es ergeben sich die Zusammenhänge
 $$ 
 u(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial x} 
 $$ {#eq-verschiebung-u}
@@ -52,10 +51,11 @@ $$
 v(x,y,z) = - z \cdot \frac{\partial w(x,y)}{\partial y}. 
 $$ {#eq-verschiebung-v}
 
-Die Gesetztmäßigkeiten nach @eq-verformung-w, @eq-verschiebung-u und @eq-verschiebung-v werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet.
+Die Zusammenhänge nach @eq-verformung-w, @eq-verschiebung-u und @eq-verschiebung-v werden in der Literatur auch als Verschiebungsfeld nach der Kirchhoffschen Plattentheorie bezeichnet.
 
 ![Verdrehung und Verschiebung eines Punktes nach Kirchhoff](00-pics/Verschiebung.png){#fig-horizontale-Verschiebung width=100%}
 
+{{< pagebreak >}}
 ### Materialgesetz {#sec-materialgesetz}
 
 Die bisher betrachteten kinematischen Gleichungen sind unabhäging von materialspezifischen Eigenschaften. Um das mechanische Verhalten der Platte vollständig zu beschreiben, besteht die Notwendigkeit der Einführung eines Materialgesetztes. Bei der Betrachtung von linear-elastischem Materialverhalten, also einem linearen Zusammenhang zwischen Spannungen und Verzerrungen, kann das Material durch das _verallgemeinerte Hooksche Gesetz_ mit
@@ -63,7 +63,7 @@ Die bisher betrachteten kinematischen Gleichungen sind unabhäging von materials
 \
 
 $$
-\sigma = E \cdot \epsilon
+\sigma = E \cdot \varepsilon
 $$ {#eq-black-scholes-08}
 
 und
@@ -75,7 +75,7 @@ dargestellt werden. Die Normalspannung $\sigma$ und die Schubspannung $\tau$ wer
 
 ### Verzerrungsfeld {#sec-verzerrung}
 
-Aus dem Verschiebungsfeld nach Kirchhoff lässt sich das Verzerrungsfeld herleiten. Die Dehnungen 
+Aus dem Verschiebungsfeld der Kirchhoff-Platte lässt sich das Verzerrungsfeld herleiten. Die Dehnungen 
 
 $$ 
 \begin{align} 
@@ -102,9 +102,9 @@ $$ {#eq-schubverzerrung}
 Durch die Definition der Krümmungen mit
 $$ 
 \begin{align}  
-\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \\
-\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \\
-\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y} \\ 
+\kappa_{xx} &= -\frac{\partial^2 w}{\partial x^2} \qquad
+\kappa_{yy} &= -\frac{\partial^2 w}{\partial y^2} \qquad
+\kappa_{xy} &= -2 \frac{\partial^2 w}{\partial x \partial y}
 \end{align}
 $$ {#eq-kruemmung}
 
@@ -145,6 +145,7 @@ $$ {#eq-spannungen}
 
 sind linear veränderlich über die Plattendicken $h$. 
 
+{{< pagebreak >}}
 ### Schnittgrößen {#sec-schnittgrößen}
 
 Resultierend aus den Spannungskomponenten $\sigma_{xx}$,$\sigma_{yy}$ und $\tau_{xy}$ ergeben sich die Biegemomente $m_{xx}$ und $m_{yy}$ und das Drillmoment $m_{xy}$, definiert als Moment pro Längeneinheit. Die Momente lassen sich durch Integration der Spannungen über die Höhe der Platte und Multiplikation mit dem Hebelarm $z$ zu
@@ -168,28 +169,32 @@ m_{xx} &= D \cdot (\kappa_{xx} + \nu \cdot \kappa_{yy}) &&= D \cdot (\frac{\part
 m_{yy} &= D \cdot (\nu \cdot \kappa_{xx} + \kappa_{yy}) &&= D \cdot (\nu \cdot \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2}) \\
 m_{xy} &= D \cdot \frac{1-\nu}{2} \cdot \kappa_{xy} &&= D \cdot \frac{1-\nu}{2} \cdot (-2 \frac{\partial^2 w}{\partial x \partial y}).
 \end{align}
-$$ {#eq-black-scholes}
+$$ {#eq-momente-platte}
 
-![Normalspannungen und resultierende Biegemomente](00-pics/Biegemoment.png){width=100%}
+Die Momente resultierend aus den Normalspannungen und die Drillmomente resulierend aus den ebenen Schubspannungen sind in @fig-biegemomente-platte und @fig-drillmomente-platte dargestellt.
 
-![eben Schubspannungen und resultierende Drillmomente](00-pics/Drillmomente.png){width=100%}
+![Normalspannungen und resultierende Biegemomente](00-pics/Biegemoment.png){#fig-biegemomente-platte width=80%}
 
-Um die Querkräfte zu berechnen werden im Normalfall die transversalen Schubspannungen über die Plattendicke $h$ integriert. Bei der Kirchhoffschen Plattentheorie ist dies nicht möglich, da, wie in @eq-schubverzerrung dargestellt, die Schubverzerrungen und somit die Schubspannungen gemäß der getroffenen Annahmen verschwinden. Die Querkräfte ergeben sich allein aus den Gleichgewichtsbedingungen (s. Kapitel Gleichgewichtsbeziehungen) und lassen sich aus der dritten Ableitung der Verschiebung $w$ zu
+![eben Schubspannungen und resultierende Drillmomente](00-pics/Drillmomente.png){#fig-drillmomente-platte width=80%}
+
+Um die Querkräfte zu berechnen werden im Normalfall die transversalen Schubspannungen über die Plattendicke $h$ integriert. Bei der Kirchhoffschen Plattentheorie ist dies nicht möglich, da, wie in @eq-schubverzerrung dargestellt, die Schubverzerrungen und somit die Schubspannungen gemäß der getroffenen Annahmen verschwinden. Die Querkräfte ergeben sich allein aus den Gleichgewichtsbedingungen (s. @sec-gleichgewicht) und lassen sich aus der dritten Ableitung der Verschiebung $w$ zu
 $$
 \begin{align}
 q_{xx} &= D \cdot (\frac{\partial^3 w}{\partial x^3} + \nu \cdot \frac{\partial^3 w}{\partial y^3}) \\
 q_{yy} &= D \cdot (\nu \cdot \frac{\partial^3 w}{\partial x^3} + \frac{\partial^3 w}{\partial y^3}) \\
 \end{align} 
-$$ {#eq-black-scholes}
+$$ {#eq-querkraft-platte}
 
-berechnen.
+berechnen. Die Darstellung der transversalen Schubspannungen und resultierenden Querkräften erfolgt in @fig-querkraefte-platte
 
-![transversale Schubspannungen und resultierende Querkräfte](00-pics/Querkraft.png){width=100%}
+![transversale Schubspannungen und resultierende Querkräfte](00-pics/Querkraft.png){#fig-querkraefte-platte width=80%}
 
 ### Gleichgewichtsbeziehungen & Plattengleichung {#sec-gleichgewicht}
 
-Betrachtet wird zunächst ein Schnittelement einer Platte mit den Abmessungen $\Delta x$ und $\Delta y$, welches durch eine senkrecht zur Mittelebene angreifende Flächenlast $p(x,y)$ belastet wird. In @fig-schnittgroessen sind die Schnittgrößen welche am positiven sowie am negativen Schnittufer des Elements angreifen dargestellt. Die Definitionen der Schnittgrößen sind in @tbl-schnittgroessen abgebildet.
+Betrachtet wird zunächst ein Schnittelement einer Platte mit den Abmessungen $\Delta x$ und $\Delta y$, welches durch eine senkrecht zur Mittelebene angreifende Flächenlast $p(x,y)$ belastet wird. In @fig-schnittgroessen sind die Schnittgrößen welche am positiven sowie am negativen Schnittufer des Elements angreifen dargestellt. 
+<!-- Die Definitionen der Schnittgrößen sind in @tbl-schnittgroessen abgebildet. -->
 
+<!-- 
 |        | Schnittufer $+$      |                 | Schnittufer $-$                                                       |
 |--------|----------------------|-----------------|-----------------------------------------------------------------------|
 |$M_x$   |$m_{xx}\cdot \Delta y$|$M_{x+\Delta x}$ |$(m_{xx} + \frac{\partial m_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
@@ -199,12 +204,11 @@ Betrachtet wird zunächst ein Schnittelement einer Platte mit den Abmessungen $\
 |$Q_x$   |$q_{xx}\cdot \Delta y$|$Q_{x+\Delta x}$ |$(q_{xx} + \frac{\partial q_{xx}}{\partial x} \cdot \Delta x) \Delta y$| 
 |$Q_y$   |$q_{yy}\cdot \Delta x$|$Q_{y+\Delta y}$ |$(q_{yy} + \frac{\partial q_{yy}}{\partial y} \cdot \Delta y) \Delta x$| 
 
-: Schnittgrößen {#tbl-schnittgroessen}
+: Schnittgrößen {#tbl-schnittgroessen} 
+-->
 
-\
-\
-\
-\
+![Schnittgrößen](00-pics/Schnittgroessen.png){#fig-schnittgroessen width=100%}
+
 Bei der Grenzbetrachtung $\Delta x \to 0$ und $\Delta y \to 0$ ergeben sich die Gleichgewichtsbeziehungen
 $$     
 \begin{align}
@@ -215,22 +219,17 @@ $$
 $$ {#eq-gleichgewichtsbeziehungen}
 
 
-Durch das Einsetzen der in Gleichungen 18 definierten Momente $m_{xx}$, $m_{yy}$ und $m_{xy}$ in die Gleichgewichtsbeziehungen, sowie das Ersetzen der Ausdrücke $Q_{xx}$ und $Q_{yy}$ in der ersten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen) durch die Momentenausdrücke der zweiten und dritten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen),erhält man die Differentialgleichung aus @eq-randwertproblem. Dieses Randwertproblem wird auch als schwache Form des Problems bezeichnet.
+Durch das Einsetzen der in @eq-momente-platte definierten Momente $m_{xx}$, $m_{yy}$ und $m_{xy}$ in die Gleichgewichtsbeziehungen, sowie das Ersetzen der Ausdrücke $Q_{xx}$ und $Q_{yy}$ in der ersten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen) durch die Momentenausdrücke der zweiten und dritten Gleichgewichtsbeziehung (@eq-gleichgewichtsbeziehungen),erhält man die Differentialgleichung aus @eq-randwertproblem. Dieses Randwertproblem wird auch als schwache Form des Problems bezeichnet.
 
-![Schnittgrößen](00-pics/Schnittgroessen.png){#fig-schnittgroessen width=100%}
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
 *Randwertproblem (D)* \
 
-Gesucht ist die Funktion $w:[\quad] \to \mathbb{R}^2$ welche die Differentialgleichung
+Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$ welche die Differentialgleichung
 $$
  D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
 $${#eq-randwertproblem}
-
-und die Randbedingungen
-
-__TODO:__ Randbedingungen
 
 erfüllt.
 \

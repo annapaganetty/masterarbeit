@@ -1,0 +1,31 @@
+# Zusammenfassung {.unnumbered}
+
+```{=typst}
+#align(center, text(size: 14pt, weight: 600,"Zusammenfassung"))
+#v(60pt, weak: true)
+```
+
+Die Berechnung von Plattentragwerken mittels der Finite-Elemente-Methode (FEM) gehört zu den grundlegenden Anwendungen in der Ingenieurspraxis. Trotz ihrer weitreichenden Nutzung sind die entsprechenden Verfahren in der Ingenieursliteratur oft unzureichend erläutert. 
+
+Ziel dieser Arbeit ist die, sonst primär in englischer Sprache verfassten theoretischen Grundlagen der FEM in deutscher Sprache aufzuarbeiten. Teil dessen ist die Herleitung mechanischer Zusammenhänge sowie die Erläuterung mathematischer Verfahrung zu Konstruktion sogenannter $C^1$-stetiger Basisfunktionen. Die Differentialgleichung der Kirchhoff-Platte stellt hierbei die Basis für die numerischen Berechnungen dar. 
+
+Ausgehend von diesen Grundlagen wird, neben der Darstellung des Bogner-Fox-Schmitt-Elements, ein besonderes Augenmerk auf das _Discrete Kirchhoff Quadrilateral_ Element (DKQ) gelegt, welches erstmals 1982 von Batoz und Tahar veröffentlicht wurde.   
+
+Die programmtechnische Umsetzung erfolgt in der Programmierumgebung JULIA und wird an ausgewählten Beispielen getestet. Die Ergebnisse der entwickelten Methoden stimmen mit denen eines kommerziellen Programmes überein, was die Genauigkeit und Anwendbarkeit der vorgeschlagenen Ansätze unterstreicht.
+
+{{< pagebreak >}}
+
+# Abstract {.unnumbered}
+
+```{=typst}
+#align(center, text(size: 14pt, weight: 600,"Abstract"))
+#v(60pt, weak: true)
+```
+
+The calculation of plate structures using the Finite Element Method (FEM) is one of the fundamental applications in engineering practice. Despite its widespread use, the corresponding procedures are often inadequately explained in engineering literature.
+
+The aim of this work is to compile the theoretical foundations of FEM, which are primarily written in English, in the German language. This includes deriving mechanical relationships as well as explaining mathematical procedures for constructing so-called $C^1$-continuous basis functions. The differential equation of the Kirchhoff plate serves as the basis for the numerical calculations.
+
+Building on these foundations, in addition to presenting the Bogner-Fox-Schmitt element, special attention is given to the Discrete Kirchhoff Quadrilateral (DKQ) element, which was first published in 1982 by Batoz and Tahar.
+
+The programming implementation is carried out in the Julia programming environment and is tested on selected examples. The results of the developed methods align with those of a commercial program, underscoring the accuracy and applicability of the proposed approaches.

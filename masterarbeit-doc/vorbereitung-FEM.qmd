@@ -20,7 +20,7 @@ $$
 D \cdot  (w_{,xxxx} \cdot \delta w 
 + 2 \cdot w_{,xxyy} \cdot \delta w 
 + \cdot w_{,yyyy}\cdot \delta w)
-=  q \cdot \delta w .
+=  q \cdot \delta w . 
 $$ {#eq-diffgl-testfunk}
 
 Nach der Integration beider Seiten über die Fläche $\Omega$ und durch Anwendung der Summenregel für Integrale folgt
@@ -116,7 +116,6 @@ und die Linearform
 $$ 
 b(\delta w) = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-linearform}
-
 
 <!-- 
 ### Parametrisierung (Jacobi-Matrix)
@@ -342,4 +341,3 @@ $$
 $$
 
 -->
-

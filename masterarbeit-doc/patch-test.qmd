@@ -4,8 +4,8 @@ Der Patch-Test ist eine gängige Methode um die Qualität eines Elementansatzes 
 
 | Eingabeparameter  |                           |
 |:------------------|:--------------------------|
-|Plattendicke       | $d = 1.0        |
-|Elastizitätsmodul  | $E = 1.000 |
+|Plattendicke       | $d = 1.0$        |
+|Elastizitätsmodul  | $E = 1.000$ |
 |Querdehnzahl       | $\nu = 0.0$               |
 |                   | $a = 20$ bzw. $a = 20$             |
 |                   | $b = 10$ bzw. $b = 10$               |
@@ -28,7 +28,6 @@ function makequadrilateralMesh(p)
 end;
 ```
 
-
 An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20$ und um die $x$-Achse ein Moment von $10$ angesetzt. Über die Länge verteilt entspricht das, an allen Außenkanten, einem Moment von $1$. 
 
 ![Patch-Test: Verformung $w$](00-pics/Beispiel-00-w.png){#fig-Patch-test-verformung width=45%} 
@@ -38,13 +37,15 @@ Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestell
 
 ::: {#fig-Patch-Momente  layout-ncol=2}
 
-![Patch-Test: Momentenverlauf $m_x$ [kNm]](00-pics/Beispiel-00-mx.png){#fig-Patch-test-mx width=60%} 
-
-![Patch-Test: Momentenverlauf $m_y$ [kNm]](00-pics/Beispiel-00-my.png){#fig-Patch-test-my width=60%} 
-
-![Patch-TestMomentenverlauf $m_xy$ [kNm]](00-pics/Beispiel-00-mxy.png){#fig-Patch-test-mxy width=60%} 
-
-Patch-Test: Momentverläufe
+```{=typst}
+#grid(
+  columns: (220pt, 220pt),
+  rows: (170pt, 170pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/Beispiel-00-mx.png", height: 100%)),
+  grid.cell(image("00-pics/Beispiel-00-my.png", height: 100%)),
+  grid.cell(image("00-pics/Beispiel-00-mxy.png", height: 100%)),
+)
+```
+Patch-Test: Momentverläufe $m_x$, $m_x$ und $m_{xy}$ [kNm/m]
 :::
-
-

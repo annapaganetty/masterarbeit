@@ -57,37 +57,30 @@ $$
 \end{align}
 $$
 
-Die Linearform $b(\delta w)$ des abstrakten Variationsproblems (Einführungsbeispiel @eq-abstraktes-variationsproblem-balken, Kirchhoff-Platte @eq-linearform) beschreibt eine Abbildung von dem Vektorraum $V \to \mathbb{R}$ mit den in @eq-eig-linearform-01 und @eq-eig-linearform-02 genannten Eigenschaften.
+Die Linearform $b(\delta w)$ des abstrakten Variationsproblems (Einführungsbeispiel @eq-abstraktes-variationsproblem-balken, Kirchhoff-Platte @eq-linearform) beschreibt eine Abbildung von dem Vektorraum $V \to \mathbb{R}$ mit den in @eq-eig-linearform genannten Eigenschaften.
 
 $$
-\begin{align*}
-b(u+v) = b(u) + b(v) &&\quad \quad \quad \text{(Additivität)}
-\end{align*}
-$${#eq-eig-linearform-01}
-
-$$
-\begin{flalign}
+\begin{align}
+& b(u+v) = b(u) + b(v) &&\quad \quad \quad \text{(Additivität)} \\
+\\
 & b(\alpha \cdot u) = \alpha \cdot b(u) &&\quad \quad \quad \text{(Homogenität)}
-\end{flalign}
-$${#eq-eig-linearform-02}
+\end{align}
+$${#eq-eig-linearform}
 
 Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
 $$
-a(u+v,w) = a(u,w) + a(v,w) \quad ,
-$${#eq-eig-bilinearform-01}
-
-$$
-a(\alpha \cdot u,v) = \alpha \cdot a(u,v) \quad ,
-$${#eq-eig-bilinearform-02}
-
-$$
-a(u,v+w) = a(u,v) + a(u,w) \quad ,
-$${#eq-eig-bilinearform-03}
-
-und
-$$
-a(u,\alpha \cdot v) = \alpha \cdot a(u,v) \quad .
-$${#eq-eig-bilinearform-04}
+\begin{align}
+&a(u+v,w) &&= a(u,w) + a(v,w) \quad , \\
+\\
+&a(\alpha \cdot u,v) &&= \alpha \cdot a(u,v) \quad , \\
+\\
+&a(u,v+w) &&= a(u,v) + a(u,w) \quad ,\\
+\\
+&\text{und}\\
+\\
+&a(u,\alpha \cdot v) &&= \alpha \cdot a(u,v) \quad .
+\end{align}
+$${#eq-eig-bilinearform}
 
 Weiterführend ist die Bilinearform _positiv definit_ für
 $$

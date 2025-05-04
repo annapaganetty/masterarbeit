@@ -21,32 +21,40 @@ Die maximale Verformung beträgt $0.0213$ m nach der RFEM-Berechnung und $0.0217
 
 __Verformungsverlauf__
 
-![Verformung $w$ Biegemomente DKQ-Elementansatz](00-pics/Beispiel-02-BT-complex-w.png){#fig-komplex-w width=80%} 
+![komplexe Platte: Verformung $w$ (DKQ)](00-pics/Beispiel-02-BT-complex-w.png){#fig-komplex-w width=80%} 
 
-![Verformung $w$ der RFEM Berechnung](00-pics/bsp02-RFEM-Verformung-u.png){#fig-02-RFEM-w width=80%}
+![komplexe Platte: Verformung $w$ (_RFEM_)](00-pics/bsp02-RFEM-Verformung-u.png){#fig-02-RFEM-w width=80%}
 
+{{< pagebreak >}}
 __Berechnungsergebnisse: DKQ__
 
-::: {#fig-Biegemomente-02-DKQ  layout-ncol=1}
-
-![$m_x$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-mx.png){#fig-RFEM-mx width=70%}
-
-![$m_y$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-my.png){#fig-RFEM-my width=70%}
-
-![$m_{xy}$ (DKQ-Elementansatz)](00-pics/Beispiel-02-BT-complex-mxy.png){#fig-RFEM-mxy width=80%}
-
-Biegemomente DKQ-Elementansatz
+::: {#fig-Biegemomente-02-DKQ}
+```{=typst}
+#grid(
+  columns: (440pt),
+  rows: (180pt, 180pt,180pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/Beispiel-02-BT-complex-mx.png", height: 100%)),
+  grid.cell(image("00-pics/Beispiel-02-BT-complex-my.png", height: 100%)),
+  grid.cell(image("00-pics/Beispiel-02-BT-complex-mxy.png", height: 100%)),
+)
+```
+komplexe Platte: Biegemomente $m_x$, $m_y$ und $m_{xy}$ [kNm/m] (DKQ)
 :::
 
+{{< pagebreak >}}
 __Berechnungsergebnisse: RFEM__
 
-::: {#fig-Biegemomente-02-RFEM  layout-ncol=1}
-
-![$m_x$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-mx.png){#fig-RFEM-mx width=90%}
-
-![$m_y$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-my.png){#fig-RFEM-my width=90%}
-
-![$m_{xy}$ RFEM Berechnung](00-pics/bsp02-RFEM-Moment-mxy.png){#fig-RFEM-mxy width=90%}
-
-Biegemomente berechnet mit _RFEM_
+::: {#fig-Biegemomente-02-RFEM}
+```{=typst}
+#grid(
+  columns: (440pt),
+  rows: (180pt, 180pt,180pt),
+  gutter: 3pt,
+  grid.cell(image("00-pics/bsp02-RFEM-Moment-mx.png", width: 100%)),
+  grid.cell(image("00-pics/bsp02-RFEM-Moment-my.png", width: 100%)),
+  grid.cell(image("00-pics/bsp02-RFEM-Moment-mxy.png", width: 100%)),
+)
+```
+komplexe Platte: Biegemomente $m_x$, $m_y$ und $m_{xy}$ [kNm/m] (_RFEM_)
 :::
