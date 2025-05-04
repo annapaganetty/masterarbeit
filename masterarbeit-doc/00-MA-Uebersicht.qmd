@@ -1,3 +1,10 @@
+TODO:
+
+Danksagung
+Programm durchschauen
+
+
+
 
 Kern der Arbeit ist die Formulierung nach Batoz und Tahar und implementierung dessen in JULIA
 

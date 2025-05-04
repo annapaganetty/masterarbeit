@@ -1,9 +1,9 @@
 ## Gliederung der Arbeit {#sec-gliederung}
 
-Die Grundlagen der Finite Elemente Methode sind in @sec-Grundlagen-FEM dargestellt. Dabei wird zunächst in @sec-einfuehrungsbeispiel anhand eines Einführungsbeispiels der Ablauf der FEM beschrieben. Anschließend werden die diverse Elementansätze für finite Elemente erläutert und deren Kontinuität dargestellt. Weiterhin werden die zwei wesentlichen Schritte der Finite Elemente Analyse _Approximation_ und _numerische Lösung_ in @sec-approximation-funktionen und @sec-numerische-loesung erläutert.
+Die Grundlagen der Finite Elemente Methode sind in @sec-Grundlagen-FEM dargestellt. Dabei wird zunächst in @sec-einfuehrungsbeispiel anhand eines Einführungsbeispiels der Ablauf der FEM beschrieben. Anschließend werden diverse Elementansätze für finite Elemente erläutert und deren Kontinuität dargestellt. Weiterhin werden die zwei wesentlichen Schritte der Finite Elemente Analyse _Approximation_ und _numerische Lösung_ in @sec-approximation-funktionen und @sec-numerische-loesung erläutert.
 
 Die zur Analyse notwendigen Differentialgleichungen einer Kirchhoff Platte werden in @sec-mech-math-grundlagen hergeleitet.
 
-Für die Analyse von Plattentragwerken wird dann in @sec-fem-plattentragwerke zunächst die allgemeines schwache Form des Problems hergeleitet um danach die globale Steifigkeitsmatrix sowohl für das Bogner-Fox-Schmitt Rechteckelement als auch für das allgemeine DKQ Element zu berechnen.
+Für die Analyse von Plattentragwerken wird dann in @sec-fem-plattentragwerke zunächst die allgemeine schwache Form des Problems hergeleitet, um danach die globale Steifigkeitsmatrix sowohl für das Bogner-Fox-Schmitt Rechteckelement als auch für das allgemeine DKQ Element zu berechnen.
 
-Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA erfolgt in @sec-Umsetzung-Julia. Die Anwendung auf Beispiele zur Testung, wird im Anschluss in sind in @sec-anwendungsbeispiele dokumentiert.
+Die programmtechnische Umsetzung in der noch sehr neuen Programmierumgebung JULIA erfolgt in @sec-Umsetzung-Julia. Die Anwendung auf Beispiele zur Testung, wird im Anschluss in @sec-anwendungsbeispiele dokumentiert.

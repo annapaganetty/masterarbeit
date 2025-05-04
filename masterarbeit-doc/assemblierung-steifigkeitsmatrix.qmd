@@ -1,6 +1,6 @@
 ## Assemblierung der globalen Steifigkeitsmatrix {#sec-assemblierung-steifigkeitsmatrix}
 
-Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente  ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.  
+Die Entwicklung des linearen Gleichungssystems für ein System aus mehreren Plattenelementen geschieht über die Assemblierung der zuvor hergeleiteten und für die einzelnen Elemente ausgewertete Bilinearformen, den Elementsteifigkeitsmatrizen.  
 
 ### BFS-Rechteckelement {#sec-Steifigkeitsmatrix-BFS}
 
@@ -15,7 +15,7 @@ w_4 & \theta_{x4} & \theta_{y4} & \theta_{xy4}
 \end{array}\right]^T
 $${#eq-knotenverschiebungsvekor-BFS}
 
-ist. Für die Herleitung der globalen Steifigkeitsmatrix mit dem Elementansatz des Bogner-Fox-Schmitt Rechteckelements wird das abstrakte, diskrete Variationsproblem, durch das Skalarprodukt von Momentenvektor
+ist. Für die Herleitung der globalen Steifigkeitsmatrix mit dem Elementansatz des Bogner-Fox-Schmit Rechteckelements wird das abstrakte, diskrete Variationsproblem, durch das Skalarprodukt von Momentenvektor
 
 $$
 \mathbf{m} = 
@@ -110,7 +110,7 @@ a(w^e, \delta w^e)
 \end{align}
 $$
 
-Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmarix
+Diese Formulierung wird in der Literatur im Regelfall durch die Elementsteifigkeitsmatrix
 
 $$ 
 \mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
@@ -132,11 +132,11 @@ $$
 
 ### DKQ Element {#sec-Steifigkeitsmatrix-DKQ}
 
-Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von JEAN-LOUIS BATOZ und MABROUK BEN TAHARS veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
+Gitter, die bei der FE-Methode generiert werden, sind üblicherweise nicht gleichmäßig. Die Elemente haben nicht immer dieselebe Größe und Form, weshalb eine Lösung für die Berechnung von allgemeinen Viercken notwendig ist. Die in diesem Kapitel gemachten Formulierungen für ein isoparametrisches Element basieren auf dem von Jean-Louis Batoz und Mabrouk Ben Tahars veröffentlichtem Paper "Evaluation of a new quadrilateral thin plate bending element" aus dem Jahr 1981. Das vorgestellte Element ist ein Vierknotenelement mit je 3 Freiheitsgraden je Ecke. Die Geometrie ist in @fig-geometrie-DKQ dargestellt.
 
 ![Geometrie des DKQ-Elements](00-pics/Geometrie-BTP.png){#fig-geometrie-DKQ fig-env="figure*" width=60%}
 
-Dieses sogenannte DKQ (_discrete Kirchhoff quadrilateral_) Element basiert auf den folgenden Annahmen: 
+Dieses sogenannte DKQ (_Discrete Kirchhoff Quadrilateral_) Element basiert auf den folgenden Annahmen: 
 
 1. Die Verdrehungen $\beta_x$ um die $y$-Achse und $\beta_y$ um die $x$-Achse sind als Ableitungen der Linearkombination aus @eq-linearkombination-platte zu verstehen.
 $$
@@ -163,9 +163,9 @@ $$
 &\beta_n_k = - w,_n_k \qquad \text{mit} k = 5,6,7,8,
 \end{align}
 $$ {#eq-verdrehungen-beta-k}
-(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$), wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. (siehe @fig-geometrie-DKQ)
+(Ableitungen der Verformung $w$ nach $s$ und nach $n$ an den Knoten $k$) wobei $s$ die Koordinate entlang der Elementseite ist und $n$ die senkrechte Achse zur $s$-Achse. (s. @fig-geometrie-DKQ)
 
-3. $\beta_s$ ist die Verdrehung um die $n$-Achse. Nach BATOZ und TAHAR wird, zur Bestimmung von $\beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form
+3. $\beta_s$ ist die Verdrehung um die $n$-Achse. Nach Batoz und Tahar wird, zur Bestimmung von $\beta_s$ an dem Knoten $k$, die Verformung $w$ entlang der Elementkanten als kubische Funktion ausgedrückt. Zur Bestimmung der Funktion dritten Grades wird die allgemeine Form
 $$
 w(s) = a s^3 + bs^2 +cs +d
 $$
@@ -200,7 +200,7 @@ $$
 {{< pagebreak >}}
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
-Zusammengefasst sind die die Verdrehungen der Knoten  
+Zusammengefasst sind die Verdrehungen der Knoten  
 $$
 \begin{align}
 &\qquad\qquad\qquad\beta_x_i = - w,_x_i \\
@@ -214,7 +214,7 @@ $$ {#eq-verdrehungen-beta}
 
 :::
 
-Die Formeln für die die Verdrehungen an den Eckknoten um die $x$-Achse und die $y$-Achse und für die Verdrehung an den Mittelknoten um die $s$-Achse und die $n$-Achse sind vorhanden. Da bei isoparametrischen Elementen die Elementkanten nicht parallel zu den Koordinatenachsen verlaufen ist eine Umrechnung der Verdrehung der Mittelknoten, auf die Verdrehung um die $x$- und $y$-Achse notwendig. 
+Die Formeln für die Verdrehungen an den Eckknoten um die $x$-Achse und die $y$-Achse und für die Verdrehungen an den Mittelknoten um die $s$-Achse und die $n$-Achse sind gegeben. Da bei isoparametrischen Elementen die Elementkanten nicht parallel zu den Koordinatenachsen verlaufen ist eine Umrechnung der Verdrehung der Mittelknoten, auf die Verdrehung um die $x$- und $y$-Achse notwendig. 
 
 Nach geometrischer Umrechnung der Verdrehung an den Mittelknoten, von $w,_s_k$ und $w,_n_k$ zu 
 
@@ -236,7 +236,7 @@ $$
 \end{align}
 $$
 
-und Einsetzen der Vereinbarungen aus @eq-verdrehungen-beta berechnet. Es ergibt sich durch extrahieren des Knotenverschiebungsvektor
+und Einsetzen der Vereinbarungen aus @eq-verdrehungen-beta berechnet. Es ergibt sich durch Extrahieren des Knotenverschiebungsvektors
 
 $$
 \mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
@@ -313,7 +313,7 @@ Die Formulierung der Elementsteifigkeitsmatrizen stimmt mit der Formulierung fü
 
 ### Parametrisierung DKQ {#sec-Parametrisierung}
 
-Die in dem vorrangehenden Kapitel hergelteitet Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $\xi$ - und $\eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten  $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements 
+Die in dem vorangehenden Kapitel hergeleitete Formulierung für allgemeine Vierecke bezieht sich auf das Referenzkoordinatensystem mit $\xi$ - und $\eta$-Achse, da die verwendeten Formfunktionen in diesem System definiert sind. Nach @eq-B-Matrix-DQT wird eine Ableitung der H-Funktionen nach $x$ und $y$ gefordert. Um eine Berechnung von allgemeinen Finite-Elemente-Gittern zu ermöglichen, muss also die Umrechnung der Referenzkoordinaten $\xi$ und $\eta$ zu den physikalischen Koordinaten $x$ und $y$, und andersherum, hergeleitet werden. Ziel ist die Projektion des physikalischen Elements 
 $$
 \Omega_e := \{ (x,y) \in \mathbb{R}^2 \}
 $$
@@ -350,7 +350,7 @@ F_{y}(\xi,\eta) \\
 $$ {#eq-black-scholes-01}
 
 die physikalischen Koordinaten auf dem Element $\Omega$ beschrieben. 
-Die vier linearen Formfunktionen entsprechenen den in Kapitel ... besprochenen Funktionen des bilinearen Elements, dargestellt in  @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Um die physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ umzurechnen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
+Die vier linearen Formfunktionen entsprechenen den in @sec-FE-Lagrange besprochenen Funktionen des bilinearen Elements, dargestellt in  @fig-Lagrange-Formfunktionen und beschrieben durch @eq-formfunktionen-bilinear. Um die physikalischen Koordinaten $(x,y)$ zu den Referenzkoordinaten $(\xi,\eta)$ umzurechnen, ist das Umkehren der Funktionen $F_{x}(\xi,\eta)$ und $F_{y}(\xi,\eta)$ zu
 $$
 \begin{align}
 \mathbf{{F}^{-1}}(x,y) =  
@@ -460,7 +460,7 @@ x_{,_{\eta}}(\xi,\eta) & y_{,_{\eta}}(\xi,\eta)
 \left[ \begin{array}{center} 
 \sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \xi} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \xi} \cdot y_i^e \\
 \sum_{i=1}^4 \frac{ N_i(\xi,\eta)}{\partial \eta} \cdot x_i^e & \sum_{i=1}^4 \frac{N_i(\xi,\eta)}{\partial \eta} \cdot y_i^e
-\end{array}\right] 
+\end{array}\right] .
 % =
 % \left[ \begin{array}{center} 
 % \frac{N_1}{\partial \xi}   & \frac{N_2}{\partial \xi}   & \frac{N_3}{\partial \xi}   & \frac{N_4}{\partial \xi} \\

@@ -7,7 +7,7 @@
 
 Die Berechnung von Plattentragwerken mittels der Finite-Elemente-Methode (FEM) gehört zu den grundlegenden Anwendungen in der Ingenieurspraxis. Trotz ihrer weitreichenden Nutzung sind die entsprechenden Verfahren in der Ingenieursliteratur oft unzureichend erläutert. 
 
-Ziel dieser Arbeit ist die, sonst primär in englischer Sprache verfassten theoretischen Grundlagen der FEM in deutscher Sprache aufzuarbeiten. Teil dessen ist die Herleitung mechanischer Zusammenhänge sowie die Erläuterung mathematischer Verfahrung zu Konstruktion sogenannter $C^1$-stetiger Basisfunktionen. Die Differentialgleichung der Kirchhoff-Platte stellt hierbei die Basis für die numerischen Berechnungen dar. 
+Ziel dieser Arbeit ist die, sonst primär in englischer Sprache verfassten theoretischen Grundlagen der FEM in deutscher Sprache aufzuarbeiten. Teil dessen ist die Herleitung mechanischer Zusammenhänge sowie die Erläuterung mathematischer Verfahren zu Konstruktion sogenannter $C^1$-stetiger Basisfunktionen. Die Differentialgleichung der Kirchhoff-Platte stellt hierbei die Basis für die numerischen Berechnungen dar. 
 
 Ausgehend von diesen Grundlagen wird, neben der Darstellung des Bogner-Fox-Schmitt-Elements, ein besonderes Augenmerk auf das _Discrete Kirchhoff Quadrilateral_ Element (DKQ) gelegt, welches erstmals 1982 von Batoz und Tahar veröffentlicht wurde.   
 

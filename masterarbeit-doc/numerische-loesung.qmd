@@ -1,13 +1,13 @@
 ## numerische Lösung {#sec-numerische-loesung}
 
-Die Gleichung des abstrakten diskreten Variationsproblem gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
+Die Gleichung des abstrakten, diskreten Variationsproblems gilt für alle Testfunktionen $\delta w_h$. Für die numerische Lösung des Problems
 wird dieses durch $N$ Gleichungen mit $w_h$ als Unbekannte ersetzt. Dazu wird die Linearkombination
 
 $$
 \delta w_h = \sum_{i = 1}^N \varphi_i \cdot \delta \hat{w}_i
 $$
 
-eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die zuvor besprochenen Funktionale, angewandt auf das vorliegenden Problem ergeben sich die äquivalentenSätze 
+eingesetzen in @eq-abstraktes-diskretes-variationsproblem. Durch die zuvor besprochenen Funktionale, angewandt auf das vorliegende Problem ergeben sich die äquivalenten Sätze 
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -42,7 +42,7 @@ $$
 \end{align}
 $${#eq-lin-gleichungssystem}
 
-$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approixmierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (siehe @tbl-Variablen).
+$\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastvektor und $\boldsymbol{\hat{w}}$ den unbekannten, zu approximierenden Verschiebungsvektor. Die Bilinearform (@eq-bilinearform) wird für jedes einzelne Element ausgewertet, wodurch sich die jeweiligen Elementsteifigkeitsmatrizen ergeben. Durch die Assemblierung der Elementsteifigkeitsmatrizen lässt sich die globale Steifigkeitsmatrix ableiten. Die gleiche Vorgehensweise wird bei der Assemblierung des globalen Lastvektors verwendet. Die entsprechenden Bezeichnungen für ein Element sind $\mathbf{k^e_{ij}}$ für die Elementsteifigkeitsmatrix, $\boldsymbol{r^e}$ für den Elementlastvektor und $\boldsymbol{\hat{w}^e}$ für den Knotenverschiebungsvektor (s. @tbl-Variablen).
 
 
 |                     | Gesamtsystem         | Element|
@@ -53,4 +53,4 @@ $\mathbf{K}$ bezeichnet die Gesamtsteifigkeitsmatrix, $\boldsymbol{r}$ den Lastv
 | Lastvektor          | $\mathbf{r}$         |$\mathbf{r^e}$|
 | Verschiebungsvektor | $\mathbf{\hat{w}}$   |$\mathbf{\hat{w}^e}$|
 
-: Variablen des linearen Gleichungssystem {#tbl-Variablen}
+: Variablen des linearen Gleichungssystems {#tbl-Variablen}

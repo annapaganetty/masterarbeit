@@ -1,13 +1,13 @@
 ## Basis Funktionen der finiten Elemente {#sec-basis-funktionen} 
 
-Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In dieser Arbeit werden quadratische Elemente im zweidimensionalen, ebenen, Fall betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind^[vgl. Braess, S. 57, Fußnote].
+Für die Lösung von Variationsproblemen wird das gegebene Gebiet $\Omega$ in endlich viele Teilgebiete zerlegt. In dieser Arbeit werden quadratische Elemente im zweidimensionalen, ebenen, Fall betrachtet. Der Begriff _Element_ hat hier zwei Bedeutungen: auf der einen Seite werden die geometrischen Teilgebiete als _Element_ bezeichnet, während mit _Finiten Elementen_ hingegen Funktionen gemeint sind^[@BraeFini1992, Seite 57, Fußnote].
 Nach Braess gibt es drei Merkmale, die bei der Definition eines Finite Elemente Raums am wichtigsten sind.
 
-1. Geometrie der Teilgebiete: Dreiecks- bzw. Viereckselemente^[In dieser Arbeit werden ausschließlich Viereckelemente behandelt]
+1. Geometrie der Teilgebiete: Dreiecks- bzw. Viereckelemente^[In dieser Arbeit werden ausschließlich Viereckelemente behandelt]
 
-2. Im zweidimensionalen Raum werden Funktionen mit zwei Variablen definiert, welche als _Polynome vom Grad_ $\le t$ bezeichnet werden, wenn der höchste Exponent der Variaben $\le t$ ist. Vollständige Polynome sind Finite Elemente, in denen alle Polynome vom Grad $\le t$ enthalten sind. 
+2. Im zweidimensionalen Raum werden Funktionen mit zwei Variablen definiert, welche als _Polynome vom Grad_ $\le t$ bezeichnet werden, wenn der höchste Exponent der Variablen $\le t$ ist. Vollständige Polynome sind Finite Elemente, in denen alle Polynome vom Grad $\le t$ enthalten sind. 
 
-3. Stetigkeits- und Differenzierbarkeitseigenschaften: Es wird von $C^k$-Elementen gesprochen, wenn die $k\text{te}$ Ableitung der Basisfunktionen stetig ist und dementsprechend keine Knicke aufweist.
+3. Stetigkeits- und Differenzierbarkeitseigenschaften: Es wird von $C^k$-Elementen gesprochen, wenn die $k-\text{te}$ Ableitung der Basisfunktionen stetig ist.
 
 Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM vorrangig $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen von Bedeutung. Eine Funktion wird $C^n$-Funktion genannt, wenn die Ableitung vom Grad $j$ mit $0 \le j \le n$ stetig in allen Punkten ist. Beispiele dieser sind in @fig-c-funktionen dargestellt.
 
@@ -18,20 +18,19 @@ Bei der Konstruktion der Basisfunktionen sind, je nach Anforderung, für die FEM
 | $C^{0}$    | Ja     | Nein    | stückweise stetig differenzierbar|
 | $C^{1}$    | Nein   | Nein    | stetig differenzierbar|
 
-:Kontinuitätseigenschaften  {#tbl-kontinuität}
+:Kontinuitätseigenschaften {#tbl-kontinuität}
 
-
-Die Ableitung einer $C^0$ Funktionen ist stetig, außer in den Punkten an denen die Funktion einen Knick hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^{-1}$-Funktion, welche an den Knicken der $C^0$-Funktion einen Sprung aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
+Die Ableitung einer $C^0$-Funktion ist stetig, außer in den Punkten an denen die Funktion einen _Knick_ hat. Dementsprechend ist die Ableitung der $C^0$-Funktion eine $C^{-1}$-Funktion, welche an den _Knicken_ der $C^0$-Funktion einen _Sprung_ aufweist. Generell ist die Ableitungen eine $C^n$ Funktion eine $C^{n-1}$ Funktion.
 
 ![Beispiel von  $C^{-1}$-, $C^{0}$- und $C^{1}$-Funktionen](00-pics/Kontinuitaer.png){#fig-c-funktionen width=60%}
 
-Die Formfunktionen unterschiedlicher finite Elemente Ansätze, werden für die Lösung des Problems elementweise definiert. In @fig-kombi-basis-bilinear und @fig-kombi-basis-konf-hermite sind die Formfunktionen des bilinearen Elements und des konformen Hermite Elements auf einer $8m \times 8m$  Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist erkennbar, dass es sich um $C^{0}$-Funktionen handelt, da _Knicke_ an den Elementkanten vorhanden sind. 
+Die Formfunktionen unterschiedlicher finite Elemente Ansätze werden für die Lösung des Problems elementweise definiert. In @fig-kombi-basis-bilinear und @fig-kombi-basis-konf-hermite sind die Formfunktionen des bilinearen Elements und des konformen Hermite-Elements auf einer $8m \times 8m$ Platte mit 9 Elementen dargestellt. Bei dem bilinearen Ansatz ist erkennbar, dass es sich um $C^{0}$-Funktionen handelt, da _Knicke_ an den Elementkanten vorhanden sind. 
 
 ![bilineare Basisfunktionen angewandt auf $8m \times 8m$ Platte mit 9 Elementen](00-pics/Basisfunktionen_Bilinear.png){#fig-kombi-basis-bilinear width=100%}
 
 ![konforme Hermite Basisfunktionen angewandt auf $8m \times 8m$ Platte mit 9 Elementen](00-pics/Basisfunktionen_Hermite.png){#fig-kombi-basis-konf-hermite width=100%}
 
-Nachfolgend wird die Konstruktion der Basisfunktionen des bilineare Lagrange Element, das konforme und nicht konforme Hermite Rechteckelement und das Serendipityelement erläutert. Die Definition der Formfunktionen erfolgt auf dem Referenzelement, dargestellt jeweils für die verschiedenen Elementansätze in @fig-bilineares-element, @fig-BFS-element und @fig-ref-serendipity. Das Referenzelement wird in dem $\xi-\eta-$ Koordinatesystem definiert mit den Eckknoten $(-1,-1), (1,-1), (1,1) \text{und} (-1,1)$.
+Nachfolgend wird die Konstruktion der Basisfunktionen des bilineare Lagrange Element, das konforme und nicht konforme Hermite Rechteckelement und das Serendipityelement erläutert. Die Definition der Formfunktionen erfolgt auf dem Referenzelement, dargestellt jeweils für die verschiedenen Elementansätze in @fig-bilineares-element, @fig-BFS-element und @fig-ref-serendipity. Das Referenzelement wird in dem $\xi-\eta-$ Koordinatensystem definiert mit den Eckknoten $(-1,-1), (1,-1), (1,1) \text{und} (-1,1)$.
 
 {{< pagebreak >}}
 ### Lagrange Elemente (Bilineares Rechteckelement){#sec-FE-Lagrange}
@@ -40,10 +39,10 @@ Das bilineare Element ist das simpelste unter den Viereckelementen.
 Es basiert auf einer Polynomfunktion 2. Grades mit den Polynomen 
 
 $$
-1,x,y,xy
+1,x,y,xy,
 $$ {#eq-polynome-lagrange}
 
-wobei der bilineare Term $xy$ aus der dritten Reihe des Pascalschen Dreiecks enthalten ist (siehe ). Sei das betrachtete Element, ein Rechteck dessen Kanten parallel zu den Koordinatenachsen verlauft, so ist das Monom $xy$ ist an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant sind. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken des Rechtecks eindeutig bestimmt werden. Das Ergebnis sind die Funktionen 
+wobei der bilineare Term $xy$ aus der dritten Reihe des Pascalschen Dreiecks enthalten ist. Sei das betrachtete Element, ein Rechteck dessen Kanten parallel zu den Koordinatenachsen verlaufen, so ist das Monom $xy$ an jeder Kante des Elementes linear, da entweder $x$ oder $y$ konstant sind. Die vier unbekannten Parameter können jeweils durch die vier Werte an den Ecken des Rechtecks eindeutig bestimmt werden. Das Ergebnis sind die Funktionen 
 $$
 \begin{align}
 N_1^e(x,y) &= \frac{1}{A^e} (x-x_2^e)(y-y_4^e), 
@@ -73,7 +72,7 @@ Für allgemeine Vierecke ist der oben beschriebene bilineare Ansatz untauglich. 
 
 ### konformes Hermite Rechteckelement (Bogner-Fox-Schmitt) {#sec-FE-BFS}
 
-Das konforme Hermite-Rechteckelement, oder auch Bogner-Fox-Schmit (BFS) Element genannt, bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden 
+Das konforme Hermite-Rechteckelement, oder auch Bogner-Fox-Schmit-Element (BFS) genannt, bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden 
 $$
 w_i, \theta_{\xi i}, \theta_{\eta i} \quad und \quad \theta_{\xi \eta i}
 $$
@@ -93,7 +92,7 @@ $$
 N_{i,j}(\xi,\eta) = H_i(\xi) H_j(\eta), \quad i,j = 1,2,3,4
 $${#eq-BFS-Formfunktionen}
 
-dargestellt. Für die ausformulierten Basisfunktionen wird auf [Quelle:Def Element] verwiesen. Für reine Rechtecke ist der Bogner-Fox-Schmitt Ansatz sehr sinnvoll, nicht aber für allgemeine Vierecke, da dort der zusätzliche Freiheitsgrad $\theta_{\xi \eta i}$ an den vier Knoten störend wirkt.
+dargestellt. Für die ausformulierten Basisfunktionen wird auf @defelement verwiesen. Für reine Rechtecke ist der Bogner-Fox-Schmit Ansatz sehr sinnvoll, nicht aber für allgemeine Vierecke, da dort der zusätzliche Freiheitsgrad $\theta_{\xi \eta i}$ an den vier Knoten störend wirkt.
 
 ![Bogner-Fox-Schmitt Formfunktionen auf dem Referenzelement](00-pics/Bogner-Fox-Schmitt-Element.png){#fig-Bogner-Fox-Schmitt-Formfunktionen width=75%}
 
@@ -141,6 +140,6 @@ N_4(\xi,\eta) &= \frac{1}{4} (\xi^2\eta  - \xi\eta^2 + \xi^2  - \xi\eta+\eta^2 -
 \end{align}
 $$ 
 
-sind in @fig-Serendipity-Formfunktionen dargestellt. Häufig finden die Formfunktionen der Serendipiy Klasse Anwendung bei der Berechnung von Strukturen, dessen Elemente isoparametrisch sind. Dies ist vorallem dann der Fall, wenn die Struktur eine unregelmäßige, unsymmetrische Geometrie hat und die Elemente dementsprechend schiefwinklig und in beliebiger Lage angeordnet sind. Auf die Formulierung für allgemeine Viereckelemente wird in @sec-Steifigkeitsmatrix-DKQ und @sec-Parametrisierung näher eingegangen.
+sind in @fig-Serendipity-Formfunktionen dargestellt. Häufig finden die Formfunktionen der Serendipity Klasse Anwendung bei der Berechnung von Strukturen, dessen Elemente isoparametrisch sind. Dies ist vor allem dann der Fall, wenn die Struktur eine unregelmäßige, unsymmetrische Geometrie hat und die Elemente dementsprechend schiefwinklig und in beliebiger Lage angeordnet sind. Auf die Formulierung für allgemeine Viereckelemente wird in @sec-Steifigkeitsmatrix-DKQ und @sec-Parametrisierung näher eingegangen.
 
 ![Formfunktionen des Serendipity Elements auf dem Referenzelement](00-pics/Serendipity-Formfunktionen.png){#fig-Serendipity-Formfunktionen width=60%}

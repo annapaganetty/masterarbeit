@@ -1,6 +1,6 @@
 # Zusammenfassung und Ausblick {#sec-zusammenfassung-ausblick}
 
-Im Rahmen dieser Arbeit wurden ausgewählte Elementansätze der Finite Elemente Methode erläutert und in der Programmierumgebung JULIA implementiert. Die Umsetzung eine Formulierung für das sogenannte DKQ Element, angelehnt an das 19xx veröffentlichte Paper von Batoz und Tahar, hat hierbei den Kern der Arbeit dargestellt. 
+Im Rahmen dieser Arbeit wurden ausgewählte Elementansätze der Finite Elemente Methode erläutert und in der Programmierumgebung JULIA implementiert. Die Umsetzung eine Formulierung für das sogenannte DKQ Element, angelehnt an das 1982 veröffentlichte Paper von Batoz und Tahar, hat hierbei den Kern der Arbeit dargestellt. 
 
 Das _Discrete Kirchhoff Quadrilateral_ Element ist laut Benutzerhandbüchern in einigen Softwarelösungen implementiert, jedoch ist dies in der Literatur nur spärlich dokumentiert. Essentiell für die Formulierung des DKQ-Elementansatzes sind die in @sec-Steifigkeitsmatrix-DKQ hergeleiteten $H$-Funktionen. Die globale Steifigkeitsmatrix wird dann über die Summe der Elementsteifigkeitsmatrizen
 
@@ -15,8 +15,8 @@ assembliert.
 
 ![Konvergenz Bespiel "allseitig eingespannte Platte"](00-pics/Konvergenzplot_quadratischePlatte.png){#fig-Konvergenz-DKQ width=70%} 
 
-Mit Hilfe des implementierten Programmcodes wurde die Formulierung für den DKQ-Elementansatz für unterschiedliche Beispiele angewandt. Die Ergebnisse des Patch-Tests und der Kreisplatte bestätigen die Richtigkeit der Formulierung. Die Plausibilität des 1. und des 2. Beispiels wurde durch Vergleichsrechnung mit der Software _RFEM_ und durch Tabellenwerte geprüft. Die Genauigkeit der Berechnung der allseitig eingespannten quadratischen Platte steigt mit zunehmender Anzahl von Systemfreiheitsgraden wie @fig-Konvergenz-DKQ zeigt.
+Mithilfe des implementierten Programmcodes wurde die Formulierung für den DKQ-Elementansatz für unterschiedliche Beispiele angewandt. Die Ergebnisse des Patch-Tests und der Kreisplatte bestätigen die Richtigkeit der Formulierung. Die Plausibilität des 1. und des 2. Beispiels wurde durch Vergleichsrechnung mit der Software _RFEM_ und durch Tabellenwerte geprüft. Die Genauigkeit der Berechnung der allseitig eingespannten quadratischen Platte steigt mit zunehmender Anzahl von Systemfreiheitsgraden wie @fig-Konvergenz-DKQ zeigt.
 
-Der Konvergenzplot lässt vermuten, dass ein feineres Netz immer zu genaueren Ergebnissen führt. Bei dem Berechnungsbeispiel der komplexen Platten wird jedoch sichtbar, dass vor Allem Punktlager, Knicke in Wänden und Wandenden kritische Punkte für die Berechnung sind. An den genannten Stellen konzentrieren sich Querkräfte und Momente. Diese sogenannten Singularitäten verstärken sich durch zu feine Netze. 
+Der Konvergenzplot lässt vermuten, dass ein feineres Netz immer zu genaueren Ergebnissen führt. Bei dem Berechnungsbeispiel der komplexen Platten wird jedoch sichtbar, dass vor allem Punktlager, Knicke in Wänden und Wandenden kritische Punkte für die Berechnung sind. An den genannten Stellen konzentrieren sich Querkräfte und Momente. Diese sogenannten Singularitäten verstärken sich durch zu feine Netze. 
 
-Ich hoffe mit dieser Arbeit, durch die Implementierung der Berechnungsalgorithmen in der Programmiersprache JULIA und der Aufarbeitung der grundlegenden Ideen der FEM einen Beitrag zur Entwicklung computergestützer Berechnung geleistet zu haben und interessierten Studierenden die  Möglichkeit für eine tiefer gehende Anwendung zu bieten.
+Ich hoffe mit dieser Arbeit, durch die Implementierung der Berechnungsalgorithmen in der Programmiersprache JULIA und der Aufarbeitung der grundlegenden Ideen der FEM einen Beitrag zur Entwicklung computergestützter Berechnung geleistet zu haben und interessierten Studierenden die Möglichkeit für eine tiefer gehende Anwendung zu bieten.

@@ -1,0 +1,14 @@
+Reissner-Mindlin
+Kirchhoffsche
+Steifigkeitsmatrix
+Biegebalken
+unverformten
+verwölbt
+Ebenbleiben
+Verdrehwinkel
+Hooksche
+Hermite-Polynome
+Verdrehungsfreiheitsgrad
+Elementsteifigkeitsmatrix
+schubstarre
+Elementsteifigkeitsmatrizen

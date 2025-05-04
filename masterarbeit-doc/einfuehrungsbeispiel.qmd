@@ -1,6 +1,6 @@
 ## Einführungsbeispiel: Biegebalken {#sec-einfuehrungsbeispiel}
 
-Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist (siehe @fig-Einfuehrungsbeispiel). Um die physikalsche Problemstellung in ein mathematische Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balken hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems gesprochen, welche die Grundlage für die Finite Elemente Analyse bildet.
+Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für das Einführungsbeispiel ein eindimensionales Problem gewählt. Im weiteren Verlauf der Arbeit wird diese Vorgehensweise auf zweidimensionale Aufgabenstellungen übertragen. Das nachfolgende Beispiel ist ein Biegebalken, welcher an beiden Seiten gelenkig gelagert ist (siehe @fig-Einfuehrungsbeispiel). Um die physikalische Problemstellung in ein mathematisches Modell zu übertragen, werden einleitend die kinematischen Gleichungen und die Gleichgewichtsbeziehungen des Euler-Bernoulli-Balkens hergeleitet. Ziel ist es, das Randwertproblem in Form einer Differentialgleichung mit Randbedingungen zu formulieren. Es wird häufig von der _starken Form_ des Problems gesprochen, welche die Grundlage für die Finite Elemente Analyse bildet.
 
 ![Einführungsbeispiel: Biegebalken](00-pics/Balken-Beispiel.png){#fig-Einfuehrungsbeispiel  width=70%}
 
@@ -8,7 +8,7 @@ Um die grundlegenden Ideen der Finite Elemente Methode zu verstehen, wurde für 
 
 Die nachfolgend beschriebenen Zusammenhänge beruhen auf den beiden Bernoulli-Hypothesen. Die erste Hypothese besagt, dass der Querschnitt des Balkens im unverformten und im verformten Zustand eben ist und sich nicht verwölbt (_Ebenbleiben des Querschnitts_). Zudem wird davon ausgegangen, dass die Querschnittsfläche im verformten Zustand senkrecht zur neutralen Achse bleibt (_Senkrechtbleiben des Querschnitts_).
 
-Die Durchbiegung des verformten Balken wird durch $w(x)$ beschrieben. Die Ableitung $w'(x)$ gibt die Neigung der neutralen Achse an und entspricht somit dem Verdrehwinkel der Achse an der Stelle $x$. Es ergibt sich, entsprechend der Annahmen nach Bernoulli, der Zusammenhang 
+Die Durchbiegung des verformten Balkens wird durch $w(x)$ beschrieben. Die Ableitung $w'(x)$ gibt die Neigung der neutralen Achse an und entspricht somit dem Verdrehwinkel der Achse an der Stelle $x$. Es ergibt sich, entsprechend der Annahmen nach Bernoulli, der Zusammenhang 
 $$
 \theta = -w'(x) \quad.
 $${#eq-verdrehwinkel}
@@ -22,7 +22,7 @@ beschrieben.
 
 ![verformter Balken](00-pics/Verformter-Balken.png){width=40%}
 
-Durch die weitere Annahmen von linear-elastischem Materialverhalten, ausgedrück durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
+Durch die weitere Annahme von linear-elastischem Materialverhalten, ausgedrückt durch das Hooksche Gesetz, ergibt sich in Abhängigkeit von dem Elastizitätsmodul $E$, der Durchbiegung $w(x)$ und dem Flächenträgheitsmoment 
 $$
 I_z =\int_A y^2 dA 
 $${#eq-flaechentraegheitsmoment-balken}
@@ -120,7 +120,7 @@ $${#eq-abstraktes-variationsproblem-balken}
 
 :::
 
-Weiter kann das Abstrakte Variationsproblem des Balken auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Die Näherungslösung von $w_h$ wird durch 
+Weiter kann das abstrakte Variationsproblem des Balkens auf den endlich großen Vektorraum $V_h$, welcher ein Unterraum von $V$ ist, reduziert werden. $V_h$ bezeichnet die Menge aller möglichen Linearkombinationen von $\varphi_1, \varphi_2,...,\varphi_N$ wobei $\varphi_i \text{mit} i = 1...N$ die Basisfunktionen sind und $N$ die Dimension des Raums $V_h$. Die Näherungslösung von $w_h$ wird durch 
 $$
 w_h(x) = \varphi_1(x) \cdot \hat{w}_1 +  \varphi_2(x) \cdot \hat{w}_2 + ... + \varphi_N(x) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x) \cdot \hat{w}_i
 $${#eq-linearkombination}
@@ -135,7 +135,7 @@ $${#eq-subspace}
 
 ausgedrückt. 
 
-Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet. Das ursprüngliche _Abstrakte Variationsproblem_ bei dem eine Funktion $w \in V$ gesucht wird, wird ersetzt, durch das Suchen nach den reele Zahlen $\hat{w}_i$.
+Das sich daraus ergebende Problem wird _abstraktes, diskretes Variationsproblem_ bezeichnet. Das ursprüngliche, _abstrakte Variationsproblem_, bei dem eine Funktion $w \in V$ gesucht wird, wird, durch das Suchen der reellen Zahlen $\hat{w}_i$, ersetzt.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -180,7 +180,7 @@ beschrieben. Hierbei wird $\mathbf{K}$ als Gesamtsteifigkeitsmatrix bezeichnet u
 {{< pagebreak >}}
 ### Assemblierung der Steifigkeitsmatrix: Biegebalken {#sec-ke-biegelbalken}
 
-Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
+Bei der Finite Elemente Analyse eines Euler-Bernoulli-Balken wird dessen Definitionsbereich $\Omega = [0,l]$ in mehrere Elemente $\Omega_e \text{mit} e = 1,...,N_e$ unterteilt. Diese Elemente werden durch Knoten $x_n \text{mit} n = 1,...,N_n$ verbunden, wie in @fig-balkenelemente dargestellt, so dass im einfachsten Fall $\Omega_e = [x_e,x_{e+1}]$ gilt.
 
 ![Balkenelement](00-pics/Balkenelemente.png){#fig-balkenelemente width=75%}
 
@@ -195,9 +195,9 @@ w_2 \\
 \end{array}\right],
 $${#eq-verschiebungsvektor}
 
-mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Interval $Î := [-1,1]$, sind in @fig-Hermite-Funktionen dargestellt. 
+mit Berücksichtigung der Vereinbarung aus @eq-verdrehwinkel. Die Hermite-Polynome bezogen auf das eindimensionale Referenzelement, mit dem Intervall $Î := [-1,1]$, sind in @fig-Hermite-Funktionen dargestellt. 
 
-Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktion $H_2$ den Verdrehungsfreiheitsgrad an dem selben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgrade an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
+Für einen Euler-Bernoulli-Balken bedingt die Funktion $H_1$ den Verschiebungsfreiheitsgrad an dem Knoten 1 ($\xi = -1$) und die Funktion $H_2$ den Verdrehungsfreiheitsgrad an demselben Knoten. Die Funktionen $H_3$ und $H_4$ steuern zu den jeweiligen Freiheitsgraden an Knoten 2 ($\xi = 1$) bei. Es gelten demnach die Bedingungen 
 
 $$
 \begin{align}
@@ -220,7 +220,7 @@ $$
 \end{align}
 $$ {#eq-Hermite-Funktionen}
 
-erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfuntionen zu
+erfüllen die Randbedingungen auf dem eindimensionalen Referenzelement. Bezogen auf das physikalische Element der Länge $l_e$ ergeben sich die Basisfunktionen zu
 $$ 
 \begin{align}
 &H_1(x) = 1 - 3 \cdot \frac{x^2}{l_e^2} + 2 \cdot \frac{x^3}{l_e^3} \qquad
@@ -258,7 +258,7 @@ $$
 F_e^{-1}(x) = -1+2 \cdot \frac{x-x_e}{l_e} \quad \quad \quad \text{mit der Ableitung} \quad \quad \quad F_e^{-1}'(x) = \frac{2}{l_e}
 $${#eq-umrechnungsfaktor}
 
-benötigt, um die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements zu formulieren. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet (siehe @fig-Basisfunktionen). Diese Funktion entspricht der Funktion $H_1$ der Hermite-Polynome
+benötigt, durch den die $\xi$-Koordinate des Referenzelements in Abhängigkeit von der $x$-Koordinate des physikalischen Elements formuliert wird. Beispielhaft wird die Formfunktion $\varphi_3$ auf dem Element $\Omega_2$ zwischen den Knoten $x_2$ und $x_3$ betrachtet (s. @fig-Basisfunktionen). Diese Funktion entspricht der Funktion $H_1$ der Hermite-Polynome.
 Mithilfe des Umrechnungsfaktors wird
 $$
 \begin{flalign*}
@@ -316,7 +316,7 @@ $${#eq-lastvektor-final-balken}
 
 ![Elementweise Basisfunktionen $\varphi_i$](00-pics/Hermite-Polynome-Balken.png){#fig-Basisfunktionen width=95%}
 
-Für eine Element der Länge $l_e$ und konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
+Für ein Element der Länge $l_e$ und konstanter Steifigkeit $EI$ ergibt sich die Elementsteifigkeitsmatrix zu
 $$
 \mathbf{K_{i j}^e} = 
 \frac{E I}{l_e^3}\cdot
@@ -357,7 +357,7 @@ $$
 
 :::
 
-ist in @fig-Durchbiegung-Balken die Durchbiegung mittels FEA für $N_e = 2,4,8,16,32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers 
+ist in @fig-Durchbiegung-Balken die Durchbiegung mittels Finite Elemente Analyse (FEA) für $N_e = 2,4,8,16,32$ Elemente dargestellt. Zum Vergleich ist die exakte Lösung der Durchbiegung des Einfeldträgers 
 $$
 \begin{align}
 &w(x) = \frac{1+\xi \overline{\xi}}{24EI} \xi \overline{\xi} q_z L^4 \\
@@ -374,4 +374,4 @@ $$
 
 und konstanter Streckenlast in demselben Diagramm zu sehen.
 
-![Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=80%}
+![Beispiel _Biegebalken_: Exakte Lösung und FEA-Lösung](00-pics/Balken-Durchbiegung.png){#fig-Durchbiegung-Balken width=80%}

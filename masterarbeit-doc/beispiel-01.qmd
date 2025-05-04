@@ -1,6 +1,6 @@
 ## Beispiel 1: allseitig eingespannte Platte {#sec-beispiel-01}
 
-Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-FE-Netz dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Bogner-Fox-Schmitt Elementansatzes (BFS-Element), als auch des DKQ-Element wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm RFEM der Firma _Dlubal Software GmbH_.
+Als erstes Beispiel dient eine allseitig eingespannte Platte die durch eine konstante Flächenlast belastet wird. Das statische System sowie das FE-Netz sind in @fig-Beispiel-01-FE-Netz dargestellt. Die gewählte Struktur ermöglicht den Vergleich mit den Werten der Czerny-Tafeln, um die Plausibilität der Ergebnisse zu prüfen. Sowohl eine Finite Elemente Berechnung mittels des Bogner-Fox-Schmit Elementansatzes, als auch des DKQ-Elements wird angewandt. Zur weiteren Validierung erfolgt eine weitere Berechnung mit dem kommerziellen Programm _RFEM_ der Firma _Dlubal Software GmbH_.
 
 ![allseitig eingespannte quadratische Platte](00-pics/Beispiel-01-BFS.png){#fig-Beispiel-01-FE-Netz width=80%} 
 
@@ -33,7 +33,7 @@ $${#eq-werte-czerny-tafeln}
 
 Die Einspannmomente im Randmittelpunkt des starr eingespannten Plattenrandes sind $m_{x_{erm}}$ und $m_{y_{erm}}$. Die Feldmomente in Plattenmitte $m_{x_{m}}$ und  $m_{y_{m}}$ und die größten Feldmomente im Plattenmittenschnitt $m_{x_{max}}$, $m_{y_{max}}$ stimmen bei der symmetrischen Platte überein. Die Stützkräfte in Randmitte der starr eingespannten Plattenränder sind $q_{x_{erm}}$ und $q_{y_{erm}}$. Nachfolgend werden die Biegemomentenverläufe und die Querkraftverläufe des Beispiels dargestellt. 
 
-Die resultierende Verformungsfigur in überhöhter Darstellung stimmt bei beiden Elementansätzen überein und ist in @fig-BFS-w dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.001255 m$ für den BFS-Elementansatz bzw. $w_{max} =  0.001262 m$ und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ bzw. $0.566 \%$ ab. 
+Die resultierende Verformungsfigur in überhöhter Darstellung stimmt bei beiden Elementansätzen überein und ist in @fig-BFS-w dargestellt. Die maximale Durchbiegung in Feldmitte, ermittelt durch die FE-Berechnung beträgt $w_{max} =  0.001255 m$ für den BFS-Elementansatz bzw. $w_{max} =  0.001262 m$ für den DKQ-Elementansatz und weicht bezogen auf den Tabellenwert aus @eq-werte-czerny-tafeln um $0.0297 \%$ bzw. $0.566 \%$ ab. 
 
 ![Durchbiegung $w$ der Platte](00-pics/Beispiel-01-BFS-w.png){#fig-BFS-w width=50%}
 
@@ -150,7 +150,7 @@ Bei der Anwendung kommerzieller Finite-Elemente Software ist die Ausgabe der Ber
 
 ![Querkraftverlauf $q_{x}$ [kN/m] (BFS)](00-pics/Beispiel-01-BFS-qx.png){#fig-BFS-qx-bsplhaft width=80%}
 
-Zur Verbesserung der Berechnung aus @fig-BFS-qx-bsplhaft wurde der Querkraftverlauf zwischen speziellen Punkten des Elements bilinear interpoliert. Die Punkte wurden entsprechend den Punkten der Gauss-Integration gewählt. Um einen fließenden Übergang zwischen den Elementen zu erzeugen, werden die Werte zudem an den gemeinsamen Knoten gemittelt. In @fig-interpolation ist der Vorgang der Interpolation und in @fig-glaettung ist die Mittlung an den Knoten schematisch dargestellt. 
+Zur Verbesserung der Berechnung aus @fig-BFS-qx-bsplhaft wurde der Querkraftverlauf zwischen speziellen Punkten des Elements bilinear interpoliert. Die Punkte wurden entsprechend den Punkten der Gauss-Integration gewählt. Um einen fließenden Übergang zwischen den Elementen zu erzeugen, werden die Werte zudem an den gemeinsamen Knoten gemittelt. In @fig-interpolation ist der Vorgang der Interpolation und in @fig-glaettung ist die Mittlung an den Knoten schematisch dargestellt. Die Betrachtung ungeglätteter Ergebnisse ist dennoch bei jeder Berechnung zu empfehlen.
 
 ![Interpolation der Ergebnisse](00-pics/Interpolation.png){#fig-interpolation width=80%}
 

@@ -2,7 +2,7 @@
 
 ### Herleitung der schwachen Form {#sec-schwache-form}
 
-Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der Differentialgleichung der Kirchhoffplatte, ausgedrückt durch den Laplace-Operator,
+Die Basis der Finite Element Methode bildet die schwache Form des Problems. Ausgehend von der Differentialgleichung der Kirchhoff-Platte, ausgedrückt durch den Laplace-Operator,
 
 $$
 D \cdot \Delta \Delta w = q 
@@ -28,7 +28,7 @@ $$
 D \cdot [ \underbrace{\int_{\Omega} w_{,xxxx} \cdot \delta w \quad d \Omega}_{\text{1. Summand}} + \underbrace{\int_{\Omega} 2 \cdot w_{,xxyy} \cdot \delta w \quad d \Omega}_{\text{2. Summand}} + \underbrace{\int_{\Omega} w_{,yyyy}\cdot \delta w \quad d \Omega}_{\text{3. Summand}}] = \int_{\Omega} q \cdot \delta w \quad d \Omega.
 $$ {#eq-diffgl-testfunk-integral}
 
-Die drei Summanden auf der linke Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Ranterme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
+Die drei Summanden auf der linken Seite der Gleichung werden zweifach partiell integriert. Zudem wird angenommen, dass alle Randterme, also Momente und Querkräfte an dem Rand des Gebiets $\Omega$, $=0$. Dadurch ergeben sich die Teilergebnisse für 
 
 $$
 \begin{flalign}
@@ -54,12 +54,12 @@ $$
 $$
 
 
-Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoffplatte.
+Das Zusammenführen der Teilergebnisse ergibt das nachfolgend dargestellte Variationsproblem für die Kirchhoff-Platte.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 *Variationsproblem (V)* \
 
-Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass 
+Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass
 \
 \
 $$
@@ -103,7 +103,7 @@ für alle Testfunktionen $\delta w \in V$
 Diese generelle Form des Problems wird für eine Vielzahl von Anwendungen genutzt.  
 -->
 
-Im Fall der Kirchhoffplatte ist die Bilinearform 
+Im Fall der Kirchhoff-Platte ist die Bilinearform 
 
 $$ 
 \begin{align}

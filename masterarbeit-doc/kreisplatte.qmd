@@ -14,7 +14,7 @@ Als weiteres Minimalbeispiel dient eine rundum eingespannte Kreisplatte mit kons
 
 : Daten zum Beispiel "Kreisplatte" {#tbl-Eingabedaten_kreisplatte}
 
-Die Durchbiegung einer eingespannte Kreisplatte kann entsprechend Abb. 3.35 aus [quelle:Altenbach et al.] berechnet werden. Die maximaler Verformung mit den angegebenen Parametern ist
+Die Durchbiegung einer eingespannten Kreisplatte kann entsprechend Abb. 3.35 aus @altenbach_ebene_2023 berechnet werden. Die maximale Verformung mit den angegebenen Parametern ist
 $$
 \begin{align}
 &w_{max} = \frac{q * r^4}{64 K} \qquad \qquad \qquad = 0.0154  \text{ m}\\
@@ -29,6 +29,6 @@ $$
 w_{fe} = 0.0155 \text{ m}
 $$
 
-was einer Abweichung von _0.680 %_ entspricht. Die Verformungfigur ist in @fig-Kreisplatte-verformung dargestellt.
+was einer Abweichung von _0.680 %_ entspricht. Die Verformungsfigur ist in @fig-Kreisplatte-verformung dargestellt.
 
 ![Beispiel "Kreisplatte": Verformungsfigur](00-pics/Beispiel-01-Circ-w.png){#fig-Kreisplatte-verformung width=70%}

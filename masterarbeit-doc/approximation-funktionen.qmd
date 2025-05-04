@@ -6,14 +6,14 @@ Die zwei wesentlichen Ideen der FEM-Lösung:
 1. Konstruieren einer Näherungslösung durch die Kombination von vordefinierten Funktionen und
 2. Funktionen stückweise definieren auf sogenannten Elementen
 
-werden nachfolgend näher erläutert. Die schubstarre Kichrhhoff-Platte bildet die Basis dieser Arbeit. Bei dieser Plattentheorie wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
+werden nachfolgend näher erläutert. Die schubstarre Kirchhoff-Platte bildet die Basis dieser Arbeit. Bei dieser Plattentheorie wird die Verformung durch $w$ beschrieben. Die Verdrehungen $\theta_x$ und $\theta_y$ werden durch die Ableitung der Verformung beschrieben. Für die Näherungslösung der Verformung werden Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ gewählt, sodass $w_h$ durch die Funktion
 $$
 \begin{align}
 &w_h(x,y) = \varphi_1(x,y) \cdot \hat{w}_1 +  \varphi_2(x,y) \cdot \hat{w}_2 + ... + \varphi_N(x,y) \cdot \hat{w}_N = \sum_{i=1}^N \varphi_i(x,y) \cdot \hat{w}_i 
 \end{align}
 $${#eq-linearkombination-platte}
 
-approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des Abstrakten Variationsproblems wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $\Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $\varphi_1, \varphi_2,...,\varphi_N$ ist der endlich dimensionale Vektorraum 
+approximiert wird. Das ursprüngliche Problem, eine Lösungsfunktionen zu finden, ist jetzt ersetzt worden durch das Problem, reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ zu finden. Die Summe in @eq-linearkombination-platte versteht sich als Linearkombination von Basisfunktionen. Bei der Definition des abstrakten Variationsproblems für den Biegebalken wurde bereits der Raum $V$ eingeführt, welcher die Menge aller Funktionen auf dem Gebiet $\Omega$ beschreibt. Der Raum $V$ ist unendlich dimensional. Die Menge aller möglichen Linearkombination von $\varphi_1, \varphi_2,...,\varphi_N$ ist der endlich dimensionale Vektorraum 
 
 $$
 \begin{align}
@@ -22,7 +22,7 @@ $$
 \end{align}
 $${#eq-subspace}
 
-wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $\varphi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird _abstracktes, diskretes Variationsproblem_ bezeichnet.
+wobei $V_h$ ein Unterraum von $V$ ist und $N$ die Dimension des Raums $V_h$. Die Funktionen $\varphi_i$ sind die Elemente des Vektorraums $V_h$. Das sich daraus ergebende Problem wird _abstraktes, diskretes Variationsproblem_ bezeichnet.
 
 ::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
 
@@ -36,7 +36,7 @@ $${#eq-abstraktes-diskretes-variationsproblem}
 
 :::
 
-Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $\Omega$, in diesem Fall die Platte, wird in die Elemente $\Omega_e, e = 1,...,N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann (siehe @sec-basis-funktionen). Die Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ werden elementweise definiert. Die gesuchten reelen Zahlen $\hat{w}_i \in \mathbb{R}$ werden Freiheitsgrade bzw. im englischen _degrees of freedom_ (abgekürzt DOF) bezeichnet.
+Die zweite Idee basiert darauf, dass das gesamte System in mehrere Elemente aufgeteilt wird und die Funktionen elementweise definiert werden. Das Berechnungsgebiet $\Omega$, in diesem Fall die Platte, wird in die Elemente $\Omega_e, e = 1,...,N_e$ unterteilt. In dieser Arbeit wird sich auf viereckige Plattenelemente beschränkt, sodass jedes Element mindestens vier Knoten hat, je nach Elementansatz aber auch acht oder mehr Knoten haben kann (s. @sec-basis-funktionen). Die Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ werden elementweise definiert. Die gesuchten reellen Zahlen $\hat{w}_i \in \mathbb{R}$ werden Freiheitsgrade bzw. im englischen _degrees of freedom_ (abgekürzt DOF) bezeichnet.
 
 
 Für die Definition des Variationsproblems in @eq-abstraktes-diskretes-variationsproblem werden die Linear- und die Bilinearform genutzt. Um im weiteren Verlauf mit dem Variationsproblem weiterrechnen zu können wird kurz auf die Eigenschaften der genutzten Funktionale eingegangen. Diese beiden Funktionale gehören dem mathematischen Teilgebiet der Funktionalanalysis an. Als Funktional werden eine Funktion bzw. Abbildung bezeichnet, die den Vektorraum $V$ in seinem Skalarkörper $\mathbb{K}$ abbilden. Die mathematische Definition ist nachfolgend dargestellt.
@@ -67,7 +67,7 @@ $$
 \end{align}
 $${#eq-eig-linearform}
 
-Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funtionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
+Die Bilinearform $a(w,\delta w)$ des abstrakten Variationsproblems beschreibt die Abbildung $V \times V \to \mathbb{R}$, wobei beide Funktionen demselben Vektorraum $V$ entstammen. Gemäß der Definition einer Bilinearform sind beide Funktionen linear. Die Eigenschaften der Bilinearform ergeben sich analog zu 
 $$
 \begin{align}
 &a(u+v,w) &&= a(u,w) + a(v,w) \quad , \\

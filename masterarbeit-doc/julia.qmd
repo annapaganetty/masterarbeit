@@ -1,6 +1,6 @@
 ## Programmiersprache JULIA {#sec-JULIA}
 
-JUlIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für numerische und wissenschaftliche Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Libarys von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen, die sowohl eine benutzerfreundliche Umgebung hat, als auch leistungsfähig wie C und Fortran ist. 
+JULIA ist eine, seit 2009 am Massachusetts Institute of Technology (MIT) entwickelte, dynamische Programmiersprache für numerische und wissenschaftliche Berechnungen. Die Veröffentlichung wurde im Februar 2012 bekannt gegeben. Mittlerweile wurde das Open-Source-Programm bereits über 45 Millionen mal heruntergeladen und beinhalten über 10000 Packages. Außerdem können Bibliotheken von anderen Programmiersprachen wie beispielsweise Python, C++, R und Fortran genutzt werden. Ziel der Entwickler war es eine Programmiersprache zu schaffen, die sowohl eine benutzerfreundliche Umgebung hat, als auch leistungsfähig wie C und Fortran ist. 
 
 JULIA beschreibt sich selber als^[www.julialang.org] \
 - Fast - Schnell \
@@ -14,7 +14,7 @@ Die Programmiersprache hat einen LLVM (Low-Level Virtual Machine) basierten Just
 
 Die Syntax von Julia ist ähnlich der von MATLAB und Python, was sie für Nutzer aus diesen Umfeldern leicht zugänglich macht. Eine Deklaration von Typen ist in der Juliaumgebung nicht notwendig, dank ihrer dynamischen Typisierung. Trotzdem ermöglicht Julia auch die Verwendung von statischen Typen, wenn dies erforderlich ist.
 
-Obwohl Julia im Vergleich zu etablierten Programmiersprachen wie Python oder R eine jüngere Sprache ist, hat sie ein wachsendes Zahl von Paketen und Bibliotheken, die eine breite Palette von Anwendungsbereichen abdecken. Die Julia-Community ist sehr aktiv, und viele Pakete sind speziell auf wissenschaftliche und technische Berechnungen ausgerichtet.
+Obwohl Julia im Vergleich zu etablierten Programmiersprachen wie Python oder R eine jüngere Sprache ist, hat sie eine wachsende Zahl von Paketen und Bibliotheken, die eine breite Palette von Anwendungsbereichen abdecken. Die Julia-Community ist sehr aktiv, und viele Pakete sind speziell auf wissenschaftliche und technische Berechnungen ausgerichtet.
 
 Als _Open-Source_ Projekt mit über 1000 Mitwirkenden hat Julia das Potenzial durch die stetige Weiterentwicklung eine führende Rolle in der Programmierwelt für numerische und technische Anwendungen zu spielen.
 

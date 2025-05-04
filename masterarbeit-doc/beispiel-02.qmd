@@ -1,6 +1,6 @@
 ## Beispiel 2: komplexe Platte {#sec-beispiel-02}
 
-Als zweites Beispiel wurde die Formulierung des Finite Elemente Ansatzes für allgemeine Vierecke auf ein realitätsnahes Beispiel angewandt. Die Geometrie der Platte erfordert die Anwendung des DKQ-Elementansatzes. Das Finite Elemente Netz ist, für das in JULIA entwickelte Programm in @fig-BSP-02-RFEM-Netz dargestellt. Neben der komplexen Geometrie, wurden bei dem Beispiel verschiedene Lagerungstypen verwendet. An den drei grün markierten Punkten wird die Platte durch eine Stütze gelenkig gelagert. Die pinken Linien stellen gelenkige Linienlager dar. 
+Als zweites Beispiel wurde die Formulierung des Finite Elemente Ansatzes für allgemeine Vierecke auf ein realitätsnahes Beispiel angewandt. Die Geometrie der Platte erfordert die Anwendung des DKQ-Elementansatzes. Das Finite Elemente Netz ist, für das in JULIA entwickelte Programm in @fig-BSP-02-RFEM-Netz dargestellt. Neben der komplexen Geometrie wurden bei dem Beispiel verschiedene Lagerungstypen verwendet. An den drei grün markierten Punkten wird die Platte durch eine Stütze gelenkig gelagert. Die pinken Linien stellen gelenkige Linienlager dar. 
 
 ![FE-Netz der RFEM Berechnung](00-pics/Beispiel-02-BT-complex-mesh.png){#fig-BSP-02-RFEM-Netz width=80%}
 
@@ -16,8 +16,8 @@ Das Eigengewicht der Platte, welches aus der Dicke von $0.2 \text{ m}$ resultier
 
 : Daten zum Beispiel "komplexe Platte" {#tbl-Eingabedaten-komplex}
 
-Zur besseren Vergleichbarkeit der Ergebnisse sind nachfolgend die Schnittgrößenverläufe $m_x$ ,$m_y$ und  $m_xy$, jeweils aus der eigenen Berechnung und aus RFEM, untereinander dargestellt. 
-Die maximale Verformung beträgt $0.0213$ m nach der RFEM-Berechnung und $0.0217$ m nach der eigenen Berechnung. Sowohl der Verformungsverlauf, als auch die Schnittgrößenverläufe sind Kongruent.
+Zur besseren Vergleichbarkeit der Ergebnisse sind nachfolgend die Schnittgrößenverläufe $m_x$, $m_y$ und $m_xy$, jeweils aus der eigenen Berechnung und aus _RFEM_, untereinander dargestellt. 
+Die maximale Verformung beträgt $0.0213$ m nach der _RFEM_-Berechnung und $0.0217$ m nach der eigenen Berechnung. Sowohl der Verformungsverlauf, als auch die Schnittgrößenverläufe sind kongruent.
 
 __Verformungsverlauf__
 

@@ -14,7 +14,7 @@ Der Patch-Test ist eine gängige Methode um die Qualität eines Elementansatzes 
 
 ![Patch Test Problem](00-pics/Patch-Test-System.png){#fig-Patch-test-system width=70%} 
 
-Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus [Quelle :batoz Tahar] Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
+Die rechteckige Platte wird in fünf allgemeine Vierecke unterteilt. Um das Netz zu erzeugen wird die Funktion `makequadrilateralMesh(p)` aufgerufen. Die Abmessungen sind @fig-Patch-test-system, mit $a = 20$ und $b = 10$, zu entnehmen. Alle Eingabeparameter entsprechen dem Patch-Test-Problem aus @batoz_evaluation_1982 Abb. 3 und können @tbl-Eingabedaten_patch entnommen werden.
 
 ```{julia}
 function makequadrilateralMesh(p)
@@ -32,7 +32,7 @@ An den Eckpunkten wird jeweils um die $y$-Achse ein Moment von $20$ und um die $
 
 ![Patch-Test: Verformung $w$](00-pics/Beispiel-00-w.png){#fig-Patch-test-verformung width=45%} 
 
-Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (siehe @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse, konstant $1$
+Die Verformungsfigur der Berechnung ist in @fig-Patch-test-verformung dargestellt. Die Momentenverläufe (s. @fig-Patch-Momente) sind erwartungsgemäß, sowohl um die $x$- als auch um die $y$-Achse, konstant $1$
 
 
 ::: {#fig-Patch-Momente  layout-ncol=2}

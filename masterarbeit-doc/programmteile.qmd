@@ -2,7 +2,7 @@
 
 ### Parameter {#sec-Parameter}
 
-Um ein physikalische Problem lösen zu können, müssen zunächst die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt werden. Eine beispielhafte Parameterliste wird nachfolgend dargestellt. 
+Um ein physikalisches Problem lösen zu können, müssen zunächst die Parameter der zu berechnenden Platte in einer Parameterliste mit Variablen festgelegt werden. Eine beispielhafte Parameterliste wird nachfolgend dargestellt. 
 
 ```{julia}
 #| echo: false
@@ -23,11 +23,11 @@ p.h = 0.2
 p.E = 31000e6;
 ```
 
-Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächelast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
+Bei einer rechteckigen Platte kann anhand der Parameter `p.lx` und `p.ly`, durch die in @sec-Berechnungsgebiet beschriebene Funktion `makemeshonrectangle()`, ein FE-Netz für die Platte der Länge `p.lx` und der Breite `p.ly` erzeugt werden. Die Parameter `p.q`, `p.ν`, `p.h` und `p.E` beschreiben die einwirkende Flächenlast $q$, die Querdehnzahl $\nu$, die Plattendicke $h$ und das Elastizitätsmodul des Materials $E$.
 
 ### Gebiet $\Omega$ {#sec-Berechnungsgebiet}
 
-Die Definition eines Netzes erfolgt mit Hilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bilbliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten. Die Platte, erzeugt durch den nachfolgend beschriebenen Code, ist in @fig-Mesh dargestellt.
+Die Definition eines Netzes erfolgt mithilfe der von Prof. Dr.-Ing. Mattias Baitsch entwickelten MMJMesh.Meshes Bibliothek. Für die Beispiele in @sec-anwendungsbeispiele sind die nachfolgenden drei Funktionen wichtig. Mit den Funktion `Mesh()`, aus der eben genannten Bibliothek, wird eine Platte und das zugehörige FE-Netz erzeugt. Eingabedaten sind zum einen die Koordinaten der Knoten, hier `coords`, sowie die Definition der Elemente durch das Verbinden der Knoten in einem Vektor, hier `elts`. Wichtig bei der Deklaration der Elemente ist die Reihenfolge der Knoten. Die Platte, erzeugt durch den nachfolgend beschriebenen Code, ist in @fig-Mesh dargestellt.
 
 ```{julia}
 coords = [0.0 20.0 40.0 0.0  20.0 40.0 0.0  20.0 40.0;
@@ -36,7 +36,7 @@ elts = [[1,2,5,4],[2,3,6,5],[4,5,8,7],[5,6,9,8]]
 m = MMJMesh.Meshes.Mesh(coords, elts, 2);
 ```
 
-Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleichgroßen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an. Eine beispielhafte Anwendung der Funktion zeit @fig-makemeshonrectangle.
+Zur Erzeugung einer einfachen rechteckigen Platte mit den Längen $l_x$ und $l_y$ und einem gleichmäßigen Netz mit gleich großen Elementen wird die Funktion `makemeshonrectangle(lx, ly, nx, ny)` genutzt. Die Eingabeparameter `nx` und `ny` geben die Anzahl der Unterteilungen je Seite an. Eine beispielhafte Anwendung der Funktion zeigt @fig-makemeshonrectangle.
 
 ```{julia}
 m = makemeshonrectangle(p.lx, p.ly, nx, ny);
@@ -62,11 +62,11 @@ Für die Definition der Formfunktionen wird ebenfalls auf die MMJMesh Bibliothek
 V = [ -1 1 1 -1; -1 -1 1 1]
 ```
 
-Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mittels der Funktion `mmonomials(n,p)` ein Vektor mit allen, für die Formfunktionen notwendigen, Monomen erzeugt. `n` ist dabei die Anzahl der Variablen und `p` der Grad der Monome. Außerdem kann optional das Gebiet und eine Vorschrift zum erstellen der Monome als Eingabeparameter in der Funktion übergeben werden, wie es bei der Erzeugung des nicht konformen Hermite-Elements und bei dem Serendipity Element notwendig ist.
+Um die Formfunktionen der unterschiedlichen Elementansätze zu erzeugen wird mittels der Funktion `mmonomials(n,p)` ein Vektor mit allen, für die Formfunktionen notwendigen, Monomen erzeugt. `n` ist dabei die Anzahl der Variablen und `p` der Grad der Monome. Außerdem kann optional das Gebiet und eine Vorschrift zum Erstellen der Monome als Eingabeparameter in der Funktion übergeben werden, wie es bei der Erzeugung des nicht konformen Hermite-Elements und bei dem Serendipity Element notwendig ist.
 
-In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
+In dem Vektor `N` werden die Linearformen für das jeweilige Element gespeichert. Die Funktionen `ValueAtLF(x)` und `PDerivativeAtLF(x, n)` werden für die Erzeugung der Linearformen genutzt. `ValueAtLF(x)` wertet eine Funktion f(x) an der Stelle `x` aus. `PDerivativeAtLF(x, n)` wertet die partielle Ableitung einer Funktion $f : \mathbb{R}^n \to \mathbb{R}$ an der Stelle `x` in Richtung `n` aus. Mit `PDerivativeAtLF([-1,-1], [1, 2])` wird beispielsweise eine Funktion an der Stelle $[-1,-1]$ einmal in $x$- und zweimal in $y$-Richtung abgeleitet.
 
-Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend wird beispielhaft der Ablauf zur Konstruktion der Formfunktionen für das konforme und nicht konforem Hermite Element dargestellt.
+Durch Multiplikation der Inversen der Matrix `M` mit den in `P` generierten Monomen ergeben sich die Funktionen der Formfunktionen. Nachfolgend wird beispielhaft der Ablauf zur Konstruktion der Formfunktionen für das konforme Hermite-Element dargestellt.
 
 
 ```{julia}
@@ -90,7 +90,7 @@ end;
 
 ### Elementsteifigkeitsmatrizen & Elementlastvektoren
 
-Für die Umsetzung der Bogner-Fox-Schmitt Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
+Für die Umsetzung der Bogner-Fox-Schmit Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite-Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
 
 ```{{julia}}
 using Symbolics
@@ -108,7 +108,7 @@ aestd(u,v) = integrate(Be1std(u) ⋅ Be2std(v), (0 .. a) , (0 .. b))
 Ke = (simplifyx.([aestd(n1, n2) for n1 ∈ H4, n2 ∈ H4]));
 ```
 
-Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da neben der Länge und der Breite auch die Winkel verschieden sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$- und $H_y$-Funktionen generiert, dessen Anforderungen, basierend auf dem Paper von Batoz und Tahar, in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffe. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` mit den zugehörigen Integrationsgewichte `gaussWeights`. 
+Bei der Elementsteifigkeitsmatrix für allgemeine Vierecke ist ein solcher Algorithmus aufwendiger, da neben der Länge und der Breite auch die Winkel verschieden sind. Für die Berechnung der Elementsteifigkeitsmatrix des DKQ Elements wurden zunächst die $H_x$- und $H_y$-Funktionen generiert, dessen Anforderungen, basierend auf dem Paper von Batoz und Tahar, in @sec-Steifigkeitsmatrix-DKQ beschrieben wurden. Für die Parametrisierung der Elemente mittels der Jacobi-Matrix wird auf die Funktion `jacobian()` aus der `MMJMesh` Bibliothek zurückgegriffen. Um `Ke` elementweise zu berechnen wird für die numerische Integration die Gauß-Quadratur angewandt. Es ergibt sich die Schleife über die Integrationspunkte `gaussPoints` mit den zugehörigen Integrationsgewichten `gaussWeights`. 
 
 ```{julia}
 function DKQKe(p)
@@ -141,7 +141,7 @@ end;
 
 ### Randbedingungen
 
-Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von Randbedinungen unabdingbar. Bei bautechnischen Fragestellungen wird dies in Form von Auflagerbedinungen umgesetzt. Je nach Elementansatz gibt es drei bzw. vier Freiheitsgrade je Knoten. Mit der Funktion `applyDirichletBCs!()` können die Verschiebung und die Verdrehungen an bestimmten Knoten zu Null gesetzt werden. 
+Zur Berechnung ingenieurstechnischer Aufgaben durch die FEM ist Festlegung von Randbedingungen unabdingbar. Bei bautechnischen Fragestellungen wird dies in Form von Auflagerbedingungen umgesetzt. Je nach Elementansatz gibt es drei bzw. vier Freiheitsgrade je Knoten. Mit der Funktion `applyDirichletBCs!()` können die Verschiebung und die Verdrehungen an bestimmten Knoten zu null gesetzt werden. 
 
 |Lagerbedingung | BFS                        | DKQ                 |
 |:-------------:|:---------------------------|:--------------------|
@@ -162,13 +162,13 @@ end;
 
 ### Assemblierung Steifigkeitsmatrix
 
-Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N \times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheisgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktione `idxDOFs()` erstellt.
+Für die Zusammenführung der Elementsteifigkeitsmatrizen und der Elementlastvektoren wird in `assembleKr()` zunächst eine $N \times N$ Matrix und ein Vektor mit $N$ Nullen erstellt. `N` ist die Anzahl der gesamten Freiheitsgrade. In einer Schleife über alle Elemente des Netzes werden die Indexvektoren `I` mit der Funktion `idxDOFs()` erstellt.
 
 ```{julia}
 idxDOFs(nodes::AbstractVector{<:Integer}, nf::Integer) = collect(reshape([(i - 1) * nf + j for i = nodes, j = 1:nf]', :));
 ```
 
-Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren  `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt. 
+Die Funktionen zur Erstellung der Elementsteifigkeitsmatrizen `pkcKe(p)` bzw. `DKQKe(p)` und der Elementlastvektoren `pkcRe(p.q)` bzw. `DKQRe(p.q)`, müssen vor der Zusammenstellung dem `Mesh` als Daten zugefügt werden. Durch eine Schleife werden elementweise die Funktionen abgerufen und die Ergebnisse der globalen Matrix `K` und dem Vektor `r` beigefügt. 
 
 ```{julia}
 function assembleKr(s, nf)
@@ -199,7 +199,7 @@ Für die Lösung des linearen Gleichungssystems aus @eq-lin-gleichungssystem wir
 
 `K \ w` 
 
-berechnet. Für das Bogner-Fox-Schmitt Element basieren die, im `postprozessor()` berechneten Größen, je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\beta_x$ und $\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
+berechnet. Für das Bogner-Fox-Schmit Element basieren die, im `postprozessor()` berechneten Größen, je Element auf den Ableitungen der Verschiebungsfunktion. Für die Formulierung allgemeiner Vierecke werden die Schnittgrößen abhängig von den Verdrehungen $\beta_x$ und $\beta_y$ berechnet. Die Funktion `moment()` spiegelt Gl. (17) aus dem Paper von Batoz und Tahar wieder.
 
 ```{julia}
 function moment(name)
