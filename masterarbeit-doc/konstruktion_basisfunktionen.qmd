@@ -70,7 +70,7 @@ Für allgemeine Vierecke ist der oben beschriebene bilineare Ansatz untauglich. 
 
 ![bilineare Formfunktionen auf dem Referenzelement](00-pics/Lagrange-Formfunktionen.png){#fig-Lagrange-Formfunktionen width=65%}
 
-### konformes Hermite Rechteckelement (Bogner-Fox-Schmitt) {#sec-FE-BFS}
+### konformes Hermite Rechteckelement (Bogner-Fox-Schmit) {#sec-FE-BFS}
 
 Das konforme Hermite-Rechteckelement, oder auch Bogner-Fox-Schmit-Element (BFS) genannt, bezeichnet ein Vierknotenelement mit je vier Freiheitsgraden 
 $$
