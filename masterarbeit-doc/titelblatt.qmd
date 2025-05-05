@@ -40,7 +40,7 @@
 
 Hiermit versichere ich, die vorliegende Arbeit selbstständig verfasst und keine anderen als die von mir angegebenen Quellen und Hilfsmittel benutzt zu haben. Alle Stellen, die wörtlich oder sinngemäß aus veröffentlichen Quellen stammen, habe ich gekennzeichnet. Die Arbeit hat noch bei keiner anderen Prüfung in gleicher oder ähnlicher Form vorgelegen.\
 #v(50pt, weak: true)
-Bochum, den 03. Mai 2025\
+Bochum, den 05. Mai 2025\
 #v(50pt, weak: true)
 Anna Paganetty\
 
@@ -52,4 +52,11 @@ Anna Paganetty\
 ]
 #v(60pt, weak: true)
 
-bla bla bla
+An dieser Stelle möchte ich mich herzlich bei den Menschen bedanken, die mich während meines Studiums und bei der Ausarbeitung dieser Masterarbeit begleitet haben.
+
+Zunächst gilt mein besonderer Dank Prof. Dr.-Ing. Matthias Baitsch für die intensive und persönliche Betreuung. Ihr Engagement und Ihre Expertise haben mein Interesse an Themen geweckt, die weit über die bisherigen Studieninhalte hinausgehen. Ihre Unterstützung hat nicht nur meinen beruflichen Werdegang beeinflusst, sondern auch zur Vertiefung meiner fachlichen Kenntnisse beigetragen. Ein weiterer Dank geht an Prof. Dr.-Ing. Abdullah Alsahly, der bereitwillig als Zweitprüfer dieser Arbeit fungiert hat.
+
+Ich möchte auch dem Ingenieurbüro _IGKB mbh_ danken, das mir die Möglichkeit gegeben hat, meine Arbeitszeit während des Masterstudiums flexibel zu gestalten. Diese Unterstützung war entscheidend für meinen Studienverlauf.
+
+Zu guter Letzt möchte ich meiner Familie und meinem Partner danken, die mir während des gesamten Studiums den Rücken gestärkt haben. Ihre Ermutigung und ihr Verständnis haben mir geholfen, Herausforderungen zu meistern und meine Ziele zu erreichen.
+

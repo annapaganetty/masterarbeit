@@ -92,7 +92,7 @@ end;
 
 Für die Umsetzung der Bogner-Fox-Schmit Formulierung und der DKQ-Formulierung ist es essentiell die Elementsteifigkeitsmatrix für beide Elementtypen zu generieren. Die allgemeine Elementsteifigkeitsmatrix des konformen Hermite-Elements wird durch den unten stehenden Algorithmus erzeugt. `H4` ist der Vektor der Formfunktionen erzeugt mit der oben beschriebenen Funktion `hermiteelement()`. Für die geometrischen Größen `a`, `b`, und `h` des Elements, sowie für die materialspezifischen Größen `ν` und `E` werden zunächst Variablen deklariert. Hierfür wird das `Symbolics` Paket von Julia genutzt. Die generierte Steifigkeitsmatrix, abhängig von den oben genannten Variablen wird in einer weiteren Funktion `pkcKe(p)` gespeichert, welche für die FEM Berechnung genutzt wird. 
 
-```{{julia}}
+```{julia}
 using Symbolics
 @variables  a,b, h, ν,E;
 # Punkte des Elements
