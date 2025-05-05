@@ -1,3 +1,5 @@
+# Helper functions to generate Ke and re
+
 function printShape(name,factor, vector)
     s1 = name.s[2:end-1]
     s2 = latexify(simplify(factor), env=:raw)

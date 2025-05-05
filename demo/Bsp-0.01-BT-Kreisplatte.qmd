@@ -30,7 +30,7 @@ K = p1.E*p1.h^3 / 12*(1-p1.ν^2)
 w_altenbach = (p1.q * p1.r^4) / (64*K)
 ```
 
-# Berechnung des Verschiebung
+# Berechnung der Verschiebung
 
 ```{julia}
 w = plate(mCirc, p1, "BTP")

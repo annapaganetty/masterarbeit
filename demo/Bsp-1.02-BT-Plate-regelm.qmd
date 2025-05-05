@@ -22,26 +22,6 @@ w_fe = maximum(w[1:3:end])
 Vergleich mit Czerny Tafeln
 
 ```{julia}
-m1_c = 5633.80
-m2_c = -16494.85
-m1_BFS = 5658.78
-m1_DKQ = 5692.38
-m2_BFS = -16359.92
-m2_DKQ = -16388.71
-
-vgl1 = 100 * abs(m1_BFS - m1_c) / m1_c # 0.443
-vgl2 = 100 * abs(m1_DKQ - m1_c) / m1_c # 1.040
-vgl3 = 100 * abs(m2_BFS - m2_c) / m2_c # -0.818
-vgl4 = 100 * abs(m2_DKQ - m2_c) / m2_c # -0.643
-vgl1
-```
-
-```{julia}
-xg, _ = gausslegendre(2)
-VG = [xg[[1 2 2 1]]; xg[[1 1 2 2]]]
-```
-
-```{julia}
 # Vergleichswert aus den Czerny Tafeln
 w_czerny = 5e3 * 8^4 / (31000e6 * 0.2^3) * 0.0152
 # prozentuale Abweichung

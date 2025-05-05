@@ -34,26 +34,6 @@ function DKQKe(p)
     return keFunc
 end
 
- 
-#------------------------------------------------------------------------------------------
-# N = MappingFromComponents((lagrangeelement(V))...)
-# ->  ist eine Funktion, die einen Vektor mit den Ergebnissen von den (Lagrange-) Funktionen ausgibt 
-#     Bsp.:   N(1,2) gibt einen Vektor mit den Ergebnissen der Funktionen für x1 = 1 und x2 = 2 aus
-
-# jacobian(N) = 
-# ->  gibt 4 x 2 Matrix aus mit den Ableitungen der (Lagrange-) Funktionen 
-#     1. Spalte = Ableitungen nach x1
-#     2. Spalte = Ableitungen nach x2
-
-# MMJMesh.Mathematics.TransposeMapping(jacobian(NPaga))
-# ->  gibt transponierte Matrix von jacobian(NPaga) aus
-#     1. Spalte = Gradient Funktion 1
-#     2. Spalte = Gradient Funktion 2
-#     3. Spalte = Gradient Funktion 3
-#     4. Spalte = Gradient Funktion 4
-#------------------------------------------------------------------------------------------
-
-
 # Element vector
 function DKQRe(q)
     function reFunc(e)
@@ -71,3 +51,22 @@ function DKQRe(q)
     end
     return reFunc
 end
+
+
+#------------------------------------------------------------------------------------------
+# N = MappingFromComponents((lagrangeelement(V))...)
+# ->  ist eine Funktion, die einen Vektor mit den Ergebnissen von den (Lagrange-) Funktionen ausgibt 
+#     Bsp.:   N(1,2) gibt einen Vektor mit den Ergebnissen der Funktionen für x1 = 1 und x2 = 2 aus
+
+# jacobian(N) = 
+# ->  gibt 4 x 2 Matrix aus mit den Ableitungen der (Lagrange-) Funktionen 
+#     1. Spalte = Ableitungen nach x1
+#     2. Spalte = Ableitungen nach x2
+
+# MMJMesh.Mathematics.TransposeMapping(jacobian(NPaga))
+# ->  gibt transponierte Matrix von jacobian(NPaga) aus
+#     1. Spalte = Gradient Funktion 1
+#     2. Spalte = Gradient Funktion 2
+#     3. Spalte = Gradient Funktion 3
+#     4. Spalte = Gradient Funktion 4
+#------------------------------------------------------------------------------------------
