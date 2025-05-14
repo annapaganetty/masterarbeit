@@ -23,4 +23,3 @@ keep-typ: true
 keep-md: true
 bibliography: references.bib
 bibliographystyle: apa
-csl: nature.csl

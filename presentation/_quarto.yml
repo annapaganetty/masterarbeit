@@ -1,0 +1,36 @@
+project:
+  output-dir: _output
+author: ""
+
+lang: de
+
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    chalkboard:
+      chalkEffect: 0.0
+    slide-number: true
+    logo: images/BO-Logo_m_Wortmarke_L10cmPrint.jpg
+    footer: Finite Elemente für Plattentragwerke | Anna Paganetty
+    css: ["custom.css"]
+    theme: serif
+    template-partials:
+      - title-slide.html
+    center-title-slide: false
+    title-slide-attributes:
+      # data-background-image: images/Patch-Test-System.png
+      data-background-size: 20%
+      data-background-position: 50% 75%
+      data-background-opacity: "0.7"
+  html:
+    title-block-banner: "#888888"
+    number-sections: true
+    number-depth: 3
+  pdf:
+    number-sections: true
+
+fig-format: png
+
+jupyter: julia-1.10
+
