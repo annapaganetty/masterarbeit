@@ -7,10 +7,14 @@ include("../src/setup.jl")
 ## Plot der Plattenelemente
 
 ```{julia}
-WGLMakie.activate!()
+using CairoMakie
 xElem = 3
 m1 = makequadratcicMesh(p1, xElem)
-plotmesh(m1;title="quadratische Platte")
+fig9x9 = plotmesh(m1;title="quadratische Platte | 9 Elemente")
+```
+
+```{julia}
+save("Plate9x9.png",fig9x9)
 ```
 
 ## Verformung 
@@ -58,7 +62,7 @@ plotBasisfunc(m1, makeweBTP(ei(NN, adofs[10])); title="Verformung")
 ```
 
 ```{julia}
-fig2 = Figure(;size = (1600,325),linewidth = 0.5,fontsize = 12,font="calibri")
+fig2 = Figure(;size = (600,325),linewidth = 0.5,fontsize = 12,font="calibri")
 n1 = [1,4,7,10]
 for i = 1:4
         ax = Axis3(fig2[1,i], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.5, limits=(nothing, nothing, nothing), protrusions=0)
@@ -126,6 +130,81 @@ for i = 1:4
         hidedecorations!(ax)
         hidespines!(ax)
         mplot!(m2, makeweBFS(ei(NN2, adofs2[n])),
+            faceplotzscale = 2,
+            faceplotmesh = 5,
+            edgesvisible = false, 
+            edgelinewidth = 0.2,
+            nodesvisible = false,
+            featureedgelinewidth = 0.5,
+            color = 5,
+            colorrange = Makie.automatic,
+            colormap= Makie.theme(:colormap),
+            limits = (nothing, nothing, nothing))
+    end
+end
+fig
+# save("Basisfunktionen_Hermite.png",fig)
+```
+
+
+# serendipity Platte mit 9 Elementen
+
+```{julia}
+WGLMakie.activate!()
+xElem3 = 3
+m3 = makequadratcicMesh(p1, xElem3)
+plotmesh(m3;title="quadratische Platte")
+```
+
+
+## Verformung 
+
+Berechnung der Elementsteifigkeitsmatrizen und Lastvektoren, sowie Festlegung der Randbedingungen. Anschließend Berechnung der Verformung
+
+```{julia}
+serendipityelement(V)
+nf3 = 3
+bcs = [true, true, true]
+m3.data[:kefunc] = DKQKe(p1)
+m3.data[:refunc] = DKQRe(p1.q)
+
+K3,r3 = assembleKr(m3, nf3)
+applyDirichletBCs!(m3.groups[:boundarynodes], K3, r3, bcs)
+w3 = K3 \ r3
+
+# m3.data[:post] = postprocessor(p, w, model)
+```
+
+```{julia}
+w3 = plate(m3, p1, "BTP")
+```
+
+```{julia}
+NN3 = 4 * nnodes(m3)
+nb3 = collect(m3.groups[:boundarynodes])
+ni3 = [i for i in 1:nnodes(m3) if i ∉ nb3]
+adofs3 = idxDOFs(ni3, 3)
+NNa3 = length(adofs3)
+```
+
+## Plot Basisfunktionen hermite
+
+```{julia}
+fig = Figure(;size = (800,600),linewidth = 0.5,fontsize = 12,font="calibri")
+n=1
+for i = 1:4
+    for j = 1:4
+        if i == 1
+            n = j
+        elseif i == 2
+            n = j + 4
+        elseif i == 3
+            n = j + 8
+        end
+        ax = Axis3(fig[i,j], aspect=:data, title = "", viewmode=:stretch, perspectiveness=0.5, limits=(nothing, nothing, nothing), protrusions=0)
+        hidedecorations!(ax)
+        hidespines!(ax)
+        mplot!(m3, makeweBFS(ei(NN3, adofs3[n])),
             faceplotzscale = 2,
             faceplotmesh = 5,
             edgesvisible = false, 

@@ -11,7 +11,7 @@ format:
     chalkboard:
       chalkEffect: 0.0
     slide-number: true
-    logo: images/BO-Logo_m_Wortmarke_L10cmPrint.jpg
+    logo: images/hsbo_logo_RGB_Complete_Wide.svg
     footer: Finite Elemente für Plattentragwerke | Anna Paganetty
     css: ["custom.css"]
     theme: serif

@@ -97,3 +97,7 @@
     display: block;
     margin-top: 200px;
 }
+
+.reveal .slide-logo {
+   max-height: 0.75em !important;
+}

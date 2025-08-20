@@ -6,10 +6,10 @@ format:
     revealjs: default
 ---
 
-{{< include definitionen.qmd >}}
+<!-- {{< include definitionen.qmd >}} -->
 
-# Problemstellung {.smaller}
 
+## Problemstellung {.smaller}
 ::: {.fragment .fade-in fragment-index=1}
 - Aufarbeitung theoretischer Grundlagen
 :::
@@ -41,41 +41,64 @@ format:
 :::
 ::::
 
+
 ::: {.notes}
-- Ziel: Aufarbeitung der theoretischen Grundlagen der Finite Elemente Methode für Platten. 
-- Basis: Kirchhoff Plattentheorie.
-- Formulierung des Bogner-Fox-Schmit Elements, besonderes Augenmerk auf die Formulierung für allgemeine Vierecke 
-- genannten Formulierungen Programmierumgebung JULIA implementiert und an Minimalbeispielen getestet. 
-- Abschließend komplexe Platte, angelehnt an ..
+Ziel war es zunächst die theoretischen Grundlagen der FEM für Platten aufzuarbeiten und dabei die Kirchhoff Plattentheorie als Basis zu nehmen. Weiter sollte ich dann zwei Elementansätze für die FEM, den DKQ Ansatz und den Bogner-Fox-Schmit Ansatz nachvollziehen und beschreiben. Beide genannte Formulieren sollten dann in der Programmierumgebung JULIA implementiert werden und an Minimalbeispielen getestet werden. Abschließen sollte mit dem Programm eine komplexe Platte, angelehnt an ein Praxisbeispiel, berechnet werden.
 :::
 
-# Grundlagen FEM
+## FE-Methode{.smaller}
 
-## Ablauf Finite Elemente Methode {.smaller}
+:::: {.columns}
+::: {.column width="50%"}
+::: {.r-stack}
+![](images/physikalisches-Problem.png){.fragment .fade-in-then-out width=100% fragment-index=1}
 
-Basisideen: 
+![](images/Schnittgroessen.png){.fragment .fade-in-then-out width=100% fragment-index=2}
 
-- Unterteilung des Gebiets in Elemente
-- Approximation durch Kombination vordefinierter Funktionen 
+![](images/Ablauf-FEM-Berechnung.png){.fragment .fade-in width=100% fragment-index=3}
+:::
 
-![](images/Ablauf-FEM-Berechnung.png){width="60%"}
+:::
+::: {.column width="50%"}
 
-::: {.fragment .fade-in}
+
+:::{.fragment .fade-in fragment-index=1}
+1. **physikalisches Problem:** Platte 
+:::
+
+:::{.fragment .fade-in fragment-index=2}
+2. **starke Form:** mathematisches Modell + Randbedingungen
+:::
+
+:::{.fragment .fade-in fragment-index=3}
+3. **schwache Form:** Basis für die FE-Berechnung
+:::
+
+:::{.fragment .fade-in fragment-index=4}
+4. **Approximation:** Linearkombination vordefinierter Funktionen
+:::
+
+:::{.fragment .fade-in fragment-index=5}
+5. **lineares Gleichungssystem:** Linearkombination eingesetzt in die _schwache Form_
+:::
+
+:::
+::::
+
+::: {.fragment .fade-in fragment-index=6}
 ::: {.fragment .highlight-red}
 __Ziel:__ Lösungsfunktion für die Verformung $w$ finden
 :::
 :::
 
 ::: {.notes}
-- Die beiden Hauptideen der FEM sind 
-    - Unterteilung eines gegebenen Gebiets in endliche viele Elemente 
-    - zum anderen die Approximation der Lösung durch die Kombination vordefinierter Funktionen. 
-- Ideen spiegeln sich Ablaufschema wider
-- Diese Masterthesis beschränkt sich auf das Gebiet als Platte
-- Ziel ist es die Lösungsfunktion für die Verformung w zu finden.
+Die FE-Methode ist eine sehr komplexe numerische Berechnungsmethode, die nur schwierig in 15 Minuten zu erklären ist. Basis ist ein physikalisches Problem, hier eine Platte, das Ziel ist es die Verformung zu berechnen. Aus dieser Platte ergibt sich durch materialspezifische Parameter und Belastungen aus dem Gleichgewicht ein mathematisches Modell und die Randbedingungen in Form von Auflagerbedingungen. Aus der starken Form wird die schwache Form abgeleitet, die die Basis für die Berechnung bildet. Wichtig ist zu wissen, dass die FEM nur eine Annäherungslösung ist durch die Linearkombination vordefinierter Funktionen funktioniert. Darauf werde ich gleich nochmal eingehen. Letztendlich ergibt sich ein lineares Gleichungssystem durch dessen Lösung die Verformung berechnet werden kann.
+
+Auf die Punkte 1 und 4 werde ich jetzt noch etwas genauer eingehen.
+
 :::
 
-## Physikalisches Problem {.smaller}
+## physikalische Problem: Kirchhoff {.smaller}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -128,85 +151,15 @@ $$
 :::
 
 ::: {.notes}
-Wie bereits erwähnt stellt die Basis dieser Arbeit die Kirchhoff Plattentheorie dar. - Platte nach dieser Theorie: schubstarre Platte genannt = eindimensionalen dem Bernoulli-Balkens. 
-- kinematischen Annahmen der Theorie: Normalenhypothese + Hypothese vom Ebenbleiben des Querschnitts. 
-- Daraus ergeben sich die Verschiebungen und Verdrehungen
-- Aus den genannten Größen ergeben sich: Dehnungen $\epsilon_{xx}$ und $\epsilon_{yy}$ und die Schubverzerrung $\gamma_{xy}$. 
-- fehlenden Schubverzerrungen sind wegen der Annahme des Ebenbleibens = 0. 
-- Dehnungen -> Spannungen -> Schnittgrößen ermitteln. 
-- Querkräfte alleine aus den Gleichgewichtsbedingungen
-- Aus den Gleichgewichtsbedinungen an einem Schnittelement eines Platte und den Momenten ergibt sich dann die Plattengleichung in Form einer Differentialgleichung.
-:::
-
-## Starke Form {.smaller}
-
-
-:::{.fragment .fade-in fragment-index=1}
-::: {style="background:rgb(164, 179, 188);border-radius: 20px;padding:20px"}
-
-*Randwertproblem (D)* \
-
-Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$ welche die Differentialgleichung
-$$
- D \cdot [\frac{\partial^4 w}{\partial x^4} + 2 \cdot \frac{\partial^2 w}{\partial x^2 \partial y^2} + \frac{\partial^4 w}{\partial y^4}] = q 
-$$
-
-erfüllt. 
-:::
-
-:::
-
-::: {.notes}
-Die Hergeleitete Differentialgleichung wird auch starke Form bzw. Randwertproblem des physikalischen Problems genannt.
-:::
-
-## Schwache Form {.smaller}
-
-- Multiplikation mit der Testfunktion $\delta w : \Omega \to \mathbb{R}$
-- Integration beider Seiten über die Fläche $\Omega$
-
-::: {.r-stack}
-::: {.fragment .fade-in-then-out fragment-index=1  style="background:rgb(164, 179, 188);border-radius: 20px;padding:20px"}
-
-*Variationsproblem (V)* \
-
-Gesucht ist die Funktion $w:\Omega \to \mathbb{R}$, sodass
-$$
-\begin{align}
-\int_{\Omega} D (w_{,xx} \delta w_{,xx} + 2 w_{,xy} \delta w_{,xy} + w_{,yy} \delta w_{,yy} ) \quad d \Omega 
-= \int_{\Omega} q \cdot \delta w \quad d \Omega
-\end{align}
-$$
-
-für jede (fast) beliebige Testfunktion $\delta w:\Omega \to \mathbb{R}$.
-:::
-
-::: {.fragment .fade-in fragment-index=2 style="background:rgb(164, 179, 188);border-radius: 20px;padding:20px"}
-
-*Abstraktes Variationsproblem (V)* \
-
-Gesucht ist die Funktion $w \in V$, sodass
-$$
-a(w, \delta w)= b(\delta w) \qquad \forall \qquad \delta w \in V
-$$
-
-:::
-:::
-
-::: {.fragment .fade-in fragment-index=2 }
-$V$ = Menge von Funktionen
-:::
-
-::: {.notes}
-Um die Differentialgleichung mithilfe der FEM lösen zu können,
-- schwache Form in die starke Form
-- Es ergibt sich das Variationsproblem. 
-- Ziel der FEM: die Suche nach der Funktion w.
+Das physikalische Problem war in meinem Fall das Plattentragwerk und als Grundlage dafür die Kirchhoff Plattentheorie. Platten nach dieser Theorie werden auch schubstarre Platten genannt und entsprechen dem eindimensionalen Equivalent des Bernoulli Balkens. Es gelten also auch hier die kinematischen Annahmen der Normalenhypothese und der Hypothese vom Ebenbleiben des Querschnitts (das Kästchen bleibt wie es ist), so dass sich die Verformungen und Verdrehungen wie hier dargestellt verhalten. (Im Vergleich dazu die Reissner Mindlin Platte, bei der sich das Kästchen wie hier unten verhält) Aus den Annahmen ergeben sich die Verzerrungen Spannungen und Schnittgrößen und letztendlich die Gleichgewichtsbedingungen. Am Ende hat man dann die Differentialgleichung. 
 :::
 
 ## Approximation {.smaller}
 
-Annäherung der Lösung durch Linearkombination:
+Basisideen: 
+
+- Approximation durch Kombination vordefinierter Funktionen 
+- Funktionen stückweise definieren auf Elementen
 
 $$
 \begin{align}
@@ -214,154 +167,35 @@ $$
 \end{align}
 $$
 
-
 :::: {.columns}
-::: {.column width="20%"}
+::: {.column width="50%"}
+::: {.r-stack}
+![](images/Plate9x9.png){.fragment .fade-in-then-out width=100% fragment-index=1}
+
+![](images/Lagrange-Formfunktionen.png){.fragment .fade-in-then-out width=100% fragment-index=2}
+
+![](images/Basisfunktionen_Bilinear.png){.fragment .fade-in width=100% fragment-index=3}
+
+:::
+:::
+::: {.column width="50%"}
 __Gegeben:__
 
-__Gesucht:__
-:::
-::: {.column width="80%"}
 Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$ (elementweise definiert)
+
+__Gesucht:__
 
 reelle Zahlen $\hat{w}_i \in \mathbb{R}$ (Freiheitsgrade, _degrees of freedom_ (DOF))
 :::
 ::::
 
 
-:::: {.columns}
-::: {.column width="5%"}
-$\rightarrow$ 
-:::
-::: {.column width="35%"}
-ursprüngliches Problem:
-
-neues Problem: 
-:::
-::: {.column width="60%"}
-Lösungsfunktion $w(x,y)$ finden
-
-reele Zahlen $\hat{w}_1, \hat{w}_2,...,\hat{w}_N$ finden
-:::
-::::
-
 ::: {.notes}
-Da es sich bei der FEM um eine Approximation der Lösung handelt, wird die gesuchte Funktion w durch eine Linearkombintation angenähert. 
-- Linearkombination ist die Summe aus bekannten, elementweise definierten Basisfunktion multipliziert mit reellen Zahlen. 
-- neues Problem die unbekannte Zahlen zu finden. Diese werden auch Freiheitsgrade genannt
-:::
-
-## Basisfunktionen {.smaller}
-
-::: {.r-stack}
-![](images/PascalscheDreieck-Elemente.png){.fragment .fade-in-then-out fragment-index=1}
-
-:::: {.columns}
-::: {.column width="50%"}
-:::{.fragment .fade-in-then-out fragment-index=2}
-
-Konformes Hermite Element 
-
-![](images/BFS-Element.png){width="40%"}
-![](images/Bogner-Fox-Schmitt-Element.png){width="75%"}
-:::
-:::
-::: {.column width="50%"}
-:::{.fragment .fade-in-then-out fragment-index=3}
-
-Serendipity Element
-
-![](images/Serendipity.png){width="40%"}
-![](images/Serendipity-Formfunktionen.png){width="75%"}
-:::
-:::
-::::
-
-:::: {.columns}
-:::{.fragment .fade-in-then-out fragment-index=4}
-::: {.column width="70%"}
-![](images/Basisfunktionen_Hermite.png)
-:::
-::: {.column width="30%"}
-- Kombination von Formfunktionen
-
-$\rightarrow$ Basisfunktionen $\varphi_i$
-:::
-:::
-::::
-:::
-
-::: {.notes}
-Die eben genannten bekannte Basisfunktionen sind abhängig von dem gewählten Elementansatz. 
-- verschiedenen Elementansätze basieren auf Polynomen mit unterschiedlichen Graden, 
-- Kombination der gewählten Formfunktionen lassen sich dann die Basisfunktionen phi i konstruieren
-:::
-
-## numerische Lösung {.smaller}
-
-::: {.fragment .fade-in fragment-index=1 style="background:rgb(164, 179, 188);border-radius: 20px;padding:20px"}
-
-*Abstraktes diskretes Variationsproblem (V)* \
-
-Gesucht ist die Funktion $w_h \in V_h$, sodass
-$$
-a(w_h, \delta w_h)= b(\delta w_h) \qquad \forall \qquad \delta w_h \in V_h
-$$
+Die eben erwähnet Approximation spiegelt sehr gut die Basisideen der FEM wider. Unser Problem, welches wir vorher definiert haben, wird in mehrere Elemente unterteilt, die jeweils über Knoten miteinander verbunden sind. Es wird ein Elementansatz mit sogenannten Formfunktionen gewählt, hier sind es linear Formfunktionen. Die Funktionen ergeben sich daraus, dass an jeder Ecke einmal der Wert 1 angenommen wird für die Verformung. Bei komplexeren Elementansätzen mit mehr als 4 Formfunktionen wird beispielsweise noch angenommen dass an den Ecken die Verdrehungen um die x- oder y Achse = 1 sind. Durch Kombination dieser Formfunktionen ergeben sich die Basisfunktionen phi. Hier sieht man die Platte die an allen Rändern gelagert ist und sich somit da nicht Verformen kann. An den Mittleren Knoten wird jeweils die Verformung = 1 gesetzt und somit ergeben sich die hier dargestellten Basisfunktionen. Wir erinnern uns, dass wir das Ziel haben die Verformungsfunktion w herauszufinden. Eine unbekannte Funktion herauszubekommen ist sehr schwierig, daher Nutzen wir eine Linearkombination und kombinieren die gerade beschriebenen Basisfunktionen mit reelen Zahlen, so wie es hier beschrieben ist. Wir haben also jetzt eine Funktion, die aus mehreren Basisfunktionen und Zahlen besteht. Die Funktionen kennen wir, die Zahlen wollen wir herausbekommen. Das Problem eine Lösungsfunktion zu finden wurde also ersetzt durch das Problem reele Zahlen zu finden. 
+Die reellen Zahlen sind genau die Freiheitsgrade die wir bei dem Elementansatz angenommen haben. Hier also jeweils die Verschiebung an einem Punkt. Bei anderen Elemente kommen noch Verdrehungen hinzu. Der Elementansatz hier ist einer der simpelsten. In der Masterarbeit habe ich den DKQ Elementansatz beschrieben.
 
 :::
 
-::: {.fragment .fade-in fragment-index=2 }
-:::: {.columns}
-::: {.column width="10%"}
-$V_h$ =
-:::
-::: {.column width="90%"}
-Menge aller möglichen Linearkombinationen der Basisfunktionen $\varphi_1, \varphi_2,...,\varphi_N$
-:::
-::::
-
-:::: {.columns}
-::: {.column width="10%"}
-$N$ = 
-:::
-::: {.column width="90%"}
-Dimension des Raumes $V_h$
-:::
-::::
-
-$V_h$ ist ein Unterraum von $V$
-:::
-
-::: {.notes}
-Um nun das abstrakte Variationsproblem zu lösen können wir durch die 
-- Wahl des Elementansatzes der Raum V auf den Unterraum Vh reduzieren. 
-- Raum V_h ist die Menge aller möglichen Linearkombinationen der Basisfunktionen.
-:::
-
-## numerische Lösung {.smaller}
-
-Linearkombination der gewählten Basisfunktionen 
-
-$\rightarrow$ einsetzen in _abstraktes diskretes Variationsproblem_
-
-
-$$
-\sum_{j = 1}^N \underbrace{a(\varphi_j \varphi_i)}_{k_{ij}} \cdot \hat{w}_j= \underbrace{b(\varphi_i)}_{r_i}
-$$
-
-::: {.fragment .fade-in fragment-index=1 style="background:rgb(164, 179, 188);border-radius: 20px;padding:20px"}
-__lineares Gleichungssystem__
-
-$$
-\mathbf{K} \mathbf{\hat{w}} = \boldsymbol{r} \\
-$$
-:::
-
-::: {.notes}
-- Ersetzen der Wh und delta wh Linearkombination ergibt sich 
-- nach Extrahieren der reellen zahlen wj diese Funktion. kij bezeichnet man als Elementsteifigkeitsmatrix und ri als Elementlastvektor. 
-- Jetzt komme ich zu dem sogenannten DKQ-Element.
-:::
 
 ## DKQ-Element {.smaller}
 
@@ -370,156 +204,18 @@ $$
 - _Discrete Kirchhoff Quadrilateral Element_
 - 1981 veröffentlicht von Batoz und Tahar
 - basierend auf Kirchhoff Plattentheorie
-- angelehnt an DKT Element
-
-$$
-\begin{align}
-\beta_x &= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial x}
-= \sum_{i=1}^8 \varphi_i(x,y) \cdot \beta_{x_i} \\
-\beta_y &= \frac{\partial \sum_{i=1}^8 \varphi_i(x,y) \cdot \hat{w}_i}{\partial y}
-= \sum_{i=1}^8 \varphi_i(x,y) \cdot \beta_{y_i} \\
-\end{align}
-$$ 
-
-- Formfunktionen $\varphi_i(x,y)$: Serendipity
+- angelehnt an DKT Element für Dreieckelemente
+- 3 Freiheitsgrade je Eckknoten
 
 :::
 ::: {.column}
-![](images/Geometrie-BTP.png)
+![](images/DKQ-Element.png)
 :::
 ::::
 
-::: {.notes}
-Das Discrete Kirchhoff Quadrilateral Element wurde erstmals 1981 von Batoz und Tahar veröffentlicht in einem Paper. Es basiert auf der Kirchhoff Plattentheorie und ist angelehnt an das entsprechende Dreieckselement. In der Abbildung ist das Element dargestellt mit 8 Knoten, die für die Herleitung der Formfunktionen für das allgemeine Viereck wichtig sind. Das Ergebnis der Berechnung ist jedoch ein Verschiebungsvektor mit je 3 Freiheitsgraden an den Eckknoten. 
-
-Die Verdrehungen um die x- und um die y-Achse sind hier dargestellt. Hier sieht man die Linearkombination der Serendipity Formfunktionen mit den Verschiebungen an den 8 Knoten. Anders ausgedrückt ist es die Linearkombination der Formfunktionen mit den jeweiligen Verdrehungen um die x-Achse oder die y-Achse an den 8 knoten.
-:::
-
-## DKQ-Element {.smaller}
-
-:::: {.columns}
-::: {.column width= "70%"}
-Verdrehungen der Knoten $i = 1,2,3,4$ und $k = 5,6,7,8$
-
-$$
-\begin{align}
-&\beta_{x_i} = - w,_{x_i} \\
-&\beta_{y_i} = - w,_{y_i}\\
-&\beta_{s_k} = - w,_{s_k} = \frac{-3}{l_{ij}} (w_i - w_j) - \frac{1}{4}(w,_{si}+w,_{sj}) \\
-&\beta_{n_k} = - w,_{n_k} = -\frac{1}{2}(w,_{ni}+w,_{nj})
-\end{align}
-$$
-
-- $\beta_{s_k}$ = Verdrehung um $n$-Achse (kubisch)
-- $\beta_{n_k}$ = Verdrehung um $s$-Achse (linear)
-
-$\rightarrow$ geometrische Umrechnung zu $\beta_{x_k}$ und $\beta_{y_k}$
-
-:::
-::: {.column width= "30%"}
-![](images/Geometrie-BTP.png)
-:::
-::::
 
 ::: {.notes}
-Die Verdrehungen an den Eckknoten sind die Ableitung der Verformung nach x oder nach y. Die Verdrehung um die n-Achse wird als kubischer Verlauf entlang der Elementkante angenommen, die Verdrehung um die s-Achse als linearer Verlauf. Dadurch ergeben sich die Formulierungen für beta s und beta n an den Mittelknoten. Um die Linearkombination berechnen zu können müssen die beta s und beta n geometrisch zu beta x und beta y mtihilfe der trigonometrischen Funktionen umgerechnet werden.
-:::
-
-## DKQ-Element {.smaller}
-
-Extrahieren des Knotenverschiebungsvektors aus den Formulierungen für $\beta_x$ und $\beta_y$
-
-$$
-\begin{align}
-\\
-\mathbf{\hat{w}^e}= \left[ \begin{array}{center} 
-w_1 & \theta_{x1} & \theta_{y1} &
-w_2 & \theta_{x2} & \theta_{y2} &
-w_3 & \theta_{x3} & \theta_{y3} &
-w_4 & \theta_{x4} & \theta_{y4} 
-\end{array}\right]^T
-\\
-\\
-\end{align}
-$$
-
-$\rightarrow$ Formfunktionen für das DKQ-Element $H^x_i$ und $H^y_i$
-
-$$
-\begin{align}
-\\
-&\beta_x = 
-\left[ \begin{array}{center} 
-H^x_1 & H^x_2 & H^x_3 & H^x_4 & H^x_5 & H^x_6 & H^x_7 & H^x_8 & H^x_9 & H^x_{10} & H^x_{11} & H^x_{12} 
-\end{array}\right] 
-\mathbf{\hat{w}^e}  \\
-\\
-&\beta_y =
-\left[ \begin{array}{center} 
-H^y_1 & H^y_2 & H^y_3 & H^y_4 & H^y_5 & H^y_6 & H^y_7 & H^y_8 & H^y_9 & H^y_{10} & H^y_{11} & H^y_{12} 
-\end{array}\right]
-\mathbf{\hat{w}^e}
-\\
-\end{align}
-$$
-
-::: {.notes}
-Durch das Extrahieren des Knotenverschiebungsvektors ergibt sich dann diese Formulierung für beta x und beta y
-:::
-
-## DKQ-Element {.smaller}
-
-- H-Funktionen angewandt auf Bilinearform des Variationsproblems
-
-Elementsteifigkeitsmatrix
-
-$$ 
-\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
-= \int_{\Omega^e} \mathbf{B}_b^T \mathbf{D_b} \mathbf{B}_b d\Omega
-$$ 
-
-mit der B-Matrix
-
-$$
-\mathbf{B_b} = 
-\begin{bmatrix} 
-\frac{\partial H_1^x}{\partial x} & \frac{\partial H_2^x}{\partial x} & \cdots & \frac{\partial H_{12}^x}{\partial x} \\
-\frac{\partial H_1^y}{\partial y} & \frac{\partial H_2^y}{\partial y} & \cdots & \frac{\partial H_{12}^y}{\partial y}\\
-\frac{\partial H_1^x}{\partial y} + \frac{\partial H_1^y}{\partial x} & 
-\frac{\partial H_2^x}{\partial y} + \frac{\partial H_2^y}{\partial x} & \cdots &
-\frac{\partial H_{12}^x}{\partial y} + \frac{\partial H_{12}^y}{\partial x} \\
-\end{bmatrix}
-$$ 
-
-:::{.notes}
-Die H-Funktionen fungieren bei dem DKQ Element als Formfunktionen. Die Bilinearform der Elementsteifigkeitsmatrix kann somit durch die Folgende Formel ausgedrückt werden. Da die Ableitung von H nach x und y jedoch nicht ohne weiteres möglich ist, da die H-Funktionen auf dem Referenzelement mit eta und xi definiert sind, ist eine Parametrisierung notwendig.
-:::
-
-## DKQ-Element: Parametrisierung  {.smaller}
-
-Parametrisierte B-Matrix 
-
-- $j_{11},j_{12},j_{21}$ und $j_{22}$ sind Einträge der inversen Jacobi-Matrix
-$$
-\mathbf{B_b} = 
-\left[ \begin{array}{center}
-j_{11} H_{i,_\xi}^x + j_{12} H_{i,_\eta}^x \\
-j_{21} H_{i,_\xi}^y + j_{22} H_{i,_\eta}^y \\
-j_{11} H_{i,_\xi}^y + j_{12} H_{i,_\eta}^y +
-j_{21} H_{i,_\xi}^x + j_{22} H_{i,_\eta}^x & 
-\end{array}\right]
-$$
-
-Elementsteifigkeitsmatrix bezogen auf das Referenzelement
-$$ 
-\begin{align}
-\mathbf{k_{ij}^e} = a(\varphi^e_j, \varphi^e_i)
-&= \int_{-1}^{1} \int_{-1}^{1} \mathbf{B}_e^T \mathbf{D_b} \mathbf{B}_e det[J] \quad d\xi \eta
-\end{align}
-$$ 
-
-:::{.notes}
-Die H_Funktionen werden mit den Einträgen der inversen Jacobi-Matrix multipliziert, sodass sich die dargestellte B-Matrix ergibt und die Elementsteifigkeitsmatrix bezogen auf das Referenzelement berechnet werden kann.
+DKQ steht für Discrete Kirchhoff Quadrilateral Element. Das Discrete Kirchhoff Quadrilateral Element wurde erstmals 1981 von Batoz und Tahar veröffentlicht in einem Paper. Es basiert auf der Kirchhoff Plattentheorie und ist angelehnt an das entsprechende Dreieckselement. In der Abbildung ist das Element dargestellt mit 4 Knoten und  je 3 Freiheitsgraden pro Eckknoten. Diese Formulierung ist besonders wichtig für allgemeine Vierecke ohne rechte Winkel.
 :::
 
 # Lösungsansatz {.smaller}
@@ -546,10 +242,9 @@ Die H_Funktionen werden mit den Einträgen der inversen Jacobi-Matrix multiplizi
 ::::
 
 :::{.notes}
-Die Umsetzung in Julia erfolgt gemäß dem mathematischen Modell. Die Basis bilden das Netz und die Eingabeparameter. Das Netz kann entweder durch die Definition von Knoten und Kanten erzeugt werden oder durch das Einlesen eine mesh Datei. Die Materialparameter wie das E-Modul werden in einer Parameterliste gespeichert. Elementsteifigkeitsmatrix und Elementlastvektor werden den Elementen durch die Funktionen ... angehängt und bei der Assemblierung der globalen Steifigkeitsmatrix und des globalen Lastvektors abgerufen und elementweise berechnet. Bei Bauingenieurtechnischen Fragenstellung ist es notwendig Randbedingungen in Form von Auflagerbedinungen festzulegen. Das wird durch die Funktion applyDirchletBCs() an ausgewählten Punkten und Rändern umgesetzt. Schlussendlich kann das lineare Gleichungssystem gelöst werden und Schnittgrößen berechnet.
+Die Umsetzung in Julia erfolgt gemäß dem mathematischen Modell. Die Basis bilden das Netz und die Eingabeparameter. Das Netz kann entweder durch die Definition von Knoten und Kanten erzeugt werden oder durch das Einlesen eine mesh Datei. Die Materialparameter wie das E-Modul werden in einer Parameterliste gespeichert. Elementsteifigkeitsmatrix und Elementlastvektor werden den Elementen durch die Funktionen ... angehängt und bei der Assemblierung der globalen Steifigkeitsmatrix und des globalen Lastvektors abgerufen und elementweise berechnet. Bei Bauingenieurtechnischen Fragenstellung ist es notwendig Randbedingungen in Form von Auflagerbedinungen festzulegen. Das wird durch die Funktion applyDirchletBCs() an ausgewählten Punkten und Rändern umgesetzt. Schlussendlich kann das lineare Gleichungssystem gelöst werden und Schnittgrößen im postprocessor() berechnet.
 :::
 
-# Validierung
 
 ## Validierung: Patch-Test {.smaller}
 
@@ -594,6 +289,7 @@ Ziel: konstanter Spannungszustand
 Um die Implementierung der allgemeinen Vierecksformulierung in Form des DKQ-Ansatzes zu validieren wurde zunächst der sogenannte Patch-Test durchgeführt. Ziel dessen ist eine Platte zu modellieren dessen Spannungszustand konstant sein muss. Wie in dem Paper von Batoz und Tahar beschrieben sind die Länge und Breite der Platte und die Momente an den Eckknoten der Platte so angeordnet, dass entlang der Plattenkanten ein konstantes Moment von 1 vorherrscht. Schauen wir uns die drei Biegemomente an, tut sich zwischen allen drei nicht wirklich etwas, aber genau das ist auch das Ziel. Alle Momentenverläufe müssen 1 sein. 
 :::
 
+<!-- 
 ## Validierung: Kreisplatte {.smaller}
 
 :::: {.columns}
@@ -628,7 +324,8 @@ Abweichung: _0.680 %_
 
 :::{.notes}
 Als zweites Validierungsbeispiel wurde eine Kreisplatte gewählt, dessen maximale Verformung mit der maximalen Verformung nach Altenbach verglichen wurde. Heraus kam eine hervorragende Übereinstimmung mit nur 0.68% Abweichung.
-:::
+::: 
+-->
 
 
 ## Validierung: Rechteckplatte {.smaller}
@@ -779,23 +476,20 @@ Das letzte Beispiel ist die Anwendung der implementierten Formulierung auf ein r
 :::{.fragment .fade-in-then-out fragment-index=1}
 Momentenverlauf $m_x$
 :::
-:::{.fragment .fade-in-then-out fragment-index=2}
+:::{.fragment .fade-in fragment-index=2}
 Momentenverlauf $m_y$
-:::
-:::{.fragment .fade-in fragment-index=3}
-Momentenverlauf $m_{xy}$
 :::
 :::
 :::{.fragment .fade-in fragment-index=1}
 - Farbskalen sind aneinander angepasst
 - nahezu identische Farbverläufe 
 :::
-:::{.fragment .fade-in  fragment-index=4}
-:::{.fragment .highlight-red  fragment-index=5}
+:::{.fragment .fade-in  fragment-index=3}
+:::{.fragment .highlight-red  fragment-index=4}
 
 Minimal- und Maximal-Werte sind nicht Vergleichbar!
 :::
-:::{.fragment .fade-in  fragment-index=6}
+:::{.fragment .fade-in  fragment-index=5}
 
 $\rightarrow$ __Singularitäten:__ Konzentration von Querkräften und Momenten
 
@@ -826,7 +520,7 @@ $\rightarrow$ Reproduzierbarkeit der Ergebnisse
 - Erweiterung des Programms für Reissner-Mindlin Plattentheorie
 
 :::{.notes} 
-Die in der Aufgabenstellung getroffene Annahme dass vor allem die deutschsprachige Literatur sehr lückenhaft ist hat sich für mich bestätigt. Dennoch hat durch intensives Einarbeiten in das Thema die Implementierung in JULIA funktioniert und Ergebnisse aus kommerziellen Softwares haben sich reproduzieren lassen.#Mit persönlich hat die Auseinandersetzung mit den unterschiedlichen Literaturquellen auch noch einmal gezeigt wie unterschiedlich die Autoren das Thema angehen. Bei einem sind sich jedoch nahezu alle einig: Der Anwender sollte Hintergrundwissen zu dern FEM haben wenn er sie anwendet. Mir hat es gezeigt wie wenig Ahnung ich von der Methode bisher hatte und hoffe das zukünftig an Hochschulen und Universitäten das Thema intensiver vertieft wird als es bei mir der Fall war, wobei ich da guter Dinge bin.
+Die in der Aufgabenstellung getroffene Annahme dass vor allem die deutschsprachige Literatur sehr lückenhaft ist hat sich für mich bestätigt. Dennoch hat durch intensives Einarbeiten in das Thema die Implementierung in JULIA funktioniert und Ergebnisse aus kommerziellen Softwares haben sich reproduzieren lassen.#Mit persönlich hat die Auseinandersetzung mit den unterschiedlichen Literaturquellen auch noch einmal gezeigt wie unterschiedlich die Autoren das Thema angehen. Bei einem sind sich jedoch nahezu alle einig: Der Anwender sollte Hintergrundwissen zu der FEM haben wenn er sie anwendet. Mir hat es gezeigt wie wenig Ahnung ich von der Methode bisher hatte und hoffe das zukünftig an Hochschulen und Universitäten das Thema intensiver vertieft wird als es bei mir der Fall war, wobei ich da guter Dinge bin.
 
 Als Erweiterung für dieses Programm kann ich mir Vorstellen dass weitere Elementansätze implementiert werden und evtl. auch eine Kombination mit Dreieckelementen möglich gemacht wird. Außerdem könnte die Reissner-Mindlin Plattentheorie umgesetzt werden.
 
@@ -840,7 +534,49 @@ Diskretisierungsfehler wird in kommerzieller Software nicht ausgegeben
 ::: {.column width="34%"}
 :::
 ::: {.column width="33%"}
-Vielen Dank!
+Vielen Dank! Fragen?
+:::
+::: {.column width="33%"}
+:::
+::::
+
+## Kontaktdaten {.smaller background="#43464B" .center}
+
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/HRW_Logo_cyan.svg)
+Anna Paganetty
+
+E-Mail: anna.paganetty@hs-ruhrwest.de
+
+Telefon: +49 208 88254-467
+
+![](images/qr-code-anna.png){width="20%"}
+:::
+::: {.column width="50%"}
+Prüfer:
+
+*Prof. Dr.-Ing. Matthias Baitsch*
+
+Bauinformatik und Numerische Verfahren 
+
+- Leiter des BIM-Instituts der Hochschule Bochum
+- Mitglied des Instituts für Grundlagen des Bauingenieurwesens und Computerorientierte Methoden
+
+![](images/hsbo_logo_RGB_Complete_Wide.svg){width="60%"}
+![](images/qr-code-baitsch.png){width="20%"}
+:::
+::::
+
+# Literatur {background="#43464B" .center}
+
+
+:::: {.columns}
+::: {.column width="34%"}
+:::
+::: {.column width="33%"}
+
 :::
 ::: {.column width="33%"}
 :::
